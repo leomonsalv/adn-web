@@ -2,7 +2,12 @@ module.exports = {
   env: {
     browser: true,
   },
-  extends: ['plugin:react/recommended', 'plugin:sonarjs/recommended', 'airbnb'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:sonarjs/recommended',
+    'airbnb',
+    'plugin:unicorn/recommended',
+  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -11,7 +16,18 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', 'sonarjs'],
-  rules: { 'react/jsx-filename-extension': [0] },
+  rules: {
+    'react/jsx-filename-extension': [0],
+    'unicorn/filename-case': [
+      'error',
+      {
+        cases: {
+          camelCase: true,
+          kebabCase: true,
+        },
+      },
+    ],
+  },
   globals: {
     test: 'readonly',
     expect: 'readonly',
