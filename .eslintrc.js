@@ -18,15 +18,8 @@ module.exports = {
   plugins: ['react', 'sonarjs'],
   rules: {
     'react/jsx-filename-extension': [0],
-    'unicorn/filename-case': [
-      'error',
-      {
-        cases: {
-          camelCase: true,
-          kebabCase: true,
-        },
-      },
-    ],
+    'unicorn/filename-case': [0],
+    'linebreak-style': 0,
   },
   globals: {
     test: 'readonly',
