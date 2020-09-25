@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { shallow } from 'enzyme';
+
 import configureStore from './stores/configureStore';
 
 import App from './app';
