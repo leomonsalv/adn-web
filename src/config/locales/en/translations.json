@@ -1,0 +1,54 @@
+{
+    "auth": {
+      "loginPage": {
+        "title": "Sign In",
+        "button": "Enter"
+      },
+      "registerPage": {
+        "title": "Register",
+        "button": "Register"
+      },
+      "fields": {
+        "email": "E-mail",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "username": "Username",
+        "address": "Address",
+        "phoneNumber": "Phone Number"
+      },
+      "rules": {
+        "validEmail": "Please insert a valid E-mail",
+        "emptyEmail": "Please input your E-mail",
+        "password": "Please input your password",
+        "confirmPassword": "Please confirm your password",
+        "username": "Please input your username",
+        "address": "Please input your address",
+        "phone": "Please input your phone number"
+      }
+    },
+    "lang": {
+      "english": "English",
+      "spanish": "Spanish"
+    },
+    "menu": {
+      "home": "Home",
+      "signOut": "Sign Out", 
+      "signIn": "Sign In" 
+    },
+    "common": {
+      "button": {
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "update": "Update",
+        "create": "Create"
+  
+      }
+    },
+    "pages": {
+      "notFound": {
+        "title": "Not found page",
+        "button": "Go Back"
+      }
+    }
+  }
+  

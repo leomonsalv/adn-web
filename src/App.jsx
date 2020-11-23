@@ -1,54 +1,83 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { getToken, removeToken } from './firebase/utils/token';
+import { initialState, setProfile, cleanProfile } from './stores/actions/profile';
+import AuthProvider from './contexts/AuthContext/AuthContext';
+import FirebaseContext from './firebase/context';
+import API from './services';
+import Routes from './routes/Routes';
 
-import logo from './logo.svg';
-import { increment, decrement } from './stores/actions/demo';
+const init = () => {
+  const token = getToken();
 
-import './App.css';
+  return token
+    ? { isLogged: true, accessToken: token }
+    : { isLogged: false, accessToken: '' };
+};
 
-function App() {
-  const counter = useSelector((state) => state.demo.value);
+const App = () => {
   const dispatch = useDispatch();
-  // Action: code that causes an update to the state when something happens
-  const handleIncrement = () => {
-    dispatch(increment());
-  };
+  const firebase = useContext(FirebaseContext);
 
-  const handleDecrement = () => {
-    dispatch(decrement());
-  };
+  const { isLogged, accessToken } = init();
+
+  dispatch(
+    setProfile({
+      ...initialState,
+      isLogged,
+      accessToken
+    })
+  );
+
+  useEffect(() => {
+    const initProfile = async () => {
+      firebase.getAuth().onAuthStateChanged(async (user) => {
+        if (user) {
+          const tokenFromFirebase = await user.getIdToken();
+          const sessionToken = getToken();
+
+          if (tokenFromFirebase === sessionToken) {
+            const userProfile = await firebase.getUserByEmail(user.email);
+
+            const { data } = await API.roles.roleVerification(
+              userProfile.roleId
+            );
+
+            if (data === undefined) {
+              dispatch(cleanProfile());
+              removeToken();
+              return;
+            }
+
+            dispatch(
+              setProfile({
+                ...userProfile,
+                isLogged: true,
+                accessToken: sessionToken,
+                role: data
+              })
+            );
+          } else {
+            dispatch(cleanProfile());
+            removeToken();
+          }
+        } else {
+          removeToken();
+          dispatch(cleanProfile());
+        }
+      });
+    };
+
+    if (isLogged) {
+      initProfile();
+    }
+  }, [isLogged, accessToken, dispatch, firebase]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div>
-          Value:
-          {' '}
-          {counter}
-          {' '}
-          <br />
-          <button type="submit" onClick={handleIncrement}>Increment</button>
-          <button type="submit" onClick={handleDecrement}>Decrement</button>
-        </div>
-      </header>
-    </div>
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,15 @@
+@import '../../theme/variables.scss';
+
+.logo {
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 13px 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1rem;
+}

@@ -1,0 +1,28 @@
+@import '../../theme/variables.scss';
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+  }
+
+  .img {
+    width: auto;
+    height: 30vh;
+    padding-bottom: 2rem;
+  }
+
+  .title {
+    color: $primary-color;
+    padding-bottom: 2rem;
+    text-align: center;
+  }
+}

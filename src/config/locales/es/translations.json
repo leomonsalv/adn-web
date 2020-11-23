@@ -1,0 +1,53 @@
+{
+    "auth": {
+      "loginPage": {
+        "title": "Iniciar sesión",
+        "button": "Entrar"
+      },
+      "registerPage": {
+        "title": "Registro",
+        "button": "Registro"
+      },
+      "fields": {
+        "email": "Correo",
+        "password": "Contraseña",
+        "confirmPassword": "Confirma Contraseña",
+        "username": "Nombre de Usuario",
+        "address": "Direccion",
+        "phoneNumber": "Telefono"
+      },
+      "rules": {
+        "validEmail": "Por favor ingrese un E-mail valido",
+        "emptyEmail": "Por favor ingrese un E-mail",
+        "password": "Por favor ingrese una contraseña",
+        "confirmPassword": "Por favor confirme la contraseña",
+        "username": "Por favor ingrese un nombre de usuario",
+        "address": "Por favor ingrese una direccion",
+        "phone": "Por favor ingrese un telefono"
+      }
+    },
+    "lang": {
+      "english": "Ingles",
+      "spanish": "Español"
+    },
+    "menu": {
+      "home": "Inicio",
+      "signOut": "Cerrar sesión",
+      "signIn": "Entrar" 
+    },
+    "common": {
+      "button": {
+        "cancel": "Cancelar",
+        "edit": "Editar",
+        "update": "Actualizar",
+        "create": "Crear"
+      }
+    },
+    "pages": {
+      "notFound": {
+        "title": "No se encontro esta pagina",
+        "button": "Ir atras"
+      }
+    }
+  }
+  

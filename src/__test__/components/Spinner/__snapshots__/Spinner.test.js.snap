@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spinner Test should render component 1`] = `
+<Spin
+  size="large"
+  spinning={true}
+  wrapperClassName=""
+>
+   
+  <span>
+    children
+  </span>
+   
+</Spin>
+`;
