@@ -1,4 +1,7 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  getDefaultMiddleware
+} from '@reduxjs/toolkit';
 import thunkMiddleware from 'redux-thunk';
 import monitorReducersEnhancer from './enhancers/monitorReducer';
 import loggerMiddleware from './middleware/logger';
@@ -7,7 +10,11 @@ import rootReducer from './reducers';
 export default function configureAppStore(preloadedState) {
   const store = configureStore({
     reducer: rootReducer,
-    middleware: [thunkMiddleware, loggerMiddleware, ...getDefaultMiddleware()],
+    middleware: [
+      thunkMiddleware,
+      loggerMiddleware,
+      ...getDefaultMiddleware({ serializableCheck: false })
+    ],
     preloadedState,
     enhancers: [monitorReducersEnhancer],
   });

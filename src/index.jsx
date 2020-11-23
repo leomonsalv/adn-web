@@ -1,23 +1,31 @@
+import '../src/theme/global.scss';
+import Spinner, { SpinnerProvider } from './components/Spinner';
+import SnackBar from './components/SnackBar/SnackBar';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import './index.css';
 import App from './App';
 import configureStore from './stores/configureStore';
 import * as serviceWorker from './serviceWorker';
+import FirebaseInstance, { FirebaseContext } from './firebase';
+import Axios from '../src/services/Interceptor';
 
 const store = configureStore();
 
+Axios.Interceptor(store);
+
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <Route path="/" component={App} />
-      </Router>
-    </Provider>
-  </React.StrictMode>,
+      <SpinnerProvider>
+        <Spinner>
+          <FirebaseContext.Provider value={FirebaseInstance}>
+              <App />
+          </FirebaseContext.Provider>
+        </Spinner>
+      </SpinnerProvider>
+      <SnackBar />
+    </Provider>,
   document.getElementById('root')
 );
 
