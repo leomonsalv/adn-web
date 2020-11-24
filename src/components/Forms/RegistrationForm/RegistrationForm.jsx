@@ -58,6 +58,14 @@ const RegistrationForm = ({ onSubmit }) => {
         <Input />
       </Form.Item>
 
+      <Form.Item
+        name="dni"
+        label={t('auth.fields.dni')}
+        rules={formRules.dniRules}
+      >
+        <Input />
+      </Form.Item>
+
       <Form.Item name="address" label={t('auth.fields.address')} rules={formRules.addressRules}>
         <Input />
       </Form.Item>

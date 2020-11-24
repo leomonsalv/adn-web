@@ -17,7 +17,6 @@ const PrivateRoute = ({
       case ROUTES.ROLES:
         hasPermission = !!permissions.includes('list-roles');
         break;
-
       default:
         break;
     }
