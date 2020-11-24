@@ -41,6 +41,11 @@ class Firebase {
     return this.auth.signOut();
   }
 
+  // *** Users Api ***
+  createUser(user) {
+    this.firestore.collection('users').add(user);
+  }
+
   async getUserByEmail(email) {
     const usersReference = this.firestore.collection('users');
     const snapshot = await usersReference.where('email', '==', email).get();

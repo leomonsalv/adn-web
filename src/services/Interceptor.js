@@ -11,6 +11,10 @@ const interceptorRequest = async (request, store) => {
   const method = request.method.toUpperCase();
 
   store.dispatch(method === 'GET' ? loading() : loadingWithSpinner());
+
+  if (request.data && request.data.auth === 'register') {
+    return request;
+  }
   const accessToken = getToken();
   const cancelToken = axios.CancelToken;
   const source = cancelToken.source();

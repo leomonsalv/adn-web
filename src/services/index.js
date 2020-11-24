@@ -1,5 +1,7 @@
 import roles from './roles';
+import users from './users';
 
 export default {
-  roles
+  roles,
+  users
 };

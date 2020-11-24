@@ -14,7 +14,8 @@
         "confirmPassword": "Confirm Password",
         "username": "Username",
         "address": "Address",
-        "phoneNumber": "Phone Number"
+        "phoneNumber": "Phone Number",
+        "dni": "Dni"
       },
       "rules": {
         "validEmail": "Please insert a valid E-mail",
@@ -23,7 +24,8 @@
         "confirmPassword": "Please confirm your password",
         "username": "Please input your username",
         "address": "Please input your address",
-        "phone": "Please input your phone number"
+        "phone": "Please input your phone number",
+        "dni": "Please input your dni"
       }
     },
     "lang": {

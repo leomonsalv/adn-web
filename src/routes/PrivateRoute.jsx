@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-small-switch */
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
