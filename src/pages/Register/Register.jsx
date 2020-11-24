@@ -25,7 +25,7 @@ const Register = () => {
         dni: formFieldValues.dni,
         // Adding constant role until work on assign role to user
         roleId: 'zDEUZFLh02VUM6lV9oSJ',
-        auth: 'register',
+        register: true,
       };
       dispatch(loadingWithSpinner());
       await API.users.createUser(object);

@@ -12,7 +12,7 @@ const interceptorRequest = async (request, store) => {
 
   store.dispatch(method === 'GET' ? loading() : loadingWithSpinner());
 
-  if (request.data && request.data.auth === 'register') {
+  if (request.data && request.data.register) {
     return request;
   }
   const accessToken = getToken();
