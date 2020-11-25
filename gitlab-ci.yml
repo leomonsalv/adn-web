@@ -65,6 +65,7 @@ deploy:
   before_script:
     - yarn global add firebase-tools
     - yarn build
+
   cache:
     paths:
       - node_modules/
