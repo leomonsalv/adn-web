@@ -8,8 +8,8 @@
         "admin-storybook-dev": [
           "storybook-9d771"
         ],
-        "adams-admin-dev": [
-          "adams-admin-dev"
+        "adams-dev": [
+          "adams-dev"
         ]
       }
     }

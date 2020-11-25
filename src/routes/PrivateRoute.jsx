@@ -17,6 +17,11 @@ const PrivateRoute = ({
       case ROUTES.ROLES:
         hasPermission = !!permissions.includes('list-roles');
         break;
+
+      case ROUTES.PRODUCTS:
+        hasPermission = !!permissions.includes('list-products');
+        break;
+
       default:
         break;
     }
