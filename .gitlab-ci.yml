@@ -1,8 +1,8 @@
-
 stages:
   - install
   - test
   - build
+  - deploy
 
 before_script:
   # Install yarn as outlined in (https://yarnpkg.com/lang/en/docs/install/#alternatives-stable)
@@ -52,3 +52,23 @@ test:
     - yarn
     - CI=true yarn test
     - echo "Test successfully!"
+
+deploy:
+  stage: deploy
+  image: node
+  only:
+    - develop
+    - staging
+  dependencies:
+    - install
+    - build
+  before_script:
+    - yarn global add firebase-tools
+    - yarn build
+  cache:
+    paths:
+      - node_modules/
+      - build/
+  script:
+    - firebase deploy --token $FIREBASE_DEPLOY_TOKEN --only hosting:adams-dev
+
