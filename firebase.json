@@ -1,7 +1,7 @@
 {
     "hosting": [
       {
-        "target": "adams-client-dev",
+        "target": "adams-dev",
         "public": "build",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
       },
