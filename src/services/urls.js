@@ -4,3 +4,6 @@ export const ROL_VERIFICATION = 'rolVerification';
 
 // USERS
 export const CREATE_USER = 'createUser';
+
+// PRODUCTS
+export const GET_PRODUCTS = 'getProducts';
