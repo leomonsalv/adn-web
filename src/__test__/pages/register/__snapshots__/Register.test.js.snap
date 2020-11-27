@@ -272,6 +272,46 @@ exports[`Register Page render component 1`] = `
         >
           <label
             className="ant-form-item-required"
+            htmlFor="register_dni"
+            title="Dni"
+          >
+            Dni
+          </label>
+        </div>
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <input
+                className="ant-input"
+                id="register_dni"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
+          style={Object {}}
+        >
+          <label
+            className="ant-form-item-required"
             htmlFor="register_address"
             title="Address"
           >

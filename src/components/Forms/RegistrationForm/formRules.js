@@ -27,6 +27,12 @@ const runTranslate = () => ({
       whitespace: true
     }
   ],
+  dniRules: [
+    {
+      required: true,
+      message: i18next.t('auth.rules.dni')
+    }
+  ],
   addressRules: [
     {
       required: true,

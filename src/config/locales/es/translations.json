@@ -14,7 +14,8 @@
         "confirmPassword": "Confirma Contraseña",
         "username": "Nombre de Usuario",
         "address": "Direccion",
-        "phoneNumber": "Telefono"
+        "phoneNumber": "Telefono",
+        "dni": "Dni"
       },
       "rules": {
         "validEmail": "Por favor ingrese un E-mail valido",
@@ -23,7 +24,8 @@
         "confirmPassword": "Por favor confirme la contraseña",
         "username": "Por favor ingrese un nombre de usuario",
         "address": "Por favor ingrese una direccion",
-        "phone": "Por favor ingrese un telefono"
+        "phone": "Por favor ingrese un telefono",
+        "dni": "Por favor ingrese su dni"
       }
     },
     "lang": {
