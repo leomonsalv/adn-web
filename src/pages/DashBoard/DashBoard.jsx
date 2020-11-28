@@ -36,12 +36,12 @@ const DashBoard = ({ children }) => {
           </Menu.Item>
 
           <Menu.Item
-              key={PRODUCTS}
-              icon={<DesktopOutlined />}
-              onClick={goToRoute(PRODUCTS)}
-            >
-              Products
-            </Menu.Item>
+            key={PRODUCTS}
+            icon={<DesktopOutlined />}
+            onClick={goToRoute(PRODUCTS)}
+          >
+            Products
+          </Menu.Item>
           <SignOutButton />
         </Menu>
       </Sider>

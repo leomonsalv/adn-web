@@ -4,8 +4,8 @@ import React, {
 import { useSelector } from 'react-redux';
 import { Typography } from 'antd';
 
-// import { StarFilled, DeleteOutlined } from '@ant-design/icons';
-
+import { Link } from 'react-router-dom';
+import { PRODUCTS } from '../../constans/routes';
 import API from '../../services';
 import Table from '../../components/Table/Table';
 
@@ -60,6 +60,7 @@ const Products = () => {
       title: 'Product Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text, record) => (<Link to={`${PRODUCTS}/${record.id}/view`}>{text}</Link>)
     },
     {
       title: 'Manufacturer',
@@ -83,7 +84,6 @@ const Products = () => {
       <Title>Products</Title>
 
       <Table columns={getColumns()} data={products} rowKey="id" loading={loading} />
-
     </div>
   );
 };

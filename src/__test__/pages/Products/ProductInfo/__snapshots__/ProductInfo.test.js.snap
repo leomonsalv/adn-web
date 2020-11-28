@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing in <ProductInfo /> component should render component 1`] = `
+<section
+  className=" product_info "
+>
+  <div
+    className="product_img_content"
+  >
+    <div
+      className="circular_landscape"
+    >
+      <img
+        alt="miprofile"
+        className="image"
+        src="default.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="product_data"
+  >
+    <div
+      className="content first"
+    >
+      <div
+        className="product_item first"
+      >
+        <span
+          className="name"
+          id="name"
+          name="name"
+        >
+          amoxicilina
+        </span>
+      </div>
+    </div>
+    <div
+      className="content"
+    >
+      <div
+        className="product_item"
+        key="description"
+      >
+        <span
+          className="label"
+        >
+          description
+        </span>
+        <span
+          className="value"
+          id="description"
+        >
+          antibiotico
+        </span>
+      </div>
+      <div
+        className="product_item"
+        key="manufacturer"
+      >
+        <span
+          className="label"
+        >
+          manufacturer
+        </span>
+        <span
+          className="value"
+          id="manufacturer"
+        >
+          bayer
+        </span>
+      </div>
+      <div
+        className="product_item"
+        key="category"
+      >
+        <span
+          className="label"
+        >
+          category
+        </span>
+        <span
+          className="value"
+          id="category"
+        >
+          antibiotico
+        </span>
+      </div>
+      <div
+        className="product_item"
+        key="components"
+      >
+        <span
+          className="label"
+        >
+          components
+        </span>
+        <span
+          className="value"
+          id="components"
+        >
+          ibuprofeno
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+`;
