@@ -1,10 +1,10 @@
-import { PieChartOutlined } from '@ant-design/icons';
+import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SignOutButton from '../../components/SignOutButton/SignOutButton';
-import { HOME } from '../../constans/routes';
+import { HOME, PRODUCTS } from '../../constans/routes';
 import styles from './Dashboard.module.scss';
 
 const {
@@ -33,6 +33,14 @@ const DashBoard = ({ children }) => {
             onClick={goToRoute(HOME)}
           >
             Home
+          </Menu.Item>
+
+          <Menu.Item
+            key={PRODUCTS}
+            icon={<DesktopOutlined />}
+            onClick={goToRoute(PRODUCTS)}
+          >
+            Products
           </Menu.Item>
           <SignOutButton />
         </Menu>
