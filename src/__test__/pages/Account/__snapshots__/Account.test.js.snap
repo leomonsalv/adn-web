@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing in <Account /> component should render component 1`] = `
+<div
+  class="container"
+>
+  <section
+    class=" personal_info false "
+  >
+    <div
+      class="personal_img_content"
+    >
+      <div
+        class="circular_landscape"
+      >
+        <img
+          alt="miprofile"
+          class="image"
+          src="default.svg"
+        />
+      </div>
+    </div>
+    <div
+      class="personal_data"
+    >
+      <div
+        class="content first"
+      >
+        <div
+          class="personal_item first"
+        >
+          <span
+            class="name"
+            id="fullName"
+            name="fullName"
+          />
+          <span
+            class="value"
+            id="role"
+            name="role"
+          />
+        </div>
+        <button
+          class="base primary small"
+          type="button"
+        >
+          common.button.edit
+        </button>
+      </div>
+      <div
+        class="content"
+      >
+        <div
+          class="personal_item"
+        >
+          <span
+            class="label"
+          >
+            email
+          </span>
+          <span
+            class="value"
+            id="email"
+          />
+        </div>
+        <div
+          class="personal_item"
+        >
+          <span
+            class="label"
+          >
+            dni
+          </span>
+          <span
+            class="value"
+            id="dni"
+          />
+        </div>
+        <div
+          class="personal_item"
+        >
+          <span
+            class="label"
+          >
+            phone
+          </span>
+          <span
+            class="value"
+            id="phone"
+          />
+        </div>
+        <div
+          class="personal_item"
+        >
+          <span
+            class="label"
+          >
+            address
+          </span>
+          <span
+            class="value"
+            id="address"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing in <PersonalInfo /> component should render component 1`] = `
+<section
+  className=" personal_info false "
+>
+  <div
+    className="personal_img_content"
+  >
+    <div
+      className="circular_landscape"
+    >
+      <img
+        alt="miprofile"
+        className="image"
+        src="default.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="personal_data"
+  >
+    <div
+      className="content first"
+    >
+      <div
+        className="personal_item first"
+      >
+        <span
+          className="name"
+          id="fullName"
+          name="fullName"
+        >
+          Jose BAptista
+        </span>
+        <span
+          className="value"
+          id="role"
+          name="role"
+        >
+          Coordinator
+        </span>
+      </div>
+      <button
+        className="base primary small"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        common.button.edit
+      </button>
+    </div>
+    <div
+      className="content"
+    >
+      <div
+        className="personal_item"
+        key="email"
+      >
+        <span
+          className="label"
+        >
+          email
+        </span>
+        <span
+          className="value"
+          id="email"
+        >
+          jbaptista@300dev.com
+        </span>
+      </div>
+      <div
+        className="personal_item"
+        key="dni"
+      >
+        <span
+          className="label"
+        >
+          dni
+        </span>
+        <span
+          className="value"
+          id="dni"
+        >
+          V25965874
+        </span>
+      </div>
+      <div
+        className="personal_item"
+        key="phone"
+      >
+        <span
+          className="label"
+        >
+          phone
+        </span>
+        <span
+          className="value"
+          id="phone"
+        >
+          +5804165366698
+        </span>
+      </div>
+      <div
+        className="personal_item"
+        key="address"
+      >
+        <span
+          className="label"
+        >
+          address
+        </span>
+        <span
+          className="value"
+          id="address"
+        >
+          Caracas, Venezuela
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+`;
