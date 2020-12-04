@@ -3,6 +3,7 @@ import Spinner, { SpinnerProvider } from './components/Spinner';
 import SnackBar from './components/SnackBar/SnackBar';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router} from 'react-router-dom'
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
@@ -20,7 +21,9 @@ ReactDOM.render(
       <SpinnerProvider>
         <Spinner>
           <FirebaseContext.Provider value={FirebaseInstance}>
+            <Router>
               <App />
+            </Router>
           </FirebaseContext.Provider>
         </Spinner>
       </SpinnerProvider>

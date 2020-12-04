@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from '../stores/configureStore';
 import App from '../App';
 
@@ -12,7 +13,9 @@ describe('testing <App /> component', () => {
   beforeEach(() => {
     wrapper = mount(
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     );
   });
