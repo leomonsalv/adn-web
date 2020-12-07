@@ -8,99 +8,107 @@ exports[`Testing in <Account /> component should render component 1`] = `
     class=" personal_info false "
   >
     <div
-      class="personal_img_content"
+      class="containerAccount"
     >
       <div
-        class="circular_landscape"
-      >
-        <img
-          alt="miprofile"
-          class="image"
-          src="default.svg"
-        />
-      </div>
-    </div>
-    <div
-      class="personal_data"
-    >
-      <div
-        class="content first"
+        class="personal_img_content"
       >
         <div
-          class="personal_item first"
+          class="circular_landscape"
         >
-          <span
-            class="name"
-            id="fullName"
-            name="fullName"
-          />
-          <span
-            class="value"
-            id="role"
-            name="role"
+          <img
+            alt="miprofile"
+            class="image"
+            src="default.svg"
           />
         </div>
-        <button
-          class="base primary small"
-          type="button"
-        >
-          common.button.edit
-        </button>
       </div>
       <div
-        class="content"
+        class="personal_data"
       >
         <div
-          class="personal_item"
+          class="content"
         >
-          <span
-            class="label"
+          <div
+            class="personal_item"
           >
-            email
-          </span>
-          <span
-            class="value"
-            id="email"
-          />
+            <span
+              class="name"
+              id="fullName"
+              name="fullName"
+            />
+            <span
+              class="value"
+              id="role"
+              name="role"
+            />
+          </div>
+          <div
+            class="buttonEdit"
+          >
+            <button
+              class="base primary small"
+              type="button"
+            >
+              common.button.edit
+            </button>
+          </div>
         </div>
         <div
-          class="personal_item"
+          class="contentItems"
         >
-          <span
-            class="label"
+          <div
+            class="other_personal_item"
           >
-            dni
-          </span>
-          <span
-            class="value"
-            id="dni"
-          />
-        </div>
-        <div
-          class="personal_item"
-        >
-          <span
-            class="label"
+            <span
+              class="label"
+            >
+              email
+            </span>
+            <span
+              class="value"
+              id="email"
+            />
+          </div>
+          <div
+            class="other_personal_item"
           >
-            phone
-          </span>
-          <span
-            class="value"
-            id="phone"
-          />
-        </div>
-        <div
-          class="personal_item"
-        >
-          <span
-            class="label"
+            <span
+              class="label"
+            >
+              dni
+            </span>
+            <span
+              class="value"
+              id="dni"
+            />
+          </div>
+          <div
+            class="other_personal_item"
           >
-            address
-          </span>
-          <span
-            class="value"
-            id="address"
-          />
+            <span
+              class="label"
+            >
+              phone
+            </span>
+            <span
+              class="value"
+              id="phone"
+            />
+          </div>
+          <div
+            class="other_personal_item"
+          >
+            <span
+              class="label"
+            >
+              address
+            </span>
+            <span
+              class="value"
+              id="address"
+            />
+          </div>
         </div>
       </div>
     </div>

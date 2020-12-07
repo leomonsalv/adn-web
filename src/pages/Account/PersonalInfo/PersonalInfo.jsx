@@ -19,7 +19,7 @@ const PersonalInfo = ({ user, setUser }) => {
   };
 
   const renderData = () => Object.keys(Alldata).map((item) => item !== 'favorites' && (
-  <div key={item} className={styles.personal_item}>
+  <div key={item} className={styles.other_personal_item}>
     <span className={styles.label}>{item}</span>
     <span className={styles.value} id={item}>{Alldata[item]}</span>
   </div>
@@ -43,7 +43,7 @@ const PersonalInfo = ({ user, setUser }) => {
           }}
         />
       ) : (
-        <>
+        <div className={styles.containerAccount}>
           <div className={styles.personal_img_content}>
             <div className={styles.circular_landscape}>
               <img
@@ -54,23 +54,25 @@ const PersonalInfo = ({ user, setUser }) => {
             </div>
           </div>
           <div className={styles.personal_data}>
-            <div className={[styles.content, styles.first].join(' ')}>
-              <div className={[styles.personal_item, styles.first].join(' ')}>
+            <div className={styles.content}>
+              <div className={styles.personal_item}>
                 <span className={styles.name} id="fullName" name="fullName">{user.fullName}</span>
                 <span className={styles.value} id="role" name="role">{user.role.name}</span>
               </div>
+              <div className={styles.buttonEdit}>
+                <Button
+                  id="edit"
+                  title={t('common.button.edit')}
+                  method={EditMode}
+                  className="primary small"
+                />
+              </div>
 
-              <Button
-                id="edit"
-                title={t('common.button.edit')}
-                method={EditMode}
-                className="primary small"
-              />
             </div>
 
-            <div className={styles.content}>{renderData()}</div>
+            <div className={styles.contentItems}>{renderData()}</div>
           </div>
-        </>
+        </div>
       )}
     </section>
   );

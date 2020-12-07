@@ -31,8 +31,9 @@ exports[`Testing in <Account /> component should render component 1`] = `
       value="Jose BAptista"
     />
     <input
-      class="ant-input ant-input-lg field"
+      class="ant-input ant-input-lg ant-input-disabled field"
       data-testid="input-comp"
+      disabled=""
       id="email"
       maxlength="20"
       name="email"

@@ -5,117 +5,125 @@ exports[`Testing in <PersonalInfo /> component should render component 1`] = `
   className=" personal_info false "
 >
   <div
-    className="personal_img_content"
+    className="containerAccount"
   >
     <div
-      className="circular_landscape"
-    >
-      <img
-        alt="miprofile"
-        className="image"
-        src="default.svg"
-      />
-    </div>
-  </div>
-  <div
-    className="personal_data"
-  >
-    <div
-      className="content first"
+      className="personal_img_content"
     >
       <div
-        className="personal_item first"
+        className="circular_landscape"
       >
-        <span
-          className="name"
-          id="fullName"
-          name="fullName"
-        >
-          Jose BAptista
-        </span>
-        <span
-          className="value"
-          id="role"
-          name="role"
-        >
-          Coordinator
-        </span>
+        <img
+          alt="miprofile"
+          className="image"
+          src="default.svg"
+        />
       </div>
-      <button
-        className="base primary small"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        common.button.edit
-      </button>
     </div>
     <div
-      className="content"
+      className="personal_data"
     >
       <div
-        className="personal_item"
-        key="email"
+        className="content"
       >
-        <span
-          className="label"
+        <div
+          className="personal_item"
         >
-          email
-        </span>
-        <span
-          className="value"
-          id="email"
+          <span
+            className="name"
+            id="fullName"
+            name="fullName"
+          >
+            Jose BAptista
+          </span>
+          <span
+            className="value"
+            id="role"
+            name="role"
+          >
+            Coordinator
+          </span>
+        </div>
+        <div
+          className="buttonEdit"
         >
-          jbaptista@300dev.com
-        </span>
+          <button
+            className="base primary small"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            common.button.edit
+          </button>
+        </div>
       </div>
       <div
-        className="personal_item"
-        key="dni"
+        className="contentItems"
       >
-        <span
-          className="label"
+        <div
+          className="other_personal_item"
+          key="email"
         >
-          dni
-        </span>
-        <span
-          className="value"
-          id="dni"
+          <span
+            className="label"
+          >
+            email
+          </span>
+          <span
+            className="value"
+            id="email"
+          >
+            jbaptista@300dev.com
+          </span>
+        </div>
+        <div
+          className="other_personal_item"
+          key="dni"
         >
-          V25965874
-        </span>
-      </div>
-      <div
-        className="personal_item"
-        key="phone"
-      >
-        <span
-          className="label"
+          <span
+            className="label"
+          >
+            dni
+          </span>
+          <span
+            className="value"
+            id="dni"
+          >
+            V25965874
+          </span>
+        </div>
+        <div
+          className="other_personal_item"
+          key="phone"
         >
-          phone
-        </span>
-        <span
-          className="value"
-          id="phone"
+          <span
+            className="label"
+          >
+            phone
+          </span>
+          <span
+            className="value"
+            id="phone"
+          >
+            +5804165366698
+          </span>
+        </div>
+        <div
+          className="other_personal_item"
+          key="address"
         >
-          +5804165366698
-        </span>
-      </div>
-      <div
-        className="personal_item"
-        key="address"
-      >
-        <span
-          className="label"
-        >
-          address
-        </span>
-        <span
-          className="value"
-          id="address"
-        >
-          Caracas, Venezuela
-        </span>
+          <span
+            className="label"
+          >
+            address
+          </span>
+          <span
+            className="value"
+            id="address"
+          >
+            Caracas, Venezuela
+          </span>
+        </div>
       </div>
     </div>
   </div>

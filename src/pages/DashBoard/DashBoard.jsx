@@ -54,10 +54,9 @@ const DashBoard = ({ children }) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Content style={{ margin: '0 16px' }}>
+        <Content>
           <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
+            className={[styles.paddingContent, 'site-layout-background'].join(' ')}
           >
             {children}
           </div>
