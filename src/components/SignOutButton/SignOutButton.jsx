@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -8,17 +8,14 @@ import { SIGNIN } from '../../constans/routes';
 import { cleanProfile } from '../../stores/actions/profile';
 import { showNotification } from '../../stores/actions/notification';
 import { loadingWithSpinner, loaded } from '../../stores/actions/loader';
-import FirebaseContext from '../../firebase/context';
 
 const SignOutButton = (properties) => {
-  const firebase = useContext(FirebaseContext);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const signOutHandler = async () => {
     try {
       dispatch(loadingWithSpinner());
-      await firebase.signOut();
       dispatch(cleanProfile());
       window.sessionStorage.clear();
     } catch (error) {

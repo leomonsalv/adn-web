@@ -3,7 +3,6 @@ import jwtDecode from 'jwt-decode';
 import { cleanProfile } from '../stores/actions/profile';
 import { loading, loadingWithSpinner, loaded } from '../stores/actions/loader';
 import { showNotification } from '../stores/actions/notification';
-import firebase from '../firebase';
 import { getToken, removeToken } from '../firebase/utils/token';
 import API from './config';
 
@@ -12,7 +11,7 @@ const interceptorRequest = async (request, store) => {
 
   store.dispatch(method === 'GET' ? loading() : loadingWithSpinner());
 
-  if (request.data && request.data.register) {
+  if (request.data && (request.data.register || request.data.signin)) {
     return request;
   }
   const accessToken = getToken();
@@ -41,7 +40,6 @@ const interceptorRequest = async (request, store) => {
   } else {
     source.cancel(errorMessage);
     removeToken();
-    firebase.signOut();
     store.dispatch(
       showNotification({
         type: 'error',

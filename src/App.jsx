@@ -1,11 +1,13 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getToken, removeToken } from './firebase/utils/token';
-import { initialState, setProfile, cleanProfile } from './stores/actions/profile';
-import AuthProvider from './contexts/AuthContext/AuthContext';
-import FirebaseContext from './firebase/context';
-import API from './services';
+import { useLocation } from 'react-router-dom';
+import { showNotification } from 'stores/actions/notification';
+import { cleanProfile } from 'stores/actions/profile';
+import jwtDecode from 'jwt-decode';
 import Routes from './routes/Routes';
+import AuthProvider from './contexts/AuthContext/AuthContext';
+
+import { getToken, removeToken } from './firebase/utils/token';
 
 const init = () => {
   const token = getToken();
@@ -17,61 +19,46 @@ const init = () => {
 
 const App = () => {
   const dispatch = useDispatch();
-  const firebase = useContext(FirebaseContext);
+
+  const location = useLocation();
 
   const { isLogged, accessToken } = init();
 
-  dispatch(
-    setProfile({
-      ...initialState,
-      isLogged,
-      accessToken
-    })
-  );
-
   useEffect(() => {
     const initProfile = async () => {
-      firebase.getAuth().onAuthStateChanged(async (user) => {
-        if (user) {
-          const tokenFromFirebase = await user.getIdToken();
-          const sessionToken = getToken();
+      let validToken = false;
+      let isExpired = false;
 
-          if (tokenFromFirebase === sessionToken) {
-            const userProfile = await firebase.getUserByEmail(user.email);
-
-            const { data } = await API.roles.roleVerification(
-              userProfile.roleId
-            );
-
-            if (data === undefined) {
-              dispatch(cleanProfile());
-              removeToken();
-              return;
-            }
-
-            dispatch(
-              setProfile({
-                ...userProfile,
-                isLogged: true,
-                accessToken: sessionToken,
-                role: data
-              })
-            );
-          } else {
-            dispatch(cleanProfile());
-            removeToken();
-          }
+      try {
+        const token = await jwtDecode(accessToken);
+        if (Date.now() >= token.exp * 1000) {
+          validToken = false;
+          isExpired = true;
         } else {
-          removeToken();
-          dispatch(cleanProfile());
+          validToken = true;
         }
-      });
-    };
+      } catch {
+        validToken = false;
+      }
 
+      const errorMessage = isExpired ? 'Token Expired' : 'Invalid Token';
+
+      if (!accessToken || !validToken) {
+        removeToken();
+        dispatch(
+          showNotification({
+            type: 'error',
+            message: 'Error Access Token',
+            content: errorMessage
+          })
+        );
+        dispatch(cleanProfile());
+      }
+    };
     if (isLogged) {
       initProfile();
     }
-  }, [isLogged, accessToken, dispatch, firebase]);
+  }, [isLogged, accessToken, dispatch, location]);
 
   return (
     <AuthProvider>

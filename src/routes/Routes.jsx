@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import * as ROUTES from '../constans/routes';
 import useAuthContext from '../contexts/AuthContext/useAuthContext';
 import Login from '../pages/Login/Login';
@@ -13,7 +13,7 @@ const Routes = () => {
   const { isLogged, accessToken, permissions } = useAuthContext();
 
   return (
-    <Router>
+    <>
       <Switch>
         <PublicRoute
           exact
@@ -40,7 +40,7 @@ const Routes = () => {
 
         <Route path="*" component={NotFoundPage} />
       </Switch>
-    </Router>
+    </>
   );
 };
 
