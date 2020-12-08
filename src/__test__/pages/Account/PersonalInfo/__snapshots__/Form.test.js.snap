@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing in <Account /> component should render component 1`] = `
+<form
+  class="container"
+>
+  <div
+    class="personal_img_content"
+  >
+    <div
+      class="circular_landscape"
+    >
+      <img
+        alt="miprofile"
+        class="image"
+        src="default.svg"
+      />
+    </div>
+  </div>
+  <div
+    class="fields_content"
+  >
+    <input
+      class="ant-input ant-input-lg field"
+      data-testid="input-comp"
+      id="fullName"
+      maxlength="20"
+      name="fullName"
+      placeholder="pages.account.userInfo.fullName"
+      type="text"
+      value="Jose BAptista"
+    />
+    <input
+      class="ant-input ant-input-lg ant-input-disabled field"
+      data-testid="input-comp"
+      disabled=""
+      id="email"
+      maxlength="20"
+      name="email"
+      placeholder="pages.account.userInfo.email"
+      type="text"
+      value="jbaptista@300dev.com"
+    />
+    <input
+      class="ant-input ant-input-lg field"
+      data-testid="input-comp"
+      id="dni"
+      maxlength="20"
+      name="dni"
+      placeholder="pages.account.userInfo.dni"
+      type="text"
+      value="V25965874"
+    />
+    <input
+      class="ant-input ant-input-lg field"
+      data-testid="input-comp"
+      id="phone"
+      maxlength="20"
+      name="phone"
+      placeholder="pages.account.userInfo.phone"
+      type="text"
+      value="+5804165366698"
+    />
+    <input
+      class="ant-input ant-input-lg field"
+      data-testid="input-comp"
+      id="address"
+      maxlength="20"
+      name="address"
+      placeholder="pages.account.userInfo.address"
+      type="text"
+      value="Caracas, Venezuela"
+    />
+    <input
+      class="ant-input ant-input-lg field"
+      data-testid="input-comp"
+      id="password"
+      maxlength="20"
+      name="password"
+      placeholder="pages.account.userInfo.password"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    class="actions_button"
+  >
+    <button
+      class="base primary small"
+      type="submit"
+    >
+      common.button.edit
+    </button>
+    <button
+      class="base secondary small"
+      type="button"
+    >
+      common.button.cancel
+    </button>
+  </div>
+</form>
+`;

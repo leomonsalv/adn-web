@@ -1,0 +1,166 @@
+@import '../../../theme/variables.scss';
+
+
+.personal_info {
+  border: 1px solid $light-grey;
+  box-shadow: 10px 11px 5px -8px rgba(148, 148, 148, 0.8);
+  width: 100%;
+  background-color: $white;
+  @media (min-width: 800px) {
+    max-height: 270px;
+  }
+
+  .containerAccount {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    @media (min-width: 800px) {
+      flex-direction: row;
+      height: 100%;
+    }
+    .personal_img_content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-height: 270px;
+      padding: 10px;
+      @media (min-width: 800px) {
+        width: 30%;
+        padding: 0px;
+      }
+      .circular_landscape {
+        display: inline-block;
+        position: relative;
+        width: 140px;
+        height: 140px;
+        @media (min-width: 800px) {
+          width: 240px;
+          height: 240px;
+        }
+        overflow: hidden;
+        border-radius: 50%;
+      }
+      .image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .personal_data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      @media (min-width: 800px) {
+        width: 65%;
+      }
+      .content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @media (min-width: 800px) {
+          padding: 10px 0px;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          .buttonEdit,
+          .personal_item {
+            padding: 37px 0px;
+          }
+        }
+        .buttonEdit,
+        .personal_item {
+          padding: 15px 0px;
+        }
+
+        .personal_item {
+          .label {
+            padding-right: 40px;
+            font-weight: bold;
+            width: 100px;
+            color: #3b3b3b;
+            text-transform: capitalize;
+          }
+
+          .name {
+            font-size: 15px;
+            @media (min-width: 800px) {
+              font-size: 25px;
+              padding-right: 40px;
+            }
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #3b3b3b;
+          }
+          .value {
+            align-self: center;
+            color: #676767;
+          }
+        }
+      }
+      .contentItems {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100px;
+        width: 100%;
+        @media (min-width: 1130px) {
+          width: 90%;
+        }
+        .other_personal_item {
+          padding-right: 5px;
+          display: flex;
+          width: 100%;
+          @media (min-width: 500px) {
+            padding-right: 25px;
+            width: 50%;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .label {
+            padding-right: 5px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 12px;
+            @media (min-width: 600px) {
+              font-size: 14px;
+            }
+            @media (min-width: 1030px) {
+              font-size: 18px;
+            }
+            @media (min-width: 800px) {
+              width: 100px;
+              padding-right: 40px;
+            }
+            color: #3b3b3b;
+            text-transform: capitalize;
+          }
+          .value {
+            align-self: right;
+            color: #676767;
+            font-size: 12px;
+            @media (min-width: 600px) {
+              font-size: 14px;
+            }
+            @media (min-width: 1030px) {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      .antButtonContent {
+        display: none;
+        @media (min-width: 321px) {
+          display: flex;
+          justify-content: center;
+        }
+        width: 100%;
+        padding: 17px;
+        @media (min-width: 110px) {
+          padding: 10px 30px;
+        }
+      }
+    }
+  }
+}

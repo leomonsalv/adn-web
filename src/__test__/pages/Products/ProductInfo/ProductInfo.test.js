@@ -22,7 +22,9 @@ describe('Testing in <ProductInfo /> component', () => {
   };
 
   beforeEach(() => {
-    wrapper = global.mount(<Provider store={store}><ProductInfo product={initialProduct}/></Provider>);
+    wrapper = global.mount(
+      <Provider store={store}><ProductInfo product={initialProduct} /></Provider>
+    );
   });
 
   it('should render component', () => {

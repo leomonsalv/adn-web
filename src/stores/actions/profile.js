@@ -2,12 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   email: '',
+  name: '',
+  dni: '',
   username: '',
   phone: '',
   address: '',
   role: {},
   isLogged: false,
-  accessToken: ''
+  accessToken: '',
+  favorites: [],
+  docId: '',
+  password: '',
 };
 
 export const ProfileSlice = createSlice({
@@ -16,31 +21,46 @@ export const ProfileSlice = createSlice({
   reducers: {
     setProfile: (state, action) => {
       const {
+        name,
+        dni,
         email,
         username,
         phone,
         address,
         role,
+        favorites,
         isLogged,
-        accessToken
+        accessToken,
+        uid,
+        password
       } = action.payload;
 
       state.email = email;
+      state.name = name;
+      state.dni = dni;
       state.username = username;
       state.phone = phone;
       state.address = address;
       state.role = role;
       state.isLogged = isLogged;
       state.accessToken = accessToken;
+      state.favorites = favorites || [];
+      state.docId = uid;
+      state.password = password;
     },
     cleanProfile: (state) => {
       state.email = '';
+      state.name = '';
+      state.dni = '';
       state.username = '';
       state.phone = '';
       state.address = '';
       state.role = {};
       state.isLogged = false;
       state.accessToken = '';
+      state.favorites = [];
+      state.docId = '';
+      state.password = '';
     }
   }
 });

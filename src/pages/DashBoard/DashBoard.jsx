@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SignOutButton from '../../components/SignOutButton/SignOutButton';
-import { HOME, PRODUCTS } from '../../constans/routes';
+import { HOME, PRODUCTS, ACCOUNT } from '../../constans/routes';
 import styles from './Dashboard.module.scss';
 
 const {
@@ -36,6 +36,14 @@ const DashBoard = ({ children }) => {
           </Menu.Item>
 
           <Menu.Item
+            key={ACCOUNT}
+            icon={<DesktopOutlined />}
+            onClick={goToRoute(ACCOUNT)}
+          >
+            My Account
+          </Menu.Item>
+
+          <Menu.Item
             key={PRODUCTS}
             icon={<DesktopOutlined />}
             onClick={goToRoute(PRODUCTS)}
@@ -46,10 +54,9 @@ const DashBoard = ({ children }) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Content style={{ margin: '0 16px' }}>
+        <Content>
           <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
+            className={[styles.paddingContent, 'site-layout-background'].join(' ')}
           >
             {children}
           </div>
