@@ -16,7 +16,7 @@ describe('Testing in <PersonalInfo /> component', () => {
     dni: 'V25965874',
     phone: '+5804165366698',
     address: 'Caracas, Venezuela',
-    role: { name: 'Coordinator' },
+    role: { role: 'Coordinator' },
     favorites: []
   };
 
@@ -45,7 +45,7 @@ describe('Testing in <PersonalInfo /> component', () => {
 
   it('change the default value of all span', () => {
     expect(wrapper.find('span#fullName').text()).toBe(initialUser.fullName);
-    expect(wrapper.find('span#role').text()).toBe(initialUser.role.name);
+    expect(wrapper.find('span#role').text()).toBe(initialUser.role.role);
     expect(wrapper.find('span#email').text()).toBe(initialUser.email);
     expect(wrapper.find('span#dni').text()).toBe(initialUser.dni);
     expect(wrapper.find('span#phone').text()).toBe(initialUser.phone);
