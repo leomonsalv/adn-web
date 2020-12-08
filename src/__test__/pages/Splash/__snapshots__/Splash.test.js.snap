@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spinner Test should render component 1`] = `
+<div
+  className="container"
+>
+  <h1
+    className="ant-typography text"
+    style={
+      Object {
+        "WebkitLineClamp": null,
+      }
+    }
+  >
+    ADAN
+  </h1>
+</div>
+`;

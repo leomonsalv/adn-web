@@ -1,13 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { showNotification } from 'stores/actions/notification';
-import { cleanProfile } from 'stores/actions/profile';
+import { cleanProfile, setProfile } from 'stores/actions/profile';
 import jwtDecode from 'jwt-decode';
+import API from 'services';
 import Routes from './routes/Routes';
 import AuthProvider from './contexts/AuthContext/AuthContext';
 
 import { getToken, removeToken } from './firebase/utils/token';
+import { loginAttempt, loginSuccess } from 'stores/actions/auth'
 
 const init = () => {
   const token = getToken();
@@ -26,6 +29,38 @@ const App = () => {
 
   useEffect(() => {
     const initProfile = async () => {
+      dispatch(loginAttempt());
+      const userId = JSON.parse(sessionStorage.getItem('userId'));
+
+      const { data } = await API.users.getUserById(userId);
+
+      if (data) {
+        const { data: role } = await API.roles.roleVerification(data.roleId);
+
+        if (role === undefined) {
+          dispatch(cleanProfile());
+          removeToken();
+          return;
+        }
+
+        dispatch(
+          setProfile({
+            ...data,
+            isLogged: true,
+            accessToken,
+            role
+          })
+        );
+        dispatch(loginSuccess(data.userProfile));
+      }
+    };
+    if (isLogged) {
+      initProfile();
+    }
+  }, []);
+
+  useEffect(() => {
+    const verifyToken = async () => {
       let validToken = false;
       let isExpired = false;
 
@@ -56,7 +91,7 @@ const App = () => {
       }
     };
     if (isLogged) {
-      initProfile();
+      verifyToken();
     }
   }, [isLogged, accessToken, dispatch, location]);
 
