@@ -1,13 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import * as ROUTES from '../constans/routes';
-import useAuthContext from '../contexts/AuthContext/useAuthContext';
-import Login from '../pages/Login/Login';
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
+import Splash from 'pages/Splash/Splash';
+import * as ROUTES from 'constans/routes';
+import useAuthContext from 'contexts/AuthContext/useAuthContext';
+import Login from 'pages/Login/Login';
+import NotFoundPage from 'pages/NotFoundPage/NotFoundPage';
+import Register from 'pages/Register/Register';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import DashBoardRoutes from './DashBoardRoutes';
-import Register from '../pages/Register/Register';
 
 const Routes = () => {
   const { isLogged, accessToken, permissions } = useAuthContext();
@@ -26,6 +27,13 @@ const Routes = () => {
           exact
           path={ROUTES.SIGNIN}
           component={Login}
+          isLogged={isLogged}
+          accessToken={accessToken}
+        />
+        <PublicRoute
+          exact
+          path={ROUTES.SPLASH}
+          component={Splash}
           isLogged={isLogged}
           accessToken={accessToken}
         />

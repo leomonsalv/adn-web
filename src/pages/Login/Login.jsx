@@ -25,26 +25,27 @@ const Login = () => {
 
       if (data) {
         setToken(data.token);
+
+        const { data: role } = await API.roles.roleVerification(data.userProfile.roleId);
+
+        if (role === undefined) {
+          dispatch(cleanProfile());
+          removeToken();
+          return;
+        }
+
+        dispatch(
+          setProfile({
+            ...data.userProfile,
+            isLogged: true,
+            accessToken: data.token,
+            role
+          })
+        );
+
+        window.sessionStorage.setItem('userId', JSON.stringify(data.userProfile.id));
       }
 
-      const { data: role } = await API.roles.roleVerification(data.userProfile.roleId);
-
-      if (role === undefined) {
-        dispatch(cleanProfile());
-        removeToken();
-        return;
-      }
-
-      dispatch(
-        setProfile({
-          ...data.userProfile,
-          isLogged: true,
-          accessToken: data.token,
-          role
-        })
-      );
-
-      window.sessionStorage.setItem('userId', JSON.stringify(data.userProfile.id));
       dispatch(loaded());
       history.push(HOME);
     } catch (error) {

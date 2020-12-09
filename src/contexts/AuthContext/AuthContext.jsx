@@ -1,6 +1,7 @@
 import React, { createContext } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import Splash from 'pages/Splash/Splash';
 
 export const AuthContext = createContext({
   isLogged: false,
@@ -15,10 +16,17 @@ const AuthProvider = ({ children }) => {
     role: { permissions }
   } = useSelector((state) => state.profile);
 
+  const auth = useSelector((state) => state.auth);
+
   return (
-    <AuthContext.Provider value={{ isLogged, accessToken, permissions }}>
-      {children}
-    </AuthContext.Provider>
+    (auth.login.loading ? (
+      <Splash />
+    ) : (
+      <AuthContext.Provider value={{ isLogged, accessToken, permissions }}>
+        {children}
+      </AuthContext.Provider>
+    ))
+
   );
 };
 

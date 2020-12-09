@@ -1,0 +1,20 @@
+@import 'theme/variables.scss';
+
+.container {
+  align-items: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 480px 50px;
+}
+
+.text {
+  height: 200px;
+  width: 400px;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -330px;
+  margin-left: -200px;
+}
