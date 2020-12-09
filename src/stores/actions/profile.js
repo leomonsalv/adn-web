@@ -31,7 +31,7 @@ export const ProfileSlice = createSlice({
         favorites,
         isLogged,
         accessToken,
-        uid,
+        id,
         password
       } = action.payload;
 
@@ -45,7 +45,7 @@ export const ProfileSlice = createSlice({
       state.isLogged = isLogged;
       state.accessToken = accessToken;
       state.favorites = favorites || [];
-      state.docId = uid;
+      state.docId = id;
       state.password = password;
     },
     cleanProfile: (state) => {

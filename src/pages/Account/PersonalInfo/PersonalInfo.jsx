@@ -57,7 +57,7 @@ const PersonalInfo = ({ user, setUser }) => {
             <div className={styles.content}>
               <div className={styles.personal_item}>
                 <span className={styles.name} id="fullName" name="fullName">{user.fullName}</span>
-                <span className={styles.value} id="role" name="role">{user.role.name}</span>
+                <span className={styles.value} id="role" name="role">{user.role.role}</span>
               </div>
               <div className={styles.buttonEdit}>
                 <Button
