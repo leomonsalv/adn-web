@@ -1,7 +1,7 @@
 {
     "auth": {
       "loginPage": {
-        "title": "Sign In",
+        "title": "Login",
         "button": "Enter"
       },
       "registerPage": {
@@ -9,8 +9,8 @@
         "button": "Register"
       },
       "fields": {
-        "email": "E-mail",
-        "password": "Password",
+        "email": "Enter your user or email",
+        "password": "Enter your Password",
         "confirmPassword": "Confirm Password",
         "username": "Username",
         "address": "Address",

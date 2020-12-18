@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Form, Input } from 'antd';
+import {
+  Button, Form, Input
+} from 'antd';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import runTranslate from './formRules';
+import userIcon from '../../../assets/images/user.svg';
+import passwordIcon from '../../../assets/images/password.svg';
+import styles from './LoginForm.module.scss';
 
 /**
  * Login form component
@@ -25,28 +30,36 @@ const LoginForm = ({ onSubmit }) => {
       labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
       wrapperCol={{ xs: { span: 24 }, sm: { span: 10 } }}
     >
-      <Form.Item name="email" label={t('auth.fields.email')} rules={formRules.emailRules}>
-        <Input />
+      <Form.Item name="email" rules={formRules.emailRules} className={styles.formEmail}>
+        <Input
+          className={styles.input}
+          prefix={<img src={userIcon} alt="logo" className={styles.inputIcon} />}
+          placeholder={t('auth.fields.email')}
+        />
       </Form.Item>
 
       <Form.Item
+        className={styles.formPassword}
         name="password"
-        label={t('auth.fields.password')}
         rules={formRules.passwordRules}
         hasFeedback
       >
-        <Input.Password />
+        <Input.Password
+          className={styles.input}
+          placeholder={t('auth.fields.password')}
+          prefix={<img src={passwordIcon} alt="logo" className={styles.inputIcon} />}
+        />
       </Form.Item>
 
-      <Form.Item
-        wrapperCol={{
-          xs: { span: 24 },
-          sm: { span: 16, offset: 8 }
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          {t('auth.loginPage.button')}
+      <Form.Item style={{ display: 'flex', justifyContent: 'center', marginTop: '42px' }}>
+        <Button
+          className={styles.buttonLogin}
+          type="primary"
+          htmlType="submit"
+        >
+          {t('auth.loginPage.title')}
         </Button>
+
       </Form.Item>
     </Form>
   );

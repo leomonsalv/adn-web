@@ -6,11 +6,11 @@
       },
       "registerPage": {
         "title": "Registro",
-        "button": "Registro"
+        "button": "Regístrate"
       },
       "fields": {
-        "email": "Correo",
-        "password": "Contraseña",
+        "email": "Ingresa tu usuario o correo",
+        "password": "Ingresa tu Contraseña",
         "confirmPassword": "Confirma Contraseña",
         "username": "Nombre de Usuario",
         "address": "Direccion",

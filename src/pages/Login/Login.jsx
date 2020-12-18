@@ -1,7 +1,8 @@
-import { Typography, Button } from 'antd';
+import { Button } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { showNotification } from '../../stores/actions/notification';
 import { loadingWithSpinner, loaded } from '../../stores/actions/loader';
 import { setToken, removeToken } from '../../firebase/utils/token';
@@ -10,8 +11,11 @@ import API from '../../services';
 import { HOME, REGISTER } from '../../constans/routes';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import styles from './Login.module.scss';
+import image from '../../assets/images/logo.svg';
+import emailIcon from '../../assets/images/email.svg';
 
 const Login = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
   const goToRoute = (route) => () => history.push(route);
@@ -21,7 +25,7 @@ const Login = () => {
     try {
       dispatch(loadingWithSpinner());
 
-      const { data } = await API.auth.signIn({ email, password, signin: true});
+      const { data } = await API.auth.signIn({ email, password, signin: true });
 
       if (data) {
         setToken(data.token);
@@ -62,11 +66,25 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <Typography.Title level={1}>Iniciar Sesión</Typography.Title>
+      <img src={image} className={styles.logo} alt="logo" />
       <div className={styles.formPaper}>
         <LoginForm onSubmit={handleFormSubmit} />
       </div>
-      <Button type="link" onClick={goToRoute(REGISTER)}>Regístrate</Button>
+      <Button
+        type="link"
+        htmlType="submit"
+        className={styles.buttonRegister}
+        onClick={goToRoute(REGISTER)}
+      >
+        <img src={emailIcon} alt="logo" className={styles.marginIcon} />
+        {t('auth.registerPage.button')}
+      </Button>
+      <Button type="link" className={styles.buttonForgot}>
+        Olvidaste tu
+        {' '}
+        <span className={styles.spanPassword}>contraseña?</span>
+      </Button>
+
     </div>
   );
 };

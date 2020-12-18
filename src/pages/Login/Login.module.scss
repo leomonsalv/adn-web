@@ -4,16 +4,69 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f7f8fb;
+  height: 100vh;
+  .logo {
+    margin-top: 68px;
+    width: 150px;
+    height: 101.1px;
+  }
+  .buttonRegister {
+    width: 88%;
+    height: 46px;
+    background: #9b51e0;
+    border: 1px solid #9b51e0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    .marginIcon {
+      margin-right: 5px;
+    }
+  }
+  @media (min-width: 768px) {
+    .buttonRegister {
+      width: 315px;
+    }
+  }
+  .buttonForgot {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    color: #2f95af;
+    margin-top: 28px;
+    .spanPassword {
+      font-weight: bold;
+    }
+  }
+
+  .titleContainer {
+    width: 100%;
+    padding-left: 20px;
+    margin-top: 50px;
+  }
+  .title {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    color: #111111;
+  }
 }
 
 .formPaper {
   width: 100%;
   border-radius: 15px;
   border-radius: 2px;
-  border: 1px solid $light-grey;
-  padding: 20px 20px;
-  margin-top: 5%;
-  margin-bottom: 2%;
+  padding: 0px 20px;
+  margin-top: 66.9px;
 }
 
 @media (min-width: 768px) {
@@ -21,4 +74,3 @@
     width: 800px;
   }
 }
-
