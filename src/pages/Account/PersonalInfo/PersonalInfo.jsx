@@ -9,7 +9,6 @@ import Form from './Form';
 const PersonalInfo = ({ user, setUser }) => {
   const [editing, setEditing] = useState(false);
   const { t } = useTranslation();
-
   const {
     docId, fullName, role, srcImgProfile, id, password, ...Alldata
   } = user;
@@ -90,6 +89,7 @@ PersonalInfo.propTypes = {
     address: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.shape({
+      role: PropTypes.string,
       name: PropTypes.string,
       id: PropTypes.string
     }),

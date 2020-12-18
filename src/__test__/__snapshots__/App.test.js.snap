@@ -4,16 +4,11 @@ exports[`testing <App /> component render component 1`] = `
 <div
   className="container"
 >
-  <h1
-    className="ant-typography"
-    style={
-      Object {
-        "WebkitLineClamp": null,
-      }
-    }
-  >
-    Iniciar Sesión
-  </h1>
+  <img
+    alt="logo"
+    className="logo"
+    src="logo.svg"
+  />
   <div
     className="formPaper"
   >
@@ -23,61 +18,9 @@ exports[`testing <App /> component render component 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formEmail"
         style={Object {}}
       >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="login_email"
-            title="E-mail"
-          >
-            E-mail
-          </label>
-        </div>
-        <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
-          style={Object {}}
-        >
-          <div
-            className="ant-form-item-control-input"
-          >
-            <div
-              className="ant-form-item-control-input-content"
-            >
-              <input
-                className="ant-input"
-                id="login_email"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="ant-row ant-form-item"
-        style={Object {}}
-      >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="login_password"
-            title="Password"
-          >
-            Password
-          </label>
-        </div>
         <div
           className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
@@ -89,9 +32,62 @@ exports[`testing <App /> component render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <span
-                className="ant-input-affix-wrapper ant-input-password"
+                className="ant-input-affix-wrapper input"
                 onMouseUp={[Function]}
               >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="user.svg"
+                  />
+                </span>
+                <input
+                  className="ant-input"
+                  id="login_email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Enter your user or email"
+                  style={null}
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item formPassword"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <span
+                className="ant-input-affix-wrapper ant-input-password input"
+                onMouseUp={[Function]}
+              >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="password.svg"
+                  />
+                </span>
                 <input
                   action="click"
                   className="ant-input"
@@ -100,6 +96,7 @@ exports[`testing <App /> component render component 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
+                  placeholder="Enter your Password"
                   style={null}
                   type="password"
                   value=""
@@ -144,10 +141,16 @@ exports[`testing <App /> component render component 1`] = `
       </div>
       <div
         className="ant-row ant-form-item"
-        style={Object {}}
+        style={
+          Object {
+            "display": "flex",
+            "justifyContent": "center",
+            "marginTop": "42px",
+          }
+        }
       >
         <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-16 ant-col-sm-offset-8"
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
         >
           <div
@@ -157,14 +160,14 @@ exports[`testing <App /> component render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <button
-                className="ant-btn ant-btn-primary"
+                className="ant-btn ant-btn-primary buttonLogin"
                 onClick={[Function]}
                 type="submit"
               >
                 <span
                   key=".0"
                 >
-                  Enter
+                  Login
                 </span>
               </button>
             </div>
@@ -174,14 +177,37 @@ exports[`testing <App /> component render component 1`] = `
     </form>
   </div>
   <button
-    className="ant-btn ant-btn-link"
+    className="ant-btn ant-btn-link buttonRegister"
+    onClick={[Function]}
+    type="submit"
+  >
+    <img
+      alt="logo"
+      className="marginIcon"
+      key=".0"
+      src="email.svg"
+    />
+    <span
+      key=".1"
+    >
+      Register
+    </span>
+  </button>
+  <button
+    className="ant-btn ant-btn-link buttonForgot"
     onClick={[Function]}
     type="button"
   >
     <span
       key=".0"
     >
-      Regístrate
+      Olvidaste tu 
+    </span>
+    <span
+      className="spanPassword"
+      key=".1"
+    >
+      contraseña?
     </span>
   </button>
 </div>

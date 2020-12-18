@@ -17,9 +17,9 @@ exports[`Registration Form Tests should render component 1`] = `
       <label
         className="ant-form-item-required"
         htmlFor="register_email"
-        title="E-mail"
+        title="Enter your user or email"
       >
-        E-mail
+        Enter your user or email
       </label>
     </div>
     <div
@@ -57,9 +57,9 @@ exports[`Registration Form Tests should render component 1`] = `
       <label
         className="ant-form-item-required"
         htmlFor="register_password"
-        title="Password"
+        title="Enter your Password"
       >
-        Password
+        Enter your Password
       </label>
     </div>
     <div

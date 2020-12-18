@@ -15,7 +15,7 @@ module.exports = {
     ecmaVersion: '2020',
     sourceType: 'module'
   },
-  plugins: ['react', 'sonarjs'],
+  plugins: ['react', 'sonarjs', 'react-hooks'],
   rules: {
     'react/jsx-filename-extension': [0],
     'unicorn/filename-case': [0],
