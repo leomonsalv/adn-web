@@ -201,7 +201,7 @@ exports[`testing <App /> component render component 1`] = `
     <span
       key=".0"
     >
-      Olvidaste tu 
+      Olvidaste tu  
     </span>
     <span
       className="spanPassword"

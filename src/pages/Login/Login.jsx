@@ -80,9 +80,10 @@ const Login = () => {
         {t('auth.registerPage.button')}
       </Button>
       <Button type="link" className={styles.buttonForgot}>
-        Olvidaste tu
-        {' '}
-        <span className={styles.spanPassword}>contraseña?</span>
+        {'Olvidaste tu  '}
+        <span className={styles.spanPassword}>
+          contraseña?
+        </span>
       </Button>
 
     </div>
