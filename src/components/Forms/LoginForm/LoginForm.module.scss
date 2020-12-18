@@ -1,33 +1,29 @@
-.ant-row {
-  margin: 0 auto;
-}
-
-.formEmail {
-  display: flex;
-  justify-content: center;
-}
-
-.formPassword {
-  display: flex;
-  justify-content: center;
-}
-
-.inputIcon {
-  margin-right: 5px;
-}
-
-.input {
-  padding: 12px;
-  border-width: 0px;
-  height: 48px;
-}
-
-.buttonLogin {
-  padding: 12px;
-  width: 100%;
-  height: 46px;
-  background: #2fc9af;
-  border: 1px solid #2fc9af;
-  box-sizing: border-box;
-  border-radius: 10px;
+.formLoginContainer {
+  .ant-row {
+    margin: 0 auto;
+  }
+  .formItem {
+    display: flex;
+    justify-content: center;
+    .inputIcon {
+      margin-right: 5px;
+    }
+    .input {
+      padding: 12px;
+      border-width: 0px;
+      height: 48px;
+    }
+    .buttonLogin {
+      padding: 12px;
+      width: 100%;
+      height: 46px;
+      background: #2fc9af;
+      border: 1px solid #2fc9af;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+  }
+  .marginFormItem {
+    margin-top: 42px;
+  }
 }

@@ -23,6 +23,7 @@ const LoginForm = ({ onSubmit }) => {
 
   return (
     <Form
+      className={styles.formLoginContainer}
       form={form}
       name="login"
       onFinish={onFinish}
@@ -30,7 +31,7 @@ const LoginForm = ({ onSubmit }) => {
       labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
       wrapperCol={{ xs: { span: 24 }, sm: { span: 10 } }}
     >
-      <Form.Item name="email" rules={formRules.emailRules} className={styles.formEmail}>
+      <Form.Item name="email" rules={formRules.emailRules} className={styles.formItem}>
         <Input
           className={styles.input}
           prefix={<img src={userIcon} alt="logo" className={styles.inputIcon} />}
@@ -39,7 +40,7 @@ const LoginForm = ({ onSubmit }) => {
       </Form.Item>
 
       <Form.Item
-        className={styles.formPassword}
+        className={styles.formItem}
         name="password"
         rules={formRules.passwordRules}
         hasFeedback
@@ -51,7 +52,7 @@ const LoginForm = ({ onSubmit }) => {
         />
       </Form.Item>
 
-      <Form.Item style={{ display: 'flex', justifyContent: 'center', marginTop: '42px' }}>
+      <Form.Item className={styles.formItem} style={{ marginTop: '42px' }}>
         <Button
           className={styles.buttonLogin}
           type="primary"

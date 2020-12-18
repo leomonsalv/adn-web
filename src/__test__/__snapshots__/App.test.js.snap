@@ -2,7 +2,7 @@
 
 exports[`testing <App /> component render component 1`] = `
 <div
-  className="container"
+  className="containerLogin"
 >
   <img
     alt="logo"
@@ -13,12 +13,12 @@ exports[`testing <App /> component render component 1`] = `
     className="formPaper"
   >
     <form
-      className="ant-form ant-form-horizontal"
+      className="ant-form ant-form-horizontal formLoginContainer"
       id="login"
       onSubmit={[Function]}
     >
       <div
-        className="ant-row ant-form-item formEmail"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
         <div
@@ -62,7 +62,7 @@ exports[`testing <App /> component render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item formPassword"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
         <div
@@ -140,11 +140,9 @@ exports[`testing <App /> component render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formItem"
         style={
           Object {
-            "display": "flex",
-            "justifyContent": "center",
             "marginTop": "42px",
           }
         }

@@ -1,6 +1,6 @@
 @import '../../theme/variables.scss';
 
-.container {
+.containerLogin {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,6 +10,19 @@
     margin-top: 68px;
     width: 150px;
     height: 101.1px;
+  }
+  .formPaper {
+    width: 100%;
+    border-radius: 15px;
+    border-radius: 2px;
+    padding: 0px 20px;
+    margin-top: 66.9px;
+  }
+
+  @media (min-width: 768px) {
+    .formPaper {
+      width: 800px;
+    }
   }
   .buttonRegister {
     width: 88%;
@@ -45,33 +58,5 @@
       font-weight: bold;
       padding-left: 5px;
     }
-  }
-
-  .titleContainer {
-    width: 100%;
-    padding-left: 20px;
-    margin-top: 50px;
-  }
-  .title {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 36px;
-    color: #111111;
-  }
-}
-
-.formPaper {
-  width: 100%;
-  border-radius: 15px;
-  border-radius: 2px;
-  padding: 0px 20px;
-  margin-top: 66.9px;
-}
-
-@media (min-width: 768px) {
-  .formPaper {
-    width: 800px;
   }
 }

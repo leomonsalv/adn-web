@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerLogin}>
       <img src={image} className={styles.logo} alt="logo" />
       <div className={styles.formPaper}>
         <LoginForm onSubmit={handleFormSubmit} />
