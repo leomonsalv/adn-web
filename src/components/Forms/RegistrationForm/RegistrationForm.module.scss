@@ -1,0 +1,51 @@
+.formRegisterContainer {
+  .ant-row {
+    margin: 0 auto;
+  }
+  .formItem {
+    display: flex;
+    justify-content: center;
+    .inputIcon {
+      margin-right: 5px;
+    }
+    .input {
+      padding: 12px;
+      border-width: 0px;
+      height: 48px;
+    }
+    .buttonLogin {
+      padding: 12px;
+      width: 100%;
+      height: 46px;
+      background: #2fc9af;
+      border: 1px solid #2fc9af;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+  }
+  .marginFormItem {
+    margin-top: 42px;
+  }
+  .buttonRegister {
+    width: 100%;
+    height: 46px;
+    background: #2fc9af;
+    border: 1px solid #2fc9af;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    .marginIcon {
+      margin-right: 5px;
+    }
+  }
+  @media (min-width: 768px) {
+    .buttonRegister {
+      width: 315px;
+    }
+  }
+}

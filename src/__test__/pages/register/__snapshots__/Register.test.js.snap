@@ -2,82 +2,25 @@
 
 exports[`Register Page render component 1`] = `
 <div
-  className="container"
+  className="containerLogin"
 >
-  <h1
-    className="ant-typography"
-    style={
-      Object {
-        "WebkitLineClamp": null,
-      }
-    }
-  >
-    Register
-  </h1>
+  <img
+    alt="logo"
+    className="logo"
+    src="logo.svg"
+  />
   <div
     className="formPaper"
   >
     <form
-      className="ant-form ant-form-horizontal"
+      className="ant-form ant-form-horizontal formRegisterContainer"
       id="register"
       onSubmit={[Function]}
     >
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_email"
-            title="Enter your user or email"
-          >
-            Enter your user or email
-          </label>
-        </div>
-        <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
-          style={Object {}}
-        >
-          <div
-            className="ant-form-item-control-input"
-          >
-            <div
-              className="ant-form-item-control-input-content"
-            >
-              <input
-                className="ant-input"
-                id="register_email"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="ant-row ant-form-item"
-        style={Object {}}
-      >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_password"
-            title="Enter your Password"
-          >
-            Enter your Password
-          </label>
-        </div>
         <div
           className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
@@ -89,9 +32,62 @@ exports[`Register Page render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <span
-                className="ant-input-affix-wrapper ant-input-password"
+                className="ant-input-affix-wrapper input"
                 onMouseUp={[Function]}
               >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="user.svg"
+                  />
+                </span>
+                <input
+                  className="ant-input"
+                  id="register_email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Enter your user or email"
+                  style={null}
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item formItem"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <span
+                className="ant-input-affix-wrapper ant-input-password input"
+                onMouseUp={[Function]}
+              >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="password.svg"
+                  />
+                </span>
                 <input
                   action="click"
                   className="ant-input"
@@ -100,6 +96,7 @@ exports[`Register Page render component 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
+                  placeholder="Enter your Password"
                   style={null}
                   type="password"
                   value=""
@@ -143,21 +140,9 @@ exports[`Register Page render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_confirm"
-            title="Confirm Password"
-          >
-            Confirm Password
-          </label>
-        </div>
         <div
           className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
@@ -169,9 +154,18 @@ exports[`Register Page render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <span
-                className="ant-input-affix-wrapper ant-input-password"
+                className="ant-input-affix-wrapper ant-input-password input"
                 onMouseUp={[Function]}
               >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="password.svg"
+                  />
+                </span>
                 <input
                   action="click"
                   className="ant-input"
@@ -180,6 +174,7 @@ exports[`Register Page render component 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
+                  placeholder="Enter your Password"
                   style={null}
                   type="password"
                   value=""
@@ -223,141 +218,9 @@ exports[`Register Page render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_username"
-            title="Username"
-          >
-            Username
-          </label>
-        </div>
-        <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
-          style={Object {}}
-        >
-          <div
-            className="ant-form-item-control-input"
-          >
-            <div
-              className="ant-form-item-control-input-content"
-            >
-              <input
-                className="ant-input"
-                id="register_username"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="ant-row ant-form-item"
-        style={Object {}}
-      >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_dni"
-            title="Dni"
-          >
-            Dni
-          </label>
-        </div>
-        <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
-          style={Object {}}
-        >
-          <div
-            className="ant-form-item-control-input"
-          >
-            <div
-              className="ant-form-item-control-input-content"
-            >
-              <input
-                className="ant-input"
-                id="register_dni"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="ant-row ant-form-item"
-        style={Object {}}
-      >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_address"
-            title="Address"
-          >
-            Address
-          </label>
-        </div>
-        <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
-          style={Object {}}
-        >
-          <div
-            className="ant-form-item-control-input"
-          >
-            <div
-              className="ant-form-item-control-input-content"
-            >
-              <input
-                className="ant-input"
-                id="register_address"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="ant-row ant-form-item"
-        style={Object {}}
-      >
-        <div
-          className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-8"
-          style={Object {}}
-        >
-          <label
-            className="ant-form-item-required"
-            htmlFor="register_phone"
-            title="Phone Number"
-          >
-            Phone Number
-          </label>
-        </div>
         <div
           className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
@@ -369,9 +232,143 @@ exports[`Register Page render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <span
-                className="ant-input-group-wrapper"
+                className="ant-input-affix-wrapper input"
+                onMouseUp={[Function]}
+              >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="user.svg"
+                  />
+                </span>
+                <input
+                  className="ant-input"
+                  id="register_username"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Username"
+                  style={null}
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item formItem"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <span
+                className="ant-input-affix-wrapper input"
+                onMouseUp={[Function]}
+              >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="password.svg"
+                  />
+                </span>
+                <input
+                  className="ant-input"
+                  id="register_dni"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Dni"
+                  style={null}
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item formItem"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <span
+                className="ant-input-affix-wrapper input"
+                onMouseUp={[Function]}
+              >
+                <span
+                  className="ant-input-prefix"
+                >
+                  <img
+                    alt="logo"
+                    className="inputIcon"
+                    src="direction.svg"
+                  />
+                </span>
+                <input
+                  className="ant-input"
+                  id="register_address"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Address"
+                  style={null}
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="ant-row ant-form-item formItem"
+        style={Object {}}
+      >
+        <div
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+          style={Object {}}
+        >
+          <div
+            className="ant-form-item-control-input"
+          >
+            <div
+              className="ant-form-item-control-input-content"
+            >
+              <span
+                className="ant-input-group-wrapper input"
                 style={
                   Object {
+                    "height": "100%",
+                    "padding": "0px",
                     "width": "100%",
                   }
                 }
@@ -393,6 +390,7 @@ exports[`Register Page render component 1`] = `
                     onChange={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
+                    placeholder="Phone Number"
                     style={null}
                     type="number"
                     value=""
@@ -404,11 +402,11 @@ exports[`Register Page render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item"
+        className="ant-row ant-form-item formItem"
         style={Object {}}
       >
         <div
-          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-16 ant-col-sm-offset-8"
+          className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
           style={Object {}}
         >
           <div
@@ -418,12 +416,18 @@ exports[`Register Page render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <button
-                className="ant-btn ant-btn-primary"
+                className="ant-btn ant-btn-primary buttonRegister"
                 onClick={[Function]}
                 type="submit"
               >
-                <span
+                <img
+                  alt="logo"
+                  className="marginIcon"
                   key=".0"
+                  src="email.svg"
+                />
+                <span
+                  key=".1"
                 >
                   Register
                 </span>

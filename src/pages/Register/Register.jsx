@@ -1,8 +1,7 @@
 import React from 'react';
-import { Typography } from 'antd';
-import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import image from '../../assets/images/logo.svg';
 import API from '../../services';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 import { showNotification } from '../../stores/actions/notification';
@@ -11,7 +10,6 @@ import { loadingWithSpinner, loaded } from '../../stores/actions/loader';
 import styles from './Register.module.scss';
 
 const Register = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const handleFormSubmit = async (formFieldValues) => {
@@ -44,8 +42,8 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Typography.Title level={1}>{t('auth.registerPage.title')}</Typography.Title>
+    <div className={styles.containerLogin}>
+      <img src={image} className={styles.logo} alt="logo" />
       <div className={styles.formPaper}>
         <RegistrationForm onSubmit={handleFormSubmit} />
       </div>

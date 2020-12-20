@@ -1,16 +1,33 @@
 @import '../../theme/variables.scss';
 
-.container {
+.containerLogin {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f7f8fb;
+
+  .logo {
+    margin-top: 68px;
+    width: 150px;
+    height: 101.1px;
+  }
+  .formPaper {
+    width: 100%;
+    border-radius: 15px;
+    border-radius: 2px;
+    padding: 0px 20px;
+    margin-top: 66.9px;
+  }
+
+  @media (min-width: 800px) {
+    .formPaper {
+      width: 800px;
+    }
+  }
 }
 
-.formPaper {
-  width: 800px;
-  border-radius: 15px;
-  border-radius: 2px;
-  border: 1px solid $light-grey;
-  padding: 20px 20px;
-  margin-top: 5%;
+@media (min-width: 668px) and (max-width: 900px) {
+  .containerLogin {
+    height: 100vh;
+  }
 }
