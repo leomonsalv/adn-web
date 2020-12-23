@@ -1,6 +1,6 @@
 @import '../../theme/variables.scss';
 
-.containerLogin {
+.container_login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@
     width: 150px;
     height: 101.1px;
   }
-  .formPaper {
+  .form_paper {
     width: 100%;
     border-radius: 15px;
     border-radius: 2px;
@@ -20,14 +20,14 @@
   }
 
   @media (min-width: 800px) {
-    .formPaper {
+    .form_paper {
       width: 800px;
     }
   }
 }
 
 @media (min-width: 668px) and (max-width: 900px) {
-  .containerLogin {
+  .container_login {
     height: 100vh;
   }
 }

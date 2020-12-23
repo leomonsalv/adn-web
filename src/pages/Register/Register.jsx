@@ -42,9 +42,9 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.containerLogin}>
+    <div className={styles.container_login}>
       <img src={image} className={styles.logo} alt="logo" />
-      <div className={styles.formPaper}>
+      <div className={styles.form_paper}>
         <RegistrationForm onSubmit={handleFormSubmit} />
       </div>
     </div>

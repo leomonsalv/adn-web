@@ -1,11 +1,11 @@
-.formRegisterContainer {
+.form_register_container {
   .ant-row {
     margin: 0 auto;
   }
-  .formItem {
+  .form_item {
     display: flex;
     justify-content: center;
-    .inputIcon {
+    .input_icon {
       margin-right: 5px;
     }
     .input {
@@ -13,20 +13,8 @@
       border-width: 0px;
       height: 48px;
     }
-    .buttonLogin {
-      padding: 12px;
-      width: 100%;
-      height: 46px;
-      background: #2fc9af;
-      border: 1px solid #2fc9af;
-      box-sizing: border-box;
-      border-radius: 10px;
-    }
   }
-  .marginFormItem {
-    margin-top: 42px;
-  }
-  .buttonRegister {
+  .button_register {
     width: 100%;
     height: 46px;
     background: #2fc9af;
@@ -39,12 +27,12 @@
     align-items: center;
     justify-content: center;
     margin-top: 24px;
-    .marginIcon {
+    .margin_icon {
       margin-right: 5px;
     }
   }
   @media (min-width: 768px) {
-    .buttonRegister {
+    .button_register {
       width: 315px;
     }
   }
