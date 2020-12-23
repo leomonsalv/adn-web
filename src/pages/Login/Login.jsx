@@ -65,24 +65,24 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.containerLogin}>
+    <div className={styles.container_login}>
       <img src={image} className={styles.logo} alt="logo" />
-      <div className={styles.formPaper}>
+      <div className={styles.form_paper}>
         <LoginForm onSubmit={handleFormSubmit} />
       </div>
       <Button
         type="link"
         htmlType="submit"
-        className={styles.buttonRegister}
+        className={styles.button_register}
         onClick={goToRoute(REGISTER)}
       >
-        <img src={emailIcon} alt="logo" className={styles.marginIcon} />
+        <img src={emailIcon} alt="logo" className={styles.margin_icon} />
         {t('auth.registerPage.button')}
       </Button>
-      <Button type="link" className={styles.buttonForgot}>
-        {'Olvidaste tu  '}
-        <span className={styles.spanPassword}>
-          contraseña?
+      <Button type="link" className={styles.button_forgot}>
+        {t('auth.loginPage.forgot')}
+        <span className={styles.span_password}>
+          {t('auth.loginPage.password')}
         </span>
       </Button>
 

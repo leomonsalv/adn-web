@@ -1,6 +1,6 @@
 @import '../../theme/variables.scss';
 
-.containerLogin {
+.container_login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@
     width: 150px;
     height: 101.1px;
   }
-  .formPaper {
+  .form_paper {
     width: 100%;
     border-radius: 15px;
     border-radius: 2px;
@@ -20,11 +20,11 @@
   }
 
   @media (min-width: 768px) {
-    .formPaper {
+    .form_paper {
       width: 800px;
     }
   }
-  .buttonRegister {
+  .button_register {
     width: 88%;
     height: 46px;
     background: #9b51e0;
@@ -37,16 +37,16 @@
     align-items: center;
     justify-content: center;
     margin-top: 24px;
-    .marginIcon {
+    .margin_icon {
       margin-right: 5px;
     }
   }
   @media (min-width: 768px) {
-    .buttonRegister {
+    .button_register {
       width: 315px;
     }
   }
-  .buttonForgot {
+  .button_forgot {
     font-family: 'Poppins';
     font-style: normal;
     font-size: 14px;
@@ -54,7 +54,7 @@
     text-align: center;
     color: #2f95af;
     margin-top: 28px;
-    .spanPassword {
+    .span_password {
       font-weight: bold;
       padding-left: 5px;
     }

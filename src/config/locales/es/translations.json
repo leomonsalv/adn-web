@@ -2,7 +2,9 @@
     "auth": {
       "loginPage": {
         "title": "Iniciar sesión",
-        "button": "Entrar"
+        "button": "Entrar",
+        "password": "contraseña?",
+        "forgot": "Olvidaste tu "
       },
       "registerPage": {
         "title": "Registro",

@@ -26,7 +26,7 @@ describe('Login Page', () => {
   });
 
   it('should contain title', () => {
-    expect(wrapper.text()).toContain('LoginRegisterOlvidaste tu  contraseña?');
+    expect(wrapper.text()).toContain('LoginRegisterForgot you password?');
     expect(wrapperForm).toBeTruthy();
   });
 });

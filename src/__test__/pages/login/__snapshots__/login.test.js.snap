@@ -2,7 +2,7 @@
 
 exports[`Login Page render component 1`] = `
 <div
-  className="containerLogin"
+  className="container_login"
 >
   <img
     alt="logo"
@@ -10,15 +10,15 @@ exports[`Login Page render component 1`] = `
     src="logo.svg"
   />
   <div
-    className="formPaper"
+    className="form_paper"
   >
     <form
-      className="ant-form ant-form-horizontal formLoginContainer"
+      className="ant-form ant-form-horizontal form_login_container"
       id="login"
       onSubmit={[Function]}
     >
       <div
-        className="ant-row ant-form-item formItem"
+        className="ant-row ant-form-item form_item"
         style={Object {}}
       >
         <div
@@ -40,7 +40,7 @@ exports[`Login Page render component 1`] = `
                 >
                   <img
                     alt="logo"
-                    className="inputIcon"
+                    className="input_icon"
                     src="user.svg"
                   />
                 </span>
@@ -62,7 +62,7 @@ exports[`Login Page render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item formItem"
+        className="ant-row ant-form-item form_item"
         style={Object {}}
       >
         <div
@@ -84,7 +84,7 @@ exports[`Login Page render component 1`] = `
                 >
                   <img
                     alt="logo"
-                    className="inputIcon"
+                    className="input_icon"
                     src="password.svg"
                   />
                 </span>
@@ -140,7 +140,7 @@ exports[`Login Page render component 1`] = `
         </div>
       </div>
       <div
-        className="ant-row ant-form-item formItem"
+        className="ant-row ant-form-item form_item"
         style={
           Object {
             "marginTop": "42px",
@@ -158,7 +158,7 @@ exports[`Login Page render component 1`] = `
               className="ant-form-item-control-input-content"
             >
               <button
-                className="ant-btn ant-btn-primary buttonLogin"
+                className="ant-btn ant-btn-primary button_login"
                 onClick={[Function]}
                 type="submit"
               >
@@ -175,13 +175,13 @@ exports[`Login Page render component 1`] = `
     </form>
   </div>
   <button
-    className="ant-btn ant-btn-link buttonRegister"
+    className="ant-btn ant-btn-link button_register"
     onClick={[Function]}
     type="submit"
   >
     <img
       alt="logo"
-      className="marginIcon"
+      className="margin_icon"
       key=".0"
       src="email.svg"
     />
@@ -192,20 +192,20 @@ exports[`Login Page render component 1`] = `
     </span>
   </button>
   <button
-    className="ant-btn ant-btn-link buttonForgot"
+    className="ant-btn ant-btn-link button_forgot"
     onClick={[Function]}
     type="button"
   >
     <span
       key=".0"
     >
-      Olvidaste tu  
+      Forgot you 
     </span>
     <span
-      className="spanPassword"
+      className="span_password"
       key=".1"
     >
-      contraseña?
+      password?
     </span>
   </button>
 </div>

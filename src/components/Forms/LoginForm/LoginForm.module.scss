@@ -1,11 +1,11 @@
-.formLoginContainer {
+.form_login_container {
   .ant-row {
     margin: 0 auto;
   }
-  .formItem {
+  .form_item {
     display: flex;
     justify-content: center;
-    .inputIcon {
+    .input_icon {
       margin-right: 5px;
     }
     .input {
@@ -13,7 +13,7 @@
       border-width: 0px;
       height: 48px;
     }
-    .buttonLogin {
+    .button_login {
       padding: 12px;
       width: 100%;
       height: 46px;
@@ -22,8 +22,5 @@
       box-sizing: border-box;
       border-radius: 10px;
     }
-  }
-  .marginFormItem {
-    margin-top: 42px;
   }
 }

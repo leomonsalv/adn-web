@@ -23,7 +23,7 @@ const LoginForm = ({ onSubmit }) => {
 
   return (
     <Form
-      className={styles.formLoginContainer}
+      className={styles.form_login_container}
       form={form}
       name="login"
       onFinish={onFinish}
@@ -31,16 +31,16 @@ const LoginForm = ({ onSubmit }) => {
       labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
       wrapperCol={{ xs: { span: 24 }, sm: { span: 10 } }}
     >
-      <Form.Item name="email" rules={formRules.emailRules} className={styles.formItem}>
+      <Form.Item name="email" rules={formRules.emailRules} className={styles.form_item}>
         <Input
           className={styles.input}
-          prefix={<img src={userIcon} alt="logo" className={styles.inputIcon} />}
+          prefix={<img src={userIcon} alt="logo" className={styles.input_icon} />}
           placeholder={t('auth.fields.email')}
         />
       </Form.Item>
 
       <Form.Item
-        className={styles.formItem}
+        className={styles.form_item}
         name="password"
         rules={formRules.passwordRules}
         hasFeedback
@@ -48,13 +48,13 @@ const LoginForm = ({ onSubmit }) => {
         <Input.Password
           className={styles.input}
           placeholder={t('auth.fields.password')}
-          prefix={<img src={passwordIcon} alt="logo" className={styles.inputIcon} />}
+          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
         />
       </Form.Item>
 
-      <Form.Item className={styles.formItem} style={{ marginTop: '42px' }}>
+      <Form.Item className={styles.form_item} style={{ marginTop: '42px' }}>
         <Button
-          className={styles.buttonLogin}
+          className={styles.button_login}
           type="primary"
           htmlType="submit"
         >
