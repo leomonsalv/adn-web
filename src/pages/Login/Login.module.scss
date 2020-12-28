@@ -1,24 +1,62 @@
 @import '../../theme/variables.scss';
 
-.container {
+.container_login {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+  background-color: #f7f8fb;
+  height: 100vh;
+  .logo {
+    margin-top: 68px;
+    width: 150px;
+    height: 101.1px;
+  }
+  .form_paper {
+    width: 100%;
+    border-radius: 15px;
+    border-radius: 2px;
+    padding: 0px 20px;
+    margin-top: 66.9px;
+  }
 
-.formPaper {
-  width: 100%;
-  border-radius: 15px;
-  border-radius: 2px;
-  border: 1px solid $light-grey;
-  padding: 20px 20px;
-  margin-top: 5%;
-  margin-bottom: 2%;
-}
-
-@media (min-width: 768px) {
-  .formPaper {
-    width: 800px;
+  @media (min-width: 768px) {
+    .form_paper {
+      width: 800px;
+    }
+  }
+  .button_register {
+    width: 88%;
+    height: 46px;
+    background: #9b51e0;
+    border: 1px solid #9b51e0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    .margin_icon {
+      margin-right: 5px;
+    }
+  }
+  @media (min-width: 768px) {
+    .button_register {
+      width: 315px;
+    }
+  }
+  .button_forgot {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    color: #2f95af;
+    margin-top: 28px;
+    .span_password {
+      font-weight: bold;
+      padding-left: 5px;
+    }
   }
 }
-

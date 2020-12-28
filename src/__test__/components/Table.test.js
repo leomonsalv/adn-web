@@ -87,7 +87,7 @@ describe('Test Table', () => {
 
   beforeEach(() => {
     wrapper = mount(
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} loading={false} />
     );
     wrapperComponent = wrapper.find(Table);
   });

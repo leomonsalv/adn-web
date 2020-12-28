@@ -1,16 +1,18 @@
 {
     "auth": {
       "loginPage": {
-        "title": "Sign In",
-        "button": "Enter"
+        "title": "Login",
+        "button": "Enter",
+        "password": "password?",
+      "forgot": "Forgot you "
       },
       "registerPage": {
         "title": "Register",
         "button": "Register"
       },
       "fields": {
-        "email": "E-mail",
-        "password": "Password",
+        "email": "Enter your user or email",
+        "password": "Enter your Password",
         "confirmPassword": "Confirm Password",
         "username": "Username",
         "address": "Address",

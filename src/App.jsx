@@ -6,11 +6,11 @@ import { showNotification } from 'stores/actions/notification';
 import { cleanProfile, setProfile } from 'stores/actions/profile';
 import jwtDecode from 'jwt-decode';
 import API from 'services';
+import { loginAttempt, loginSuccess } from 'stores/actions/auth';
 import Routes from './routes/Routes';
 import AuthProvider from './contexts/AuthContext/AuthContext';
 
 import { getToken, removeToken } from './firebase/utils/token';
-import { loginAttempt, loginSuccess } from 'stores/actions/auth'
 
 const init = () => {
   const token = getToken();
