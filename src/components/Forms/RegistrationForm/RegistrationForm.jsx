@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, Form, Input } from 'antd';
 import runTranslate from './formRules';
+import styles from './RegistrationForm.module.scss';
+import userIcon from '../../../assets/images/user.svg';
+import passwordIcon from '../../../assets/images/password.svg';
+import emailIcon from '../../../assets/images/email.svg';
+import directionIcon from '../../../assets/images/direction.svg';
 
 /**
  * Registration form component
@@ -20,6 +25,7 @@ const RegistrationForm = ({ onSubmit }) => {
 
   return (
     <Form
+      className={styles.form_register_container}
       form={form}
       name="register"
       onFinish={onFinish}
@@ -27,64 +33,90 @@ const RegistrationForm = ({ onSubmit }) => {
       labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
       wrapperCol={{ xs: { span: 24 }, sm: { span: 10 } }}
     >
-      <Form.Item name="email" label={t('auth.fields.email')} rules={formRules.emailRules}>
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="password"
-        label={t('auth.fields.password')}
-        rules={formRules.passwordRules}
-        hasFeedback
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="confirm"
-        label={t('auth.fields.confirmPassword')}
-        dependencies={['password']}
-        hasFeedback
-        rules={formRules.secondPasswordRules}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="username"
-        label={t('auth.fields.username')}
-        rules={formRules.usernameRules}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="dni"
-        label={t('auth.fields.dni')}
-        rules={formRules.dniRules}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item name="address" label={t('auth.fields.address')} rules={formRules.addressRules}>
-        <Input />
-      </Form.Item>
-
-      <Form.Item name="phone" label={t('auth.fields.phoneNumber')} rules={formRules.phoneRules}>
+      <Form.Item name="email" rules={formRules.emailRules} className={styles.form_item}>
         <Input
-          addonBefore={<span>+58</span>}
-          style={{ width: '100%' }}
-          type="number"
+          className={styles.input}
+          prefix={<img src={userIcon} alt="logo" className={styles.input_icon} />}
+          placeholder={t('auth.fields.email')}
         />
       </Form.Item>
 
       <Form.Item
-        wrapperCol={{
-          xs: { span: 24 },
-          sm: { span: 16, offset: 8 }
-        }}
+        className={styles.form_item}
+        name="password"
+        rules={formRules.passwordRules}
+        hasFeedback
       >
-        <Button type="primary" htmlType="submit">
+        <Input.Password
+          className={styles.input}
+          placeholder={t('auth.fields.password')}
+          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+        />
+
+      </Form.Item>
+
+      <Form.Item
+        className={styles.form_item}
+        name="confirm"
+        dependencies={['password']}
+        hasFeedback
+        rules={formRules.secondPasswordRules}
+      >
+        <Input.Password
+          className={styles.input}
+          placeholder={t('auth.fields.password')}
+          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+        />
+      </Form.Item>
+
+      <Form.Item
+        className={styles.form_item}
+        name="username"
+        rules={formRules.usernameRules}
+      >
+        <Input
+          className={styles.input}
+          placeholder={t('auth.fields.username')}
+          prefix={<img src={userIcon} alt="logo" className={styles.input_icon} />}
+        />
+
+      </Form.Item>
+
+      <Form.Item
+        className={styles.form_item}
+        name="dni"
+        rules={formRules.dniRules}
+      >
+        <Input
+          className={styles.input}
+          placeholder={t('auth.fields.dni')}
+          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+        />
+      </Form.Item>
+
+      <Form.Item name="address" rules={formRules.addressRules} className={styles.form_item}>
+        <Input
+          className={styles.input}
+          placeholder={t('auth.fields.address')}
+          prefix={<img src={directionIcon} alt="logo" className={styles.input_icon} />}
+        />
+      </Form.Item>
+
+      <Form.Item name="phone" rules={formRules.phoneRules} className={styles.form_item}>
+        <Input
+          addonBefore={<span>+58</span>}
+          style={{ width: '100%', padding: '0px', height: '100%' }}
+          type="number"
+          className={styles.input}
+          placeholder={t('auth.fields.phoneNumber')}
+        />
+      </Form.Item>
+
+      <Form.Item
+        className={styles.form_item}
+      >
+        <Button htmlType="submit" className={styles.button_register} type="primary">
+          <img src={emailIcon} alt="logo" className={styles.margin_icon} />
           {t('auth.registerPage.button')}
         </Button>
       </Form.Item>
