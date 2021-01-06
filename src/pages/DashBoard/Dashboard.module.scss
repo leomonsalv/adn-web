@@ -1,42 +1,59 @@
 @import '../../theme/variables.scss';
 
-.menu {
-  display: flex;
-  align-items: center;
-}
-.menu:hover {
+.layout {
+  min-height: 100vh;
+
+  .menu {
+    display: flex;
+    align-items: center;
+    .opacity {
+      opacity: 0;
+      transition: 0.5s;
+    }
+  }
+  .menu:hover {
+    .icon {
+      filter: brightness(0) invert(1);
+    }
+  }
+  .logo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 101.1px;
+  }
+  .logo_footer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100px;
+    height: 101.1px;
+  }
+  .footer_container {
+    text-align: center;
+  }
   .icon {
+    transition: 0.5s;
+    padding-right: 10px;
+    filter: invert(57%) sepia(12%) saturate(382%) hue-rotate(182deg)
+      brightness(92%) contrast(92%) transition 0.5s;
+  }
+  .icon_light {
+    padding-right: 10px;
     filter: brightness(0) invert(1);
   }
-}
-.logo {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  height: 101.1px;
-}
-.icon {
-  transition: 0.5s;
-  padding-right: 10px;
-  filter: invert(57%) sepia(12%) saturate(382%) hue-rotate(182deg)
-    brightness(92%) contrast(92%) transition 0.5s;
-}
-.icon_light {
-  padding-right: 10px;
-  filter: brightness(0) invert(1);
-}
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 1rem;
-}
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1rem;
+  }
 
-.paddingContent {
-  padding: 4px;
-  min-height: 360px;
-  @media (min-width: 800px) {
-    padding: 30px;
+  .paddingContent {
+    padding: 4px;
+    min-height: 360px;
+    @media (min-width: 800px) {
+      padding: 30px;
+    }
   }
 }

@@ -23,7 +23,7 @@ const DashBoard = ({ children }) => {
   const location = useLocation();
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout className={styles.layout}>
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
         <img src={logoIcon} alt="logo" className={styles.logo} />
         <Menu
@@ -45,11 +45,7 @@ const DashBoard = ({ children }) => {
             icon={<img src={userIcon} alt="logo" className={location.pathname === '/account' ? styles.icon_light : styles.icon} />}
             onClick={goToRoute(ACCOUNT)}
           >
-            <span
-              style={
-                  collapsed ? { opacity: '0', transition: '0.5s' } : undefined
-                }
-            >
+            <span className={collapsed ? styles.opacity : undefined}>
               {t('menu.myAccount')}
             </span>
           </Menu.Item>
@@ -60,11 +56,7 @@ const DashBoard = ({ children }) => {
             icon={<img src={bagIcon} alt="logo" className={location.pathname === '/products' ? styles.icon_light : styles.icon} />}
             onClick={goToRoute(PRODUCTS)}
           >
-            <span
-              style={
-                    collapsed ? { opacity: '0', transition: '0.5s' } : undefined
-                  }
-            >
+            <span className={collapsed ? styles.opacity : undefined}>
               {t('menu.products')}
             </span>
           </Menu.Item>
@@ -79,12 +71,11 @@ const DashBoard = ({ children }) => {
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer className={styles.footer_container}>
           <img
-            style={{ width: '100px' }}
             src={logoIcon}
             alt="logo"
-            className={styles.logo}
+            className={styles.logo_footer}
           />
         </Footer>
       </Layout>
