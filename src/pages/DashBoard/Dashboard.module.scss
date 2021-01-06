@@ -1,10 +1,29 @@
 @import '../../theme/variables.scss';
 
+.menu {
+  display: flex;
+  align-items: center;
+}
+.menu:hover {
+  .icon {
+    filter: brightness(0) invert(1);
+  }
+}
 .logo {
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 13px 16px;
-  background: rgba(255, 255, 255, 0.3);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 101.1px;
+}
+.icon {
+  transition: 0.5s;
+  padding-right: 10px;
+  filter: invert(57%) sepia(12%) saturate(382%) hue-rotate(182deg)
+    brightness(92%) contrast(92%) transition 0.5s;
+}
+.icon_light {
+  padding-right: 10px;
+  filter: brightness(0) invert(1);
 }
 
 .header {
