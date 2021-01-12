@@ -37,7 +37,9 @@
     "menu": {
       "home": "Inicio",
       "signOut": "Cerrar sesión",
-      "signIn": "Entrar" 
+      "signIn": "Entrar",
+      "myAccount" : "Mi Cuenta",
+      "products": "Productos"
     },
     "common": {
       "button": {

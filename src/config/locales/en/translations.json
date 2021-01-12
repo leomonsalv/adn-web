@@ -37,7 +37,9 @@
     "menu": {
       "home": "Home",
       "signOut": "Sign Out", 
-      "signIn": "Sign In" 
+      "signIn": "Sign In",
+      "myAccount" : "My Account",
+      "products": "Products"
     },
     "common": {
       "button": {
