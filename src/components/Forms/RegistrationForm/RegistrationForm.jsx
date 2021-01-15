@@ -33,10 +33,16 @@ const RegistrationForm = ({ onSubmit }) => {
       labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
       wrapperCol={{ xs: { span: 24 }, sm: { span: 10 } }}
     >
-      <Form.Item name="email" rules={formRules.emailRules} className={styles.form_item}>
+      <Form.Item
+        name="email"
+        rules={formRules.emailRules}
+        className={styles.form_item}
+      >
         <Input
           className={styles.input}
-          prefix={<img src={userIcon} alt="logo" className={styles.input_icon} />}
+          prefix={
+            <img src={userIcon} alt="logo" className={styles.input_icon} />
+          }
           placeholder={t('auth.fields.email')}
         />
       </Form.Item>
@@ -50,9 +56,10 @@ const RegistrationForm = ({ onSubmit }) => {
         <Input.Password
           className={styles.input}
           placeholder={t('auth.fields.password')}
-          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+          prefix={
+            <img src={passwordIcon} alt="logo" className={styles.input_icon} />
+          }
         />
-
       </Form.Item>
 
       <Form.Item
@@ -65,44 +72,72 @@ const RegistrationForm = ({ onSubmit }) => {
         <Input.Password
           className={styles.input}
           placeholder={t('auth.fields.password')}
-          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+          prefix={
+            <img src={passwordIcon} alt="logo" className={styles.input_icon} />
+          }
         />
       </Form.Item>
 
       <Form.Item
         className={styles.form_item}
-        name="username"
+        name="name"
         rules={formRules.usernameRules}
       >
         <Input
           className={styles.input}
-          placeholder={t('auth.fields.username')}
-          prefix={<img src={userIcon} alt="logo" className={styles.input_icon} />}
+          placeholder={t('auth.fields.name')}
+          prefix={
+            <img src={userIcon} alt="logo" className={styles.input_icon} />
+          }
         />
-
       </Form.Item>
 
       <Form.Item
         className={styles.form_item}
-        name="dni"
+        name="vat"
         rules={formRules.dniRules}
       >
         <Input
           className={styles.input}
           placeholder={t('auth.fields.dni')}
-          prefix={<img src={passwordIcon} alt="logo" className={styles.input_icon} />}
+          prefix={
+            <img src={passwordIcon} alt="logo" className={styles.input_icon} />
+          }
         />
       </Form.Item>
 
-      <Form.Item name="address" rules={formRules.addressRules} className={styles.form_item}>
+      <Form.Item
+        name="city"
+        rules={formRules.addressRules}
+        className={styles.form_item}
+      >
+        <Input
+          className={styles.input}
+          placeholder={t('auth.fields.city')}
+          prefix={
+            <img src={directionIcon} alt="logo" className={styles.input_icon} />
+          }
+        />
+      </Form.Item>
+      <Form.Item
+        name="address"
+        rules={formRules.addressRules}
+        className={styles.form_item}
+      >
         <Input
           className={styles.input}
           placeholder={t('auth.fields.address')}
-          prefix={<img src={directionIcon} alt="logo" className={styles.input_icon} />}
+          prefix={
+            <img src={directionIcon} alt="logo" className={styles.input_icon} />
+          }
         />
       </Form.Item>
 
-      <Form.Item name="phone" rules={formRules.phoneRules} className={styles.form_item}>
+      <Form.Item
+        name="phone"
+        rules={formRules.phoneRules}
+        className={styles.form_item}
+      >
         <Input
           addonBefore={<span>+58</span>}
           style={{ width: '100%', padding: '0px', height: '100%' }}
@@ -112,10 +147,12 @@ const RegistrationForm = ({ onSubmit }) => {
         />
       </Form.Item>
 
-      <Form.Item
-        className={styles.form_item}
-      >
-        <Button htmlType="submit" className={styles.button_register} type="primary">
+      <Form.Item className={styles.form_item}>
+        <Button
+          htmlType="submit"
+          className={styles.button_register}
+          type="primary"
+        >
           <img src={emailIcon} alt="logo" className={styles.margin_icon} />
           {t('auth.registerPage.button')}
         </Button>

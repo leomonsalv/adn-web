@@ -6,6 +6,7 @@ import API from '../../services';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 import { showNotification } from '../../stores/actions/notification';
 import { SIGNIN } from '../../constans/routes';
+import { setAccessCodeOdoo } from '../../firebase/utils/token';
 import { loadingWithSpinner, loaded } from '../../stores/actions/loader';
 import styles from './Register.module.scss';
 
@@ -14,19 +15,33 @@ const Register = () => {
   const history = useHistory();
   const handleFormSubmit = async (formFieldValues) => {
     try {
-      const object = {
-        name: formFieldValues.username,
+      const userObj = {
+        name: formFieldValues.name,
         email: formFieldValues.email,
         password: formFieldValues.password,
-        address: formFieldValues.address,
+        street: formFieldValues.address,
+        city: formFieldValues.city,
         phone: formFieldValues.phone,
-        dni: formFieldValues.dni,
-        // Adding constant role until work on assign role to user
-        roleId: 'zDEUZFLh02VUM6lV9oSJ',
-        register: true,
+        vat: formFieldValues.vat,
+        x_role_id: 3,
+        country_id: 238,
+        state_id: 1385,
+        company_type: 'person',
+        category_id: [9]
       };
+      const odooBody = {
+        params: {
+          data: userObj
+        },
+        register: true
+      };
+
       dispatch(loadingWithSpinner());
-      await API.users.createUser(object);
+      const responseOdoo = await API.odoo.getOdooAuth();
+
+      setAccessCodeOdoo(responseOdoo.data.odoo_access_code);
+
+      await API.odoo.registerClientOdoo(odooBody);
       dispatch(loaded());
       history.push(SIGNIN);
     } catch (error) {

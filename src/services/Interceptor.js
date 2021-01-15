@@ -3,7 +3,13 @@ import jwtDecode from 'jwt-decode';
 import { cleanProfile } from '../stores/actions/profile';
 import { loading, loadingWithSpinner, loaded } from '../stores/actions/loader';
 import { showNotification } from '../stores/actions/notification';
-import { getToken, removeToken } from '../firebase/utils/token';
+import {
+  getToken,
+  cleanSessionStorage,
+  getAccessCodeOdoo
+} from '../firebase/utils/token';
+import { GET_ODOO_AUTH } from './urls';
+
 import API from './config';
 
 const interceptorRequest = async (request, store) => {
@@ -11,7 +17,14 @@ const interceptorRequest = async (request, store) => {
 
   store.dispatch(method === 'GET' ? loading() : loadingWithSpinner());
 
-  if (request.data && (request.data.register || request.data.signin)) {
+  const odooCookie = getAccessCodeOdoo() || '';
+  request.headers['odoo-cookie'] = odooCookie;
+
+  if (
+    // eslint-disable-next-line operator-linebreak
+    (request.data && (request.data.register || request.data.signin)) ||
+    request.url === GET_ODOO_AUTH
+  ) {
     return request;
   }
   const accessToken = getToken();
@@ -39,7 +52,7 @@ const interceptorRequest = async (request, store) => {
     request.headers.Authorization = `Bearer ${accessToken}`;
   } else {
     source.cancel(errorMessage);
-    removeToken();
+    cleanSessionStorage();
     store.dispatch(
       showNotification({
         type: 'error',

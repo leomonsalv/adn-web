@@ -9,40 +9,19 @@ const PrivateRoute = ({
   accessToken,
   permissions,
   ...rest
-}) => {
-  const checkPermission = () => {
-    let hasPermission = true;
-
-    switch (rest.location.pathname) {
-      case ROUTES.ROLES:
-        hasPermission = !!permissions.includes('list-roles');
-        break;
-
-      case ROUTES.PRODUCTS:
-        hasPermission = !!permissions.includes('list-products');
-        break;
-
-      default:
-        break;
-    }
-    return hasPermission;
-  };
-
-  return (
-    <Route
-      {...rest}
-      render={(properties) => (isLogged && accessToken ? (
-        checkPermission() === true ? (
-          <Component {...properties} />
-        ) : (
-          <Redirect to={ROUTES.HOME} />
-        )
+}) => (
+  <Route
+    {...rest}
+    render={(properties) => {
+      const hasAccess = isLogged && accessToken;
+      return hasAccess ? (
+        <Component {...properties} />
       ) : (
         <Redirect to={ROUTES.SIGNIN} />
-      ))}
-    />
-  );
-};
+      );
+    }}
+  />
+);
 
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
