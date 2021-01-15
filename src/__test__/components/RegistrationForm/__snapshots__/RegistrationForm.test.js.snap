@@ -40,7 +40,7 @@ exports[`Registration Form Tests should render component 1`] = `
               onChange={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
-              placeholder="Enter your user or email"
+              placeholder="Enter your email"
               style={null}
               type="text"
               value=""
@@ -235,12 +235,12 @@ exports[`Registration Form Tests should render component 1`] = `
             </span>
             <input
               className="ant-input"
-              id="register_username"
+              id="register_name"
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
-              placeholder="Username"
+              placeholder="Name"
               style={null}
               type="text"
               value=""
@@ -279,12 +279,56 @@ exports[`Registration Form Tests should render component 1`] = `
             </span>
             <input
               className="ant-input"
-              id="register_dni"
+              id="register_vat"
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
               placeholder="Dni"
+              style={null}
+              type="text"
+              value=""
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="ant-row ant-form-item form_item"
+    style={Object {}}
+  >
+    <div
+      className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-10"
+      style={Object {}}
+    >
+      <div
+        className="ant-form-item-control-input"
+      >
+        <div
+          className="ant-form-item-control-input-content"
+        >
+          <span
+            className="ant-input-affix-wrapper input"
+            onMouseUp={[Function]}
+          >
+            <span
+              className="ant-input-prefix"
+            >
+              <img
+                alt="logo"
+                className="input_icon"
+                src="direction.svg"
+              />
+            </span>
+            <input
+              className="ant-input"
+              id="register_city"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              placeholder="City"
               style={null}
               type="text"
               value=""

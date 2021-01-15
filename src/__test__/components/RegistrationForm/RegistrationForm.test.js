@@ -7,13 +7,13 @@ describe('Registration Form Tests', () => {
   const selectorPassWord = 'input#register_password';
   const selectorPhone = 'input#register_phone';
   const selectorConfirmPassword = 'input#register_confirm';
-  const selectorUserName = 'input#register_username';
+  const selectorUserName = 'input#register_name';
   const selectorAddress = 'input#register_address';
 
   const email = 'ddelgado@300dev.com';
   const password = 'password';
   const secondPassword = 'password';
-  const username = 'ddelgado';
+  const name = 'delgado';
   const phone = '+584121234567';
   const address = 'caracas, miranda';
 
@@ -58,9 +58,9 @@ describe('Registration Form Tests', () => {
       }
     );
 
-    const inputUsername = simulateChangeOnInput(wrapper, selectorUserName, {
-      name: 'username',
-      value: username
+    const inputName = simulateChangeOnInput(wrapper, selectorUserName, {
+      name: 'name',
+      value: name
     });
 
     const inputAddress = simulateChangeOnInput(wrapper, selectorAddress, {
@@ -76,7 +76,7 @@ describe('Registration Form Tests', () => {
     expect(inputEmail.props().value).toBe(email);
     expect(inputPassword.props().value).toBe(password);
     expect(inputConfirmPassword.props().value).toBe(secondPassword);
-    expect(inputUsername.props().value).toBe(username);
+    expect(inputName.props().value).toBe(name);
     expect(inputAddress.props().value).toBe(address);
     expect(inputPhone.props().value).toBe(phone);
 
@@ -107,9 +107,9 @@ describe('Registration Form Tests', () => {
       }
     );
 
-    const inputUsername = simulateChangeOnInput(wrapper, selectorUserName, {
-      name: 'username',
-      value: username
+    const inputName = simulateChangeOnInput(wrapper, selectorUserName, {
+      name: 'name',
+      value: name
     });
 
     const inputAddress = simulateChangeOnInput(wrapper, selectorAddress, {
@@ -125,7 +125,7 @@ describe('Registration Form Tests', () => {
     expect(inputEmail.props().value).toBe('');
     expect(inputPassword.props().value).toBe(password);
     expect(inputConfirmPassword.props().value).toBe(secondPassword);
-    expect(inputUsername.props().value).toBe(username);
+    expect(inputName.props().value).toBe(name);
     expect(inputAddress.props().value).toBe('');
     expect(inputPhone.props().value).toBe(phone);
   });
