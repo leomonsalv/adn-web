@@ -10,7 +10,10 @@ import { loginAttempt, loginSuccess } from 'stores/actions/auth';
 import Routes from './routes/Routes';
 import AuthProvider from './contexts/AuthContext/AuthContext';
 
-import { getToken, removeToken } from './firebase/utils/token';
+import { getToken, cleanSessionStorage } from './firebase/utils/token';
+
+import odooModels from './odoo/models';
+import clientQueries from './odoo/queries/client';
 
 const init = () => {
   const token = getToken();
@@ -32,26 +35,59 @@ const App = () => {
       dispatch(loginAttempt());
       const userId = JSON.parse(sessionStorage.getItem('userId'));
 
-      const { data } = await API.users.getUserById(userId);
+      const body = {
+        model: odooModels.RES_PARTNER,
+        params: {
+          query: clientQueries.GET_PROFILE_CLIENT
+        }
+      };
 
-      if (data) {
-        const { data: role } = await API.roles.roleVerification(data.roleId);
+      const { data } = await API.odoo.getOdooById(userId, body);
+
+      const { response: userProfile } = data;
+
+      if (userProfile) {
+        const isClientUser = userProfile.category_id.find(
+          (category) => category.name.toLowerCase() === 'client'
+        );
+
+        if (!isClientUser) {
+          dispatch(cleanProfile());
+          cleanSessionStorage();
+          dispatch(
+            showNotification({
+              type: 'error',
+              message: 'Error',
+              content: 'Need a Category Client User to Access'
+            })
+          );
+          return;
+        }
+
+        const permissions = userProfile.x_role_id.x_permission_ids.map(
+          (permission) => permission.x_name
+        );
+
+        const role = {
+          role: userProfile.x_role_id.x_name,
+          permissions
+        };
 
         if (role === undefined) {
           dispatch(cleanProfile());
-          removeToken();
+          cleanSessionStorage();
           return;
         }
 
         dispatch(
           setProfile({
-            ...data,
+            ...userProfile,
             isLogged: true,
             accessToken,
             role
           })
         );
-        dispatch(loginSuccess(data.userProfile));
+        dispatch(loginSuccess(userProfile));
       }
     };
     if (isLogged) {
@@ -79,7 +115,7 @@ const App = () => {
       const errorMessage = isExpired ? 'Token Expired' : 'Invalid Token';
 
       if (!accessToken || !validToken) {
-        removeToken();
+        cleanSessionStorage();
         dispatch(
           showNotification({
             type: 'error',

@@ -1,59 +1,59 @@
 {
-    "auth": {
-      "loginPage": {
-        "title": "Iniciar sesión",
-        "button": "Entrar",
-        "password": "contraseña?",
-        "forgot": "Olvidaste tu "
-      },
-      "registerPage": {
-        "title": "Registro",
-        "button": "Regístrate"
-      },
-      "fields": {
-        "email": "Ingresa tu usuario o correo",
-        "password": "Ingresa tu Contraseña",
-        "confirmPassword": "Confirma Contraseña",
-        "username": "Nombre de Usuario",
-        "address": "Direccion",
-        "phoneNumber": "Telefono",
-        "dni": "Dni"
-      },
-      "rules": {
-        "validEmail": "Por favor ingrese un E-mail valido",
-        "emptyEmail": "Por favor ingrese un E-mail",
-        "password": "Por favor ingrese una contraseña",
-        "confirmPassword": "Por favor confirme la contraseña",
-        "username": "Por favor ingrese un nombre de usuario",
-        "address": "Por favor ingrese una direccion",
-        "phone": "Por favor ingrese un telefono",
-        "dni": "Por favor ingrese su dni"
-      }
+  "auth": {
+    "loginPage": {
+      "title": "Iniciar sesión",
+      "button": "Entrar",
+      "password": "contraseña?",
+      "forgot": "Olvidaste tu "
     },
-    "lang": {
-      "english": "Ingles",
-      "spanish": "Español"
+    "registerPage": {
+      "title": "Registro",
+      "button": "Regístrate"
     },
-    "menu": {
-      "home": "Inicio",
-      "signOut": "Cerrar sesión",
-      "signIn": "Entrar",
-      "myAccount" : "Mi Cuenta",
-      "products": "Productos"
+    "fields": {
+      "email": "Ingresa tu correo",
+      "password": "Ingresa tu Contraseña",
+      "confirmPassword": "Confirma Contraseña",
+      "name": "Nombre",
+      "city": "Ciudad",
+      "address": "Direccion",
+      "phoneNumber": "Telefono",
+      "dni": "Dni"
     },
-    "common": {
-      "button": {
-        "cancel": "Cancelar",
-        "edit": "Editar",
-        "update": "Actualizar",
-        "create": "Crear"
-      }
-    },
-    "pages": {
-      "notFound": {
-        "title": "No se encontro esta pagina",
-        "button": "Ir atras"
-      }
+    "rules": {
+      "validEmail": "Por favor ingrese un E-mail valido",
+      "emptyEmail": "Por favor ingrese un E-mail",
+      "password": "Por favor ingrese una contraseña",
+      "confirmPassword": "Por favor confirme la contraseña",
+      "username": "Por favor ingrese un nombre de usuario",
+      "address": "Por favor ingrese una direccion",
+      "phone": "Por favor ingrese un telefono",
+      "dni": "Por favor ingrese su dni"
+    }
+  },
+  "lang": {
+    "english": "Ingles",
+    "spanish": "Español"
+  },
+  "menu": {
+    "home": "Inicio",
+    "signOut": "Cerrar sesión",
+    "signIn": "Entrar",
+    "myAccount": "Mi Cuenta",
+    "products": "Productos"
+  },
+  "common": {
+    "button": {
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "update": "Actualizar",
+      "create": "Crear"
+    }
+  },
+  "pages": {
+    "notFound": {
+      "title": "No se encontro esta pagina",
+      "button": "Ir atras"
     }
   }
-  
+}

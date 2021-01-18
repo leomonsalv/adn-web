@@ -5,7 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { showNotification } from '../../stores/actions/notification';
 import { loadingWithSpinner, loaded } from '../../stores/actions/loader';
-import { setToken, removeToken } from '../../firebase/utils/token';
+import {
+  setToken,
+  cleanSessionStorage,
+  setUserIdStorage,
+  setAccessCodeOdoo,
+  setCookieExpiredTime
+} from '../../firebase/utils/token';
 import { setProfile, cleanProfile } from '../../stores/actions/profile';
 import API from '../../services';
 import { HOME, REGISTER } from '../../constans/routes';
@@ -25,16 +31,47 @@ const Login = () => {
     try {
       dispatch(loadingWithSpinner());
 
+      const responseOdoo = await API.odoo.getOdooAuth();
+
+      setAccessCodeOdoo(responseOdoo.data.odoo_access_code);
+      setCookieExpiredTime(responseOdoo.data.odoo_cookie_expired_time);
+
       const { data } = await API.auth.signIn({ email, password, signin: true });
 
-      if (data) {
-        setToken(data.token);
+      const { userProfile, token } = data;
 
-        const { data: role } = await API.roles.roleVerification(data.userProfile.roleId);
+      const isClientUser = userProfile.category_id.find(
+        (category) => category.name.toLowerCase() === 'client'
+      );
+
+      if (!isClientUser) {
+        dispatch(cleanProfile());
+        cleanSessionStorage();
+        dispatch(
+          showNotification({
+            type: 'error',
+            message: 'Error',
+            content: 'Need a Category Client User to Access'
+          })
+        );
+        dispatch(loaded());
+        return;
+      }
+
+      const permissions = userProfile.x_role_id.x_permission_ids.map(
+        (permission) => permission.x_name
+      );
+      const role = {
+        role: userProfile.x_role_id.x_name,
+        permissions
+      };
+
+      if (data) {
+        setToken(token);
 
         if (role === undefined) {
           dispatch(cleanProfile());
-          removeToken();
+          cleanSessionStorage();
           return;
         }
 
@@ -47,7 +84,7 @@ const Login = () => {
           })
         );
 
-        window.sessionStorage.setItem('userId', JSON.stringify(data.userProfile.id));
+        setUserIdStorage(data.userProfile.id);
       }
 
       dispatch(loaded());
@@ -85,7 +122,6 @@ const Login = () => {
           {t('auth.loginPage.password')}
         </span>
       </Button>
-
     </div>
   );
 };
