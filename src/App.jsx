@@ -129,7 +129,7 @@ const App = () => {
     if (isLogged) {
       verifyToken();
     }
-  }, [isLogged, accessToken, dispatch, location]);
+  }, [location]);
 
   return (
     <AuthProvider>

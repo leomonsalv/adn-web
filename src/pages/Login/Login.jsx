@@ -33,40 +33,44 @@ const Login = () => {
 
       const responseOdoo = await API.odoo.getOdooAuth();
 
+      if (!responseOdoo.data) {
+        return;
+      }
+
       setAccessCodeOdoo(responseOdoo.data.odoo_access_code);
       setCookieExpiredTime(responseOdoo.data.odoo_cookie_expired_time);
 
       const { data } = await API.auth.signIn({ email, password, signin: true });
 
-      const { userProfile, token } = data;
-
-      const isClientUser = userProfile.category_id.find(
-        (category) => category.name.toLowerCase() === 'client'
-      );
-
-      if (!isClientUser) {
-        dispatch(cleanProfile());
-        cleanSessionStorage();
-        dispatch(
-          showNotification({
-            type: 'error',
-            message: 'Error',
-            content: 'Need a Category Client User to Access'
-          })
-        );
-        dispatch(loaded());
-        return;
-      }
-
-      const permissions = userProfile.x_role_id.x_permission_ids.map(
-        (permission) => permission.x_name
-      );
-      const role = {
-        role: userProfile.x_role_id.x_name,
-        permissions
-      };
-
       if (data) {
+        const { userProfile, token } = data;
+
+        const isClientUser = userProfile.category_id.find(
+          (category) => category.name.toLowerCase() === 'client'
+        );
+
+        if (!isClientUser) {
+          dispatch(cleanProfile());
+          cleanSessionStorage();
+          dispatch(
+            showNotification({
+              type: 'error',
+              message: 'Error',
+              content: 'Need a Category Client User to Access'
+            })
+          );
+          dispatch(loaded());
+          return;
+        }
+
+        const permissions = userProfile.x_role_id.x_permission_ids.map(
+          (permission) => permission.x_name
+        );
+        const role = {
+          role: userProfile.x_role_id.x_name,
+          permissions
+        };
+
         setToken(token);
 
         if (role === undefined) {
