@@ -1,8 +1,10 @@
 @import '../../theme/variables.scss';
 
+.layout_container {
+  background: white;
+}
 .layout {
   min-height: 100vh;
-
   .menu {
     display: flex;
     align-items: center;
