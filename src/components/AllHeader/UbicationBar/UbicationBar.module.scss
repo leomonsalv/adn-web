@@ -1,0 +1,52 @@
+@import '../../../theme/variables.scss';
+
+.container {
+  background-color: #2fc9af;
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+  .text {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: white;
+  }
+  .underlined_text {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: white;
+    text-decoration: underline;
+  }
+  .ubication {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 2%;
+    .ubication_text {
+      margin: 0 15px;
+    }
+  }
+  .help {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  .close {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2%;
+  }
+}
