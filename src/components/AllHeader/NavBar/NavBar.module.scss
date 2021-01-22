@@ -1,0 +1,31 @@
+@import '../../../theme/variables.scss';
+
+.container_navbar {
+  background-color: #f7f8fb;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style-type: none;
+  border-bottom: 1px solid #818999;
+
+  .span_element {
+    cursor: pointer;
+    height: 45px;
+    font-family: 'Poppins';
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+  }
+  .span_element:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
