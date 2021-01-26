@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins'),
+    url('../src/fonts/Poppins/Poppins-Black.ttf') format('woff');
+}
+
+body {
+  font-family: 'Poppins';
+}
