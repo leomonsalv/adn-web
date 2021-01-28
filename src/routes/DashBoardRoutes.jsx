@@ -8,8 +8,11 @@ import Products from '../pages/Products/Products';
 import ProductsView from '../pages/Products/ProductsView';
 import Home from '../pages/Home/Home';
 
+import AppModal from '../components/Modal/Modal';
+
 const DashBoardRoutes = () => (
   <>
+    <AppModal />
     <DashBoard>
       <Switch>
         <Route exact path={ROUTES.HOME} component={Home} />

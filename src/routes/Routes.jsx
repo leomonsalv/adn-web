@@ -10,11 +10,14 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import DashBoardRoutes from './DashBoardRoutes';
 
+import AppModal from '../components/Modal/Modal';
+
 const Routes = () => {
   const { isLogged, accessToken, permissions } = useAuthContext();
 
   return (
     <>
+      <AppModal />
       <Switch>
         <PublicRoute
           exact
