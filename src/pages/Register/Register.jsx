@@ -30,9 +30,7 @@ const Register = () => {
         category_id: [9]
       };
       const odooBody = {
-        params: {
-          data: userObj
-        },
+        ...userObj,
         register: true
       };
 
