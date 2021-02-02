@@ -55,5 +55,236 @@
       "title": "Not found page",
       "button": "Go Back"
     }
+  },
+  "sections": {
+    "healt": {
+      "title": "Health care and medical correctors",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Aids for daily living",
+              "categories": [
+                "Compression stockings and hosiery",
+                "Wound care",
+                "Orthopedic aids",
+                "Hearing aid batteries",
+                "Mobility aids",
+                "Reading glasses"
+              ]
+            },
+            "second": {
+              "subtitle": "Mastectomy",
+              "categories": [
+                "Breast Enhancers"
+              ]
+            },
+            "third": {
+              "subtitle": "Pill organization",
+              "categories": [
+                "Pill organizers",
+                "Tablet cutters and dividers",
+                "Pill reminders",
+                "Accessories"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Sports Medicine, Supports and Bandages",
+              "categories": [
+                "Neck braces",
+                "Arm and elbow supports",
+                "Hand and wrist supports",
+                "Back and waist straps",
+                "Knee and thigh supports",
+                "Anklets",
+                "Support Wraps",
+                "Slings and splints",
+                "Diabetic Foot Stockings",
+                "Bandages and bandage supplies",
+                "Hot and cold therapy",
+                "Inserts, insoles and cushions"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Testing and monitoring at home",
+              "categories": [
+                "Nebulizers",
+                "Blood pressure monitors",
+                "Oximeters",
+                "Heart rate monitors",
+                "Diabetic monitors",
+                "Thermometers",
+                "Scales and body fat monitors",
+                "Diabetic Test Strips",
+                "Lancet for diabetic monitor"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "beauty": {
+      "title": "Skin, hair and body care",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Skin care",
+              "categories": [
+                "Moisturizers",
+                "Cleaners",
+                "Deals",
+                "Scrubs, masks and scrubs",
+                "Eye skin care",
+                "Facial tonic",
+                "Skin Care Sets",
+                "Skin care set"
+              ]
+            },
+            "second": {
+              "subtitle": "Cosmetic products",
+              "categories": [
+                "Eyes",
+                "Face",
+                "Lips",
+                "Natural and organic makeup",
+                "Cheeks",
+                "Makeup games",
+                "Makeup tools and accessories",
+                "Make-up removers"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Hair care",
+              "categories": [
+                "Hair color",
+                "Conditioning shampoo",
+                "Wavy, curly, or straight hair",
+                "Hair care salon",
+                "Styling products",
+                "Hair and scalp treatments",
+                "Styling tools and appliances",
+                "Brushes and hair accessories"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Fragrance",
+              "categories": [
+                "Fragrance for Ladies",
+                "Fragrance for Men",
+                "Fragrance for Children"
+              ]
+            },
+            "second": {
+              "subtitle": "Nail",
+              "categories": [
+                "Nails",
+                "Nail polish",
+                "Base and top layers",
+                "Nail care",
+                "Manicure and pedicure tools",
+                "Nail Sets & Accessories",
+                "Polish remover",
+                "Accessories"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "personal": {
+      "title": "Personal care and sexual well-being",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Body wellness",
+              "categories": [
+                "Body lotion",
+                "Body cleansing / Shower Gel",
+                "Body moisturizer",
+                "Moisturizing hand cream",
+                "Scrubs",
+                "Body treatments",
+                "Body powder (Talc)",
+                "Hand soap",
+                "Gel alcohol",
+                "Treatments for scars and stretch marks",
+                "Bar soap",
+                "Facial care",
+                "Acné"
+              ]
+            },
+            "second": {
+              "subtitle": "Deodorant and Antiperspirants",
+              "categories": [
+                "For men",
+                "For the women",
+                "For children"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Care for Women",
+              "categories": [
+                "Deodorants / Intimate hygiene",
+                "Tampons",
+                "Vaginal creams and moisturizers",
+                "Pads",
+                "Sanitary towels",
+                "Daily protectors",
+                "Alternative protection"
+              ]
+            },
+            "second": {
+              "subtitle": "Hair care",
+              "categories": [
+                "Coloration",
+                "Conditioning shampoo",
+                "Hair Care, Fixation and Styling",
+                "Hair and scalp treatments",
+                "Styling tools and appliances",
+                "Brushes and hair accessories"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Personal hygiene",
+              "categories": [
+                "Shavers, blades and cartridges",
+                "Shaving creams and gels",
+                "Hair removal, bleaching and depilatories",
+                "Electric shave for men",
+                "Electric shave for women",
+                "Pre-Post Shave",
+                "Hygiene Accessories"
+              ]
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -1,14 +1,13 @@
-@import '../../../theme/variables.scss';
-
-.container_navbar {
+.containerNavbar {
   background-color: #f7f8fb;
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
   align-items: center;
   list-style-type: none;
   border-bottom: 1px solid #818999;
   margin-bottom: 0px;
-  .span_element {
+  text-align: center;
+  .spanElement {
     cursor: pointer;
     height: 45px;
     font-family: 'Poppins';
@@ -20,12 +19,24 @@
     text-align: center;
     display: flex;
     align-items: center;
+    width: 10%;
+    display: flex;
+    justify-content: center;
   }
-  .span_element:hover {
-    text-decoration: underline;
+  .spanElement:hover {
+    text-decoration: none;
+    border-bottom: 2px solid #9b51e0;
   }
 
   @media (max-width: 768px) {
     display: none;
   }
+}
+
+.containerHover {
+  transition: 1s;
+  position: absolute;
+  width: 100%;
+  background: white;
+  z-index: 10;
 }
