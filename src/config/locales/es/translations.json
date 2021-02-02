@@ -55,5 +55,236 @@
       "title": "No se encontro esta pagina",
       "button": "Ir atras"
     }
+  },
+  "sections": {
+    "healt": {
+      "title": "Cuidados de la salud y correctores médicos",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Ayudas para la vida diaria",
+              "categories": [
+                "Medias de compresión y calcetería",
+                "Cuidado de heridas",
+                "Ayudas ortopédicas",
+                "Pilas para audífonos",
+                "Ayudas de movilidad",
+                "Gafas de lectura"
+              ]
+            },
+            "second": {
+              "subtitle": "Mastectomía",
+              "categories": [
+                "Potenciadores de Senos"
+              ]
+            },
+            "third": {
+              "subtitle": "Organización de la píldora",
+              "categories": [
+                "Organizadores de pastillas",
+                "Cortadores y divisores de pastillas",
+                "Recordatorios de pastillas",
+                "Accesorios"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Medicina Deportiva, Soportes y Vendajes",
+              "categories": [
+                "Apoyos de cuello",
+                "Apoyos de brazo y codo",
+                "Apoyos de mano y muñeca",
+                "Tirantes de espalda y cintura",
+                "Apoyos de rodilla y muslo",
+                "Tobilleras",
+                "Envolturas de soporte",
+                "Eslingas y férulas",
+                "Medias para el Pie Diabetico",
+                "Vendajes y suministros para vendajes",
+                "Terapia de frío y calor",
+                "Inserciones, plantillas y cojines"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Pruebas y monitoreo en el hogar",
+              "categories": [
+                "Nebulizadores",
+                "Monitores de presión arterial",
+                "Oximetros",
+                "Monitores de frecuencia cardíaca",
+                "Monitores diabéticos",
+                "Termómetros",
+                "Básculas y monitores de grasa corporal",
+                "Tiras de Pruebas diabeticas",
+                "Lanceta para monitor diabetico"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "beauty": {
+      "title": "Cuidados de la piel, cabello y el cuerpo",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Protección de la piel",
+              "categories": [
+                "Hidratantes",
+                "Limpiadores",
+                "Tratos",
+                "Exfoliantes, mascarillas y exfoliantes",
+                "Cuidado de la piel de los ojos",
+                "Tónico facial",
+                "Conjuntos para el cuidado de la piel",
+                "Set para el cuidado de la piel"
+              ]
+            },
+            "second": {
+              "subtitle": "Productos cosméticos",
+              "categories": [
+                "Ojos",
+                "Cara",
+                "Labios",
+                "Maquillaje natural y orgánico",
+                "Las mejillas",
+                "Juegos de maquillaje",
+                "Herramientas y accesorios de maquillaje",
+                "Desmaquilladores"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Cuidado del cabello",
+              "categories": [
+                "Color de pelo",
+                "Shampoo Acondicionador",
+                "Cabello ondulado, rizado, o liso",
+                "Salón de cuidado del cabello",
+                "Productos de peinado",
+                "Tratamientos para el cabello y el cuero cabelludo",
+                "Herramientas y electrodomésticos de peinado",
+                "Cepillos y accesorios para el cabello"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Fragancia",
+              "categories": [
+                "Fragancia para Damas",
+                "Fragancia para Caballeros",
+                "Fragancia para Niños"
+              ]
+            },
+            "second": {
+              "subtitle": "Uñas",
+              "categories": [
+                "Uñas",
+                "Esmalte de uñas",
+                "Capas base y superior",
+                "Cuidado de uñas",
+                "Herramientas de manicura y pedicura",
+                "Conjuntos y accesorios de uñas",
+                "Removedor de esmalte",
+                "Accesorios"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "personal": {
+      "title": "Cuidados personal y bienestar sexual",
+      "columns": {
+        "first": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Bienestar corporal",
+              "categories": [
+                "Loción Corporal",
+                "Limpieza corporal / Shower Gel",
+                "Crema hidratante de cuerpo",
+                "Crema Hidratante de manos",
+                "Exfoliantes",
+                "Tratamientos corporales",
+                "Polvo corporal (Talco)",
+                "Jabón de mano",
+                "Alcohol en gel",
+                "Tratamientos para cicatrices y estrías",
+                "Jabón en pastilla",
+                "Cuidado facial",
+                "Acné"
+              ]
+            },
+            "second": {
+              "subtitle": "Desodorante y Antitranspirantes",
+              "categories": [
+                "Para los hombres",
+                "Para las mujere",
+                "Para los Niños"
+              ]
+            }
+          }
+        },
+        "second": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Cuidado para la Mujer",
+              "categories": [
+                "Desodorantes / Higiene íntimo",
+                "Tampones",
+                "Cremas y humectantes vaginales",
+                "Almohadillas",
+                "Toallas sanitarias",
+                "Protectores diarios",
+                "Protección alternativa"
+              ]
+            },
+            "second": {
+              "subtitle": "Cuidado del cabello",
+              "categories": [
+                "Coloración",
+                "Shampoo/ Acondicionador",
+                "Cuidado del cabello, Fijación y Peinado",
+                "Tratamientos para el cabello y el cuero cabelludo",
+                "Herramientas y electrodomésticos de peinado",
+                "Cepillos y accesorios para el cabello"
+              ]
+            }
+          }
+        },
+        "third": {
+          "paragraphs": {
+            "first": {
+              "subtitle": "Higiene personal",
+              "categories": [
+                "Maquinas de afeitar, cuchillas y cartuchos",
+                "Cremas y geles de afeitar",
+                "Depilación, decolorantes y depilatorios",
+                "Afeitado eléctrico para hombres",
+                "Afeitado eléctrico para mujeres",
+                "Pre-Postafeitado",
+                "Accesorios de Higiene"
+              ]
+            }
+          }
+        }
+      }
+    }
   }
 }
