@@ -42,7 +42,7 @@ export default function Example() {
                           review.rating > rating
                             ? "text-yellow-400"
                             : "text-gray-200",
-                          "size-5 shrink-0"
+                          "size-5 shrink-0",
                         )}
                       />
                     ))}

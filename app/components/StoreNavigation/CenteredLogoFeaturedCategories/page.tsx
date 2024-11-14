@@ -432,7 +432,7 @@ export default function Example() {
                                       itemIdx === 0
                                         ? "aspect-w-2 col-span-2"
                                         : "",
-                                      "group aspect-h-1 aspect-w-1 relative overflow-hidden rounded-md bg-gray-100"
+                                      "group aspect-h-1 aspect-w-1 relative overflow-hidden rounded-md bg-gray-100",
                                     )}
                                   >
                                     <img

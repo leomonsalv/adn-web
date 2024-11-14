@@ -98,7 +98,7 @@ export default function Example() {
                             reviews.average > rating
                               ? "text-yellow-400"
                               : "text-gray-300",
-                            "size-5 shrink-0"
+                            "size-5 shrink-0",
                           )}
                         />
                       ))}

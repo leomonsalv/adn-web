@@ -54,7 +54,7 @@ export default function Example() {
               <div
                 className={classNames(
                   reviewIdx === 0 ? "" : "border-t border-gray-200",
-                  "flex-1 py-10"
+                  "flex-1 py-10",
                 )}
               >
                 <h3 className="font-medium text-gray-900">{review.author}</h3>
@@ -71,7 +71,7 @@ export default function Example() {
                         review.rating > rating
                           ? "text-yellow-400"
                           : "text-gray-300",
-                        "size-5 shrink-0"
+                        "size-5 shrink-0",
                       )}
                     />
                   ))}

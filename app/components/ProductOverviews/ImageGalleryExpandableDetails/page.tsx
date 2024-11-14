@@ -139,7 +139,7 @@ export default function Example() {
                         product.rating > rating
                           ? "text-indigo-500"
                           : "text-gray-300",
-                        "size-5 shrink-0"
+                        "size-5 shrink-0",
                       )}
                     />
                   ))}
@@ -175,14 +175,14 @@ export default function Example() {
                         aria-label={color.name}
                         className={classNames(
                           color.selectedColor,
-                          "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1"
+                          "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1",
                         )}
                       >
                         <span
                           aria-hidden="true"
                           className={classNames(
                             color.bgColor,
-                            "size-8 rounded-full border border-black/10"
+                            "size-8 rounded-full border border-black/10",
                           )}
                         />
                       </Radio>

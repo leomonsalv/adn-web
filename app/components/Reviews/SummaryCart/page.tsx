@@ -49,7 +49,7 @@ export default function Example() {
                       reviews.average > rating
                         ? "text-yellow-400"
                         : "text-gray-300",
-                      "size-5 shrink-0"
+                      "size-5 shrink-0",
                     )}
                   />
                 ))}
@@ -80,7 +80,7 @@ export default function Example() {
                         aria-hidden="true"
                         className={classNames(
                           count.count > 0 ? "text-yellow-400" : "text-gray-300",
-                          "size-5 shrink-0"
+                          "size-5 shrink-0",
                         )}
                       />
 
@@ -149,7 +149,7 @@ export default function Example() {
                               review.rating > rating
                                 ? "text-yellow-400"
                                 : "text-gray-300",
-                              "size-5 shrink-0"
+                              "size-5 shrink-0",
                             )}
                           />
                         ))}

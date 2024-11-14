@@ -83,7 +83,7 @@ export default function Example() {
                           review.rating > rating
                             ? "text-gray-900"
                             : "text-gray-200",
-                          "size-5 shrink-0"
+                          "size-5 shrink-0",
                         )}
                       />
                     ))}

@@ -35,7 +35,7 @@ const paymentMethods = [
 
 export default function Example() {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-    deliveryMethods[0]
+    deliveryMethods[0],
   );
 
   return (

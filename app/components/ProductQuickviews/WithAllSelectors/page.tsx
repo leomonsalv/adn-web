@@ -118,7 +118,7 @@ export default function Example() {
                                 product.rating > rating
                                   ? "text-yellow-400"
                                   : "text-gray-200",
-                                "size-5 shrink-0"
+                                "size-5 shrink-0",
                               )}
                             />
                           ))}
@@ -162,14 +162,14 @@ export default function Example() {
                               aria-label={color.name}
                               className={classNames(
                                 color.selectedColor,
-                                "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1"
+                                "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1",
                               )}
                             >
                               <span
                                 aria-hidden="true"
                                 className={classNames(
                                   color.bgColor,
-                                  "size-8 rounded-full border border-black/10"
+                                  "size-8 rounded-full border border-black/10",
                                 )}
                               />
                             </Radio>
@@ -205,7 +205,7 @@ export default function Example() {
                                 size.inStock
                                   ? "cursor-pointer focus:outline-none"
                                   : "cursor-not-allowed opacity-25",
-                                "flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 data-[checked]:border-transparent data-[checked]:bg-indigo-600 data-[checked]:text-white data-[focus]:ring-2 data-[focus]:ring-indigo-500 data-[focus]:ring-offset-2 data-[checked]:hover:bg-indigo-700 sm:flex-1"
+                                "flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 data-[checked]:border-transparent data-[checked]:bg-indigo-600 data-[checked]:text-white data-[focus]:ring-2 data-[focus]:ring-indigo-500 data-[focus]:ring-offset-2 data-[checked]:hover:bg-indigo-700 sm:flex-1",
                               )}
                             >
                               {size.name}

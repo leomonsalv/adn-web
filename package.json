@@ -2,11 +2,15 @@
   "name": "adan-web",
   "version": "0.1.0",
   "private": true,
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -67,7 +71,11 @@
     "@types/react-dom": "^18.3.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.49",
+    "prettier": "3.3.3",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   },

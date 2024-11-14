@@ -159,7 +159,7 @@ export default function Example() {
                       <div
                         className={classNames(
                           product.step > 0 ? "text-indigo-600" : "",
-                          "text-center"
+                          "text-center",
                         )}
                       >
                         Processing
@@ -167,7 +167,7 @@ export default function Example() {
                       <div
                         className={classNames(
                           product.step > 1 ? "text-indigo-600" : "",
-                          "text-center"
+                          "text-center",
                         )}
                       >
                         Shipped
@@ -175,7 +175,7 @@ export default function Example() {
                       <div
                         className={classNames(
                           product.step > 2 ? "text-indigo-600" : "",
-                          "text-right"
+                          "text-right",
                         )}
                       >
                         Delivered
