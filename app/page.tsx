@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Moon, MoonIcon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
+import { useCounterStore } from "@/providers/counter-store-provider";
 
 import {
   DropdownMenu,
@@ -21,7 +22,10 @@ const navigation = [
   { name: "Company", href: "#" },
 ];
 
-export default function Example() {
+export default function HomePage() {
+  const { count, incrementCount, decrementCount } = useCounterStore(
+    (state) => state,
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { setTheme } = useTheme();
   return (
@@ -147,26 +151,53 @@ export default function Example() {
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Data to enrich your online business
             </h1>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
+            {/* ESTE DROPDOWN ES EL BOTON QUE HACE PASAR DEL MODO CLARO AL MODO OBSCURO */}
+            <div className="mx-auto max-w-2xl py-6 ">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                    <span className="sr-only">Toggle theme</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* ESTO ES UN BLOQUE DE ZUSTAND PARA PROBARLO YA QUE PUEDE FUNCIONAR PARA REEMPLAZAR REDUX */}
+
+            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 flex justify-center gap-5">
+              <button
+                type="button"
+                onClick={() => void incrementCount()}
+                className="font-semibold text-indigo-600"
+              >
+                Increment Count
+              </button>
+              <hr />
+              Count: {count}
+              <hr />
+              <button
+                type="button"
+                onClick={() => void decrementCount()}
+                className="font-semibold text-indigo-600"
+              >
+                Decrement Count
+              </button>
+            </div>
+
             <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
               Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
               lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
