@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CounterStoreProvider } from "@/providers/counter-store-provider";
 import "./globals.css";
+import { NavLinks } from "@/components/navigation/Header";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NavLinks />
         {/* TODO: DECIDAMOS QUE FUENTE VAMOS A UTILIZAR <body className={inter.className}> */}
         <ThemeProvider
           attribute="class"
