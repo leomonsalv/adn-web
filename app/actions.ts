@@ -12,3 +12,15 @@ export async function createUser(prevState: any, formData: FormData) {
 
   redirect("/");
 }
+
+//TODO: TESTING useFORMSTATE
+// export async function createOrderAction(prevState: any, formData: FormData) {
+//   const res = await fetch("https://...");
+//   const json = await res.json();
+
+//   if (!res.ok) {
+//     return { message: "Please enter a valid email" };
+//   }
+
+//   redirect("/");
+// }

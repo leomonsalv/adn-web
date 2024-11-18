@@ -1,4 +1,4 @@
-import CSCheckoutPage from "@/components/CheckoutForms/checkoutForm";
+import CSCheckoutPage from "@/components/forms/checkout-form";
 import React from "react";
 
 type Props = {};

@@ -1,9 +1,10 @@
 "use client";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
-import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { useFormState } from "react-dom";
 import { useState } from "react";
-import OrderSummary from "../OrderSummary";
+import OrderSummary from "@/components/OrderSummary";
+// import { createOrderAction } from "@/app/actions";
 
 const deliveryMethods = [
   {
@@ -15,10 +16,50 @@ const deliveryMethods = [
   { id: 2, title: "Express", turnaround: "2–5 business days", price: "$16.00" },
 ];
 
+const INITIAL_STATE = {
+  zodErrors: null,
+  data: {
+    email: "",
+    name: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvc: "",
+    deliveryMethod: "",
+    shippingAddress: "",
+    address: "",
+    apartment: "",
+    city: "",
+    state: "",
+    postal: "",
+    rememberBilling: false,
+  },
+  message: null,
+};
+
 export default function CSCheckoutPage() {
+  const [formState, formAction] = useFormState(
+    createOrderAction,
+    INITIAL_STATE,
+  );
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0],
   );
+
+  const {
+    address,
+    apartment,
+    cardNumber,
+    city,
+    cvc,
+    deliveryMethod,
+    email,
+    expirationDate,
+    name,
+    postal,
+    rememberBilling,
+    shippingAddress,
+    state,
+  } = formState?.data || {};
 
   return (
     <div className="bg-white">
@@ -36,7 +77,10 @@ export default function CSCheckoutPage() {
 
         <OrderSummary />
 
-        <form className="px-4 pb-36 pt-16 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16">
+        <form
+          className="px-4 pb-36 pt-16 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
+          // action={formAction}
+        >
           <div className="mx-auto max-w-lg lg:max-w-none">
             <section aria-labelledby="contact-info-heading">
               <h2
@@ -58,6 +102,7 @@ export default function CSCheckoutPage() {
                     id="email-address"
                     name="email-address"
                     type="email"
+                    defaultValue={email}
                     autoComplete="email"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
@@ -86,6 +131,7 @@ export default function CSCheckoutPage() {
                       id="name-on-card"
                       name="name-on-card"
                       type="text"
+                      defaultValue={name}
                       autoComplete="cc-name"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -104,6 +150,7 @@ export default function CSCheckoutPage() {
                       id="card-number"
                       name="card-number"
                       type="text"
+                      defaultValue={cardNumber}
                       autoComplete="cc-number"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -122,6 +169,7 @@ export default function CSCheckoutPage() {
                       id="expiration-date"
                       name="expiration-date"
                       type="text"
+                      defaultValue={expirationDate}
                       autoComplete="cc-exp"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -140,6 +188,7 @@ export default function CSCheckoutPage() {
                       id="cvc"
                       name="cvc"
                       type="text"
+                      defaultValue={cvc}
                       autoComplete="csc"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -213,6 +262,7 @@ export default function CSCheckoutPage() {
                     <input
                       id="company"
                       name="company"
+                      defaultValue={deliveryMethod}
                       type="text"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -231,6 +281,7 @@ export default function CSCheckoutPage() {
                       id="address"
                       name="address"
                       type="text"
+                      defaultValue={address}
                       autoComplete="street-address"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -248,6 +299,7 @@ export default function CSCheckoutPage() {
                     <input
                       id="apartment"
                       name="apartment"
+                      defaultValue={apartment}
                       type="text"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -266,6 +318,7 @@ export default function CSCheckoutPage() {
                       id="city"
                       name="city"
                       type="text"
+                      defaultValue={city}
                       autoComplete="address-level2"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -284,6 +337,7 @@ export default function CSCheckoutPage() {
                       id="region"
                       name="region"
                       type="text"
+                      defaultValue={state}
                       autoComplete="address-level1"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -302,6 +356,7 @@ export default function CSCheckoutPage() {
                       id="postal-code"
                       name="postal-code"
                       type="text"
+                      defaultValue={postal}
                       autoComplete="postal-code"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -323,6 +378,7 @@ export default function CSCheckoutPage() {
                   defaultChecked
                   id="same-as-shipping"
                   name="same-as-shipping"
+                  defaultValue={shippingAddress}
                   type="checkbox"
                   className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
@@ -353,4 +409,63 @@ export default function CSCheckoutPage() {
       </div>
     </div>
   );
+}
+function createOrderAction(state: {
+  zodErrors: null;
+  data: {
+    email: string;
+    name: string;
+    cardNumber: string;
+    expirationDate: string;
+    cvc: string;
+    deliveryMethod: string;
+    shippingAddress: string;
+    address: string;
+    apartment: string;
+    city: string;
+    state: string;
+    postal: string;
+    rememberBilling: boolean;
+  };
+  message: null;
+}):
+  | {
+      zodErrors: null;
+      data: {
+        email: string;
+        name: string;
+        cardNumber: string;
+        expirationDate: string;
+        cvc: string;
+        deliveryMethod: string;
+        shippingAddress: string;
+        address: string;
+        apartment: string;
+        city: string;
+        state: string;
+        postal: string;
+        rememberBilling: boolean;
+      };
+      message: null;
+    }
+  | Promise<{
+      zodErrors: null;
+      data: {
+        email: string;
+        name: string;
+        cardNumber: string;
+        expirationDate: string;
+        cvc: string;
+        deliveryMethod: string;
+        shippingAddress: string;
+        address: string;
+        apartment: string;
+        city: string;
+        state: string;
+        postal: string;
+        rememberBilling: boolean;
+      };
+      message: null;
+    }> {
+  throw new Error("Function not implemented.");
 }

@@ -75,8 +75,8 @@ function calculateTotal(
 
 function OrderSummary() {
   const subtotal = calculateSubtotal(products);
-  const shipping = 15.0; // Puedes hacerlo dinámico según el caso
-  const taxes = subtotal * 0.08; // Ejemplo: 8% de impuestos
+  const shipping = 15.0;
+  const taxes = subtotal * 0.08;
   const total = calculateTotal(subtotal, shipping, taxes);
 
   return (
@@ -155,20 +155,25 @@ function OrderSummary() {
             transition
             className="relative transform bg-white px-4 py-6 transition duration-300 ease-in-out data-[closed]:translate-y-full sm:px-6"
           >
-            <dl className="mx-auto max-w-lg space-y-6">
+            <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Subtotal</dt>
-                <dd>$320.00</dd>
+                <dd>${subtotal.toFixed(2)}</dd>
               </div>
 
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Shipping</dt>
-                <dd>$15.00</dd>
+                <dd>${shipping.toFixed(2)}</dd>
               </div>
 
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Taxes</dt>
-                <dd>$26.80</dd>
+                <dd>${taxes.toFixed(2)}</dd>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-gray-200 pt-6">
+                <dt className="text-base">Total</dt>
+                <dd className="text-base">${total.toFixed(2)}</dd>
               </div>
             </dl>
           </PopoverPanel>
