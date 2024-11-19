@@ -1,10 +1,12 @@
 "use client";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
-import { useFormState } from "react-dom";
-import { useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import OrderSummary from "@/components/OrderSummary";
-// import { createOrderAction } from "@/app/actions";
+import { createOrderAction } from "@/app/_actions/actions";
+import { useFormStatus } from "react-dom";
+import { useToast } from "@/hooks/use-toast";
+import { FormState } from "@/types/forms";
 
 const deliveryMethods = [
   {
@@ -16,34 +18,18 @@ const deliveryMethods = [
   { id: 2, title: "Express", turnaround: "2–5 business days", price: "$16.00" },
 ];
 
-const INITIAL_STATE = {
-  zodErrors: null,
-  data: {
-    email: "",
-    name: "",
-    cardNumber: "",
-    expirationDate: "",
-    cvc: "",
-    deliveryMethod: "",
-    shippingAddress: "",
-    address: "",
-    apartment: "",
-    city: "",
-    state: "",
-    postal: "",
-    rememberBilling: false,
-  },
-  message: null,
-};
-
+const initialState: FormState = {};
 export default function CSCheckoutPage() {
-  const [formState, formAction] = useFormState(
+  const { pending } = useFormStatus();
+  const { toast } = useToast();
+  const [formState, formAction] = useActionState(
     createOrderAction,
-    INITIAL_STATE,
+    initialState,
   );
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0],
   );
+  const formRef = useRef<HTMLFormElement>(null);
 
   const {
     address,
@@ -51,7 +37,6 @@ export default function CSCheckoutPage() {
     cardNumber,
     city,
     cvc,
-    deliveryMethod,
     email,
     expirationDate,
     name,
@@ -60,6 +45,13 @@ export default function CSCheckoutPage() {
     shippingAddress,
     state,
   } = formState?.data || {};
+
+  useEffect(() => {
+    if (formState.successMsg) {
+      toast({ title: "success", description: formState.successMsg });
+      formRef.current?.reset();
+    }
+  }, [formState]);
 
   return (
     <div className="bg-white">
@@ -79,7 +71,8 @@ export default function CSCheckoutPage() {
 
         <form
           className="px-4 pb-36 pt-16 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
-          // action={formAction}
+          action={formAction}
+          ref={formRef}
         >
           <div className="mx-auto max-w-lg lg:max-w-none">
             <section aria-labelledby="contact-info-heading">
@@ -106,6 +99,13 @@ export default function CSCheckoutPage() {
                     autoComplete="email"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                </div>
+                <div className="h-8">
+                  {formState.errors?.email && (
+                    <small className="text-red-400">
+                      {formState.errors.email}
+                    </small>
+                  )}
                 </div>
               </div>
             </section>
@@ -136,6 +136,13 @@ export default function CSCheckoutPage() {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+                  <div className="h-8">
+                    {formState.errors?.name && (
+                      <small className="text-red-400">
+                        {formState.errors.name}
+                      </small>
+                    )}
+                  </div>
                 </div>
 
                 <div className="col-span-3 sm:col-span-4">
@@ -154,6 +161,13 @@ export default function CSCheckoutPage() {
                       autoComplete="cc-number"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
+                  </div>
+                  <div className="h-8">
+                    {formState.errors?.cardNumber && (
+                      <small className="text-red-400">
+                        {formState.errors.cardNumber}
+                      </small>
+                    )}
                   </div>
                 </div>
 
@@ -174,6 +188,13 @@ export default function CSCheckoutPage() {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+                  <div className="h-8">
+                    {formState.errors?.expirationDate && (
+                      <small className="text-red-400">
+                        {formState.errors.expirationDate}
+                      </small>
+                    )}
+                  </div>
                 </div>
 
                 <div>
@@ -189,10 +210,16 @@ export default function CSCheckoutPage() {
                       name="cvc"
                       type="text"
                       defaultValue={cvc}
-                      autoComplete="csc"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+                </div>
+                <div className="h-8">
+                  {formState.errors?.cvc && (
+                    <small className="text-red-400">
+                      {formState.errors.cvc}
+                    </small>
+                  )}
                 </div>
               </div>
             </section>
@@ -203,12 +230,14 @@ export default function CSCheckoutPage() {
                   Delivery method
                 </legend>
                 <RadioGroup
+                  id="delivery-method"
                   value={selectedDeliveryMethod}
                   onChange={setSelectedDeliveryMethod}
                   className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4"
                 >
                   {deliveryMethods.map((deliveryMethod) => (
                     <Radio
+                      id="delivery-method"
                       key={deliveryMethod.id}
                       value={deliveryMethod}
                       aria-label={deliveryMethod.title}
@@ -262,10 +291,17 @@ export default function CSCheckoutPage() {
                     <input
                       id="company"
                       name="company"
-                      defaultValue={deliveryMethod}
+                      defaultValue={shippingAddress}
                       type="text"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
+                  </div>
+                  <div className="h-8">
+                    {formState.errors?.shippingAddress && (
+                      <small className="text-red-400">
+                        {formState.errors.shippingAddress}
+                      </small>
+                    )}
                   </div>
                 </div>
 
@@ -286,6 +322,13 @@ export default function CSCheckoutPage() {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+                  <div className="h-8">
+                    {formState.errors?.address && (
+                      <small className="text-red-400">
+                        {formState.errors.address}
+                      </small>
+                    )}
+                  </div>
                 </div>
 
                 <div className="sm:col-span-3">
@@ -303,6 +346,13 @@ export default function CSCheckoutPage() {
                       type="text"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
+                  </div>
+                  <div className="h-8">
+                    {formState.errors?.apartment && (
+                      <small className="text-red-400">
+                        {formState.errors.apartment}
+                      </small>
+                    )}
                   </div>
                 </div>
 
@@ -323,6 +373,13 @@ export default function CSCheckoutPage() {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+                  <div className="h-8">
+                    {formState.errors?.city && (
+                      <small className="text-red-400">
+                        {formState.errors.city}
+                      </small>
+                    )}
+                  </div>
                 </div>
 
                 <div>
@@ -341,6 +398,13 @@ export default function CSCheckoutPage() {
                       autoComplete="address-level1"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
+                  </div>
+                  <div className="h-8">
+                    {formState.errors?.state && (
+                      <small className="text-red-400">
+                        {formState.errors.state}
+                      </small>
+                    )}
                   </div>
                 </div>
 
@@ -362,6 +426,13 @@ export default function CSCheckoutPage() {
                     />
                   </div>
                 </div>
+                <div className="h-8">
+                  {formState.errors?.postal && (
+                    <small className="text-red-400">
+                      {formState.errors.postal}
+                    </small>
+                  )}
+                </div>
               </div>
             </section>
 
@@ -378,7 +449,7 @@ export default function CSCheckoutPage() {
                   defaultChecked
                   id="same-as-shipping"
                   name="same-as-shipping"
-                  defaultValue={shippingAddress}
+                  defaultValue={rememberBilling}
                   type="checkbox"
                   className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
@@ -390,11 +461,19 @@ export default function CSCheckoutPage() {
                     Same as shipping information
                   </label>
                 </div>
+                <div className="h-8">
+                  {formState.errors?.rememberBilling && (
+                    <small className="text-red-400">
+                      {formState.errors.rememberBilling}
+                    </small>
+                  )}
+                </div>
               </div>
             </section>
 
             <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
               <button
+                disabled={pending}
                 type="submit"
                 className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
               >
@@ -409,63 +488,4 @@ export default function CSCheckoutPage() {
       </div>
     </div>
   );
-}
-function createOrderAction(state: {
-  zodErrors: null;
-  data: {
-    email: string;
-    name: string;
-    cardNumber: string;
-    expirationDate: string;
-    cvc: string;
-    deliveryMethod: string;
-    shippingAddress: string;
-    address: string;
-    apartment: string;
-    city: string;
-    state: string;
-    postal: string;
-    rememberBilling: boolean;
-  };
-  message: null;
-}):
-  | {
-      zodErrors: null;
-      data: {
-        email: string;
-        name: string;
-        cardNumber: string;
-        expirationDate: string;
-        cvc: string;
-        deliveryMethod: string;
-        shippingAddress: string;
-        address: string;
-        apartment: string;
-        city: string;
-        state: string;
-        postal: string;
-        rememberBilling: boolean;
-      };
-      message: null;
-    }
-  | Promise<{
-      zodErrors: null;
-      data: {
-        email: string;
-        name: string;
-        cardNumber: string;
-        expirationDate: string;
-        cvc: string;
-        deliveryMethod: string;
-        shippingAddress: string;
-        address: string;
-        apartment: string;
-        city: string;
-        state: string;
-        postal: string;
-        rememberBilling: boolean;
-      };
-      message: null;
-    }> {
-  throw new Error("Function not implemented.");
 }
