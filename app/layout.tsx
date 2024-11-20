@@ -20,7 +20,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Adan Farmacia",
+  title: "Adan En Línea",
   description: "Ahora usamos next 15",
 };
 
