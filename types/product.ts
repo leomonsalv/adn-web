@@ -2,9 +2,12 @@
 
 export interface Product {
   // TODO: ACTUALIZAR POR PRODUCTOS REALES
-  id: string;
+  id: number;
   name: string;
+  href: string;
+  price: string;
   description: string;
-  price: number;
-  imageUrl: string;
+  options: string;
+  imageSrc: string;
+  imageAlt: string;
 }

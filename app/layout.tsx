@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { CounterStoreProvider } from "@/providers/counter-store-provider";
 import "./globals.css";
 import { NavLinks } from "@/components/navigation/Header";
+import Footer from "@/components/navigation/Footer";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +46,7 @@ export default function RootLayout({
         >
           <CounterStoreProvider>{children}</CounterStoreProvider>
         </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );

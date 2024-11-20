@@ -1,18 +1,21 @@
 import { Product } from "@/types/product";
+import { products } from "./dummyData";
 
+/**
+ * Get all products.
+ * @returns {Promise<Product[]>} Promise that resolves to an array of products.
+ */
 export const getAllProducts = async (): Promise<Product[]> => {
-  const res = await fetch("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-  const data = await res.json();
-  return data;
+  // Simulating fetching all products from a data source
+  return products;
 };
 
+/**
+ * Get a product by its ID.
+ * @param {string} id - The ID of the product.
+ * @returns {Promise<Product | null>} Promise that resolves to a product or null if not found.
+ */
 export const getProductById = async (id: string): Promise<Product | null> => {
-  // Simulate fetching product by id
-  return {
-    id,
-    name: `Product ${id}`,
-    description: `Description ${id}`,
-    price: 100,
-    imageUrl: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  };
+  const product = products.find((product) => product.id.toString() === id);
+  return product || null;
 };
