@@ -1,10 +1,20 @@
 "use client";
 
+/**
+ * @TODO: Necesitamos agregar el carrito, y el icono y la re-dirección al login
+ *
+ * **/
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  MagnifyingGlassIcon,
+  ShoppingCartIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -18,19 +28,6 @@ export function NavLinks() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    //     <nav>
-    //       <Link className={`link ${pathname === "/" ? "active" : ""}`} href="/">
-    //         Home
-    //       </Link>
-
-    //       <Link
-    //         className={`link ${pathname === "/about" ? "active" : ""}`}
-    //         href="/about"
-    //       >
-    //         About
-    //       </Link>
-    //     </nav>
-    //   );
     <header className="absolute inset-x-0 top-0 z-50">
       <nav
         aria-label="Global"
@@ -111,13 +108,51 @@ export function NavLinks() {
                   </Link>
                 ))}
               </div>
-              <div className="py-6">
-                <Link
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
+              <div className="flex flex-1 items-center justify-end">
+                <div className="flex items-center lg:ml-8">
+                  <div className="flex space-x-8">
+                    <div className="hidden lg:flex">
+                      <a
+                        href="#"
+                        className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                      >
+                        <span className="sr-only">Search</span>
+                        <MagnifyingGlassIcon
+                          aria-hidden="true"
+                          className="size-6"
+                        />
+                      </a>
+                    </div>
+
+                    <div className="flex">
+                      <a
+                        href="#"
+                        className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                      >
+                        <span className="sr-only">Account</span>
+                        <UserIcon aria-hidden="true" className="size-6" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <span
+                    aria-hidden="true"
+                    className="mx-4 h-6 w-px bg-gray-200 lg:mx-6"
+                  />
+
+                  <div className="flow-root">
+                    <a href="#" className="group -m-2 flex items-center p-2">
+                      <ShoppingCartIcon
+                        aria-hidden="true"
+                        className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        0
+                      </span>
+                      <span className="sr-only">items in cart, view bag</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
