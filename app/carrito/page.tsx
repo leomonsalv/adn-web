@@ -16,7 +16,7 @@ export default function Carrito() {
           Carrito
         </h1>
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-          <CartList products={cartItems} />
+          <CartList cartItems={cartItems} />
           <OrderSummary />
         </form>
       </div>
