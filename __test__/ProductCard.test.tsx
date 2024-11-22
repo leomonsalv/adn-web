@@ -3,7 +3,7 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/cart/ProductCard";
 import { Product } from "../types/product";
 
 const mockProduct: Product = {

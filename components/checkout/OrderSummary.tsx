@@ -7,17 +7,6 @@ import {
 import { ChevronUpIcon } from "lucide-react";
 import React from "react";
 
-type Product = {
-  id: number;
-  name: string;
-  href: string;
-  price: string;
-  color: string;
-  size: string;
-  imageSrc: string;
-  imageAlt: string;
-};
-
 const products = [
   {
     id: 1,
