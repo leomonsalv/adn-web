@@ -6,6 +6,7 @@ import { CounterStoreProvider } from "@/providers/counter-store-provider";
 import "./globals.css";
 import { NavLinks } from "@/components/navigation/Header";
 import Footer from "@/components/navigation/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster />
         <NavLinks />
         {/* TODO: DECIDAMOS QUE FUENTE VAMOS A UTILIZAR <body className={inter.className}> */}
         <ThemeProvider

@@ -1,4 +1,30 @@
-export default function Example() {
+"use client";
+import LoginForm from "@/components/forms/login-form";
+import { HOME } from "@/lib/routes";
+import { auth, provider } from "@/lib/firebaseConfig";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
+export default function LoginPage() {
+  const router = useRouter();
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+      const user = result.user;
+
+      console.log("Google token:", token);
+      console.log("User:", user);
+
+      //TODO: STORE USER IN ZUSTAND
+      router.push(HOME);
+    } catch (error) {
+      console.error("Error during Google Sign-In:", error);
+    }
+  };
+
   return (
     <>
       {/*
@@ -23,81 +49,7 @@ export default function Example() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-            <form action="#" method="POST" className="space-y-6">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    autoComplete="current-password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-3 block text-sm/6 text-gray-900"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm/6">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign in
-                </button>
-              </div>
-            </form>
-
+            <LoginForm />
             <div>
               <div className="relative mt-10">
                 <div
@@ -114,8 +66,8 @@ export default function Example() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <a
-                  href="#"
+                <Button
+                  onClick={handleGoogleSignIn}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg
@@ -141,7 +93,7 @@ export default function Example() {
                     />
                   </svg>
                   <span className="text-sm/6 font-semibold">Google</span>
-                </a>
+                </Button>
 
                 <a
                   href="#"
@@ -171,7 +123,7 @@ export default function Example() {
               href="#"
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
-              Start a 14 day free trial
+              Register
             </a>
           </p>
         </div>
