@@ -15,6 +15,7 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import { LOGIN } from "@/lib/routes";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -65,7 +66,7 @@ export function NavLinks() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
+          <Link href={LOGIN} className="text-sm/6 font-semibold text-gray-900">
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
