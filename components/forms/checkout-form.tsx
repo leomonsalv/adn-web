@@ -2,7 +2,7 @@
 import { Radio, RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { useActionState, useEffect, useRef, useState } from "react";
-import OrderSummary from "@/components/OrderSummary";
+import OrderSummary from "@/components/cart/OrderSummary";
 import { createOrderAction } from "@/app/_actions/actions";
 import { useFormStatus } from "react-dom";
 import { useToast } from "@/hooks/use-toast";

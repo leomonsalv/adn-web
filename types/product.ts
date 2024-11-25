@@ -6,8 +6,13 @@ export interface Product {
   name: string;
   href: string;
   price: string;
-  description: string;
-  options: string;
+  description?: string;
+  options?: string;
   imageSrc: string;
   imageAlt: string;
+  color: string;
+  inStock?: boolean;
+  size?: string;
+  leadTime?: string;
+  tax?: number;
 }
