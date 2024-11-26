@@ -10,5 +10,4 @@ export const PRODUCT_DETAIL = "/product-detail";
 export const PRODUCTS = "/products";
 export const LOGIN = "/iniciar-sesion";
 export const RECOVER_PASSWORD = "/recuperar-contrasena";
-
-// export default { HOME, CHECKOUT, PRODUCTS, PRODUCT_DETAIL };
+export const REGISTER = "/registrarse";
