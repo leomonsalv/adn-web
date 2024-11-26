@@ -1,3 +1,5 @@
+import { Product } from "@/types/product";
+
 export const navigation = {
   categories: [
     {
@@ -193,7 +195,7 @@ export const footerNavigation = {
   ],
 };
 
-export const products = [
+export const products: Product[] = [
   {
     id: 1,
     name: "Basic Tee 8-Pack",

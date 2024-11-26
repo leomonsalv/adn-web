@@ -10,7 +10,7 @@ export interface Product {
   options?: string;
   imageSrc: string;
   imageAlt: string;
-  color: string;
+  color?: string;
   inStock?: boolean;
   size?: string;
   leadTime?: string;
