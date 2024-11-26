@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import { useCartStore } from "@/stores/cart-store";
 import {
   Popover,
   PopoverButton,
@@ -8,66 +8,14 @@ import {
 import { ChevronUpIcon } from "lucide-react";
 import React from "react";
 
-const products = [
-  {
-    id: 1,
-    name: "Micro Backpack",
-    href: "#",
-    price: "$70.00",
-    color: "Moss",
-    size: "5L",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/checkout-page-04-product-01.jpg",
-    imageAlt:
-      "Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.",
-  },
-  {
-    id: 2,
-    name: "Small Stuff Satchel",
-    href: "#",
-    price: "$180.00",
-    color: "Sand",
-    size: "18L",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/checkout-page-04-product-01.jpg",
-    imageAlt:
-      "Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.",
-  },
-  {
-    id: 3,
-    name: "Carry Clutch",
-    href: "#",
-    price: "$70.00",
-    color: "White and Black",
-    size: "small",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/checkout-page-04-product-01.jpg",
-    imageAlt:
-      "Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.",
-  },
-  // More products...
-];
+export default function CheckoutOrderSummary() {
+  const { cartItems, getCartSubtotal, getCartTax, getCartTotal } =
+    useCartStore();
 
-function calculateSubtotal(products: Product[]): number {
-  return products.reduce((total, product) => {
-    const price = parseFloat(product.price.replace("$", ""));
-    return total + price;
-  }, 0);
-}
-
-function calculateTotal(
-  subtotal: number,
-  shipping: number,
-  taxes: number,
-): number {
-  return subtotal + shipping + taxes;
-}
-
-function OrderSummary() {
-  const subtotal = calculateSubtotal(products);
+  const subtotal = getCartSubtotal();
   const shipping = 15.0;
-  const taxes = subtotal * 0.08;
-  const total = calculateTotal(subtotal, shipping, taxes);
+  const taxes = getCartTax();
+  const total = getCartTotal();
 
   return (
     <section
@@ -83,19 +31,19 @@ function OrderSummary() {
           role="list"
           className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
         >
-          {products.map((product) => (
-            <li key={product.id} className="flex items-start space-x-4 py-6">
+          {cartItems.map((item) => (
+            <li key={item.id} className="flex items-start space-x-4 py-6">
               <img
-                alt={product.imageAlt}
-                src={product.imageSrc}
+                alt={item.imageAlt}
+                src={item.imageSrc}
                 className="size-20 flex-none rounded-md object-cover object-center"
               />
               <div className="flex-auto space-y-1">
-                <h3>{product.name}</h3>
-                <p className="text-gray-500">{product.color}</p>
-                <p className="text-gray-500">{product.size}</p>
+                <h3>{item.name}</h3>
+                <p className="text-gray-500">{item.color}</p>
+                <p className="text-gray-500">{item.size}</p>
               </div>
-              <p className="flex-none text-base font-medium">{product.price}</p>
+              <p className="flex-none text-base font-medium">{item.price}</p>
             </li>
           ))}
         </ul>
@@ -103,22 +51,22 @@ function OrderSummary() {
         <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Subtotal</dt>
-            <dd>$320.00</dd>
+            <dd>${subtotal.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Shipping</dt>
-            <dd>$15.00</dd>
+            <dd>${shipping.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Taxes</dt>
-            <dd>$26.80</dd>
+            <dd>${taxes.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
             <dt className="text-base">Total</dt>
-            <dd className="text-base">$361.80</dd>
+            <dd className="text-base">${total.toFixed(2)}</dd>
           </div>
         </dl>
 
@@ -127,7 +75,7 @@ function OrderSummary() {
             <div className="mx-auto max-w-lg">
               <PopoverButton className="flex w-full items-center py-6 font-medium">
                 <span className="mr-auto text-base">Total</span>
-                <span className="mr-2 text-base">$361.80</span>
+                <span className="mr-2 text-base">${total.toFixed(2)}</span>
                 <ChevronUpIcon
                   aria-hidden="true"
                   className="size-5 text-gray-500"
@@ -172,5 +120,3 @@ function OrderSummary() {
     </section>
   );
 }
-
-export default OrderSummary;

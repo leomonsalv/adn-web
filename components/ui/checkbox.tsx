@@ -1,6 +1,22 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
+import { forwardRef } from "react";
+import { Label } from "./label";
+
+interface CheckboxProps
+  extends Omit<Headless.CheckboxProps, "as" | "className"> {
+  color?: Color;
+  className?: string;
+}
+
+interface LabeledCheckboxProps {
+  label: string;
+  checkboxProps: CheckboxProps;
+  labelProps: React.ComponentPropsWithoutRef<"label">;
+  helperText?: string;
+  error?: string;
+}
 
 export function CheckboxGroup({
   className,
@@ -117,6 +133,11 @@ const colors = {
 
 type Color = keyof typeof colors;
 
+interface CheckboxProps {
+  color?: Color;
+  className?: string;
+}
+
 export function Checkbox({
   color = "dark/zinc",
   className,
@@ -158,3 +179,33 @@ export function Checkbox({
     </Headless.Checkbox>
   );
 }
+
+export const LabeledCheckbox = function LabeledCheckbox({
+  label,
+  checkboxProps,
+  labelProps,
+  helperText,
+  error,
+}: LabeledCheckboxProps) {
+  return (
+    <div className="flex items-center">
+      <Checkbox
+        {...checkboxProps}
+        color="indigo"
+        className="rounded-md border border-gray-300 text-indigo-600 focus:ring-indigo-500 data-[checked]:border-transparent"
+      />
+      <div className="ml-2">
+        <Label {...labelProps} className="text-sm font-medium text-gray-900">
+          {label}
+        </Label>
+      </div>
+      {(error || helperText) && (
+        <div className="h-8">
+          <small className={clsx("text-gray-400", error && "text-red-400")}>
+            {error || helperText}
+          </small>
+        </div>
+      )}
+    </div>
+  );
+};
