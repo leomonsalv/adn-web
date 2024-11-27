@@ -18,6 +18,7 @@ interface CartState {
   getCartSubtotal: () => number;
   getCartTax: () => number;
   getCartCount: () => number;
+  getItemCount: (productId: number) => number;
   isItemInCart: (productId: number) => boolean;
   setLoading: (status: boolean) => void;
   decrementQuantity: (productId: number) => void;
@@ -100,6 +101,7 @@ export const useCartStore = create<CartState>()(
       isOpen: false,
       loading: false,
       addToCart: (product) => {
+        console.log("🚀 ~ product:", product);
         const existingItem = get().cartItems.find(
           (item) => item.id === product.id,
         );
@@ -161,6 +163,11 @@ export const useCartStore = create<CartState>()(
               item.quantity *
               (item.tax || 0),
           0,
+        );
+      },
+      getItemCount: (productId) => {
+        return (
+          get().cartItems.find((item) => item.id === productId)?.quantity || 0
         );
       },
       isItemInCart: (productId) => {

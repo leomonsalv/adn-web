@@ -4,7 +4,7 @@ import { CHECKOUT } from "@/lib/routes";
 import { useCartStore } from "@/stores/cart-store";
 import { Button } from "../ui/button";
 
-export default function OrderSummary() {
+export default function CartOrderSummary() {
   const router = useRouter();
   const { getCartSubtotal, getCartTotal, getCartTax } = useCartStore();
   return (

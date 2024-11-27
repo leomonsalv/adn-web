@@ -1,6 +1,15 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React, { forwardRef } from "react";
+import { Label } from "./label";
+
+interface LabeledInputProps {
+  label: string;
+  inputProps: React.ComponentPropsWithoutRef<"input">;
+  labelProps: React.ComponentPropsWithoutRef<"label">;
+  helperText?: string;
+  error?: string;
+}
 
 export function InputGroup({
   children,
@@ -84,7 +93,7 @@ export const Input = forwardRef(function Input(
           // Basic layout
           "relative block w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing[3])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]",
           // Typography
-          "text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white",
+          "text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6",
           // Border
           "border border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20",
           // Background color
@@ -100,5 +109,35 @@ export const Input = forwardRef(function Input(
         ])}
       />
     </span>
+  );
+});
+
+export const LabeledInput = forwardRef(function LabeledInput(
+  { label, inputProps, labelProps, helperText, error }: LabeledInputProps,
+  ref: React.ForwardedRef<HTMLInputElement>,
+) {
+  return (
+    <div>
+      <Label
+        className="block text-sm font-medium text-gray-700"
+        {...labelProps}
+      >
+        {label}
+      </Label>
+      <div className="mt-1">
+        <Input
+          ref={ref}
+          {...inputProps}
+          className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+      </div>
+      {(error || helperText) && (
+        <div className="h-8">
+          <small className={clsx("text-gray-400", error && "text-red-400")}>
+            {error || helperText}
+          </small>
+        </div>
+      )}
+    </div>
   );
 });

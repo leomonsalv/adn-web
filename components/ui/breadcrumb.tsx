@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { SlashIcon } from "@heroicons/react/24/outline";
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -19,7 +20,10 @@ const BreadcrumbList = React.forwardRef<
   <ol
     ref={ref}
     className={cn(
+      // Base classes
       "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5",
+      // Responsive container added by TailwindUI
+      "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8",
       className,
     )}
     {...props}
@@ -50,7 +54,13 @@ const BreadcrumbLink = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      className={cn("transition-colors hover:text-foreground", className)}
+      className={cn(
+        // Base classes
+        "transition-colors hover:text-foreground",
+        // TailwindUI classes
+        "mr-4 text-sm font-medium text-gray-900",
+        className,
+      )}
       {...props}
     />
   );
@@ -66,7 +76,13 @@ const BreadcrumbPage = React.forwardRef<
     role="link"
     aria-disabled="true"
     aria-current="page"
-    className={cn("font-normal text-foreground", className)}
+    className={cn(
+      // Base classes
+      "font-normal text-foreground",
+      // TailwindUI classes
+      "font-medium text-gray-500 hover:text-gray-600",
+      className,
+    )}
     {...props}
   />
 ));
@@ -83,7 +99,7 @@ const BreadcrumbSeparator = ({
     className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
     {...props}
   >
-    {children ?? <ChevronRight />}
+    {children ?? <SlashIcon />}
   </li>
 );
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";

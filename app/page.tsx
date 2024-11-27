@@ -54,31 +54,31 @@ const favorites = [
 const categories = [
   {
     name: "New Arrivals",
-    href: "#",
+    href: "/categoria",
     imageSrc:
       "https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-01.jpg",
   },
   {
     name: "Productivity",
-    href: "#",
+    href: "/categoria",
     imageSrc:
       "https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-02.jpg",
   },
   {
     name: "Workspace",
-    href: "#",
+    href: "/categoria",
     imageSrc:
       "https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-04.jpg",
   },
   {
     name: "Accessories",
-    href: "#",
+    href: "/categoria",
     imageSrc:
       "https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-05.jpg",
   },
   {
     name: "Sale",
-    href: "#",
+    href: "/categoria",
     imageSrc:
       "https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-03.jpg",
   },

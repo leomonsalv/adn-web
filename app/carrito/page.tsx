@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import MainIncentives from "@/components/incentives/MainIncentives";
 import CartList from "@/components/cart/CartList";
-import OrderSummary from "@/components/cart/OrderSummary";
+import OrderSummary from "@/components/cart/CartOrderSummary";
 import LinkedProductList from "@/components/products/ProductLists/LinkedProductList";
 import { useCartStore } from "@/stores/cart-store";
+import CartOrderSummary from "@/components/cart/CartOrderSummary";
 
 export default function Carrito() {
   const { cartItems } = useCartStore();
@@ -17,7 +18,7 @@ export default function Carrito() {
         </h1>
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <CartList cartItems={cartItems} />
-          <OrderSummary />
+          <CartOrderSummary />
         </form>
       </div>
       <LinkedProductList />
