@@ -16,11 +16,6 @@ export default function RegisterPage() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-
-      console.log("Google token:", token);
-      console.log("User:", user);
-
-      //TODO: STORE USER IN ZUSTAND
       router.push(HOME);
     } catch (error) {
       console.error("Error during Google Sign-In:", error);
@@ -28,15 +23,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
+    <section>
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
@@ -90,6 +77,6 @@ export default function RegisterPage() {
           </p>
         </div>
       </div>
-    </>
+    </section>
   );
 }
