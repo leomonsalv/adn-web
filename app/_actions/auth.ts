@@ -28,61 +28,45 @@ export async function signInAction(state: FormState, formData: FormData) {
   }
 
   try {
-    // GOOGLE NORMAL SIGN IN
-    const userCredential = setPersistence(auth, browserSessionPersistence)
-      .then(async () => {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          validatedFields.data.email,
-          validatedFields.data.password,
-        );
-        return userCredential.user;
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        return errorMessage;
-      });
+    // Mantiene al usuario conectado mientras tenga la pestaña abierta
+    await setPersistence(auth, browserSessionPersistence);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      validatedFields.data.email,
+      validatedFields.data.password,
+    );
 
-    const user = userCredential;
-    console.log("Inicio de sesión exitoso:", user);
-
+    const user = userCredential.user;
     return { success: true, user };
   } catch (error: any) {
     console.error("Error al iniciar sesión con correo y contraseña:", error);
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
     return {
-      errorCode: errorCode,
-      errorMessage: errorMessage,
+      success: false,
+      errorCode: error.code,
+      errorMessage: error.message,
     };
   }
 }
 
 export async function signInWithGoogle() {
-  // GOOGLE SIGN IN BUTTON
   try {
+    // Mantiene al usuario conectado mientras tenga la pestaña abierta
+    await setPersistence(auth, browserSessionPersistence);
+
     const result = await signInWithPopup(auth, provider);
 
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken;
-
     const user = result.user;
 
     return { success: true, user, token };
   } catch (error: any) {
     console.error("Error al iniciar sesión con Google:", error);
 
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const email = error.customData?.email || null;
-    const credential = GoogleAuthProvider.credentialFromError(error);
-
     return {
       success: false,
-      error: { errorCode, errorMessage, email, credential },
+      errorCode: error.code,
+      errorMessage: error.message,
     };
   }
 }
@@ -94,8 +78,6 @@ export async function registerAction(state: FormState, formData: FormData) {
     password: formData.get("password"),
     referral: formData.get("referral"),
   });
-
-  console.log(validatedFields);
 
   if (!validatedFields.success) {
     console.warn(
@@ -109,7 +91,6 @@ export async function registerAction(state: FormState, formData: FormData) {
   }
 
   try {
-    // GOOGLE NORMAL SIGN IN
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       validatedFields.data.email,
@@ -117,17 +98,13 @@ export async function registerAction(state: FormState, formData: FormData) {
     );
 
     const user = userCredential.user;
-    console.log("Creación de usuario exitosa:", user);
-
     return { success: true, user };
   } catch (error: any) {
-    console.error("Error al iniciar sesión con correo y contraseña:", error);
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
+    console.error("Error al crear un nuevo usuario:", error);
     return {
-      errorCode: errorCode,
-      errorMessage: errorMessage,
+      success: false,
+      errorCode: error.code,
+      errorMessage: error.message,
     };
   }
 }
