@@ -6,9 +6,11 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   browserSessionPersistence,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { RegisterFormSchema } from "@/schemas/register-form";
+import { forgotPasswordSchema } from "@/schemas/forgot-password-form";
 
 export async function signInAction(state: FormState, formData: FormData) {
   const validatedFields = SignInFormSchema.safeParse({
@@ -101,6 +103,42 @@ export async function registerAction(state: FormState, formData: FormData) {
     return { success: true, user };
   } catch (error: any) {
     console.error("Error al crear un nuevo usuario:", error);
+    return {
+      success: false,
+      errorCode: error.code,
+      errorMessage: error.message,
+    };
+  }
+}
+
+export async function forgotPasswordAction(
+  state: FormState,
+  formData: FormData,
+) {
+  const validatedFields = forgotPasswordSchema.safeParse({
+    email: formData.get("email"),
+  });
+
+  if (!validatedFields.success) {
+    console.warn(
+      "Validación fallida:",
+      validatedFields.error.flatten().fieldErrors,
+    );
+    return {
+      success: false,
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, validatedFields?.data.email);
+    console.log("Correo de restablecimiento de contraseña enviado.");
+    return { success: true };
+  } catch (error: any) {
+    console.error(
+      "Error al enviar correo de restablecimiento de contraseña:",
+      error,
+    );
     return {
       success: false,
       errorCode: error.code,
