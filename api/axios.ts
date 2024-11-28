@@ -1,5 +1,6 @@
 import axios from "axios";
 import { auth } from "@/lib/firebaseConfig";
+import { toast } from "@/hooks/use-toast";
 
 // Create axios instance
 export const axiosInstance = axios.create({
@@ -13,14 +14,28 @@ export const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const user = auth.currentUser;
-    if (user) {
-      const token = await user.getIdToken();
-      config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const token = await user.getIdToken();
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Authentication Error",
+        description: "Failed to authenticate request",
+      });
+      return Promise.reject(error);
     }
-    return config;
   },
   (error) => {
+    toast({
+      variant: "destructive",
+      title: "Request Failed",
+      description: "Failed to send request",
+    });
     return Promise.reject(error);
   },
 );
@@ -38,40 +53,90 @@ axiosInstance.interceptors.response.use(
       try {
         const user = auth.currentUser;
         if (user) {
-          // Force token refresh
           const newToken = await user.getIdToken(true);
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
-        // Handle refresh error
-        console.error("Token refresh failed:", refreshError);
+        toast({
+          variant: "destructive",
+          title: "Session Expired",
+          description: "Please login again to continue",
+        });
+        // You might want to trigger a logout or redirect to login here
+        return Promise.reject(refreshError);
       }
     }
 
-    // Handle other errors
-    const errorResponse = {
+    // Handle specific error cases
+    const errorMessage =
+      error.response?.data?.message || "An unexpected error occurred";
+
+    switch (error.response?.status) {
+      case 400:
+        toast({
+          variant: "destructive",
+          title: "Invalid Request",
+          description: errorMessage,
+        });
+        break;
+      case 403:
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: "You don't have permission to perform this action",
+        });
+        break;
+      case 404:
+        toast({
+          variant: "destructive",
+          title: "Not Found",
+          description: "The requested resource was not found",
+        });
+        break;
+      case 429:
+        toast({
+          variant: "destructive",
+          title: "Too Many Requests",
+          description: "Please try again later",
+        });
+        break;
+      case 500:
+        toast({
+          variant: "destructive",
+          title: "Server Error",
+          description: "An internal server error occurred",
+        });
+        break;
+      default:
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage,
+        });
+    }
+
+    return Promise.reject({
       status: error.response?.status,
       message: error.response?.data?.message || "An error occurred",
       code: error.response?.data?.code || "UNKNOWN_ERROR",
-    };
-
-    // You can add custom error handling here
-    switch (error.response?.status) {
-      case 400:
-        errorResponse.message = "Bad Request";
-        break;
-      case 403:
-        errorResponse.message = "Forbidden";
-        break;
-      case 404:
-        errorResponse.message = "Resource Not Found";
-        break;
-      case 500:
-        errorResponse.message = "Internal Server Error";
-        break;
-    }
-
-    return Promise.reject(errorResponse);
+      data: error.response?.data,
+    });
   },
 );
+
+// API function types
+export type ApiError = {
+  status: number;
+  message: string;
+  code: string;
+  data?: any;
+};
+
+export type ApiResponse<T> = {
+  data: T;
+  status: number;
+  message?: string;
+};
+
+export default axiosInstance;
