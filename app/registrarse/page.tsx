@@ -5,7 +5,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import GoogleIcon from "@/public/google";
-import RegisterForm from "@/components/forms/register-form";
+import RegisterForm from "@/components/forms/auth/register-form";
 import Link from "next/link";
 
 export default function RegisterPage() {

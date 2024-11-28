@@ -1,5 +1,5 @@
 "use client";
-import LoginForm from "@/components/forms/login-form";
+import LoginForm from "@/components/forms/auth/login-form";
 import { HOME, REGISTER } from "@/lib/routes";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
