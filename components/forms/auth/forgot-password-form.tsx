@@ -25,12 +25,6 @@ function ForgotPasswordForm({}: Props) {
         description: "Por favor revisa tu bandeja de entrada.",
       });
       router.push(HOME);
-    } else if (formState?.errorCode || formState?.errors) {
-      toast({
-        title: "Error al enviar correo",
-        description: "Por favor revisa tu correo electrónico.",
-        variant: "destructive",
-      });
     }
   }, [formState, toast, router]);
 
