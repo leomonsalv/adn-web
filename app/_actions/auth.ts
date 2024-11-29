@@ -93,14 +93,22 @@ export async function registerAction(state: FormState, formData: FormData) {
   }
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(
+    await createUserWithEmailAndPassword(
       auth,
       validatedFields.data.email,
       validatedFields.data.password,
     );
 
-    const user = userCredential.user;
-    return { success: true, user };
+    await setPersistence(auth, browserSessionPersistence);
+    const signInCredential = await signInWithEmailAndPassword(
+      auth,
+      validatedFields.data.email,
+      validatedFields.data.password,
+    );
+
+    const signedInUser = signInCredential.user;
+
+    return { success: true, user: signedInUser };
   } catch (error: any) {
     console.error("Error al crear un nuevo usuario:", error);
     return {
