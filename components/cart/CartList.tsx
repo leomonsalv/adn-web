@@ -1,8 +1,8 @@
 import { Product } from "@/types/product";
 import CartItem from "./CartItem";
-import { CartItem as CartItemType } from "@/types/cart";
+import { CartProduct } from "@/types/cart";
 
-export default function CartList({ cartItems }: { cartItems: CartItemType[] }) {
+export default function CartList({ items }: { items: CartProduct[] }) {
   return (
     <section aria-labelledby="cart-heading" className="lg:col-span-7">
       <h2 id="cart-heading" className="sr-only">
@@ -13,7 +13,7 @@ export default function CartList({ cartItems }: { cartItems: CartItemType[] }) {
         role="list"
         className="divide-y divide-gray-200 border-b border-t border-gray-200"
       >
-        {cartItems.map((cartItem) => (
+        {items.map((cartItem) => (
           <CartItem key={cartItem.id} item={cartItem} />
         ))}
       </ul>

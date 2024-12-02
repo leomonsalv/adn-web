@@ -1,15 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import MainIncentives from "@/components/incentives/MainIncentives";
 import CartList from "@/components/cart/CartList";
-import OrderSummary from "@/components/cart/CartOrderSummary";
 import LinkedProductList from "@/components/products/ProductLists/LinkedProductList";
 import { useCartStore } from "@/stores/cart-store";
 import CartOrderSummary from "@/components/cart/CartOrderSummary";
+import useCart from "@/hooks/use-cart";
+import { useEffect } from "react";
 
-export default function Carrito() {
-  const { cartItems } = useCartStore();
+export default function Cart() {
+  const { cart, setCart } = useCartStore();
+  const { useGetCart } = useCart();
+  const { data, isLoading } = useGetCart();
+  console.log("🚀 ~ Cart ~ data:", data);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setCart(data);
+  //   }
+  // }, [data]);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -17,7 +29,7 @@ export default function Carrito() {
           Carrito
         </h1>
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-          <CartList cartItems={cartItems} />
+          <CartList items={cart.products} />
           <CartOrderSummary />
         </form>
       </div>
