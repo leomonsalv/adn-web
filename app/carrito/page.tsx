@@ -7,20 +7,20 @@ import { useCartStore } from "@/stores/cart-store";
 import CartOrderSummary from "@/components/cart/CartOrderSummary";
 import useCart from "@/hooks/use-cart";
 import { useEffect } from "react";
+import { auth } from "@/lib/firebaseConfig";
 
 export default function Cart() {
   const { cart, setCart } = useCartStore();
   const { useGetCart } = useCart();
   const { data, isLoading } = useGetCart();
-  console.log("🚀 ~ Cart ~ data:", data);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setCart(data);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (data) {
+      setCart(data);
+    }
+  }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !auth.currentUser) return <div>Loading...</div>;
 
   return (
     <div className="bg-white">

@@ -7,10 +7,10 @@ import { CounterStoreProvider } from "@/providers/counter-store-provider";
 import { NavLinks } from "@/components/navigation/Header";
 import Footer from "@/components/navigation/Footer";
 import { Toaster } from "@/components/ui/toaster";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
 // import { Inter } from "next/font/google";
+import { AuthProvider } from "@/providers/auth-provider";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -43,16 +43,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <Toaster />
         <NavLinks />
+
         <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <CounterStoreProvider>{children}</CounterStoreProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <CounterStoreProvider>{children}</CounterStoreProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+          </AuthProvider>
         </ReactQueryProvider>
         <Footer />
       </body>
