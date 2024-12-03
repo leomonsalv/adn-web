@@ -1,8 +1,8 @@
-import { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
+import { Order } from "@/schemas/orders";
 
 interface ProductListProps {
-  products: Product[];
+  products: Order[];
   deliveredDate: string;
   deliveredDatetime: string;
 }
@@ -14,7 +14,7 @@ export default function ProductList({
 }: ProductListProps) {
   return (
     <>
-      <h4 className="sr-only">Items</h4>
+      <h4 className="sr-only">Lista de productos</h4>
       <ul role="list" className="divide-y divide-gray-200">
         {products.map((product) => (
           <ProductCard
