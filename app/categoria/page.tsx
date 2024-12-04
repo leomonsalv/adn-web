@@ -5,9 +5,15 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { Filters, MobileFilterDialog } from "@/components/categorias/filters";
 import { filters } from "@/lib/dummyData";
 import ProductGrid from "@/components/categorias/productGrid";
+import useSearchProduct from "@/hooks/use-search-products";
 
 export default function CategoryPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const { searchProduct } = useSearchProduct();
+  const { data, isLoading } = searchProduct({ query: "" });
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <main className="bg-white">
@@ -44,8 +50,10 @@ export default function CategoryPage() {
               <Filters filters={filters} />
             </div>
           </aside>
-          {/* Product grid */}
-          <ProductGrid />
+          {data?.data && (
+            // Product grid
+            <ProductGrid products={data.data} />
+          )}
         </div>
       </main>
     </main>

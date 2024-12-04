@@ -20,7 +20,7 @@ export default function Cart() {
     }
   }, [data]);
 
-  if (isLoading || !auth.currentUser) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="bg-white">
