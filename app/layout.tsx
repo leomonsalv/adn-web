@@ -1,14 +1,22 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-// import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CounterStoreProvider } from "@/providers/counter-store-provider";
-import "./globals.css";
 import { NavLinks } from "@/components/navigation/Header";
 import Footer from "@/components/navigation/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryProvider } from "@/providers/react-query-provider";
+// import { Inter } from "next/font/google";
+import { AuthProvider } from "@/providers/auth-provider";
 
 // const inter = Inter({ subsets: ["latin"] });
+
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
 
 const geistSans = localFont({
   src: "../public/fonts/GeistMonoVF.woff",
@@ -26,11 +34,7 @@ export const metadata: Metadata = {
   description: "Ahora usamos next 15",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -39,15 +43,20 @@ export default function RootLayout({
       >
         <Toaster />
         <NavLinks />
-        {/* TODO: DECIDAMOS QUE FUENTE VAMOS A UTILIZAR <body className={inter.className}> */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <CounterStoreProvider>{children}</CounterStoreProvider>
-        </ThemeProvider>
+
+        <ReactQueryProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <CounterStoreProvider>{children}</CounterStoreProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
         <Footer />
       </body>
     </html>

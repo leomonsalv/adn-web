@@ -18,7 +18,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Link } from "@/components/ui/link";
 import MainIncentives from "@/components/incentives/MainIncentives";
-import { CARRITO } from "@/lib/routes";
+import { CARRITO, HISTORIAL } from "@/lib/routes";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 const favorites = [
@@ -421,6 +421,12 @@ export default function Example() {
                         Go to Cart
                       </Link>
                     </div>
+                    <Link
+                      href={HISTORIAL}
+                      className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-white hover:bg-indigo-700"
+                    >
+                      Go to historial
+                    </Link>
                   </div>
                 </div>
               </div>

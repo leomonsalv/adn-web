@@ -110,10 +110,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
   const { addToCart, getItemCount, updateQuantity, isItemInCart, cartItems } =
     useCartStore();
-  console.log("🚀 ~ ProductDetailsPage ~ cartItems:", cartItems);
 
   const isInCart = isItemInCart(product.id);
-  console.log("🚀 ~ ProductDetailsPage ~ isInCart:", isInCart);
   const itemCount = getItemCount(product.id);
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {

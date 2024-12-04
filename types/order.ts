@@ -10,4 +10,5 @@ export interface Order {
   deliveredDatetime: string;
   total: string;
   products: Product[];
+  odooDataOrder: any;
 }

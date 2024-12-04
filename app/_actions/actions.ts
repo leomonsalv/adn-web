@@ -20,7 +20,6 @@ export const createOrderAction = async (
   prevState: FormState,
   formData: FormData,
 ): Promise<FormState> => {
-  console.log("formData", formData);
   //uncomment to easily view loading state in submit button
   //await sleep(1000);
 
