@@ -2,11 +2,11 @@ import { XMarkIcon, CheckIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 import { useCartStore } from "@/stores/cart-store";
 import AmountSelector from "../products/AmountSelectors/AmountSelector";
-import { CartItem as CartItemType } from "@/types/cart";
 import { Button } from "../ui/button";
+import { CartProduct } from "@/types/cart";
 
 interface CartItemProps {
-  item: CartItemType;
+  item: CartProduct;
 }
 
 export default function CartItem({ item }: CartItemProps) {
@@ -21,7 +21,7 @@ export default function CartItem({ item }: CartItemProps) {
     <li className="flex py-6 sm:py-10">
       <div className="shrink-0">
         <img
-          alt={item.imageAlt}
+          alt={item.imageSrc}
           src={item.imageSrc}
           className="size-24 rounded-md object-cover object-center sm:size-48"
         />
@@ -33,7 +33,7 @@ export default function CartItem({ item }: CartItemProps) {
             <div className="flex justify-between">
               <h3 className="text-sm">
                 <a
-                  href={item.href}
+                  href={`/productos/${item.product_id}`}
                   className="font-medium text-gray-700 hover:text-gray-800"
                 >
                   {item.name}
