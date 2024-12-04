@@ -1,8 +1,8 @@
 import ProductCard from "./ProductCard";
-import { Order } from "@/schemas/orders";
+import { Product } from "@/schemas/orders";
 
 interface ProductListProps {
-  products: Order[];
+  products: Product[];
   deliveredDate: string;
   deliveredDatetime: string;
 }

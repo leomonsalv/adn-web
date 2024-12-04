@@ -140,7 +140,6 @@ export async function forgotPasswordAction(
 
   try {
     await sendPasswordResetEmail(auth, validatedFields?.data.email);
-    console.log("Correo de restablecimiento de contraseña enviado.");
     return { success: true };
   } catch (error: any) {
     console.error(

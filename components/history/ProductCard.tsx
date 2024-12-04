@@ -2,10 +2,10 @@ import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { formatVefCurrency } from "@/lib/utils";
-import { PurpleProduct } from "@/schemas/orders";
+import { Product } from "@/schemas/orders";
 
 interface ProductCardProps {
-  product: PurpleProduct;
+  product: Product;
   deliveredDate: string;
   deliveredDatetime: string;
 }
