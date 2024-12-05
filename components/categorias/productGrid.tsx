@@ -1,19 +1,15 @@
-import React from "react";
-import Link from "next/link";
-import { SearchResponseProduct } from "@/types/search";
-import Image from "next/image";
+import React from 'react'
+import Link from 'next/link'
+import { SearchResponseProduct } from '@/types/search'
+import Image from 'next/image'
 
 interface ProductGridProps {
-  products: SearchResponseProduct[];
+  products: SearchResponseProduct[]
 }
 
 function ProductGrid({ products }: ProductGridProps) {
-  console.log("🚀 ~ ProductGrid ~ products:", products);
   return (
-    <section
-      aria-labelledby="product-heading"
-      className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3"
-    >
+    <section aria-labelledby="product-heading" className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
       <h2 id="product-heading" className="sr-only">
         Products
       </h2>
@@ -30,7 +26,7 @@ function ProductGrid({ products }: ProductGridProps) {
               alt={product.name}
               src={
                 product.imageLarge ||
-                "https://tailwindui.com/plus/img/ecommerce-images/mega-menu-category-01.jpg"
+                'https://tailwindui.com/plus/img/ecommerce-images/mega-menu-category-01.jpg'
               }
               className="aspect-[3/4] bg-gray-200 object-cover group-hover:opacity-75 sm:h-96"
             />
@@ -44,19 +40,15 @@ function ProductGrid({ products }: ProductGridProps) {
               </h3>
               <p className="text-sm text-gray-500">{product.description}</p>
               <div className="flex flex-1 flex-col justify-end">
-                <p className="text-sm italic text-gray-500">
-                  {product.laboratory}
-                </p>
-                <p className="text-base font-medium text-gray-900">
-                  {`VEF ${product.price}`}
-                </p>
+                <p className="text-sm italic text-gray-500">{product.laboratory}</p>
+                <p className="text-base font-medium text-gray-900">{`VEF ${product.price}`}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default ProductGrid;
+export default ProductGrid
