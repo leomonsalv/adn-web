@@ -1,11 +1,11 @@
-import pluginQuery from "@tanstack/eslint-plugin-query";
-import eslintConfigPrettier from "eslint-config-prettier";
+import pluginQuery from '@tanstack/eslint-plugin-query'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
-  ...pluginQuery.configs["flat/recommended"],
+  ...pluginQuery.configs['flat/recommended'],
   eslintConfigPrettier,
   {
-    ignores: [".next/*"],
+    ignores: ['.next/*'],
   },
   // Any other config...
-];
+]
