@@ -36,7 +36,6 @@ export const getCart = async (userId: string) => {
 }
 
 export const updateCart = async (userId: string, cartId: string, newCartData: Cart) => {
-  console.log('🚀 ~ updateCart ~ newCartData:', newCartData)
   try {
     // get the cart store
     const cartRef = doc(collection(db, 'users', userId, 'shopCart'), cartId)
