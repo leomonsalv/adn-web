@@ -1,21 +1,15 @@
-import { useCartStore } from "@/stores/cart-store";
-import {
-  Popover,
-  PopoverButton,
-  PopoverBackdrop,
-  PopoverPanel,
-} from "@headlessui/react";
-import { ChevronUpIcon } from "lucide-react";
-import React from "react";
+import { useCartStore } from '@/stores/cart-store'
+import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react'
+import { ChevronUpIcon } from 'lucide-react'
+import React from 'react'
 
 export default function CheckoutOrderSummary() {
-  const { cartItems, getCartSubtotal, getCartTax, getCartTotal } =
-    useCartStore();
+  const { cart, getCartSubtotal, getCartTax, getCartTotal } = useCartStore()
 
-  const subtotal = getCartSubtotal();
-  const shipping = 15.0;
-  const taxes = getCartTax();
-  const total = getCartTotal();
+  const subtotal = getCartSubtotal()
+  const shipping = 15.0
+  const taxes = getCartTax()
+  const total = getCartTotal()
 
   return (
     <section
@@ -27,21 +21,18 @@ export default function CheckoutOrderSummary() {
           Order summary
         </h2>
 
-        <ul
-          role="list"
-          className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
-        >
-          {cartItems.map((item) => (
+        <ul role="list" className="divide-y divide-gray-200 text-sm font-medium text-gray-900">
+          {cart.products.map((item) => (
             <li key={item.id} className="flex items-start space-x-4 py-6">
               <img
-                alt={item.imageAlt}
-                src={item.imageSrc}
+                alt={item.name}
+                src={item.imageLarge}
                 className="size-20 flex-none rounded-md object-cover object-center"
               />
               <div className="flex-auto space-y-1">
                 <h3>{item.name}</h3>
-                <p className="text-gray-500">{item.color}</p>
-                <p className="text-gray-500">{item.size}</p>
+                {/* <p className="text-gray-500">{item.color}</p> */}
+                {/* <p className="text-gray-500">{item.size}</p> */}
               </div>
               <p className="flex-none text-base font-medium">{item.price}</p>
             </li>
@@ -76,10 +67,7 @@ export default function CheckoutOrderSummary() {
               <PopoverButton className="flex w-full items-center py-6 font-medium">
                 <span className="mr-auto text-base">Total</span>
                 <span className="mr-2 text-base">${total.toFixed(2)}</span>
-                <ChevronUpIcon
-                  aria-hidden="true"
-                  className="size-5 text-gray-500"
-                />
+                <ChevronUpIcon aria-hidden="true" className="size-5 text-gray-500" />
               </PopoverButton>
             </div>
           </div>
@@ -118,5 +106,5 @@ export default function CheckoutOrderSummary() {
         </Popover>
       </div>
     </section>
-  );
+  )
 }

@@ -18,7 +18,7 @@ import {
 import { LOGIN } from "@/lib/routes";
 
 const navigation = [
-  { name: "Product", href: "#" },
+  { name: "Product", href: "/buscar" },
   { name: "Features", href: "#" },
   { name: "Marketplace", href: "#" },
   { name: "Company", href: "#" },
@@ -29,13 +29,13 @@ export function NavLinks() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header className="relative inset-x-0 top-0 z-50 border-b border-gray-200 bg-white">
       <nav
         aria-label="Global"
         className="flex items-center justify-between p-6 lg:px-8"
       >
         <div className="flex lg:flex-1">
-          <Link href="#" className="-m-1.5 p-1.5">
+          <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
               alt=""

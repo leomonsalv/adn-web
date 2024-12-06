@@ -1,14 +1,15 @@
-import React from "react";
-import { products } from "@/lib/dummyData";
-import Link from "next/link";
-type Props = {};
+import React from 'react'
+import Link from 'next/link'
+import { SearchResponseProduct } from '@/types/search'
+import Image from 'next/image'
 
-function ProductGrid({}: Props) {
+interface ProductGridProps {
+  products: SearchResponseProduct[]
+}
+
+function ProductGrid({ products }: ProductGridProps) {
   return (
-    <section
-      aria-labelledby="product-heading"
-      className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3"
-    >
+    <section aria-labelledby="product-heading" className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
       <h2 id="product-heading" className="sr-only">
         Products
       </h2>
@@ -19,11 +20,17 @@ function ProductGrid({}: Props) {
             key={product.id}
             className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
           >
-            <img
-              alt={product.imageAlt}
-              src={product.imageSrc}
+            <Image
+              width={400}
+              height={500}
+              alt={product.name}
+              src={
+                product.imageLarge ||
+                'https://tailwindui.com/plus/img/ecommerce-images/mega-menu-category-01.jpg'
+              }
               className="aspect-[3/4] bg-gray-200 object-cover group-hover:opacity-75 sm:h-96"
             />
+            )
             <div className="flex flex-1 flex-col space-y-2 p-4">
               <h3 className="text-sm font-medium text-gray-900">
                 <Link href={`/producto-detalle/${product.id}`}>
@@ -33,19 +40,15 @@ function ProductGrid({}: Props) {
               </h3>
               <p className="text-sm text-gray-500">{product.description}</p>
               <div className="flex flex-1 flex-col justify-end">
-                <p className="text-sm italic text-gray-500">
-                  {product.options}
-                </p>
-                <p className="text-base font-medium text-gray-900">
-                  {product.price}
-                </p>
+                <p className="text-sm italic text-gray-500">{product.laboratory}</p>
+                <p className="text-base font-medium text-gray-900">{`VEF ${product.price}`}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default ProductGrid;
+export default ProductGrid

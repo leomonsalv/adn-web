@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 // @ts-check
 
@@ -12,15 +12,16 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    domains: ['tailwindui.com'],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
-        port: "",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
