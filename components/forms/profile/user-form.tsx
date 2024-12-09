@@ -28,7 +28,7 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
   const { toast } = useToast();
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+    <div className="space-y-6 bg-white p-6 rounded-lg max-w-md mx-auto">
       <ProfileField
         id="fullName"
         label="Nombre completo"
@@ -142,7 +142,11 @@ function ProfileField({
         {label}
       </label>
       <div className="flex items-center gap-2">
-        <div className="flex flex-1 items-center border rounded-md px-3 py-2 bg-gray-50">
+        <div
+          className={`flex flex-1 items-center border rounded-md px-3 py-2 bg-gray-50
+          ${!isEditing || disabled ? "bg-gray-50" : " bg-white"}
+          `}
+        >
           <span className="mr-3">{icon}</span>
           <input
             id={id}
@@ -151,7 +155,9 @@ function ProfileField({
             defaultValue={defaultValue}
             disabled={!isEditing || disabled}
             className={`flex-1 bg-transparent border-0 focus:ring-0 sm:text-sm ${
-              !isEditing || disabled ? "text-gray-400" : "text-gray-900"
+              !isEditing || disabled
+                ? "text-gray-400"
+                : "text-gray-900 bg-white"
             }`}
           />
         </div>
