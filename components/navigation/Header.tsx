@@ -22,6 +22,7 @@ const navigation = [
   { name: "Features", href: "#" },
   { name: "Marketplace", href: "#" },
   { name: "Company", href: "#" },
+  { name: "My profile", href: "/profile" },
 ];
 
 export function NavLinks() {
