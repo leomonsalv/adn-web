@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import React, { useActionState } from "react";
-import { updateUserProfileAction } from "@/app/_actions/profile";
-import { useToast } from "@/hooks/use-toast";
+import React, { useActionState } from 'react'
+import { updateUserProfileAction } from '@/app/_actions/profile'
+import { useToast } from '@/hooks/use-toast'
 import {
   User2,
   UserCircle as Identification,
@@ -11,21 +11,22 @@ import {
   LockKeyhole,
   Edit,
   Check,
-} from "lucide-react";
-import { useFormStatus } from "react-dom";
+} from 'lucide-react'
+import { useFormStatus } from 'react-dom'
+import { ProfileFieldWithOTP } from '@/components/forms/profile/modals/otp-form'
 
 interface UserProfileFormProps {
   initialData: {
-    fullName: string;
-    idDocument: string;
-    phoneNumber?: string | null;
-    email?: string | null;
-    password: string;
-  };
+    fullName: string
+    idDocument: string
+    phoneNumber?: string | null
+    email?: string | null
+    password: string
+  }
 }
 
 export function UserProfileForm({ initialData }: UserProfileFormProps) {
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   return (
     <div className="space-y-6 bg-white p-6 rounded-lg max-w-md mx-auto">
@@ -36,8 +37,8 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         defaultValue={initialData.fullName}
         onSuccess={() =>
           toast({
-            title: "Nombre actualizado",
-            description: "Tu nombre se ha actualizado correctamente.",
+            title: 'Nombre actualizado',
+            description: 'Tu nombre se ha actualizado correctamente.',
           })
         }
       />
@@ -48,22 +49,20 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         defaultValue={initialData.idDocument}
         onSuccess={() =>
           toast({
-            title: "Documento actualizado",
-            description:
-              "Tu documento de identidad se ha actualizado correctamente.",
+            title: 'Documento actualizado',
+            description: 'Tu documento de identidad se ha actualizado correctamente.',
           })
         }
       />
-      <ProfileField
+      <ProfileFieldWithOTP
         id="phoneNumber"
         label="Número de teléfono"
         icon={<PhoneCall className="text-gray-500" />}
-        defaultValue={initialData.phoneNumber || ""}
+        defaultValue={initialData.phoneNumber || ''}
         onSuccess={() =>
           toast({
-            title: "Teléfono actualizado",
-            description:
-              "Tu número de teléfono se ha actualizado correctamente.",
+            title: 'Teléfono actualizado',
+            description: 'Tu número de teléfono se ha actualizado correctamente.',
           })
         }
       />
@@ -71,12 +70,11 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         id="email"
         label="Correo electrónico"
         icon={<Mail className="text-gray-500" />}
-        defaultValue={initialData.email || ""}
+        defaultValue={initialData.email || ''}
         onSuccess={() =>
           toast({
-            title: "Correo actualizado",
-            description:
-              "Tu correo electrónico se ha actualizado correctamente.",
+            title: 'Correo actualizado',
+            description: 'Tu correo electrónico se ha actualizado correctamente.',
           })
         }
       />
@@ -98,7 +96,7 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function ProfileField({
@@ -107,34 +105,35 @@ function ProfileField({
   icon,
   defaultValue,
   onSuccess,
-  type = "text",
+  type = 'text',
   disabled = false,
 }: {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  defaultValue: string;
-  onSuccess?: () => void;
-  type?: string;
-  disabled?: boolean;
+  id: string
+  label: string
+  icon: React.ReactNode
+  defaultValue: string
+  onSuccess?: () => void
+  type?: string
+  disabled?: boolean
 }) {
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [formState, formAction] = useActionState(
-    updateUserProfileAction,
-    undefined,
-  );
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [formState, formAction] = useActionState(updateUserProfileAction, undefined)
 
   const handleSubmit = async (formData: FormData) => {
-    const value = formData.get(id);
+    const value = formData.get(id)
 
-    if (!value || value === defaultValue || disabled) return;
+    if (!value || value === defaultValue || disabled) return
 
-    formAction(formData);
+    formAction(formData)
     if (formState?.success) {
-      onSuccess?.();
-      setIsEditing(false);
+      onSuccess?.()
+      setIsEditing(false)
     }
-  };
+  }
+
+  const handleClick = () => {
+    setIsEditing(!isEditing)
+  }
 
   return (
     <form action={handleSubmit} className="space-y-2">
@@ -144,7 +143,7 @@ function ProfileField({
       <div className="flex items-center gap-2">
         <div
           className={`flex flex-1 items-center border rounded-md px-3 py-2 bg-gray-50
-          ${!isEditing || disabled ? "bg-gray-50" : " bg-white"}
+          ${!isEditing || disabled ? 'bg-gray-50' : ' bg-white'}
           `}
         >
           <span className="mr-3">{icon}</span>
@@ -155,15 +154,13 @@ function ProfileField({
             defaultValue={defaultValue}
             disabled={!isEditing || disabled}
             className={`flex-1 bg-transparent border-0 focus:ring-0 sm:text-sm ${
-              !isEditing || disabled
-                ? "text-gray-400"
-                : "text-gray-900 bg-white"
+              !isEditing || disabled ? 'text-gray-400' : 'text-gray-900 bg-white'
             }`}
           />
         </div>
         <button
-          type={isEditing ? "submit" : "button"}
-          onClick={() => setIsEditing(!isEditing)}
+          type={isEditing ? 'submit' : 'button'}
+          onClick={handleClick}
           className="p-2 rounded-md shadow-sm focus:outline-none"
         >
           {isEditing ? (
@@ -173,15 +170,13 @@ function ProfileField({
           )}
         </button>
       </div>
-      {formState?.errors?.[id] && (
-        <p className="text-red-500 text-sm">{formState.errors[id]}</p>
-      )}
+      {formState?.errors?.[id] && <p className="text-red-500 text-sm">{formState.errors[id]}</p>}
     </form>
-  );
+  )
 }
 
 function SubmitButton() {
-  const { pending } = useFormStatus();
+  const { pending } = useFormStatus()
 
   return (
     <button
@@ -189,7 +184,7 @@ function SubmitButton() {
       type="submit"
       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-      {pending ? "Cargando..." : "Finalizado"}
+      {pending ? 'Cargando...' : 'Finalizado'}
     </button>
-  );
+  )
 }
