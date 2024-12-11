@@ -1,16 +1,38 @@
-import { UserProfileForm } from '@/components/forms/profile/user-form'
-import React from 'react'
+'use client'
 
-//TODO: REPLACE THIS WITH GET USER FROM FIREBASE
-const mockUserData = {
-  fullName: 'John Doe',
-  idDocument: '123456789',
-  phoneNumber: '1234567890',
-  email: 'john.doe@example.com',
-  password: '********',
-}
+import React from 'react'
+import { useUser } from '@/hooks/use-user'
+import { useUserProfile } from '@/hooks/use-user-profile'
+import { UserProfileForm } from '@/components/forms/profile/user-form'
 
 export default function ProfilePage() {
+  const { user, loading: authLoading } = useUser()
+  const uid = user?.uid
+  const { data: userProfile, isLoading: profileLoading, error } = useUserProfile(uid)
+
+  if (authLoading || profileLoading) {
+    return <p>Cargando...</p>
+  }
+
+  if (!user) {
+    return <p>No hay un usuario autenticado.</p>
+  }
+
+  if (error) {
+    return <p>Hubo un error al cargar el perfil.</p>
+  }
+
+  const initialData = {
+    fullName: userProfile?.invoiceData.fullname || user.displayName || '',
+    idDocument: userProfile?.invoiceData.dni || '',
+    phoneNumber: userProfile?.invoiceData.phone || user.phoneNumber || '',
+    email: userProfile?.email || user.email || '',
+    password: '********',
+    validatedDni: userProfile?.validatedDni || false,
+    validatedPhone: userProfile?.validatedPhone || false,
+    validatedEmail: userProfile?.validatedEmail || false,
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -22,7 +44,7 @@ export default function ProfilePage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
-          <UserProfileForm initialData={mockUserData} />
+          <UserProfileForm initialData={initialData} />
         </div>
       </div>
     </div>
