@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useActionState } from 'react'
+import React, { useActionState, useState } from 'react'
 import { updateUserProfileAction } from '@/app/_actions/profile'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -12,6 +12,9 @@ import {
   Edit,
   Check,
 } from 'lucide-react'
+import { Dialog, DialogActions, DialogDescription, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import useAuth from '@/hooks/use-auth'
 import { useFormStatus } from 'react-dom'
 import { ProfileFieldWithOTP } from '@/components/forms/profile/modals/otp-form'
 
@@ -27,6 +30,9 @@ interface UserProfileFormProps {
 
 export function UserProfileForm({ initialData }: UserProfileFormProps) {
   const { toast } = useToast()
+  const { useDeleteAccountMutation } = useAuth()
+  const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccountMutation()
+  const [open, setOpen] = useState(false)
 
   return (
     <div className="space-y-6 bg-white p-6 rounded-lg max-w-md mx-auto">
@@ -88,13 +94,34 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
 
       <div className="flex gap-4 mt-6">
         <SubmitButton />
-        <button
-          type="button"
+        <Button
+          color="red"
+          onClick={() => setOpen(true)}
           className="flex w-full justify-center rounded-md border border-red-500 bg-white px-3 py-1.5 text-sm font-semibold text-red-500 hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
         >
           Eliminar cuenta
-        </button>
+        </Button>
       </div>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>¿Estas seguro de que quieres eliminar tu cuenta?</DialogTitle>
+        <DialogDescription>
+          No podrás recuperarla una vez que la hayas eliminado. Además, se eliminarán todos los
+          datos asociados a tu cuenta, excepto los datos de facturación y data que es necesaria para
+          el funcionamiento de la aplicación.
+        </DialogDescription>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button
+            disabled={isDeleting}
+            onClick={async () => {
+              await deleteAccount()
+              setOpen(false)
+            }}
+          >
+            Cerrar sesión
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
@@ -179,12 +206,13 @@ function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <button
+    <Button
+      color="indigo"
       disabled={pending}
       type="submit"
       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       {pending ? 'Cargando...' : 'Finalizado'}
-    </button>
+    </Button>
   )
 }

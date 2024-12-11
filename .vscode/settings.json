@@ -6,6 +6,23 @@
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
-  "cSpell.words": ["headlessui", "heroicons", "tailwindcss"],
+  "cSpell.words": [
+    "adanenlinea",
+    "Boleita",
+    "descompilar",
+    "headlessui",
+    "heroicons",
+    "Monitorea",
+    "Monitoreo",
+    "montos",
+    "objetable",
+    "psicotrópicas",
+    "reembolsos",
+    "sublicenciable",
+    "tailwindcss",
+    "tarjetahabiente",
+    "Troya",
+    "Zelle"
+  ],
   "cSpell.language": "en,es-ES"
 }
