@@ -1,4 +1,8 @@
-import { OtpProfileSchema, PhoneOtpProfileSchema, UserProfileSchema } from '@/schemas/user-form'
+import {
+  OtpProfileSchema,
+  PhoneOtpProfileSchema,
+  PartialUserProfileUpdateSchema,
+} from '@/schemas/user-form'
 import { auth } from '@/lib/firebaseConfig'
 import { updateProfile } from 'firebase/auth'
 import { getFunctions, httpsCallable } from 'firebase/functions'
@@ -12,12 +16,12 @@ import { OTP_GENERATION, OTP_VALIDATION } from '@/lib/urls'
  * @returns {Object} Resultado de la operación con éxito o errores.
  */
 export async function updateUserProfileAction(state: any, formData: FormData): Promise<object> {
-  const validatedFields = UserProfileSchema.safeParse({
+  const validatedFields = PartialUserProfileUpdateSchema.safeParse({
     fullName: formData.get('fullName'),
     idDocument: formData.get('idDocument'),
-    phoneNumber: formData.get('phoneNumber'),
-    email: formData.get('email'),
-    password: formData.get('password'),
+    // phoneNumber: formData.get('phoneNumber'),
+    // email: formData.get('email'),
+    // password: formData.get('password'),
   })
 
   if (!validatedFields.success) {

@@ -1,9 +1,10 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '@/lib/firebaseConfig'
-import { UserProfileData } from '@/types/userProfile'
+import { UpdateUserProfileInput, UserProfileData } from '@/types/userProfile'
+import { updateUserProfile } from '@/api/auth'
 
 /**
  * Hook para obtener el perfil del usuario desde Firestore.
@@ -17,7 +18,6 @@ async function fetchUserProfile(uid: string): Promise<UserProfileData> {
     throw new Error('No se encontró información de perfil para este usuario.')
   }
 
-  // Ajusta este casting a la estructura real de tu documento
   return docSnap.data() as UserProfileData
 }
 
@@ -32,4 +32,15 @@ export function useUserProfile(uid?: string) {
   })
 
   return { data, isLoading, error }
+}
+
+export function useUserProfileMutations() {
+  const updateMutation = useMutation({
+    mutationKey: ['updateUserProfile'],
+    mutationFn: (data: UpdateUserProfileInput) => updateUserProfile(data),
+  })
+
+  return {
+    updateMutation,
+  }
 }

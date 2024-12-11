@@ -12,6 +12,15 @@ import {
 } from '@/schemas/user-profile-schema'
 import { z } from 'zod'
 
+export interface UpdateUserProfileInput {
+  fullName?: string
+  idDocument?: string
+  phoneNumber?: string
+  email?: string
+  validatedEmail?: boolean
+  validatedPhone?: boolean
+}
+
 export type Favorite = z.infer<typeof FavoriteSchema>
 export type InvoiceData = z.infer<typeof InvoiceDataSchema>
 export type LastDeductionDate = z.infer<typeof LastDeductionDateSchema>

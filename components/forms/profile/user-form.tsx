@@ -1,22 +1,22 @@
 'use client'
 
-import React, { useActionState, useState } from 'react'
-import { updateUserProfileAction } from '@/app/_actions/profile'
+import React, { useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import {
   User2,
   UserCircle as Identification,
   PhoneCall,
   Mail,
-  LockKeyhole,
   Edit,
   Check,
+  XCircleIcon,
 } from 'lucide-react'
 import { Dialog, DialogActions, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import useAuth from '@/hooks/use-auth'
 import { useFormStatus } from 'react-dom'
 import { ProfileFieldWithOTP } from '@/components/forms/profile/modals/otp-form'
+import { useUserProfileMutations } from '@/hooks/use-user-profile'
 
 interface UserProfileFormProps {
   initialData: {
@@ -72,7 +72,7 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
           })
         }
       />
-      <ProfileField
+      <ProfileFieldWithOTP
         id="email"
         label="Correo electrónico"
         icon={<Mail className="text-gray-500" />}
@@ -84,13 +84,13 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
           })
         }
       />
-      <ProfileField
+      {/* <ProfileField
         id="password"
         label="Contraseña y seguridad"
         icon={<LockKeyhole className="text-gray-500" />}
         defaultValue="********"
         disabled
-      />
+      /> */}
 
       <div className="flex gap-4 mt-6">
         <SubmitButton />
@@ -118,7 +118,7 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
               setOpen(false)
             }}
           >
-            Cerrar sesión
+            Eliminar cuenta
           </Button>
         </DialogActions>
       </Dialog>
@@ -144,60 +144,91 @@ function ProfileField({
   disabled?: boolean
 }) {
   const [isEditing, setIsEditing] = React.useState(false)
-  const [formState, formAction] = useActionState(updateUserProfileAction, undefined)
+  const [tempValue, setTempValue] = React.useState(defaultValue)
 
-  const handleSubmit = async (formData: FormData) => {
-    const value = formData.get(id)
+  const { updateMutation } = useUserProfileMutations()
+  const { isPending, isError, error, mutateAsync } = updateMutation
 
-    if (!value || value === defaultValue || disabled) return
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!isEditing || disabled) return
 
-    formAction(formData)
-    if (formState?.success) {
+    if (tempValue === defaultValue) {
+      setIsEditing(false)
+      return
+    }
+
+    const result = await mutateAsync({ [id]: tempValue })
+
+    if (result.success) {
       onSuccess?.()
       setIsEditing(false)
     }
   }
 
-  const handleClick = () => {
-    setIsEditing(!isEditing)
+  const handleCancel = () => {
+    setTempValue(defaultValue)
+    setIsEditing(false)
   }
 
   return (
-    <form action={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} className="space-y-2">
       <label htmlFor={id} className="block text-sm font-medium text-gray-900">
         {label}
       </label>
       <div className="flex items-center gap-2">
         <div
-          className={`flex flex-1 items-center border rounded-md px-3 py-2 bg-gray-50
-          ${!isEditing || disabled ? 'bg-gray-50' : ' bg-white'}
-          `}
+          className={`flex flex-1 items-center border rounded-md px-3 py-2 ${!isEditing || disabled ? 'bg-gray-50' : 'bg-white'}`}
         >
           <span className="mr-3">{icon}</span>
           <input
             id={id}
             name={id}
             type={type}
-            defaultValue={defaultValue}
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
             disabled={!isEditing || disabled}
             className={`flex-1 bg-transparent border-0 focus:ring-0 sm:text-sm ${
               !isEditing || disabled ? 'text-gray-400' : 'text-gray-900 bg-white'
             }`}
           />
         </div>
-        <button
-          type={isEditing ? 'submit' : 'button'}
-          onClick={handleClick}
-          className="p-2 rounded-md shadow-sm focus:outline-none"
-        >
-          {isEditing ? (
-            <Check className="text-indigo-600 hover:text-indigo-500" />
-          ) : (
-            <Edit className="text-gray-600 hover:text-gray-500" />
-          )}
-        </button>
+        {isEditing ? (
+          <>
+            <button
+              type="submit"
+              className="p-2 rounded-md shadow-sm focus:outline-none text-indigo-600 hover:text-indigo-500"
+              disabled={isPending}
+            >
+              {isPending ? 'Guardando...' : <Check />}
+            </button>
+            <button
+              title="Cancelar"
+              type="button"
+              onClick={handleCancel}
+              className="p-2 rounded-md shadow-sm focus:outline-none text-indigo-600 hover:text-indigo-500"
+              disabled={isPending}
+            >
+              <XCircleIcon />
+            </button>
+          </>
+        ) : (
+          <button
+            title="Editar campo"
+            type="button"
+            onClick={() => setIsEditing(true)}
+            className="p-2 rounded-md shadow-sm focus:outline-none text-gray-600 hover:text-gray-500"
+            disabled={disabled}
+          >
+            <Edit />
+          </button>
+        )}
       </div>
-      {formState?.errors?.[id] && <p className="text-red-500 text-sm">{formState.errors[id]}</p>}
+      {isError && (
+        <p className="text-red-500 text-sm">
+          {(error as any)?.message || 'Ocurrió un error al actualizar el campo.'}
+        </p>
+      )}
     </form>
   )
 }
