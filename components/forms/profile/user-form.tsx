@@ -25,6 +25,8 @@ interface UserProfileFormProps {
     phoneNumber?: string | null
     email?: string | null
     password: string
+    validatedPhone: boolean
+    validatedEmail: boolean
   }
 }
 
@@ -65,6 +67,8 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         label="Número de teléfono"
         icon={<PhoneCall className="text-gray-500" />}
         defaultValue={initialData.phoneNumber || ''}
+        initialVerified={initialData.validatedPhone}
+        otpType="phone"
         onSuccess={() =>
           toast({
             title: 'Teléfono actualizado',
@@ -72,11 +76,14 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
           })
         }
       />
+
       <ProfileFieldWithOTP
         id="email"
         label="Correo electrónico"
         icon={<Mail className="text-gray-500" />}
         defaultValue={initialData.email || ''}
+        otpType="email"
+        initialVerified={initialData.validatedEmail}
         onSuccess={() =>
           toast({
             title: 'Correo actualizado',
@@ -84,7 +91,9 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
           })
         }
       />
-      {/* <ProfileField
+      {/*
+      //TODO: COMMENTED BECAUSE I DONT KNOW IF THIS WILL ALSO BE IN RELEASE
+      <ProfileField
         id="password"
         label="Contraseña y seguridad"
         icon={<LockKeyhole className="text-gray-500" />}

@@ -6,9 +6,9 @@ import { auth } from '@/lib/firebaseConfig'
 
 /**
  * Hook para obtener el usuario autenticado desde Firebase Auth.
- * Retorna { user, loading }.
  * - user: el usuario de Firebase o null si no está autenticado.
  * - loading: boolean que indica si aún se está determinando el estado.
+ * @return { user, loading }.
  */
 export function useUser() {
   const [user, setUser] = useState<User | null>(auth.currentUser)
