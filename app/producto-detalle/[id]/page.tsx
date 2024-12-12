@@ -1,10 +1,7 @@
 'use client'
 
 import { Fragment, useState } from 'react'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { Radio, RadioGroup } from '@headlessui/react'
 import { use } from 'react'
-import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline'
 import { useCartStore } from '@/stores/cart-store'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
@@ -17,108 +14,50 @@ import {
 } from '@/components/ui/breadcrumb'
 import { BreadcrumbList } from '@/components/ui/breadcrumb'
 import Reviews from '@/components/reviews/Reviews'
-import { classNames } from '@/lib/utils'
+import { classNames, formatUsdCurrency } from '@/lib/utils'
 import useProducts from '@/hooks/use-products'
 import useCart from '@/hooks/use-cart'
-import { auth } from '@/lib/firebaseConfig'
+import Image from 'next/image'
+import { FlameIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { policies, product } from '@/lib/dummyData'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { SkeletonCard } from '@/components/ui/skeleton-card'
+import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector'
+import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
 }
 
-const product = {
-  id: 6,
-  name: 'Basic Tee',
-  price: '$35',
-  rating: 3.9,
-  reviewCount: 512,
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Women', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
-    {
-      id: 1,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-featured-product-shot.jpg',
-      imageAlt: "Back of women's Basic Tee in black.",
-      primary: true,
-    },
-    {
-      id: 2,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-product-shot-01.jpg',
-      imageAlt: "Side profile of women's Basic Tee in black.",
-      primary: false,
-    },
-    {
-      id: 3,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-product-shot-02.jpg',
-      imageAlt: "Front of women's Basic Tee in black.",
-      primary: false,
-    },
-  ],
-  colors: [
-    { name: 'Black', bgColor: 'bg-gray-900', selectedColor: 'ring-gray-900' },
-    {
-      name: 'Heather Grey',
-      bgColor: 'bg-gray-400',
-      selectedColor: 'ring-gray-400',
-    },
-  ],
-  sizes: [
-    { name: 'XXS', inStock: true },
-    { name: 'XS', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: false },
-  ],
-  description: `
-    <p>The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee it's own look.</p>
-    <p>Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.</p>
-  `,
-  details: [
-    'Only the best materials',
-    'Ethically and locally made',
-    'Pre-washed and pre-shrunk',
-    'Machine wash cold with similar colors',
-  ],
-}
-const policies = [
-  {
-    name: 'International delivery',
-    icon: GlobeAmericasIcon,
-    description: 'Get your order in 2 years',
-  },
-  {
-    name: 'Loyalty rewards',
-    icon: CurrencyDollarIcon,
-    description: "Don't look at other tees",
-  },
-]
-
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const productId = Number(use(params).id)
-
   const { useGetProductById } = useProducts()
   const { useMutateCart, useGetCart } = useCart()
 
   const router = useRouter()
 
-  const { data: productData, isLoading: isProductLoading } = useGetProductById(productId)
+  const {
+    data: productData,
+    isLoading: isProductLoading,
+    error: productError,
+  } = useGetProductById(productId)
+  console.log('🚀 ~ ProductDetailsPage ~ productData:', productData)
 
-  const { data: cartData, isLoading: isCartLoading } = useGetCart()
+  const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart()
   const { mutateAsync: updateCart } = useMutateCart()
 
   const { addToCart, getItemCount, updateQuantity, isItemInCart, cart } = useCartStore()
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
-  const isInCart = isItemInCart(product.id)
-  const itemCount = getItemCount(product.id)
+  const isInCart = productData ? isItemInCart(productData.id) : false
+  const itemCount = productData ? getItemCount(productData.id) : 0
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -142,17 +81,35 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     }
   }
 
-  if (isProductLoading || isCartLoading) return <div>Loading...</div>
+  if (isProductLoading || isCartLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <SkeletonCard />
+      </div>
+    )
+  }
 
-  return !productData ? (
-    <div>No se encontró el producto</div>
-  ) : (
+  if (productError || cartError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Ocurrió un error al cargar los datos. Por favor, inténtalo más tarde.</p>
+      </div>
+    )
+  }
+
+  if (!productData) {
+    return <div className="text-center py-16">No se encontró el producto</div>
+  }
+
+  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : []
+
+  return (
     <div className="bg-white">
       <div className="pb-16 pt-6 sm:pb-24">
         {/* Breadcrumb */}
         <Breadcrumb>
           <BreadcrumbList>
-            {productData?.categ_route.split('/').map((breadcrumb) => (
+            {breadcrumbs.map((breadcrumb) => (
               <Fragment key={breadcrumb}>
                 <BreadcrumbItem>
                   <BreadcrumbLink href={`/categoria/${breadcrumb}`}>{breadcrumb}</BreadcrumbLink>
@@ -170,139 +127,154 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         <div className="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
             <div className="lg:col-span-5 lg:col-start-8">
+              {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
+                <div className="flex justify-start items-center py-2">
+                  <FlameIcon color="red" aria-hidden="true" />
+                  <h2 className="text-red-500 text-sm font-semibold">
+                    +{productData.saleslast7days} comprados en el último mes
+                  </h2>
+                </div>
+              ) : null}
+              <h1 className="text-xl font-bold text-gray-900">{productData.name}</h1>
               <div className="flex justify-between">
-                <h1 className="text-xl font-medium text-gray-900">{productData.name}</h1>
-                <p className="text-xl font-medium text-gray-900">{productData.price}</p>
+                <p className="text-sm font-medium text-gray-900 py-2">
+                  Distribuido por: <strong>{productData.laboratory}</strong>
+                </p>
               </div>
               {/* Reviews */}
-              <Reviews rating={product.rating} reviewCount={product.reviewCount} />
+              <section aria-labelledby="reviews-heading" className="my-2">
+                <h2 id="reviews-heading" className="sr-only">
+                  Reseñas y Calificaciones
+                </h2>
+                <Reviews rating={product.rating} reviewCount={product.reviewCount} />
+              </section>
+              <section aria-labelledby="description-heading" className="my-10">
+                <h2 id="description-heading" className="sr-only">
+                  Descripción del producto
+                </h2>
+                {productData.description ? (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: productData.description }}
+                    className="prose prose-base mt-4 text-gray-900"
+                  />
+                ) : (
+                  <p className="text-gray-500">No hay descripción disponible.</p>
+                )}
+              </section>
+              {/* THIS IS A WIP FUNCTION THAT CAN CHANGE BECAUSE THERE IS NO DESIGN OF YET*/}
+              <ProductColorSelector
+                selectedColor={selectedColor}
+                setSelectedColor={setSelectedColor}
+                product={product}
+              />
+              {/* THIS IS A WIP FUNCTION THAT CAN CHANGE BECAUSE THERE IS NO DESIGN OF YET*/}
+              <ProductSizePicker
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
+                product={product}
+              />
+            </div>
+
+            {/* Price tags */}
+            <div className="lg:col-span-5 lg:col-start-8 mt-4">
+              <h2 className="sr-only">Información de precios</h2>
+              <div className="flex flex-row gap-1">
+                <span className="text-sm">Precio regular:</span>
+                <p className="text-sm text-gray-500 line-through">
+                  {formatUsdCurrency(productData.price_extra)}
+                </p>
+              </div>
+              <div className="flex flex-row gap-1 items-baseline">
+                <p className="text-3xl font-semibold text-red-700">
+                  {formatUsdCurrency(Number(productData.price_ref))}
+                </p>
+                {productData.discount_rate && productData.discount_rate !== '0' && (
+                  <Badge color="blue" className="font-semibold font-sans">
+                    % {productData.discount_rate} OFF
+                  </Badge>
+                )}
+              </div>
             </div>
 
             {/* Image gallery */}
             <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-              <h2 className="sr-only">Images</h2>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                {product.images.map((image) => (
-                  <img
-                    key={image.id}
-                    alt={image.imageAlt}
-                    src={image.imageSrc}
-                    className={classNames(
-                      image.primary ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
-                      'rounded-lg',
-                    )}
-                  />
-                ))}
-              </div>
+              <section aria-labelledby="gallery-heading">
+                <h2 id="gallery-heading" className="sr-only">
+                  Galería de Imágenes del Producto
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+                  {productData.imageLarge ? (
+                    <Image
+                      key={productData.id}
+                      alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                      src={productData.imageLarge}
+                      height={500}
+                      width={500}
+                      className={classNames('lg:col-span-2 lg:row-span-2 rounded-lg')}
+                    />
+                  ) : (
+                    <div className="bg-gray-200 rounded-lg flex items-center justify-center h-64">
+                      <span className="text-gray-500">No hay imagen disponible</span>
+                    </div>
+                  )}
+                </div>
+              </section>
             </div>
 
             <div className="mt-8 lg:col-span-5">
               <form onSubmit={handleAddToCart}>
-                {/* Color picker */}
-                <div>
-                  <h2 className="text-sm font-medium text-gray-900">Color</h2>
-
-                  <fieldset aria-label="Choose a color" className="mt-2">
-                    <RadioGroup
-                      value={selectedColor}
-                      onChange={setSelectedColor}
-                      className="flex items-center space-x-3"
-                    >
-                      {product.colors.map((color) => (
-                        <Radio
-                          key={color.name}
-                          value={color}
-                          aria-label={color.name}
-                          className={classNames(
-                            color.selectedColor,
-                            'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1',
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              color.bgColor,
-                              'size-8 rounded-full border border-black/10',
-                            )}
-                          />
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  </fieldset>
-                </div>
-
-                {/* Size picker */}
-                <div className="mt-8">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-medium text-gray-900">Size</h2>
-                    <a
-                      href="#"
-                      className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      See sizing chart
-                    </a>
-                  </div>
-
-                  <fieldset aria-label="Choose a size" className="mt-2">
-                    <RadioGroup
-                      value={selectedSize}
-                      onChange={setSelectedSize}
-                      className="grid grid-cols-3 gap-3 sm:grid-cols-6"
-                    >
-                      {product.sizes.map((size) => (
-                        <Radio
-                          key={size.name}
-                          value={size}
-                          disabled={!size.inStock}
-                          className={classNames(
-                            size.inStock
-                              ? 'cursor-pointer focus:outline-none'
-                              : 'cursor-not-allowed opacity-25',
-                            'flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 data-[checked]:border-transparent data-[checked]:bg-indigo-600 data-[checked]:text-white data-[focus]:ring-2 data-[focus]:ring-indigo-500 data-[focus]:ring-offset-2 data-[checked]:hover:bg-indigo-700 sm:flex-1',
-                          )}
-                        >
-                          {size.name}
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  </fieldset>
-                </div>
-
-                <Button type="submit" color="indigo" className="mt-8 w-full">
-                  Add to cart
+                <Button type="submit" color="dark/white" className="mt-8 w-full h-12">
+                  Agregar al carrito
                 </Button>
               </form>
 
-              {/* Product details */}
-              <div className="mt-10">
-                <h2 className="text-sm font-medium text-gray-900">Description</h2>
-
-                <div
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                  className="prose prose-sm mt-4 text-gray-500"
-                />
-              </div>
-
-              <div className="mt-8 border-t border-gray-200 pt-8">
-                <h2 className="text-sm font-medium text-gray-900">Fabric &amp; Care</h2>
-
-                <div className="prose prose-sm mt-4 text-gray-500">
-                  <ul role="list">
-                    {product.details.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              {/* Accordion details */}
+              <section
+                aria-labelledby="details-heading"
+                className="mt-8 border-t border-gray-200 pt-8"
+              >
+                <Accordion id="details-heading" type="single" collapsible className="mt-4">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Acerca de este artículo
+                    </AccordionTrigger>
+                    <AccordionContent className="prose prose-sm mt-4 text-gray-500">
+                      {product.details && product.details.length > 0 ? (
+                        <ul role="list">
+                          {product.details.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>No hay detalles adicionales.</p>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Envío
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Devoluciones
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </section>
 
               {/* Policies */}
               <section aria-labelledby="policies-heading" className="mt-10">
-                <h2 id="policies-heading" className="sr-only">
-                  Our Policies
+                <h2 id="policies-heading" className="text-lg font-medium text-gray-900">
+                  Nuestras Políticas
                 </h2>
-
-                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 mt-4">
                   {policies.map((policy) => (
                     <div
                       key={policy.name}
