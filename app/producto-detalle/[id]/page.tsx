@@ -14,24 +14,25 @@ import {
 } from '@/components/ui/breadcrumb'
 import { BreadcrumbList } from '@/components/ui/breadcrumb'
 import Reviews from '@/components/reviews/Reviews'
-import { classNames, formatUsdCurrency } from '@/lib/utils'
+import { formatUsdCurrency } from '@/lib/utils'
 import useProducts from '@/hooks/use-products'
 import useCart from '@/hooks/use-cart'
 import Image from 'next/image'
-import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon, SquareArrowOutUpRight } from 'lucide-react'
+import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { policies, product } from '@/lib/dummyData'
+import { product } from '@/lib/dummyData'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { SkeletonCard } from '@/components/ui/skeleton-card'
 import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector'
 import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker'
 import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter'
+import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton'
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink'
+import { CARRITO } from '@/lib/routes'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -49,17 +50,32 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     isLoading: isProductLoading,
     error: productError,
   } = useGetProductById(productId)
-  console.log('🚀 ~ ProductDetailsPage ~ productData:', productData)
 
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart()
   const { mutateAsync: updateCart } = useMutateCart()
 
-  const { addToCart, getItemCount, updateQuantity, isItemInCart, cart } = useCartStore()
+  const { addToCart, getItemCount, updateQuantity, isItemInCart } = useCartStore()
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
-  const isInCart = productData ? isItemInCart(productData.id) : false
-  const itemCount = productData ? getItemCount(productData.id) : 0
+  if (isProductLoading || isCartLoading) {
+    return <ProductDetailSkeleton />
+  }
+
+  if (productError || cartError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Ocurrió un error al cargar los datos. Por favor, inténtalo más tarde.</p>
+      </div>
+    )
+  }
+
+  if (!productData) {
+    return <div className="text-center py-16">No se encontró el producto</div>
+  }
+
+  const isInCart = isItemInCart(productData.id)
+  const itemCount = getItemCount(productData.id)
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -77,33 +93,19 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         cartId: cartData?.id || '',
         product: productData,
       })
-      router.push('/carrito')
+      router.push(CARRITO)
     } catch (error) {
       console.error('Error adding to cart:', error)
     }
   }
 
-  if (isProductLoading || isCartLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <SkeletonCard />
-      </div>
-    )
-  }
-
-  if (productError || cartError) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Ocurrió un error al cargar los datos. Por favor, inténtalo más tarde.</p>
-      </div>
-    )
-  }
-
-  if (!productData) {
-    return <div className="text-center py-16">No se encontró el producto</div>
-  }
-
   const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : []
+
+  const noStock = productData.qty_available <= 0
+  const requiresRecipe =
+    productData.required_recipe === true || productData.product_type === 'prescripcion'
+
+  const disableAddToCart = noStock || requiresRecipe
 
   return (
     <div className="bg-white">
@@ -128,7 +130,41 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         {/* Product details */}
         <div className="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
-            <div className="lg:col-span-5 lg:col-start-8">
+            <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 p-4 rounded-lg">
+              <section aria-labelledby="gallery-heading">
+                <h2 id="gallery-heading" className="sr-only">
+                  Galería de Imágenes del Producto
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+                  <div className="lg:col-span-2 lg:row-span-2 flex justify-center items-center rounded-lg">
+                    {productData.imageLarge ? (
+                      <Image
+                        key={productData.id}
+                        alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                        src={productData.imageLarge}
+                        height={500}
+                        width={500}
+                        className="rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="overflow-hidden rounded-lg flex justify-center items-center h-[500px] w-full">
+                        <Image
+                          key={productData.id}
+                          alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                          src={productData.image || '/delivery.jpeg'}
+                          height={500}
+                          width={500}
+                          className="size-full object-cover object-center"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="lg:col-span-5 lg:col-start-8 mt-4 bg-slate-50 p-4 rounded-lg">
+              {/* Sales info */}
               {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
                 <div className="flex justify-start items-center py-2">
                   <FlameIcon color="red" aria-hidden="true" />
@@ -138,11 +174,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </div>
               ) : null}
               <h1 className="text-xl font-bold text-gray-900">{productData.name}</h1>
-              <div className="flex justify-between">
-                <p className="text-sm font-medium text-gray-900 py-2">
-                  Distribuido por: <strong>{productData.laboratory}</strong>
-                </p>
-              </div>
+              {!!productData.laboratory && (
+                <div className="flex justify-between">
+                  <p className="text-sm font-medium text-gray-900 py-2">
+                    Distribuido por: <strong>{productData.laboratory}</strong>
+                  </p>
+                </div>
+              )}
+
               {/* Reviews */}
               <section aria-labelledby="reviews-heading" className="my-2">
                 <h2 id="reviews-heading" className="sr-only">
@@ -150,6 +189,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </h2>
                 <Reviews rating={product.rating} reviewCount={product.reviewCount} />
               </section>
+
+              {/* Descripción */}
               <section aria-labelledby="description-heading" className="my-10">
                 <h2 id="description-heading" className="sr-only">
                   Descripción del producto
@@ -163,84 +204,69 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <p className="text-gray-500">No hay descripción disponible.</p>
                 )}
               </section>
-              {/* THIS IS A WIP FUNCTION THAT CAN CHANGE BECAUSE THERE IS NO DESIGN OF YET*/}
+
+              {/* Color & Size pickers */}
               <ProductColorSelector
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
                 product={product}
               />
-              {/* THIS IS A WIP FUNCTION THAT CAN CHANGE BECAUSE THERE IS NO DESIGN OF YET*/}
               <ProductSizePicker
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
                 product={product}
               />
               <DisponibilityCounter productQuantity={productData.qty_available} />
-            </div>
 
-            {/* Price tags */}
-            <div className="lg:col-span-5 lg:col-start-8 mt-4">
-              <h2 className="sr-only">Información de precios</h2>
-              <div className="flex flex-row gap-1">
-                <span className="text-sm">Precio regular:</span>
-                <p className="text-sm text-gray-500 line-through">
-                  {formatUsdCurrency(productData.price_extra)}
-                </p>
-              </div>
-              <div className="flex flex-row gap-1 items-baseline">
-                <p className="text-3xl font-semibold text-red-700">
-                  {formatUsdCurrency(Number(productData.price_ref))}
-                </p>
-                {productData.discount_rate && productData.discount_rate !== '0' && (
-                  <Badge color="blue" className="font-semibold font-sans">
-                    % {productData.discount_rate} OFF
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {/* Image gallery */}
-            <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-              <section aria-labelledby="gallery-heading">
-                <h2 id="gallery-heading" className="sr-only">
-                  Galería de Imágenes del Producto
-                </h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                  {productData.imageLarge ? (
-                    <Image
-                      key={productData.id}
-                      alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                      src={productData.imageLarge}
-                      height={500}
-                      width={500}
-                      className={classNames('lg:col-span-2 lg:row-span-2 rounded-lg')}
-                    />
-                  ) : (
-                    <div className=" overflow-hidden rounded-lg bg-gray-200 ">
-                      <Image
-                        key={productData.id}
-                        alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                        src={productData.imageLarge || '/delivery.jpeg'}
-                        height={500}
-                        width={500}
-                        className="size-full object-cover object-center"
-                      />
-                    </div>
+              {/* Price tags */}
+              <div className="mt-4">
+                <h2 className="sr-only">Información de precios</h2>
+                <div className="flex flex-row gap-1">
+                  <span className="text-sm">Precio regular:</span>
+                  <p className="text-sm text-gray-500 line-through">
+                    {formatUsdCurrency(productData.price_extra)}
+                  </p>
+                </div>
+                <div className="flex flex-row gap-1 items-baseline">
+                  <p className="text-3xl font-semibold text-red-700">
+                    {formatUsdCurrency(Number(productData.price_ref))}
+                  </p>
+                  {productData.discount_rate && productData.discount_rate !== '0' && (
+                    <Badge color="blue" className="font-semibold font-sans">
+                      % {productData.discount_rate} OFF
+                    </Badge>
                   )}
                 </div>
-              </section>
-            </div>
+              </div>
 
-            <div className="mt-8 lg:col-span-5">
-              <form onSubmit={handleAddToCart}>
+              {/* Add to cart */}
+              <form onSubmit={handleAddToCart} className="mt-8">
                 <Button
                   type="submit"
                   color="dark/white"
-                  className="mt-8 w-full h-12 hover:bg-gray-800"
+                  className="w-full h-12 hover:bg-gray-800"
+                  disabled={disableAddToCart}
                 >
                   Agregar al carrito
                 </Button>
               </form>
+
+              {requiresRecipe && (
+                <div className="mt-4">
+                  <Button
+                    type="button"
+                    color="teal"
+                    className="w-full h-12"
+                    onClick={() => console.log('Aqui deberia poder subirse la receta')}
+                  >
+                    Subir prescripción
+                  </Button>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Este producto requiere una prescripción médica. Por favor, sube tu prescripción
+                    antes de agregarlo al carrito.
+                  </p>
+                </div>
+              )}
 
               {/* Delivery details */}
               <div className="mt-4 space-y-2 text-sm text-gray-700">
@@ -267,7 +293,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <Image
                     src={'/product-detail/payments_accepted.png'}
                     alt="Métodos de pago aceptados: efectivo, pago móvil, MasterCard, Visa, Zelle."
-                    width={400}
+                    width={600}
                     height={100}
                   />
                 </div>
@@ -275,13 +301,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <Image
                     src={'/product-detail/money_back_guarantee.png'}
                     alt="Garantía de reembolso en 24 horas."
-                    width={400}
-                    height={100}
+                    width={800}
+                    height={400}
                   />
                 </div>
                 <div className="flex flex-col justify-center items-center py-4 text-sm leading-none">
                   <div className="text-center text-zinc-700">
-                    ¿Tienes algún duda sobre el producto?{' '}
+                    ¿Tienes alguna duda sobre el producto?{' '}
                   </div>
                   <div className="flex overflow-hidden flex-col mt-1.5 max-w-full font-medium text-blue-500 w-[155px]">
                     <SupportLink
@@ -292,13 +318,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Accordion details */}
-              <section
-                aria-labelledby="details-heading"
-                className="mt-8 border-t border-gray-200 pt-8"
-              >
-                <Accordion id="details-heading" type="single" collapsible className="mt-4">
+            {/* Accordion details */}
+            <div className="lg:col-span-5 lg:col-start-8 mt-8 border-t border-gray-200 pt-8">
+              <section aria-labelledby="details-heading" className="mt-4">
+                <Accordion id="details-heading" type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-lg font-medium text-gray-900">
                       Acerca de este artículo
@@ -332,32 +357,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
-              </section>
-
-              {/* Policies */}
-              <section aria-labelledby="policies-heading" className="mt-10">
-                <h2 id="policies-heading" className="text-lg font-medium text-gray-900">
-                  Nuestras Políticas
-                </h2>
-                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 mt-4">
-                  {policies.map((policy) => (
-                    <div
-                      key={policy.name}
-                      className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center"
-                    >
-                      <dt>
-                        <policy.icon
-                          aria-hidden="true"
-                          className="mx-auto size-6 shrink-0 text-gray-400"
-                        />
-                        <span className="mt-4 text-sm font-medium text-gray-900">
-                          {policy.name}
-                        </span>
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-500">{policy.description}</dd>
-                    </div>
-                  ))}
-                </dl>
               </section>
             </div>
           </div>

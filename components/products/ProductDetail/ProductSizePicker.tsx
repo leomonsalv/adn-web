@@ -1,3 +1,35 @@
+/**
+ * Componente para seleccionar la talla de un producto.
+ *
+ * **Nota:** Este componente depende de un objeto `product` con la siguiente estructura mínima:
+ * ```json
+ * {
+ *   "name": "Nombre del producto",
+ *   "sizes": [
+ *     {
+ *       "name": "S",
+ *       "inStock": true
+ *     },
+ *     ...
+ *   ]
+ * }
+ * ```
+ *
+ * El componente recibe:
+ * - `product`: El objeto del producto que incluye un array de `sizes` con la información de las tallas.
+ * - `selectedSize`: La talla actualmente seleccionada.
+ * - `setSelectedSize`: Función para actualizar la talla seleccionada.
+ *
+ * Ejemplo de uso:
+ * ```tsx
+ * <ProductSizePicker
+ *   product={miProducto}
+ *   selectedSize={miProducto.sizes[0]}
+ *   setSelectedSize={setTallaSeleccionada}
+ * />
+ * ```
+ */
+
 import { product } from '@/lib/dummyData'
 import { classNames } from '@/lib/utils'
 import { Radio, RadioGroup } from '@headlessui/react'

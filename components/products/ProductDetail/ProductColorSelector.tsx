@@ -1,3 +1,36 @@
+/**
+ * Componente para seleccionar el color de un producto.
+ *
+ * **Nota:** Este componente depende de un objeto `product` con la siguiente estructura mínima:
+ * ```json
+ * {
+ *   "name": "Nombre del producto",
+ *   "colors": [
+ *     {
+ *       "name": "Black",
+ *       "bgColor": "bg-gray-900",
+ *       "selectedColor": "ring-gray-900"
+ *     },
+ *     ...
+ *   ]
+ * }
+ * ```
+ *
+ * El componente recibe:
+ * - `product`: El objeto del producto, que incluye un array de `colors` con la información del color.
+ * - `selectedColor`: El color actualmente seleccionado.
+ * - `setSelectedColor`: Función para actualizar el color seleccionado.
+ *
+ * Ejemplo de uso:
+ * ```tsx
+ * <ProductColorSelector
+ *   product={miProducto}
+ *   selectedColor={miProducto.colors[0]}
+ *   setSelectedColor={setColorSeleccionado}
+ * />
+ * ```
+ */
+
 import { Radio, RadioGroup } from '@headlessui/react'
 import { product } from '@/lib/dummyData'
 import { classNames } from '@/lib/utils'
