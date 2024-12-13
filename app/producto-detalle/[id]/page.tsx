@@ -18,7 +18,7 @@ import { classNames, formatUsdCurrency } from '@/lib/utils'
 import useProducts from '@/hooks/use-products'
 import useCart from '@/hooks/use-cart'
 import Image from 'next/image'
-import { FlameIcon } from 'lucide-react'
+import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon, SquareArrowOutUpRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { policies, product } from '@/lib/dummyData'
 import {
@@ -30,6 +30,8 @@ import {
 import { SkeletonCard } from '@/components/ui/skeleton-card'
 import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector'
 import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker'
+import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter'
+import { SupportLink } from '@/components/products/ProductDetail/SupportLink'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -173,6 +175,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 setSelectedSize={setSelectedSize}
                 product={product}
               />
+              <DisponibilityCounter productQuantity={productData.qty_available} />
             </div>
 
             {/* Price tags */}
@@ -213,8 +216,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       className={classNames('lg:col-span-2 lg:row-span-2 rounded-lg')}
                     />
                   ) : (
-                    <div className="bg-gray-200 rounded-lg flex items-center justify-center h-64">
-                      <span className="text-gray-500">No hay imagen disponible</span>
+                    <div className=" overflow-hidden rounded-lg bg-gray-200 ">
+                      <Image
+                        key={productData.id}
+                        alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                        src={productData.imageLarge || '/delivery.jpeg'}
+                        height={500}
+                        width={500}
+                        className="size-full object-cover object-center"
+                      />
                     </div>
                   )}
                 </div>
@@ -223,10 +233,65 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
             <div className="mt-8 lg:col-span-5">
               <form onSubmit={handleAddToCart}>
-                <Button type="submit" color="dark/white" className="mt-8 w-full h-12">
+                <Button
+                  type="submit"
+                  color="dark/white"
+                  className="mt-8 w-full h-12 hover:bg-gray-800"
+                >
                   Agregar al carrito
                 </Button>
               </form>
+
+              {/* Delivery details */}
+              <div className="mt-4 space-y-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <TruckIcon className="w-5 h-5 mr-2" color="green" />
+                  <span className="font-semibold">
+                    <span className="text-green-700">Envío gratis</span> en todas las ordenes
+                    mayores a $7
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <HandCoins className="w-5 h-5 mr-2" />
+                  <span className="font-semibold">Opción de pagar al recibir tu pedido</span>
+                </div>
+                <div className="flex items-center">
+                  <RotateCcwIcon className="w-5 h-5 mr-2" />
+                  <span className="font-semibold">Garantía de devolución de 24 horas</span>
+                </div>
+              </div>
+
+              {/* Payment details */}
+              <div className="mt-4 space-y-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <Image
+                    src={'/product-detail/payments_accepted.png'}
+                    alt="Métodos de pago aceptados: efectivo, pago móvil, MasterCard, Visa, Zelle."
+                    width={400}
+                    height={100}
+                  />
+                </div>
+                <div className="flex items-center">
+                  <Image
+                    src={'/product-detail/money_back_guarantee.png'}
+                    alt="Garantía de reembolso en 24 horas."
+                    width={400}
+                    height={100}
+                  />
+                </div>
+                <div className="flex flex-col justify-center items-center py-4 text-sm leading-none">
+                  <div className="text-center text-zinc-700">
+                    ¿Tienes algún duda sobre el producto?{' '}
+                  </div>
+                  <div className="flex overflow-hidden flex-col mt-1.5 max-w-full font-medium text-blue-500 w-[155px]">
+                    <SupportLink
+                      text="Contactar a soporte"
+                      url="https://api.whatsapp.com/send/?phone=584241458520&text&type=phone_number&app_absent=0"
+                    />
+                    <div className="flex w-full bg-blue-300 min-h-[1px]" />
+                  </div>
+                </div>
+              </div>
 
               {/* Accordion details */}
               <section
