@@ -1,10 +1,7 @@
 'use client'
 
 import { Fragment, useState } from 'react'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { Radio, RadioGroup } from '@headlessui/react'
 import { use } from 'react'
-import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline'
 import { useCartStore } from '@/stores/cart-store'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
@@ -17,108 +14,68 @@ import {
 } from '@/components/ui/breadcrumb'
 import { BreadcrumbList } from '@/components/ui/breadcrumb'
 import Reviews from '@/components/reviews/Reviews'
-import { classNames } from '@/lib/utils'
+import { formatUsdCurrency } from '@/lib/utils'
 import useProducts from '@/hooks/use-products'
 import useCart from '@/hooks/use-cart'
-import { auth } from '@/lib/firebaseConfig'
+import Image from 'next/image'
+import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { product } from '@/lib/dummyData'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector'
+import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker'
+import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter'
+import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton'
+import { SupportLink } from '@/components/products/ProductDetail/SupportLink'
+import { CARRITO } from '@/lib/routes'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
 }
 
-const product = {
-  id: 6,
-  name: 'Basic Tee',
-  price: '$35',
-  rating: 3.9,
-  reviewCount: 512,
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Women', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
-    {
-      id: 1,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-featured-product-shot.jpg',
-      imageAlt: "Back of women's Basic Tee in black.",
-      primary: true,
-    },
-    {
-      id: 2,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-product-shot-01.jpg',
-      imageAlt: "Side profile of women's Basic Tee in black.",
-      primary: false,
-    },
-    {
-      id: 3,
-      imageSrc:
-        'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-product-shot-02.jpg',
-      imageAlt: "Front of women's Basic Tee in black.",
-      primary: false,
-    },
-  ],
-  colors: [
-    { name: 'Black', bgColor: 'bg-gray-900', selectedColor: 'ring-gray-900' },
-    {
-      name: 'Heather Grey',
-      bgColor: 'bg-gray-400',
-      selectedColor: 'ring-gray-400',
-    },
-  ],
-  sizes: [
-    { name: 'XXS', inStock: true },
-    { name: 'XS', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: false },
-  ],
-  description: `
-    <p>The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee it's own look.</p>
-    <p>Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.</p>
-  `,
-  details: [
-    'Only the best materials',
-    'Ethically and locally made',
-    'Pre-washed and pre-shrunk',
-    'Machine wash cold with similar colors',
-  ],
-}
-const policies = [
-  {
-    name: 'International delivery',
-    icon: GlobeAmericasIcon,
-    description: 'Get your order in 2 years',
-  },
-  {
-    name: 'Loyalty rewards',
-    icon: CurrencyDollarIcon,
-    description: "Don't look at other tees",
-  },
-]
-
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const productId = Number(use(params).id)
-
   const { useGetProductById } = useProducts()
   const { useMutateCart, useGetCart } = useCart()
 
   const router = useRouter()
 
-  const { data: productData, isLoading: isProductLoading } = useGetProductById(productId)
+  const {
+    data: productData,
+    isLoading: isProductLoading,
+    error: productError,
+  } = useGetProductById(productId)
 
-  const { data: cartData, isLoading: isCartLoading } = useGetCart()
+  const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart()
   const { mutateAsync: updateCart } = useMutateCart()
 
-  const { addToCart, getItemCount, updateQuantity, isItemInCart, cart } = useCartStore()
+  const { addToCart, getItemCount, updateQuantity, isItemInCart } = useCartStore()
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
-  const isInCart = isItemInCart(product.id)
-  const itemCount = getItemCount(product.id)
+  if (isProductLoading || isCartLoading) {
+    return <ProductDetailSkeleton />
+  }
+
+  if (productError || cartError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Ocurrió un error al cargar los datos. Por favor, inténtalo más tarde.</p>
+      </div>
+    )
+  }
+
+  if (!productData) {
+    return <div className="text-center py-16">No se encontró el producto</div>
+  }
+
+  const isInCart = isItemInCart(productData.id)
+  const itemCount = getItemCount(productData.id)
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -136,23 +93,27 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         cartId: cartData?.id || '',
         product: productData,
       })
-      router.push('/carrito')
+      router.push(CARRITO)
     } catch (error) {
       console.error('Error adding to cart:', error)
     }
   }
 
-  if (isProductLoading || isCartLoading) return <div>Loading...</div>
+  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : []
 
-  return !productData ? (
-    <div>No se encontró el producto</div>
-  ) : (
+  const noStock = productData.qty_available <= 0
+  const requiresRecipe =
+    productData.required_recipe === true || productData.product_type === 'prescripcion'
+
+  const disableAddToCart = noStock || requiresRecipe
+
+  return (
     <div className="bg-white">
       <div className="pb-16 pt-6 sm:pb-24">
         {/* Breadcrumb */}
         <Breadcrumb>
           <BreadcrumbList>
-            {productData?.categ_route.split('/').map((breadcrumb) => (
+            {breadcrumbs.map((breadcrumb) => (
               <Fragment key={breadcrumb}>
                 <BreadcrumbItem>
                   <BreadcrumbLink href={`/categoria/${breadcrumb}`}>{breadcrumb}</BreadcrumbLink>
@@ -169,158 +130,233 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         {/* Product details */}
         <div className="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
-            <div className="lg:col-span-5 lg:col-start-8">
-              <div className="flex justify-between">
-                <h1 className="text-xl font-medium text-gray-900">{productData.name}</h1>
-                <p className="text-xl font-medium text-gray-900">{productData.price}</p>
-              </div>
-              {/* Reviews */}
-              <Reviews rating={product.rating} reviewCount={product.reviewCount} />
-            </div>
-
-            {/* Image gallery */}
-            <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-              <h2 className="sr-only">Images</h2>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                {product.images.map((image) => (
-                  <img
-                    key={image.id}
-                    alt={image.imageAlt}
-                    src={image.imageSrc}
-                    className={classNames(
-                      image.primary ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
-                      'rounded-lg',
+            <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 p-4 rounded-lg">
+              <section aria-labelledby="gallery-heading">
+                <h2 id="gallery-heading" className="sr-only">
+                  Galería de Imágenes del Producto
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+                  <div className="lg:col-span-2 lg:row-span-2 flex justify-center items-center rounded-lg">
+                    {productData.imageLarge ? (
+                      <Image
+                        key={productData.id}
+                        alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                        src={productData.imageLarge}
+                        height={500}
+                        width={500}
+                        className="rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="overflow-hidden rounded-lg flex justify-center items-center h-[500px] w-full">
+                        <Image
+                          key={productData.id}
+                          alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
+                          src={productData.image || '/delivery.jpeg'}
+                          height={500}
+                          width={500}
+                          className="size-full object-cover object-center"
+                        />
+                      </div>
                     )}
-                  />
-                ))}
-              </div>
+                  </div>
+                </div>
+              </section>
             </div>
 
-            <div className="mt-8 lg:col-span-5">
-              <form onSubmit={handleAddToCart}>
-                {/* Color picker */}
-                <div>
-                  <h2 className="text-sm font-medium text-gray-900">Color</h2>
-
-                  <fieldset aria-label="Choose a color" className="mt-2">
-                    <RadioGroup
-                      value={selectedColor}
-                      onChange={setSelectedColor}
-                      className="flex items-center space-x-3"
-                    >
-                      {product.colors.map((color) => (
-                        <Radio
-                          key={color.name}
-                          value={color}
-                          aria-label={color.name}
-                          className={classNames(
-                            color.selectedColor,
-                            'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1',
-                          )}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              color.bgColor,
-                              'size-8 rounded-full border border-black/10',
-                            )}
-                          />
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  </fieldset>
+            <div className="lg:col-span-5 lg:col-start-8 mt-4 bg-slate-50 p-4 rounded-lg">
+              {/* Sales info */}
+              {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
+                <div className="flex justify-start items-center py-2">
+                  <FlameIcon color="red" aria-hidden="true" />
+                  <h2 className="text-red-500 text-sm font-semibold">
+                    +{productData.saleslast7days} comprados en el último mes
+                  </h2>
                 </div>
-
-                {/* Size picker */}
-                <div className="mt-8">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-medium text-gray-900">Size</h2>
-                    <a
-                      href="#"
-                      className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      See sizing chart
-                    </a>
-                  </div>
-
-                  <fieldset aria-label="Choose a size" className="mt-2">
-                    <RadioGroup
-                      value={selectedSize}
-                      onChange={setSelectedSize}
-                      className="grid grid-cols-3 gap-3 sm:grid-cols-6"
-                    >
-                      {product.sizes.map((size) => (
-                        <Radio
-                          key={size.name}
-                          value={size}
-                          disabled={!size.inStock}
-                          className={classNames(
-                            size.inStock
-                              ? 'cursor-pointer focus:outline-none'
-                              : 'cursor-not-allowed opacity-25',
-                            'flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 data-[checked]:border-transparent data-[checked]:bg-indigo-600 data-[checked]:text-white data-[focus]:ring-2 data-[focus]:ring-indigo-500 data-[focus]:ring-offset-2 data-[checked]:hover:bg-indigo-700 sm:flex-1',
-                          )}
-                        >
-                          {size.name}
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  </fieldset>
+              ) : null}
+              <h1 className="text-xl font-bold text-gray-900">{productData.name}</h1>
+              {!!productData.laboratory && (
+                <div className="flex justify-between">
+                  <p className="text-sm font-medium text-gray-900 py-2">
+                    Distribuido por: <strong>{productData.laboratory}</strong>
+                  </p>
                 </div>
+              )}
 
-                <Button type="submit" color="indigo" className="mt-8 w-full">
-                  Add to cart
+              {/* Reviews */}
+              <section aria-labelledby="reviews-heading" className="my-2">
+                <h2 id="reviews-heading" className="sr-only">
+                  Reseñas y Calificaciones
+                </h2>
+                <Reviews rating={product.rating} reviewCount={product.reviewCount} />
+              </section>
+
+              {/* Descripción */}
+              <section aria-labelledby="description-heading" className="my-10">
+                <h2 id="description-heading" className="sr-only">
+                  Descripción del producto
+                </h2>
+                {productData.description ? (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: productData.description }}
+                    className="prose prose-base mt-4 text-gray-900"
+                  />
+                ) : (
+                  <p className="text-gray-500">No hay descripción disponible.</p>
+                )}
+              </section>
+
+              {/* Color & Size pickers */}
+              <ProductColorSelector
+                selectedColor={selectedColor}
+                setSelectedColor={setSelectedColor}
+                product={product}
+              />
+              <ProductSizePicker
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
+                product={product}
+              />
+              <DisponibilityCounter productQuantity={productData.qty_available} />
+
+              {/* Price tags */}
+              <div className="mt-4">
+                <h2 className="sr-only">Información de precios</h2>
+                <div className="flex flex-row gap-1">
+                  <span className="text-sm">Precio regular:</span>
+                  <p className="text-sm text-gray-500 line-through">
+                    {formatUsdCurrency(productData.price_extra)}
+                  </p>
+                </div>
+                <div className="flex flex-row gap-1 items-baseline">
+                  <p className="text-3xl font-semibold text-red-700">
+                    {formatUsdCurrency(Number(productData.price_ref))}
+                  </p>
+                  {productData.discount_rate && productData.discount_rate !== '0' && (
+                    <Badge color="blue" className="font-semibold font-sans">
+                      % {productData.discount_rate} OFF
+                    </Badge>
+                  )}
+                </div>
+              </div>
+
+              {/* Add to cart */}
+              <form onSubmit={handleAddToCart} className="mt-8">
+                <Button
+                  type="submit"
+                  color="dark/white"
+                  className="w-full h-12 hover:bg-gray-800"
+                  disabled={disableAddToCart}
+                >
+                  Agregar al carrito
                 </Button>
               </form>
 
-              {/* Product details */}
-              <div className="mt-10">
-                <h2 className="text-sm font-medium text-gray-900">Description</h2>
+              {requiresRecipe && (
+                <div className="mt-4">
+                  <Button
+                    type="button"
+                    color="teal"
+                    className="w-full h-12"
+                    onClick={() => console.log('Aqui deberia poder subirse la receta')}
+                  >
+                    Subir prescripción
+                  </Button>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Este producto requiere una prescripción médica. Por favor, sube tu prescripción
+                    antes de agregarlo al carrito.
+                  </p>
+                </div>
+              )}
 
-                <div
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                  className="prose prose-sm mt-4 text-gray-500"
-                />
-              </div>
-
-              <div className="mt-8 border-t border-gray-200 pt-8">
-                <h2 className="text-sm font-medium text-gray-900">Fabric &amp; Care</h2>
-
-                <div className="prose prose-sm mt-4 text-gray-500">
-                  <ul role="list">
-                    {product.details.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
+              {/* Delivery details */}
+              <div className="mt-4 space-y-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <TruckIcon className="w-5 h-5 mr-2" color="green" />
+                  <span className="font-semibold">
+                    <span className="text-green-700">Envío gratis</span> en todas las ordenes
+                    mayores a $7
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <HandCoins className="w-5 h-5 mr-2" />
+                  <span className="font-semibold">Opción de pagar al recibir tu pedido</span>
+                </div>
+                <div className="flex items-center">
+                  <RotateCcwIcon className="w-5 h-5 mr-2" />
+                  <span className="font-semibold">Garantía de devolución de 24 horas</span>
                 </div>
               </div>
 
-              {/* Policies */}
-              <section aria-labelledby="policies-heading" className="mt-10">
-                <h2 id="policies-heading" className="sr-only">
-                  Our Policies
-                </h2>
+              {/* Payment details */}
+              <div className="mt-4 space-y-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <Image
+                    src={'/product-detail/payments_accepted.png'}
+                    alt="Métodos de pago aceptados: efectivo, pago móvil, MasterCard, Visa, Zelle."
+                    width={600}
+                    height={100}
+                  />
+                </div>
+                <div className="flex items-center">
+                  <Image
+                    src={'/product-detail/money_back_guarantee.png'}
+                    alt="Garantía de reembolso en 24 horas."
+                    width={800}
+                    height={400}
+                  />
+                </div>
+                <div className="flex flex-col justify-center items-center py-4 text-sm leading-none">
+                  <div className="text-center text-zinc-700">
+                    ¿Tienes alguna duda sobre el producto?{' '}
+                  </div>
+                  <div className="flex overflow-hidden flex-col mt-1.5 max-w-full font-medium text-blue-500 w-[155px]">
+                    <SupportLink
+                      text="Contactar a soporte"
+                      url="https://api.whatsapp.com/send/?phone=584241458520&text&type=phone_number&app_absent=0"
+                    />
+                    <div className="flex w-full bg-blue-300 min-h-[1px]" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  {policies.map((policy) => (
-                    <div
-                      key={policy.name}
-                      className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center"
-                    >
-                      <dt>
-                        <policy.icon
-                          aria-hidden="true"
-                          className="mx-auto size-6 shrink-0 text-gray-400"
-                        />
-                        <span className="mt-4 text-sm font-medium text-gray-900">
-                          {policy.name}
-                        </span>
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-500">{policy.description}</dd>
-                    </div>
-                  ))}
-                </dl>
+            {/* Accordion details */}
+            <div className="lg:col-span-5 lg:col-start-8 mt-8 border-t border-gray-200 pt-8">
+              <section aria-labelledby="details-heading" className="mt-4">
+                <Accordion id="details-heading" type="single" collapsible>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Acerca de este artículo
+                    </AccordionTrigger>
+                    <AccordionContent className="prose prose-sm mt-4 text-gray-500">
+                      {product.details && product.details.length > 0 ? (
+                        <ul role="list">
+                          {product.details.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>No hay detalles adicionales.</p>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Envío
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="text-lg font-medium text-gray-900">
+                      Devoluciones
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </section>
             </div>
           </div>
