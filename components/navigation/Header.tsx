@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline'
-import { HISTORIAL, LOGIN, SEARCH } from '@/lib/routes'
+import { HISTORIAL, HOME, LOGIN, PROFILE, SEARCH } from '@/lib/routes'
 import { ShoppingCartIcon } from '@heroicons/react/24/solid'
 
 import NavLogo from '@/public/navigation-logo'
@@ -18,13 +18,19 @@ import SearchInput from '../search/SearchInput'
 import { useRouter } from 'next/navigation'
 import useCategories from '@/hooks/use-categories'
 import { categories } from '@/lib/dummyData'
+import { useUser } from '@/hooks/use-user'
+import { Button } from '../ui/button'
+import { logOutAccount } from '@/api/auth'
+import { useToast } from '@/hooks/use-toast'
 
 export function NavLinks() {
   const pathname = usePathname()
   const router = useRouter()
+  const { user, loading } = useUser()
   const { useGetCategories } = useCategories()
   const { data: odooCategories } = useGetCategories()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { toast } = useToast()
   const [search, setSearch] = useState({ value: '', category: '1' })
 
   const handleChange = useCallback(
@@ -51,6 +57,24 @@ export function NavLinks() {
     },
     [search],
   )
+
+  const handleLogout = async () => {
+    try {
+      await logOutAccount()
+      router.replace(HOME)
+      toast({
+        title: 'Sesión cerrada',
+        description: 'Has cerrado con éxito tu sesión.',
+      })
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error)
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Hubo un error al cerrar tu sesión.',
+      })
+    }
+  }
 
   return (
     <header className="w-full">
@@ -83,12 +107,69 @@ export function NavLinks() {
             <div className="flex items-center justify-end">
               {/* User account - hidden on mobile */}
               <div className="hidden sm:flex items-center">
-                <Link href={LOGIN} className="text-sm text-white hover:text-gray-200 flex flex-col">
-                  <span className="text-xs text-white hover:text-gray-200">Hola, Identifícate</span>
-                  <span className="text-sm text-white font-semibold hover:text-gray-200">
-                    Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
-                  </span>
-                </Link>
+                {loading || !user?.displayName ? (
+                  <Link
+                    href={LOGIN}
+                    className="text-sm text-white hover:text-gray-200 flex flex-col"
+                  >
+                    <span className="text-xs text-white hover:text-gray-200">
+                      Hola, Identifícate
+                    </span>
+                    <span className="text-sm text-white font-semibold hover:text-gray-200">
+                      Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                    </span>
+                  </Link>
+                ) : (
+                  // <Link
+                  //   href={PROFILE}
+                  //   className="text-sm text-white hover:text-gray-200 flex flex-col"
+                  // >
+                  //   <span className="text-xs text-white hover:text-gray-200">
+                  //     Hola, <strong>{user?.displayName}</strong>
+                  //   </span>
+                  //   <span className="text-sm text-white font-semibold hover:text-gray-200">
+                  //     Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                  //   </span>
+                  // </Link>
+                  <PopoverGroup className="flex hover:opacity-75 shrink-0">
+                    <Popover className="relative">
+                      <PopoverButton className="text-sm text-white hover:text-gray-200 flex flex-col">
+                        <span className="text-xs text-white hover:text-gray-200">
+                          Hola, <strong>{user?.displayName}</strong>
+                        </span>
+                        <span className="text-sm text-white font-semibold hover:text-gray-200">
+                          Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                        </span>
+                      </PopoverButton>
+                      <PopoverPanel
+                        transition
+                        anchor="bottom"
+                        className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100"
+                      >
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                          {/*TODO: MAKE USER DROPDOWN */}
+                          {categories.map((category) => (
+                            <Link
+                              key={category.name}
+                              href={category.href}
+                              className="flex items-center rounded-lg p-2 text-sm text-gray-900 hover:bg-gray-50"
+                            >
+                              <span>{category.name}</span>
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="mt-4 border-t border-gray-200 pt-4">
+                          <Button
+                            className="flex items-center text-sm font-medium text-red-600 hover:text-red-500"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </Button>
+                        </div>
+                      </PopoverPanel>
+                    </Popover>
+                  </PopoverGroup>
+                )}
               </div>
 
               {/* Orders - hidden on mobile */}
