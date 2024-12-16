@@ -3,8 +3,8 @@ import { InputHTMLAttributes } from 'react'
 
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   selectedCategory: string
-  setSelectedCategory: (category: string) => void
-  categories: { name: string }[]
+  setSelectedCategory: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  categories: { name: string; id: string }[]
 }
 
 export default function SearchInput({
@@ -13,6 +13,10 @@ export default function SearchInput({
   categories,
   ...props
 }: SearchInputProps) {
+  const handleSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e)
+  }
+
   return (
     <div className="flex rounded-md bg-white shadow-sm ring-1 ring-inset ring-gray-300">
       {/* Category select - hidden on mobile */}
@@ -20,11 +24,13 @@ export default function SearchInput({
         <select
           className="h-10 rounded-l-md border-0 bg-transparent text-gray-900 focus:ring-0 sm:text-sm val:bg-red-500 max-w-[8rem] truncate"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={handleSelectCategory}
         >
-          <option>Todo</option>
+          <option value="1">Todo</option>
           {categories.map((category) => (
-            <option key={category.name}>{category.name}</option>
+            <option key={category.name} value={category.id}>
+              {category.name}
+            </option>
           ))}
         </select>
       </div>

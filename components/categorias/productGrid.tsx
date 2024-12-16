@@ -23,11 +23,11 @@ function ProductGrid({ products }: ProductGridProps) {
             <Image
               width={400}
               height={500}
+              style={{
+                objectFit: 'contain',
+              }}
               alt={product.name}
-              src={
-                product.imageLarge ||
-                'https://tailwindui.com/plus/img/ecommerce-images/mega-menu-category-01.jpg'
-              }
+              src={product.imageLarge || '/delivery.jpeg'}
               className="aspect-[3/4] bg-gray-200 object-cover group-hover:opacity-75 sm:h-96"
             />
             )

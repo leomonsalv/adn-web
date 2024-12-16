@@ -55,8 +55,6 @@ export async function updateUserProfileAction(state: any, formData: FormData): P
 }
 
 export async function requestUserOTPAction(state: any, formData: FormData): Promise<object> {
-  console.log('🚀 ~ requestUserOTPAction ~ formData:', formData)
-
   // Validar los campos
   const validatedFields = PhoneOtpProfileSchema.safeParse({
     phoneNumber: formData.get('phoneNumber'),
@@ -128,8 +126,6 @@ export async function validatedUserPhoneOTP(state: any, formData: FormData): Pro
       smsOTP: validatedFields.data.otp,
       userId: user.uid,
     })
-
-    console.log(response)
 
     return { data: response.data }
   } catch (error: any) {

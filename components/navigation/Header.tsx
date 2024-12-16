@@ -6,9 +6,9 @@
  * **/
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline'
-import { HISTORIAL, LOGIN } from '@/lib/routes'
+import { HISTORIAL, LOGIN, SEARCH } from '@/lib/routes'
 import { ShoppingCartIcon } from '@heroicons/react/24/solid'
 
 import NavLogo from '@/public/navigation-logo'
@@ -25,18 +25,32 @@ export function NavLinks() {
   const { useGetCategories } = useCategories()
   const { data: odooCategories } = useGetCategories()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState('Todo')
-  const [search, setSearch] = useState({ value: '', category: 'Todo' })
+  const [search, setSearch] = useState({ value: '', category: '1' })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch({ ...search, value: e.target.value })
-  }
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch({ value: e.target.value, category: search.category })
+    },
+    [search.category],
+  )
 
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      router.push(`/busqueda?=${search.value}&category=${search.category}`)
-    }
-  }
+  const handleSelectCategory = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSearch({ value: search.value, category: e.target.value })
+    },
+    [search.value],
+  )
+
+  const handleSearch = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        router.push(
+          `${SEARCH}?query=${search.value.toLowerCase()}&category=${search.category.toLowerCase()}`,
+        )
+      }
+    },
+    [search],
+  )
 
   return (
     <header className="w-full">
@@ -55,8 +69,8 @@ export function NavLinks() {
             <div className="flex-1 px-2 lg:px-6">
               <div className="w-full mx-auto">
                 <SearchInput
-                  selectedCategory={selectedCategory}
-                  setSelectedCategory={setSelectedCategory}
+                  selectedCategory={search.category}
+                  setSelectedCategory={handleSelectCategory}
                   categories={categories}
                   value={search.value}
                   onChange={handleChange}
