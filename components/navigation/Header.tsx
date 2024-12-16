@@ -192,7 +192,7 @@ export function NavLinks() {
           <div className="h-12">
             {/* Single scrollable container for all navigation items */}
             <div className="flex-1 overflow-x-auto no-scrollbar h-full">
-              <div className="flex items-center space-x-4 px-4 h-full">
+              <div className="flex items-center space-x-4 px-4 h-full justify-between">
                 {/* Todo button with popover */}
                 <PopoverGroup className="flex hover:opacity-75 shrink-0">
                   <Popover className="relative">
@@ -233,11 +233,11 @@ export function NavLinks() {
                 </PopoverGroup>
 
                 {/* Categories */}
-                {categories.map((category) => (
+                {categories.slice(0, 8).map((category) => (
                   <Link
                     key={category.name}
                     href={category.href}
-                    className="text-sm font-medium text-white hover:opacity-75 whitespace-nowrap py-3"
+                    className="text-sm font-medium text-white hover:opacity-75 whitespace-nowrap py-3 "
                   >
                     {category.name}
                   </Link>
