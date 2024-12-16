@@ -379,3 +379,23 @@ export const policies = [
     description: "Don't look at other tees",
   },
 ]
+
+export const categories = [
+  { name: 'Belleza', href: '#' },
+  { name: 'Bienestar', href: '#' },
+  { name: 'Botiquín', href: '#' },
+  { name: 'Cuidado Personal', href: '#' },
+  { name: 'Bebés', href: '#' },
+  { name: 'Medicamentos', href: '#' },
+  { name: 'Alimentos', href: '#' },
+  { name: 'Bebidas', href: '#' },
+  { name: 'Hogar', href: '#' },
+  { name: 'Deporte', href: '#' },
+  { name: 'Juguetes', href: '#' },
+  { name: 'Mascotas', href: '#' },
+  { name: 'Electrónicos', href: '#' },
+  { name: 'Oficina y Escuela', href: '#' },
+  { name: 'Ropa', href: '#' },
+  { name: 'Joyería y accesorios', href: '#' },
+  { name: 'Referir a un Amigo 🚀', href: '/referidos' },
+]

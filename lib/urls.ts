@@ -5,7 +5,7 @@ export const GET_PRODUCT_BY_ID = 'odoo-getProduct?id='
 export const GET_RECOMMENDED_PRODUCTS = 'odoo-getRecommendedProducts'
 export const GET_RECOMMENDED = 'odoo-getRecommended'
 export const GET_OFFERS = 'odoo-getOffers'
-export const GET_CATEGORIES = 'odoo-getCategories'
+export const GET_CATEGORIES = 'externos-getCategories'
 
 // Products Availability
 export const GET_PRODUCTS_AVAILABILITY = `${process.env.REACT_APP_ODOO_API_URL}/apis/checkInventary`

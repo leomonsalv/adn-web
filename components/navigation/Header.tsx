@@ -7,14 +7,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useState } from 'react'
-import {
-  Bars3Icon,
-  XMarkIcon,
-  MagnifyingGlassIcon,
-  UserIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/24/outline'
+import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import { HISTORIAL, LOGIN } from '@/lib/routes'
 import { ShoppingCartIcon } from '@heroicons/react/24/solid'
 
@@ -23,21 +16,14 @@ import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/
 import { CustomBadge } from '../ui/badge'
 import SearchInput from '../search/SearchInput'
 import { useRouter } from 'next/navigation'
-
-const categories = [
-  { name: 'Atención al Cliente', href: '#' },
-  { name: 'Farmacia', href: '#' },
-  { name: 'Belleza', href: '#' },
-  { name: 'Comestibles', href: '#' },
-  { name: 'Cuidado Personal', href: '#' },
-  { name: 'Bebés', href: '#' },
-  { name: 'Hogar', href: '#' },
-  { name: 'Referir a un Amigo 🚀', href: '/referidos' },
-]
+import useCategories from '@/hooks/use-categories'
+import { categories } from '@/lib/dummyData'
 
 export function NavLinks() {
   const pathname = usePathname()
   const router = useRouter()
+  const { useGetCategories } = useCategories()
+  const { data: odooCategories } = useGetCategories()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('Todo')
   const [search, setSearch] = useState({ value: '', category: 'Todo' })
@@ -214,7 +200,11 @@ export function NavLinks() {
                       <Bars3Icon className="h-5 w-5" aria-hidden="true" />
                       <span className="text-sm font-bold">Todo</span>
                     </PopoverButton>
-                    <PopoverPanel className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg transform origin-top-left transition-all duration-200 ease-out opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100">
+                    <PopoverPanel
+                      transition
+                      anchor="bottom"
+                      className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100"
+                    >
                       <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                         {categories.map((category) => (
                           <Link
