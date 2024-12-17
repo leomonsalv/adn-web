@@ -1,4 +1,4 @@
-import { FormState, SignInFormSchema } from "@/schemas/login-form";
+import { FormState, SignInFormSchema } from '@/schemas/login-form';
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -7,22 +7,20 @@ import {
   setPersistence,
   browserSessionPersistence,
   sendPasswordResetEmail,
-} from "firebase/auth";
-import { auth, provider } from "@/lib/firebaseConfig";
-import { RegisterFormSchema } from "@/schemas/register-form";
-import { forgotPasswordSchema } from "@/schemas/forgot-password-form";
+} from 'firebase/auth';
+import { auth, db, provider } from '@/lib/firebaseConfig';
+import { RegisterFormSchema } from '@/schemas/register-form';
+import { forgotPasswordSchema } from '@/schemas/forgot-password-form';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 export async function signInAction(state: FormState, formData: FormData) {
   const validatedFields = SignInFormSchema.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: formData.get('email'),
+    password: formData.get('password'),
   });
 
   if (!validatedFields.success) {
-    console.warn(
-      "Validación fallida:",
-      validatedFields.error.flatten().fieldErrors,
-    );
+    console.warn('Validación fallida:', validatedFields.error.flatten().fieldErrors);
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
@@ -41,7 +39,7 @@ export async function signInAction(state: FormState, formData: FormData) {
     const user = userCredential.user;
     return { success: true, user };
   } catch (error: any) {
-    console.error("Error al iniciar sesión con correo y contraseña:", error);
+    console.error('Error al iniciar sesión con correo y contraseña:', error);
     return {
       success: false,
       errorCode: error.code,
@@ -52,6 +50,7 @@ export async function signInAction(state: FormState, formData: FormData) {
 
 export async function signInWithGoogle() {
   try {
+    console.log('🚀 ~ signInWithGoogle ~ user INITIAL CONSOLE:');
     // Mantiene al usuario conectado mientras tenga la pestaña abierta
     await setPersistence(auth, browserSessionPersistence);
 
@@ -60,10 +59,21 @@ export async function signInWithGoogle() {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken;
     const user = result.user;
+    console.log('🚀 ~ signInWithGoogle ~ user:', user);
+
+    await setDoc(
+      doc(db, 'users', user.uid),
+      {
+        name: user.displayName,
+        email: user.email,
+        createdAt: serverTimestamp(),
+      },
+      { merge: true },
+    );
 
     return { success: true, user, token };
   } catch (error: any) {
-    console.error("Error al iniciar sesión con Google:", error);
+    console.error('Error al iniciar sesión con Google:', error);
 
     return {
       success: false,
@@ -75,17 +85,14 @@ export async function signInWithGoogle() {
 
 export async function registerAction(state: FormState, formData: FormData) {
   const validatedFields = RegisterFormSchema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    referral: formData.get("referral"),
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+    referral: formData.get('referral'),
   });
 
   if (!validatedFields.success) {
-    console.warn(
-      "Validación fallida:",
-      validatedFields.error.flatten().fieldErrors,
-    );
+    console.warn('Validación fallida:', validatedFields.error.flatten().fieldErrors);
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
@@ -108,9 +115,16 @@ export async function registerAction(state: FormState, formData: FormData) {
 
     const signedInUser = signInCredential.user;
 
+    await setDoc(doc(db, 'users', signedInUser.uid), {
+      name: validatedFields.data.name,
+      email: validatedFields.data.email,
+      referral: validatedFields.data.referral,
+      createdAt: serverTimestamp(),
+    });
+
     return { success: true, user: signedInUser };
   } catch (error: any) {
-    console.error("Error al crear un nuevo usuario:", error);
+    console.error('Error al crear un nuevo usuario:', error);
     return {
       success: false,
       errorCode: error.code,
@@ -119,19 +133,13 @@ export async function registerAction(state: FormState, formData: FormData) {
   }
 }
 
-export async function forgotPasswordAction(
-  state: FormState,
-  formData: FormData,
-) {
+export async function forgotPasswordAction(state: FormState, formData: FormData) {
   const validatedFields = forgotPasswordSchema.safeParse({
-    email: formData.get("email"),
+    email: formData.get('email'),
   });
 
   if (!validatedFields.success) {
-    console.warn(
-      "Validación fallida:",
-      validatedFields.error.flatten().fieldErrors,
-    );
+    console.warn('Validación fallida:', validatedFields.error.flatten().fieldErrors);
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
@@ -142,10 +150,7 @@ export async function forgotPasswordAction(
     await sendPasswordResetEmail(auth, validatedFields?.data.email);
     return { success: true };
   } catch (error: any) {
-    console.error(
-      "Error al enviar correo de restablecimiento de contraseña:",
-      error,
-    );
+    console.error('Error al enviar correo de restablecimiento de contraseña:', error);
     return {
       success: false,
       errorCode: error.code,

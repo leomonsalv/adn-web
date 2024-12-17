@@ -1,4 +1,4 @@
-import { User } from 'firebase/auth'
+import { User, signOut } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
 import { db, functions } from '@/lib/firebaseConfig'
 import { OTP_GENERATION, OTP_VALIDATION, OTP_EMAIL_GENERATOR, USERDELETE } from '@/lib/urls'
@@ -20,6 +20,10 @@ export const deleteAccount = async (user: User) => {
     console.error('Error deleting account:', error)
     throw error
   }
+}
+
+export const logOutAccount = async () => {
+  await signOut(auth)
 }
 
 export async function updateUserProfile(data: { [key: string]: any }) {
