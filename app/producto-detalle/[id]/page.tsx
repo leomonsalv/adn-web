@@ -1,65 +1,66 @@
-'use client'
+'use client';
 
-import { Fragment, useState } from 'react'
-import { use } from 'react'
-import { useCartStore } from '@/stores/cart-store'
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { Fragment, useState } from 'react';
+import { use } from 'react';
+import { useCartStore } from '@/stores/cart-store';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbPage,
-} from '@/components/ui/breadcrumb'
-import { BreadcrumbList } from '@/components/ui/breadcrumb'
-import Reviews from '@/components/reviews/Reviews'
-import { formatUsdCurrency } from '@/lib/utils'
-import useProducts from '@/hooks/use-products'
-import useCart from '@/hooks/use-cart'
-import Image from 'next/image'
-import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { product } from '@/lib/dummyData'
+} from '@/components/ui/breadcrumb';
+import { BreadcrumbList } from '@/components/ui/breadcrumb';
+import Reviews from '@/components/reviews/Reviews';
+import { formatUsdCurrency } from '@/lib/utils';
+import useProducts from '@/hooks/use-products';
+import useCart from '@/hooks/use-cart';
+import Image from 'next/image';
+import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { product } from '@/lib/dummyData';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector'
-import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker'
-import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter'
-import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton'
-import { SupportLink } from '@/components/products/ProductDetail/SupportLink'
-import { CARRITO } from '@/lib/routes'
+} from '@/components/ui/accordion';
+import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector';
+import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker';
+import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter';
+import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton';
+import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
+import { CARRITO } from '@/lib/routes';
 
 interface ProductPageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
-  const productId = Number(use(params).id)
-  const { useGetProductById } = useProducts()
-  const { useMutateCart, useGetCart } = useCart()
+  const productId = Number(use(params).id);
+  const { useGetProductById } = useProducts();
+  const { useMutateCart, useGetCart } = useCart();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     data: productData,
     isLoading: isProductLoading,
     error: productError,
-  } = useGetProductById(productId)
+  } = useGetProductById(productId);
 
-  const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart()
-  const { mutateAsync: updateCart } = useMutateCart()
+  const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
-  const { addToCart, getItemCount, updateQuantity, isItemInCart } = useCartStore()
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+  const { mutateAsync: updateCart } = useMutateCart();
+
+  const { addToCart, getItemCount, updateQuantity, isItemInCart } = useCartStore();
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   if (isProductLoading || isCartLoading) {
-    return <ProductDetailSkeleton />
+    return <ProductDetailSkeleton />;
   }
 
   if (productError || cartError) {
@@ -67,45 +68,45 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       <div className="flex justify-center items-center min-h-screen">
         <p>Ocurrió un error al cargar los datos. Por favor, inténtalo más tarde.</p>
       </div>
-    )
+    );
   }
 
   if (!productData) {
-    return <div className="text-center py-16">No se encontró el producto</div>
+    return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
-  const isInCart = isItemInCart(productData.id)
-  const itemCount = getItemCount(productData.id)
+  const isInCart = isItemInCart(productData.id);
+  const itemCount = getItemCount(productData.id);
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!productData) return
+    if (!productData) return;
 
     try {
       if (isInCart) {
-        updateQuantity(productData.id, itemCount + 1)
+        updateQuantity(productData.id, itemCount + 1);
       } else {
-        addToCart(productData)
+        addToCart(productData);
       }
 
       await updateCart({
         cartId: cartData?.id || '',
         product: productData,
-      })
-      router.push(CARRITO)
+      });
+      router.push(CARRITO);
     } catch (error) {
-      console.error('Error adding to cart:', error)
+      console.error('Error adding to cart:', error);
     }
-  }
+  };
 
-  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : []
+  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : [];
 
-  const noStock = productData.qty_available <= 0
+  const noStock = productData.qty_available <= 0;
   const requiresRecipe =
-    productData.required_recipe === true || productData.product_type === 'prescripcion'
+    productData.required_recipe === true || productData.product_type === 'prescripcion';
 
-  const disableAddToCart = noStock || requiresRecipe
+  const disableAddToCart = noStock || requiresRecipe;
 
   return (
     <div className="bg-white">
@@ -363,5 +364,5 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

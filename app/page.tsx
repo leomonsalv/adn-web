@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Dialog,
   DialogBackdrop,
@@ -9,14 +9,14 @@ import {
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
-} from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Link } from '@/components/ui/link'
-import MainIncentives from '@/components/incentives/MainIncentives'
-import { CARRITO, HISTORIAL } from '@/lib/routes'
+} from '@headlessui/react';
+import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Link } from '@/components/ui/link';
+import MainIncentives from '@/components/incentives/MainIncentives';
+import { CARRITO, HISTORIAL } from '@/lib/routes';
 
-const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
+const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'];
 const favorites = [
   {
     id: 1,
@@ -43,7 +43,7 @@ const favorites = [
     imageAlt:
       "Model wearing women's burgundy red crewneck artwork tee with small white triangle overlapping larger black triangle.",
   },
-]
+];
 const categories = [
   {
     name: 'New Arrivals',
@@ -70,7 +70,7 @@ const categories = [
     href: '/categoria',
     imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-03.jpg',
   },
-]
+];
 
 const navigation = {
   categories: [
@@ -135,7 +135,7 @@ const navigation = {
     { name: 'Company', href: '#' },
     { name: 'Stores', href: '#' },
   ],
-}
+};
 const offers = [
   {
     name: 'Download the app',
@@ -152,7 +152,7 @@ const offers = [
     description: '15% off your first order',
     href: '#',
   },
-]
+];
 const trendingProducts = [
   {
     id: 1,
@@ -169,7 +169,7 @@ const trendingProducts = [
     ],
   },
   // More products...
-]
+];
 const collections = [
   {
     name: 'Desk and Office',
@@ -194,7 +194,7 @@ const collections = [
     imageAlt: 'Collection of four insulated travel bottles on wooden shelf.',
     href: '#',
   },
-]
+];
 const testimonials = [
   {
     id: 1,
@@ -214,7 +214,7 @@ const testimonials = [
       'Now that I’m on holiday for the summer, I’ll probably order a few more shirts. It’s just so convenient, and I know the quality will always be there.',
     attribution: 'Chris Paul, Phoenix',
   },
-]
+];
 const footerNavigation = {
   products: [
     { name: 'Bags', href: '#' },
@@ -251,10 +251,10 @@ const footerNavigation = {
     { name: 'Privacy', href: '#' },
     { name: 'Terms', href: '#' },
   ],
-}
+};
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="bg-white">
@@ -334,36 +334,9 @@ export default function Example() {
         </div>
       </Dialog>
 
-      <header className="relative z-10 pt-14 ">
-        <nav aria-label="Top">{/* Secondary navigation */}</nav>
-      </header>
-
       <main>
         {/* Hero */}
         <div className="flex flex-col border-b border-gray-200 lg:border-0">
-          {/* <nav aria-label="Offers" className="order-last lg:order-first">
-            <div className="mx-auto max-w-7xl lg:px-8">
-              <ul
-                role="list"
-                className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-3 lg:divide-x lg:divide-y-0"
-              >
-                {offers.map((offer) => (
-                  <li key={offer.name} className="flex flex-col">
-                    <a
-                      href={offer.href}
-                      className="relative flex flex-1 flex-col justify-center bg-white px-4 py-6 text-center focus:z-10"
-                    >
-                      <p className="text-sm text-gray-500">{offer.name}</p>
-                      <p className="font-semibold text-gray-900">
-                        {offer.description}
-                      </p>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </nav> */}
-
           <div className="relative">
             <div aria-hidden="true" className="absolute hidden h-full w-1/2 bg-gray-100 lg:block" />
             <div className="relative bg-gray-100 lg:bg-transparent">
@@ -561,5 +534,5 @@ export default function Example() {
 
       <MainIncentives />
     </div>
-  )
+  );
 }

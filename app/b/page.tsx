@@ -1,24 +1,24 @@
-'use client'
+'use client';
 
-import { use, useState } from 'react'
-import { PlusIcon } from '@heroicons/react/24/outline'
-import { Filters, MobileFilterDialog } from '@/components/categorias/filters'
-import { filters } from '@/lib/dummyData'
-import ProductGrid from '@/components/categorias/productGrid'
-import useSearchProduct from '@/hooks/use-search-products'
-import { useSearchParams } from 'next/navigation'
-import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton'
+import { use, useState } from 'react';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
+import { filters } from '@/lib/dummyData';
+import ProductGrid from '@/components/categorias/productGrid';
+import useSearchProduct from '@/hooks/use-search-products';
+import { useSearchParams } from 'next/navigation';
+import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 
 export default function SearchPage() {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const params = useSearchParams()
-  const query = params.get('query') || ''
-  const category = params.get('category') || ''
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const params = useSearchParams();
+  const query = params.get('query') || '';
+  const category = params.get('category') || '';
 
-  const { searchProducts } = useSearchProduct()
-  const { data, isLoading } = searchProducts({ query, category })
+  const { searchProducts } = useSearchProduct();
+  const { data, isLoading } = searchProducts({ query, category });
 
-  if (isLoading) return <SearchPageSkeleton />
+  if (isLoading) return <SearchPageSkeleton />;
 
   return (
     <main className="bg-white">
@@ -54,5 +54,5 @@ export default function SearchPage() {
         </div>
       </main>
     </main>
-  )
+  );
 }

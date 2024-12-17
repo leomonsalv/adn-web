@@ -1,10 +1,10 @@
-import React from 'react'
-import Link from 'next/link'
-import { SearchResponseProduct } from '@/types/search'
-import Image from 'next/image'
+import React from 'react';
+import Link from 'next/link';
+import { SearchResponseProduct } from '@/types/search';
+import Image from 'next/image';
 
 interface ProductGridProps {
-  products: SearchResponseProduct[]
+  products: SearchResponseProduct[];
 }
 
 function ProductGrid({ products }: ProductGridProps) {
@@ -48,7 +48,7 @@ function ProductGrid({ products }: ProductGridProps) {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-export default ProductGrid
+export default ProductGrid;

@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import { PlusIcon } from '@heroicons/react/24/outline'
+import { Skeleton } from '@/components/ui/skeleton';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 export default function SearchPageSkeleton() {
   return (
@@ -65,5 +65,5 @@ export default function SearchPageSkeleton() {
         </div>
       </main>
     </main>
-  )
+  );
 }

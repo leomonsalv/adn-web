@@ -1,80 +1,85 @@
-'use client'
+'use client';
 
-/**
- * @TODO: Necesitamos agregar el carrito, y el icono y la re-dirección al login
- *
- * **/
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { useCallback, useState } from 'react'
-import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline'
-import { HISTORIAL, HOME, LOGIN, PROFILE, SEARCH } from '@/lib/routes'
-import { ShoppingCartIcon } from '@heroicons/react/24/solid'
+import { usePathname } from 'next/navigation';
 
-import NavLogo from '@/public/navigation-logo'
-import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react'
-import { CustomBadge } from '../ui/badge'
-import SearchInput from '../search/SearchInput'
-import { useRouter } from 'next/navigation'
-import useCategories from '@/hooks/use-categories'
-import { categories, navbarMenuHover } from '@/lib/dummyData'
-import { useUser } from '@/hooks/use-user'
-import { Button } from '../ui/button'
-import { logOutAccount } from '@/api/auth'
-import { useToast } from '@/hooks/use-toast'
+import { useUser } from '@/hooks/use-user';
+import { Button } from '../ui/button';
+import { logOutAccount } from '@/api/auth';
+import { useToast } from '@/hooks/use-toast';
+
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { CARRITO, HISTORIAL, LOGIN, SEARCH, HOME } from '@/lib/routes';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
+
+import NavLogo from '@/public/navigation-logo';
+import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
+import { CustomBadge } from '../ui/badge';
+import SearchInput from '../search/SearchInput';
+import { useRouter } from 'next/navigation';
+import { categories, navbarMenuHover } from '@/lib/dummyData';
+import useCart from '@/hooks/use-cart';
+import { useCartStore } from '@/stores/cart-store';
 
 export function NavLinks() {
-  const pathname = usePathname()
-  const router = useRouter()
-  const { user, loading } = useUser()
-  const { useGetCategories } = useCategories()
-  const { data: odooCategories } = useGetCategories()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { toast } = useToast()
-  const [search, setSearch] = useState({ value: '', category: '1' })
+  const router = useRouter();
+  const { user, loading } = useUser();
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
+  const [search, setSearch] = useState({ value: '', category: '1' });
+  const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
+  const { useGetCart } = useCart();
+  const { data: cartData, isSuccess } = useGetCart();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch({ value: e.target.value, category: search.category })
+      setSearch({ value: e.target.value, category: search.category });
     },
     [search.category],
-  )
+  );
 
   const handleSelectCategory = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSearch({ value: search.value, category: e.target.value })
+      setSearch({ value: search.value, category: e.target.value });
     },
     [search.value],
-  )
+  );
 
   const handleSearch = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         router.push(
           `${SEARCH}?query=${search.value.toLowerCase()}&category=${search.category.toLowerCase()}`,
-        )
+        );
       }
     },
     [search],
-  )
+  );
+
+  useEffect(() => {
+    if (cartData && isSuccess) {
+      setCart(cartData);
+    }
+  }, [cartData, isSuccess]);
 
   const handleLogout = async () => {
     try {
-      await logOutAccount()
-      router.replace(HOME)
+      await logOutAccount();
+      router.replace(HOME);
       toast({
         title: 'Sesión cerrada',
         description: 'Has cerrado con éxito tu sesión.',
-      })
+      });
     } catch (error) {
-      console.error('Error al cerrar sesión:', error)
+      console.error('Error al cerrar sesión:', error);
       toast({
         variant: 'destructive',
         title: 'Error',
         description: 'Hubo un error al cerrar tu sesión.',
-      })
+      });
     }
-  }
+  };
 
   return (
     <header className="w-full">
@@ -83,7 +88,7 @@ export function NavLinks() {
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="flex h-14 md:h-16 items-center justify-between gap-x-2 sm:gap-x-4">
             {/* Logo and mobile menu */}
-            <div className="flex items-center gap-x-2 sm:gap-x-4">
+            <div className="flex items-center gap-x-2 sm:gap-x-4 hidden sm:flex">
               <Link href="/" aria-label="adan" className="flex-shrink-0">
                 <NavLogo />
               </Link>
@@ -174,26 +179,33 @@ export function NavLinks() {
               </div>
 
               {/* Cart - simplified on mobile */}
-              <div className="flex items-center ml-4">
-                <Link href="/cart" className="group flex items-center p-2 rounded-lg bg-[#37424F]">
+              <div className="flex items-center md:ml-4">
+                <Link
+                  href={CARRITO}
+                  className="group flex items-center p-2 rounded-lg bg-[#37424F]"
+                >
                   <div className="relative flex items-end">
                     <ShoppingCartIcon
                       className="h-6 w-6 text-white group-hover:text-gray-200"
                       aria-hidden="true"
                     />
-                    <span className="absolute top-[-0.25rem] right-[-0.25rem] bg-red-500 px-1 rounded-full text-xs text-white">
-                      4
-                    </span>
+                    {getCartCount() > 0 && (
+                      <span className="absolute top-[-0.25rem] right-[-0.25rem] bg-red-500 px-1 rounded-full text-xs text-white">
+                        {getCartCount()}
+                      </span>
+                    )}
                   </div>
                   {/* Cart details - hidden on mobile */}
-                  <div className="hidden sm:flex flex-col items-start ml-2">
-                    <span className="text-xs text-white hover:text-gray-200 opacity-50 leading-none">
-                      Carrito
-                    </span>
-                    <span className="font-semibold text-white group-hover:text-gray-200 leading-md">
-                      $59.90
-                    </span>
-                  </div>
+                  {getCartCount() > 0 && (
+                    <div className="hidden sm:flex flex-col items-start ml-2">
+                      <span className="text-xs text-white hover:text-gray-200 opacity-50 leading-none">
+                        Carrito
+                      </span>
+                      <span className="font-semibold text-white group-hover:text-gray-200 leading-md">
+                        {getCartCount() > 0 ? `Bs. ${getCartTotal()}` : '0.00'}
+                      </span>
+                    </div>
+                  )}
                 </Link>
               </div>
             </div>
@@ -344,5 +356,5 @@ export function NavLinks() {
         </div>
       </nav>
     </header>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { InputHTMLAttributes } from 'react'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { InputHTMLAttributes } from 'react';
 
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  selectedCategory: string
-  setSelectedCategory: (event: React.ChangeEvent<HTMLSelectElement>) => void
-  categories: { name: string; id: string }[]
+  selectedCategory: string;
+  setSelectedCategory: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  categories: { name: string; id: string }[];
 }
 
 export default function SearchInput({
@@ -14,8 +14,8 @@ export default function SearchInput({
   ...props
 }: SearchInputProps) {
   const handleSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e)
-  }
+    setSelectedCategory(e);
+  };
 
   return (
     <div className="flex rounded-md bg-white shadow-sm ring-1 ring-inset ring-gray-300">
@@ -41,7 +41,7 @@ export default function SearchInput({
           {...props}
           prefix="Buscar"
           type="text"
-          className="block w-full rounded-md sm:rounded-l-none border-0 py-1.5 pl-10 pr-10 text-sm text-gray-900 ring-0 placeholder:text-gray-400 focus:ring-0"
+          className="block w-full rounded-md sm:rounded-l-none border-0 py-1.5 pl-10 md:pr-10 text-sm text-gray-900 ring-0 placeholder:text-gray-400 focus:ring-0"
           placeholder="Busca por producto (Ej. Jabón para niños)"
         />
         <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -49,5 +49,5 @@ export default function SearchInput({
         </div>
       </div>
     </div>
-  )
+  );
 }
