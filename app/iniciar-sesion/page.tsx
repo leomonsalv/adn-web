@@ -1,25 +1,22 @@
-"use client";
-import LoginForm from "@/components/forms/auth/login-form";
-import { HOME, REGISTER } from "@/lib/routes";
-import { auth, provider } from "@/lib/firebaseConfig";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import GoogleIcon from "@/public/google";
+'use client';
+import LoginForm from '@/components/forms/auth/login-form';
+import { HOME, REGISTER } from '@/lib/routes';
+import { auth, provider } from '@/lib/firebaseConfig';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import GoogleIcon from '@/public/google';
+import { signInWithGoogle } from '../_actions/auth';
 
 export default function LoginPage() {
   const router = useRouter();
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
-      const user = result.user;
-      //TODO: STORE USER IN ZUSTAND
+      await signInWithGoogle();
       router.push(HOME);
     } catch (error) {
-      console.error("Error during Google Sign-In:", error);
+      console.error('Error during Google Sign-In:', error);
     }
   };
 
@@ -42,16 +39,11 @@ export default function LoginPage() {
             <LoginForm />
             <div>
               <div className="relative mt-10">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 flex items-center"
-                >
+                <div aria-hidden="true" className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-sm/6 font-medium">
-                  <span className="bg-white px-6 text-gray-900">
-                    Or continue with
-                  </span>
+                  <span className="bg-white px-6 text-gray-900">Or continue with</span>
                 </div>
               </div>
 
@@ -87,11 +79,8 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?{" "}
-            <Link
-              href={REGISTER}
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
-            >
+            Not a member?{' '}
+            <Link href={REGISTER} className="font-semibold text-indigo-600 hover:text-indigo-500">
               Register
             </Link>
           </p>

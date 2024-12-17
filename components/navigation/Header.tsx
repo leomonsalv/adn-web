@@ -129,7 +129,7 @@ export function NavLinks() {
                     <Popover className="relative">
                       <PopoverButton className="text-sm text-white hover:text-gray-200 flex flex-col">
                         <span className="text-xs text-white hover:text-gray-200">
-                          Hola, <strong>{user?.displayName}</strong>
+                          Hola, <strong>{user.displayName}</strong>
                         </span>
                         <span className="text-sm text-white font-semibold hover:text-gray-200">
                           Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />

@@ -1,5 +1,5 @@
-import { Product } from '@/types/product'
-import { GlobeAmericasIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline'
+import { Product } from '@/types/product';
+import { GlobeAmericasIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 
 export const navigation = {
   categories: [
@@ -125,8 +125,8 @@ export const navigation = {
     { name: 'Company', href: '#' },
     { name: 'Stores', href: '#' },
   ],
-}
-export const breadcrumbs = [{ id: 1, name: 'Men', href: '#' }]
+};
+export const breadcrumbs = [{ id: 1, name: 'Men', href: '#' }];
 export const filters = [
   {
     id: 'color',
@@ -163,7 +163,7 @@ export const filters = [
       { value: '2xl', label: '2XL' },
     ],
   },
-]
+];
 
 export const footerNavigation = {
   products: [
@@ -190,7 +190,7 @@ export const footerNavigation = {
     { name: 'FAQ', href: '#' },
     { name: 'Find a store', href: '#' },
   ],
-}
+};
 
 export const products: Product[] = [
   {
@@ -304,7 +304,7 @@ export const products: Product[] = [
       'https://www.funny-western.co.jp/products-retina/638/510/2022/05/Belt_Basic_Harness-MB_hp.jpg',
     imageAlt: 'Leather belts in brown and black.',
   },
-]
+];
 
 export const product = {
   id: 6,
@@ -366,7 +366,7 @@ export const product = {
     'Pre-washed and pre-shrunk',
     'Machine wash cold with similar colors',
   ],
-}
+};
 export const policies = [
   {
     name: 'International delivery',
@@ -378,9 +378,10 @@ export const policies = [
     icon: CurrencyDollarIcon,
     description: "Don't look at other tees",
   },
-]
+];
 
 export const categories = [
+  { name: 'Todo', href: '/', id: '0' },
   { name: 'Belleza', href: '#', id: '1' },
   { name: 'Bienestar', href: '#', id: '2' },
   { name: 'Botiquín', href: '#', id: '3' },
@@ -398,7 +399,7 @@ export const categories = [
   { name: 'Ropa', href: '#', id: '15' },
   { name: 'Joyería y accesorios', href: '#', id: '16' },
   { name: 'Referir a un Amigo 🚀', href: '/referidos', id: '17' },
-]
+];
 
 export const navbarMenuHover = [
   { name: 'Cuenta', href: '/profile', id: '1' },
@@ -408,4 +409,4 @@ export const navbarMenuHover = [
   { name: 'Ajustes', href: '#', id: '5' },
   { name: 'Notificaciones', href: '#', id: '6' },
   { name: 'Centro de ayuda', href: '#', id: '7' },
-]
+];

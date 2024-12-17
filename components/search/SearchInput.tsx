@@ -26,7 +26,6 @@ export default function SearchInput({
           value={selectedCategory}
           onChange={handleSelectCategory}
         >
-          <option value="1">Todo</option>
           {categories.map((category) => (
             <option key={category.name} value={category.id}>
               {category.name}
