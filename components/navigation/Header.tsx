@@ -17,7 +17,7 @@ import { CustomBadge } from '../ui/badge'
 import SearchInput from '../search/SearchInput'
 import { useRouter } from 'next/navigation'
 import useCategories from '@/hooks/use-categories'
-import { categories } from '@/lib/dummyData'
+import { categories, navbarMenuHover } from '@/lib/dummyData'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '../ui/button'
 import { logOutAccount } from '@/api/auth'
@@ -120,17 +120,6 @@ export function NavLinks() {
                     </span>
                   </Link>
                 ) : (
-                  // <Link
-                  //   href={PROFILE}
-                  //   className="text-sm text-white hover:text-gray-200 flex flex-col"
-                  // >
-                  //   <span className="text-xs text-white hover:text-gray-200">
-                  //     Hola, <strong>{user?.displayName}</strong>
-                  //   </span>
-                  //   <span className="text-sm text-white font-semibold hover:text-gray-200">
-                  //     Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
-                  //   </span>
-                  // </Link>
                   <PopoverGroup className="flex hover:opacity-75 shrink-0">
                     <Popover className="relative">
                       <PopoverButton className="text-sm text-white hover:text-gray-200 flex flex-col">
@@ -147,14 +136,13 @@ export function NavLinks() {
                         className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100"
                       >
                         <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                          {/*TODO: MAKE USER DROPDOWN */}
-                          {categories.map((category) => (
+                          {navbarMenuHover.map((items) => (
                             <Link
-                              key={category.name}
-                              href={category.href}
+                              key={items.name}
+                              href={items.href}
                               className="flex items-center rounded-lg p-2 text-sm text-gray-900 hover:bg-gray-50"
                             >
-                              <span>{category.name}</span>
+                              <span>{items.name}</span>
                             </Link>
                           ))}
                         </div>

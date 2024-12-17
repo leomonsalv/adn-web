@@ -399,3 +399,13 @@ export const categories = [
   { name: 'Joyería y accesorios', href: '#', id: '16' },
   { name: 'Referir a un Amigo 🚀', href: '/referidos', id: '17' },
 ]
+
+export const navbarMenuHover = [
+  { name: 'Cuenta', href: '/profile', id: '1' },
+  { name: 'Favoritos', href: '#', id: '2' },
+  { name: 'Pedidos', href: '/historial', id: '3' },
+  { name: 'Tus direcciones', href: '#', id: '4' },
+  { name: 'Ajustes', href: '#', id: '5' },
+  { name: 'Notificaciones', href: '#', id: '6' },
+  { name: 'Centro de ayuda', href: '#', id: '7' },
+]
