@@ -1,18 +1,26 @@
-// filters.tsx
-"use client";
+import React from 'react';
+import { DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { Dialog } from '@headlessui/react';
 
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { Dialog } from "@headlessui/react";
-import React from "react";
+interface FacetValue {
+  value: string;
+  count: number;
+}
+
+interface Facet {
+  type: string;
+  data: FacetValue[];
+}
+
+interface Facets {
+  [key: string]: Facet[];
+}
 
 interface FilterOption {
   value: string;
   label: string;
+  count: number;
 }
 
 interface FilterSection {
@@ -22,77 +30,67 @@ interface FilterSection {
 }
 
 interface FiltersProps {
-  filters: FilterSection[];
+  facets?: Facets;
 }
 
-interface MobileFilterDialogProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  filters: FilterSection[];
-}
+//BORRA LA X_ Y LOS SEPARA PARA QUE SEAN PARTE DEL FILTRO LOS NOMBRES
+const transformFacetsToFilters = (facets?: Facets): FilterSection[] => {
+  if (!facets) return [];
 
-interface FilterSectionProps {
-  section: FilterSection;
-  isFirst: boolean;
-}
+  return Object.entries(facets)
+    .filter(([key]) => key.startsWith('x_'))
+    .map(([key, facetData]) => ({
+      id: key,
+      name: key.split('_').slice(2).join(' ').toUpperCase(),
+      options: facetData[0].data.map((item) => ({
+        value: item.value,
+        label: `${item.value} (${item.count})`,
+        count: item.count,
+      })),
+    }));
+};
 
-interface FilterOptionProps {
-  sectionId: string;
-  option: FilterOption;
-  optionIdx: number;
-}
+export function Filters({ facets }: FiltersProps): JSX.Element {
+  const filters = transformFacetsToFilters(facets);
 
-interface MobileFilterDialogProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  filters: FilterSection[];
-}
+  if (filters.length === 0) {
+    return <div className="text-sm text-gray-500">No hay filtros disponibles</div>;
+  }
 
-/**
- * Filters Component for Desktop View.
- *
- * @param {FilterSection[]} filters - The list of filter sections to be displayed.
- * @returns {JSX.Element} The Filters component for desktop.
- */
-export function Filters({ filters }: FiltersProps): JSX.Element {
   return (
     <form className="space-y-10 divide-y divide-gray-200">
       {filters.map((section, sectionIdx) => (
-        <FilterSectionComponent
-          key={section.name}
-          section={section}
-          isFirst={sectionIdx === 0}
-        />
+        <FilterSection key={section.name} section={section} isFirst={sectionIdx === 0} />
       ))}
     </form>
   );
 }
 
-/**
- * Component for rendering individual filter sections.
- *
- * @param {FilterSection} section - The filter section data.
- * @param {boolean} isFirst - Whether this is the first filter section.
- * @returns {JSX.Element} The filter section component.
- */
-function FilterSectionComponent({
+function FilterSection({
   section,
   isFirst,
-}: FilterSectionProps): JSX.Element {
+}: {
+  section: FilterSection;
+  isFirst: boolean;
+}): JSX.Element {
   return (
-    <div className={isFirst ? "" : "pt-10"}>
+    <div className={isFirst ? '' : 'pt-10'}>
       <fieldset>
-        <legend className="block text-sm font-medium text-gray-900">
-          {section.name}
-        </legend>
+        <legend className="block text-sm font-medium text-gray-900">{section.name}</legend>
         <div className="space-y-3 pt-6">
           {section.options.map((option, optionIdx) => (
-            <FilterOptionComponent
-              key={option.value}
-              sectionId={section.id}
-              option={option}
-              optionIdx={optionIdx}
-            />
+            <div key={option.value} className="flex items-center">
+              <input
+                id={`${section.id}-${optionIdx}`}
+                name={`${section.id}[]`}
+                defaultValue={option.value}
+                type="checkbox"
+                className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label htmlFor={`${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
+                {option.label}
+              </label>
+            </div>
           ))}
         </div>
       </fieldset>
@@ -100,110 +98,83 @@ function FilterSectionComponent({
   );
 }
 
-/**
- * Component for rendering individual filter options.
- *
- * @param {string} sectionId - The ID of the filter section.
- * @param {FilterOption} option - The filter option data.
- * @param {number} optionIdx - The index of the option.
- * @returns {JSX.Element} The filter option component.
- */
-function FilterOptionComponent({
-  sectionId,
-  option,
-  optionIdx,
-}: FilterOptionProps): JSX.Element {
-  return (
-    <div className="flex items-center">
-      <input
-        defaultValue={option.value}
-        id={`${sectionId}-${optionIdx}`}
-        name={`${sectionId}[]`}
-        type="checkbox"
-        className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-      />
-      <label
-        htmlFor={`${sectionId}-${optionIdx}`}
-        className="ml-3 text-sm text-gray-600"
-      >
-        {option.label}
-      </label>
-    </div>
-  );
+interface MobileFilterDialogProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  facets?: Facets;
 }
 
-/**
- * Mobile Filter Dialog Component.
- *
- * @param {boolean} isOpen - Indicates if the dialog is open.
- * @param {React.Dispatch<React.SetStateAction<boolean>>} setIsOpen - Function to set dialog open state.
- * @param {FilterSection[]} filters - The list of filter sections to be displayed.
- * @returns {JSX.Element} The mobile filter dialog component.
- */
 export function MobileFilterDialog({
   isOpen,
   setIsOpen,
-  filters,
+  facets,
 }: MobileFilterDialogProps): JSX.Element {
+  const filters = transformFacetsToFilters(facets);
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={setIsOpen}
-      className="relative z-40 lg:hidden"
-    >
-      <div className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear" />
+    <Dialog open={isOpen} onClose={setIsOpen} className="relative z-40 lg:hidden">
+      <div className="fixed inset-0 bg-black/25" />
       <div className="fixed inset-0 z-40 flex">
-        <Dialog.Panel className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl transition duration-300 ease-in-out">
+        <DialogPanel className="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl">
           <div className="flex items-center justify-between px-4">
-            <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+            <h2 className="text-lg font-medium text-gray-900">Filtros</h2>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
               className="-mr-2 flex size-10 items-center justify-center p-2 text-gray-400 hover:text-gray-500"
             >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon aria-hidden="true" className="size-6" />
+              <span className="sr-only">Cerrar menu</span>
+              <XMarkIcon className="size-6" aria-hidden="true" />
             </button>
           </div>
+
           <form className="mt-4">
-            {filters.map((section) => (
-              <Disclosure
-                key={section.name}
-                as="div"
-                className="border-t border-gray-200 pb-4 pt-4"
-              >
-                <fieldset>
-                  <legend className="w-full px-2">
-                    <DisclosureButton className="group flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500">
-                      <span className="text-sm font-medium text-gray-900">
-                        {section.name}
-                      </span>
-                      <span className="ml-6 flex h-7 items-center">
-                        <ChevronDownIcon
-                          aria-hidden="true"
-                          className="size-5 rotate-0 transform group-data-[open]:-rotate-180"
-                        />
+            {filters.length > 0 ? (
+              filters.map((section) => (
+                <Disclosure
+                  key={section.name}
+                  as="div"
+                  className="border-t border-gray-200 px-4 py-6"
+                >
+                  <h3 className="-mx-2 -my-3 flow-root">
+                    <DisclosureButton className="flex w-full items-center justify-between px-2 py-3 text-gray-400 hover:text-gray-500">
+                      <span className="font-medium text-gray-900">{section.name}</span>
+                      <span className="ml-6 flex items-center">
+                        <ChevronDownIcon className="size-5" aria-hidden="true" />
                       </span>
                     </DisclosureButton>
-                  </legend>
-                  <DisclosurePanel className="px-4 pb-2 pt-4">
+                  </h3>
+                  <DisclosurePanel className="pt-6">
                     <div className="space-y-6">
                       {section.options.map((option, optionIdx) => (
-                        <FilterOptionComponent
-                          key={option.value}
-                          sectionId={section.id}
-                          option={option}
-                          optionIdx={optionIdx}
-                        />
+                        <div key={option.value} className="flex items-center">
+                          <input
+                            id={`filter-mobile-${section.id}-${optionIdx}`}
+                            name={`${section.id}[]`}
+                            defaultValue={option.value}
+                            type="checkbox"
+                            className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <label
+                            htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                            className="ml-3 min-w-0 flex-1 text-gray-500"
+                          >
+                            {option.label}
+                          </label>
+                        </div>
                       ))}
                     </div>
                   </DisclosurePanel>
-                </fieldset>
-              </Disclosure>
-            ))}
+                </Disclosure>
+              ))
+            ) : (
+              <div className="px-4 py-6 text-sm text-gray-500">No hay filtros disponibles</div>
+            )}
           </form>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );
 }
+
+export default Filters;
