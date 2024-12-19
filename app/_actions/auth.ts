@@ -50,7 +50,6 @@ export async function signInAction(state: FormState, formData: FormData) {
 
 export async function signInWithGoogle() {
   try {
-    console.log('🚀 ~ signInWithGoogle ~ user INITIAL CONSOLE:');
     // Mantiene al usuario conectado mientras tenga la pestaña abierta
     await setPersistence(auth, browserSessionPersistence);
 
@@ -59,7 +58,6 @@ export async function signInWithGoogle() {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken;
     const user = result.user;
-    console.log('🚀 ~ signInWithGoogle ~ user:', user);
 
     await setDoc(
       doc(db, 'users', user.uid),
