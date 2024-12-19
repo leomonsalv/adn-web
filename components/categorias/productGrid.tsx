@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { SearchResponseProduct } from '@/types/search';
 import Image from 'next/image';
+import { useInView } from 'react-intersection-observer';
 
 interface ProductGridProps {
   products: SearchResponseProduct[];
+  hasNextPage?: boolean;
+  isFetchingNextPage: boolean;
+  fetchNextPage: () => void;
 }
 
-function ProductGrid({ products }: ProductGridProps) {
+function ProductGrid({
+  products,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+}: ProductGridProps) {
+  //  infinite scroll
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: '300px',
+  });
+
+  // Cargar más productos cuando el último elemento es visible
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
+
   return (
     <section aria-labelledby="product-heading" className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
       <h2 id="product-heading" className="sr-only">
@@ -15,9 +37,9 @@ function ProductGrid({ products }: ProductGridProps) {
       </h2>
 
       <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-        {products.map((product) => (
+        {products.map((product, idx) => (
           <div
-            key={product.id}
+            key={`${product.id}-${idx}`}
             className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
           >
             <Image
@@ -30,7 +52,6 @@ function ProductGrid({ products }: ProductGridProps) {
               src={product.imageLarge || '/delivery.jpeg'}
               className="aspect-[3/4] bg-gray-200 object-cover group-hover:opacity-75 sm:h-96"
             />
-            )
             <div className="flex flex-1 flex-col space-y-2 p-4">
               <h3 className="text-sm font-medium text-gray-900">
                 <Link href={`/producto-detalle/${product.id}`}>
@@ -46,6 +67,15 @@ function ProductGrid({ products }: ProductGridProps) {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Loading trigger element */}
+      <div ref={ref} className="h-10 w-full">
+        {isFetchingNextPage && (
+          <div className="flex justify-center py-4">
+            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
+          </div>
+        )}
       </div>
     </section>
   );
