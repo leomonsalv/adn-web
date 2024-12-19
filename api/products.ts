@@ -30,6 +30,5 @@ export const fetchProductsSuggestions = async (
     functions,
     'es-search',
   )({ query, pageSize: 5, suggest: true });
-  console.log('REQUEST');
   return response.data;
 };

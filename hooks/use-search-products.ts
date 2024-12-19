@@ -11,7 +11,6 @@ export default function useSearchProduct() {
     return useQuery({
       queryKey: ['search-products', ...Object.values(params)],
       queryFn: async () => fetchProducts(params),
-      placeholderData: (prevData) => prevData,
       staleTime: 1000 * 60,
     });
   };
@@ -26,4 +25,3 @@ export default function useSearchProduct() {
 
   return { searchProducts, searchSuggestions };
 }
-
