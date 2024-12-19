@@ -11,7 +11,6 @@ export default function CategoryPage() {
 
   const { searchProducts } = useSearchProduct();
   const { data, isLoading } = searchProducts({ query: '' });
-  console.log('🚀 ~ CategoryPage ~ data:', data);
 
   if (isLoading) return <div>Cargando...</div>;
 

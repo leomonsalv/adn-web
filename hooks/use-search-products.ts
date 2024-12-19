@@ -1,6 +1,5 @@
-import { fetchProducts } from '@/api/products';
+import { fetchProducts, fetchProductsSuggestions } from '@/api/products';
 import { useQuery } from '@tanstack/react-query';
-import { GetSearchCateroriesResponse } from '@/types/categories';
 
 interface SearchFormType {
   query: string;
@@ -9,18 +8,20 @@ interface SearchFormType {
 
 export default function useSearchProduct() {
   const searchProducts = (params: SearchFormType) => {
-    return useQuery<GetSearchCateroriesResponse>({
-      queryKey: ['search-products', params.query, params.filters],
-      queryFn: async () => {
-        const response = await fetchProducts(params);
-        return response as GetSearchCateroriesResponse;
-      },
-      placeholderData: (prevData) => prevData,
+    return useQuery({
+      queryKey: ['search-products', ...Object.values(params)],
+      queryFn: async () => fetchProducts(params),
       staleTime: 1000 * 60,
     });
   };
 
-  return { searchProducts };
-}
+  const searchSuggestions = (query: string) => {
+    return useQuery({
+      queryKey: ['search-suggestions', query],
+      queryFn: () => fetchProductsSuggestions(query),
+      enabled: query.length > 2,
+    });
+  };
 
-export type { SearchFormType };
+  return { searchProducts, searchSuggestions };
+}
