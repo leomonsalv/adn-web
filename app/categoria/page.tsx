@@ -4,11 +4,13 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
-import useSearchProduct from '@/hooks/use-search-products';
+import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { Facets } from '@/types/categories';
-import type { SortOption, PriceRange } from '@/hooks/use-search-products';
-import { SortFilterOptions } from '@/components/categorias/sortFilterOptions';
 import { useDebounce } from '@/hooks/use-debounce';
+import SortFilterOptions from '@/components/categorias/sortFilterOptions';
+
+type SortOption = NonNullable<SearchFormType['sort']>;
+type PriceRange = NonNullable<SearchFormType['priceRange']>;
 
 export default function CategoryPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -84,21 +86,21 @@ export default function CategoryPage() {
     return data.pages.flatMap((page) => page.data);
   }, [data?.pages]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" />
       </div>
     );
+  }
 
-  if (isError)
+  if (isError && error instanceof Error) {
     return (
       <div className="flex justify-center items-center min-h-screen text-red-600">
         Error: {error.message}
       </div>
     );
-
-  console.log('data', data, 'products', products);
+  }
   return (
     <main className="bg-white">
       {/* Diálogo móvil de filtros */}
@@ -108,6 +110,10 @@ export default function CategoryPage() {
         facets={data?.pages[0]?.facets}
         selectedFilters={selectedFilters}
         onFilterChange={handleFilterChange}
+        onSortChange={handleSortChange}
+        onPriceRangeChange={handlePriceRangeChange}
+        currentSort={sortOption}
+        currentPriceRange={priceRange}
       />
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -171,6 +177,10 @@ export default function CategoryPage() {
                   facets={data?.pages[0]?.facets}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
+                  onSortChange={handleSortChange}
+                  onPriceRangeChange={handlePriceRangeChange}
+                  currentSort={sortOption}
+                  currentPriceRange={priceRange}
                 />
               </div>
             </div>

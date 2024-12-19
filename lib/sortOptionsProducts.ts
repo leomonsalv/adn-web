@@ -1,33 +1,28 @@
-// sortOptionsProducts.ts
+type SortField = 'price' | 'price_extra' | 'name' | 'qty_available' | 'x_studio_laboratory';
+type SortOrder = 'asc' | 'desc';
 
-export interface SortOption {
-  [key: string]: 'asc' | 'desc';
-}
-
-interface SortConfigItem {
-  value: string;
+type SortConfig = Array<{
   label: string;
-  sort: SortOption;
-}
+  options: Array<{
+    value: string;
+    label: string;
+    sort: { field: SortField; order: SortOrder };
+  }>;
+}>;
 
-interface SortConfigGroup {
-  label: string;
-  options: SortConfigItem[];
-}
-
-export const SORT_CONFIG: SortConfigGroup[] = [
+export const SORT_CONFIG: SortConfig = [
   {
     label: 'Precio',
     options: [
       {
         value: 'price-asc',
         label: 'Menor a Mayor',
-        sort: { price: 'asc' },
+        sort: { field: 'price', order: 'asc' },
       },
       {
         value: 'price-desc',
         label: 'Mayor a Menor',
-        sort: { price: 'desc' },
+        sort: { field: 'price', order: 'desc' },
       },
     ],
   },
@@ -37,12 +32,12 @@ export const SORT_CONFIG: SortConfigGroup[] = [
       {
         value: 'name-asc',
         label: 'A - Z',
-        sort: { name: 'asc' },
+        sort: { field: 'name', order: 'asc' },
       },
       {
         value: 'name-desc',
         label: 'Z - A',
-        sort: { name: 'desc' },
+        sort: { field: 'name', order: 'desc' },
       },
     ],
   },
@@ -52,12 +47,12 @@ export const SORT_CONFIG: SortConfigGroup[] = [
       {
         value: 'x_studio_laboratory-asc',
         label: 'A - Z',
-        sort: { x_studio_laboratory: 'asc' },
+        sort: { field: 'x_studio_laboratory', order: 'asc' },
       },
       {
         value: 'x_studio_laboratory-desc',
         label: 'Z - A',
-        sort: { x_studio_laboratory: 'desc' },
+        sort: { field: 'x_studio_laboratory', order: 'desc' },
       },
     ],
   },
@@ -67,7 +62,7 @@ export const SORT_CONFIG: SortConfigGroup[] = [
       {
         value: 'qty_available-desc',
         label: 'Disponibilidad',
-        sort: { qty_available: 'desc' },
+        sort: { field: 'qty_available', order: 'desc' },
       },
     ],
   },
