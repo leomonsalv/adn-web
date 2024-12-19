@@ -1,78 +1,40 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { fetchProducts } from '@/api/products';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { GetSearchCateroriesResponse } from '@/types/categories';
 import { useDebounce } from '@/hooks/use-debounce';
-
-interface SortOption {
-  field: 'price' | 'price_extra' | 'name' | 'qty_available' | 'x_studio_laboratory';
-  order: 'asc' | 'desc';
-}
-
-interface PriceRange {
-  from: number;
-  to: number;
-}
-
-interface SearchFormType {
-  query: string;
-  pageSize?: number;
-  actualPage?: number;
-  stock?: boolean;
-  category?: string | string[];
-  carousel?: boolean;
-  type?: 'libre' | 'prescripcion' | 'tienda';
-  sort?: SortOption;
-  priceRange?: PriceRange;
-  facets?: {
-    x_studio_laboratory?: string[];
-    x_studio_active_ingredient?: string[];
-    [key: string]: string[] | undefined;
-  };
-  suggest?: boolean;
-}
+import { SearchFormType, SearchResponse } from '@/types/search';
 
 export default function useSearchProduct() {
   const queryClient = useQueryClient();
-  const abortControllerRef = useRef<AbortController | null>(null);
 
   const [searchOptions, setSearchOptions] = useState<SearchFormType>({
     query: '',
     pageSize: 10,
-    sort: undefined,
-    priceRange: undefined,
   });
 
   const debouncedOptions = useDebounce(searchOptions, 500);
 
-  // Función para cancelar la petición anterior
-  const cancelPreviousRequest = useCallback(() => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    abortControllerRef.current = new AbortController();
-  }, []);
-
   const searchProducts = (params: SearchFormType) => {
-    return useInfiniteQuery<GetSearchCateroriesResponse>({
+    return useInfiniteQuery<SearchResponse>({
       queryKey: ['search-products', debouncedOptions],
-      queryFn: async ({ pageParam = 1 }) => {
-        cancelPreviousRequest();
+      queryFn: async ({ pageParam }) => {
+        const currentPage = typeof pageParam === 'number' ? pageParam : 1;
 
         const searchParams: SearchFormType = {
           ...debouncedOptions,
           ...params,
-          actualPage: pageParam,
+          actualPage: currentPage,
         };
 
         try {
-          const response = await fetchProducts(searchParams, abortControllerRef.current?.signal);
+          const response = await fetchProducts(searchParams);
           return response;
-        } catch (error) {
-          if (error.name === 'AbortError') {
-            console.log('Request cancelled');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error('Search error:', error.message);
+            throw error;
           }
-          throw error;
+          throw new Error('An unknown error occurred during search');
         }
       },
       initialPageParam: 1,
@@ -88,25 +50,26 @@ export default function useSearchProduct() {
     });
   };
 
+  // Actualizadores con tipos correctos de Zod
   const updateSort = useCallback(
-    (sortOption: SortOption) => {
-      setSearchOptions((prev) => ({ ...prev, sort: sortOption }));
+    (sort: NonNullable<SearchFormType['sort']>) => {
+      setSearchOptions((prev) => ({ ...prev, sort }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
   );
 
   const updatePriceRange = useCallback(
-    (range: PriceRange) => {
-      setSearchOptions((prev) => ({ ...prev, priceRange: range }));
+    (priceRange: NonNullable<SearchFormType['priceRange']>) => {
+      setSearchOptions((prev) => ({ ...prev, priceRange }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
   );
 
   const updateFilters = useCallback(
-    (newFilters: SearchFormType['facets']) => {
-      setSearchOptions((prev) => ({ ...prev, facets: newFilters }));
+    (facets: NonNullable<SearchFormType['facets']>) => {
+      setSearchOptions((prev) => ({ ...prev, facets }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
@@ -130,4 +93,5 @@ export default function useSearchProduct() {
   };
 }
 
-export type { SearchFormType, SortOption, PriceRange };
+// Re-exportamos los tipos para conveniencia
+export type { SearchFormType, SearchResponse };
