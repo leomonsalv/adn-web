@@ -103,5 +103,4 @@ export default function useSearchProduct() {
   };
 }
 
-// Re-exportamos los tipos para conveniencia
 export type { SearchFormType, SearchResponse };

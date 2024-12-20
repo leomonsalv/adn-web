@@ -1,7 +1,7 @@
 import { functions } from '@/lib/firebaseConfig';
 import { SearchFormType, SearchResponse } from '@/types/search';
-import { httpsCallable, HttpsCallableResult } from 'firebase/functions';
 import { Product } from '@/types/product';
+import { httpsCallable, HttpsCallableResult } from 'firebase/functions';
 import { GetSearchCateroriesResponse } from '@/types/categories';
 
 export const fetchProducts = async (
