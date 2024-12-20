@@ -2,13 +2,27 @@ import { functions } from '@/lib/firebaseConfig';
 import { httpsCallable } from 'firebase/functions';
 import { SearchFormType, SearchResponse } from '@/types/search';
 import { Product } from '@/types/product';
+import { GetSearchCateroriesResponse } from '@/types/categories';
 
-export const fetchProducts = async (params: SearchFormType): Promise<SearchResponse> => {
-  const response = await httpsCallable<SearchFormType, SearchResponse>(
-    functions,
-    'es-search',
-  )(params);
-  return response.data;
+export const fetchProducts = async (
+  params: SearchFormType,
+  signal?: AbortSignal,
+): Promise<GetSearchCateroriesResponse> => {
+  try {
+    const response = await httpsCallable<SearchFormType, GetSearchCateroriesResponse>(
+      functions,
+      'es-search',
+      { signal },
+    )(params);
+
+    return response.data;
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      console.log('Request was cancelled');
+      throw error;
+    }
+    throw error;
+  }
 };
 
 export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product[] }> => {
