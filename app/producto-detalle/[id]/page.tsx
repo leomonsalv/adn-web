@@ -33,17 +33,30 @@ import DisponibilityCounter from '@/components/products/ProductDetail/Disponibil
 import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton';
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
+import CarouselRecommened from '@/components/carousel/CarouselRecommened';
+import { RecommendedProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
+  const payload: RecommendedProductsPayload = {
+    type: 'Details',
+    products: [Number(use(params).id)],
+    productBased: true,
+  };
   const productId = Number(use(params).id);
-  const { useGetProductById } = useProducts();
-  const { useMutateCart, useGetCart } = useCart();
-
   const router = useRouter();
+  const { useGetProductById, useGetRecommendedProducts } = useProducts();
+  const { useMutateCart, useGetCart } = useCart();
+  const {
+    data: recommendedData,
+    isLoading: isRecommendedLoading,
+    error: recommendedError,
+  } = useGetRecommendedProducts(payload);
+
+  const recommendedProducts = recommendedData ? [recommendedData].flat() : [];
 
   const {
     data: productData,
@@ -71,7 +84,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     );
   }
 
-  if (!productData) {
+  if (!productData || !cartData) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
@@ -360,7 +373,21 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </Accordion>
               </section>
             </div>
+            {/* Recommended products carousel */}
           </div>
+          <section>
+            {isRecommendedLoading || recommendedError ? (
+              <div className="flex justify-center items-center min-h-screen">
+                <p>Cargando productos recomendados...</p>
+              </div>
+            ) : (
+              <CarouselRecommened
+                title="Productos similares a"
+                subtitle={productData.name}
+                products={recommendedProducts}
+              />
+            )}
+          </section>
         </div>
       </div>
     </div>
