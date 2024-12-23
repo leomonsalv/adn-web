@@ -4,8 +4,10 @@ import {
   Product,
   RecommendedProductsPayload,
   RecommendedProductsResponseElement,
+  TopSellingProductsPayload,
+  TopSellingProductsResponse,
 } from '@/types/product';
-import { GET_RECOMMENDED_PRODUCTS } from '@/lib/urls';
+import { GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
 import { httpsCallable, HttpsCallableResult } from 'firebase/functions';
 import { GetSearchCateroriesResponse } from '@/types/categories';
 
@@ -70,6 +72,16 @@ export const fetchRecommendedProducts = async (
   >(
     functions,
     GET_RECOMMENDED_PRODUCTS,
+  )(payload);
+  return response.data;
+};
+
+export const fetchTopSellingProducts = async (
+  payload: any,
+): Promise<TopSellingProductsResponse> => {
+  const response = await httpsCallable<TopSellingProductsPayload, TopSellingProductsResponse>(
+    functions,
+    GET_TOP_SELLERS_PRODUCTS,
   )(payload);
   return response.data;
 };

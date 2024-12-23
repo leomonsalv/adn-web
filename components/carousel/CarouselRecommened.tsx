@@ -1,10 +1,9 @@
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import CarouselCard from './CarouselCard';
-
 import { RecommendedProductsResponseElement } from '@/types/product';
 
-interface ProductWithRating extends RecommendedProductsResponseElement {
+export interface ProductWithRating extends RecommendedProductsResponseElement {
   rating?: number;
   reviewCount?: number;
   offerType?: string;

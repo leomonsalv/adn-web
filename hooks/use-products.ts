@@ -1,5 +1,9 @@
-import { fetchProductsByIds, fetchRecommendedProducts } from '@/api/products';
-import { RecommendedProductsPayload } from '@/types/product';
+import {
+  fetchProductsByIds,
+  fetchRecommendedProducts,
+  fetchTopSellingProducts,
+} from '@/api/products';
+import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useProducts() {
@@ -11,7 +15,6 @@ export default function useProducts() {
     });
   };
   const useGetRecommendedProducts = (payload: RecommendedProductsPayload) => {
-    console.log('🚀 ~ useGetRecommendedProducts ~ payload:', payload);
     return useQuery({
       queryKey: ['product', payload],
       queryFn: () => fetchRecommendedProducts(payload),
@@ -19,5 +22,13 @@ export default function useProducts() {
     });
   };
 
-  return { useGetProductById, useGetRecommendedProducts };
+  const useGetTopSellingProducts = (payload: TopSellingProductsPayload) => {
+    return useQuery({
+      queryKey: ['topSellersProduct', payload],
+      queryFn: () => fetchTopSellingProducts(payload),
+      select: (data) => data.data,
+    });
+  };
+
+  return { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts };
 }

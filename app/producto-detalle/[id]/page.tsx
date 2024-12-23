@@ -34,7 +34,7 @@ import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDe
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
-import { RecommendedProductsPayload } from '@/types/product';
+import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -46,9 +46,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     products: [Number(use(params).id)],
     productBased: true,
   };
+
+  const topSellersPayload: TopSellingProductsPayload = {
+    active: true,
+    priceRange: [0, 3000],
+  };
   const productId = Number(use(params).id);
   const router = useRouter();
-  const { useGetProductById, useGetRecommendedProducts } = useProducts();
+  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
   const { useMutateCart, useGetCart } = useCart();
   const {
     data: recommendedData,
@@ -57,6 +62,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   } = useGetRecommendedProducts(payload);
 
   const recommendedProducts = recommendedData ? [recommendedData].flat() : [];
+
+  const {
+    data: topSellersData,
+    isLoading: isTopSellersLoading,
+    error: isTopSellersError,
+  } = useGetTopSellingProducts(topSellersPayload);
+
+  const topSellersProducts = topSellersData ? [topSellersData].flat() : [];
 
   const {
     data: productData,
@@ -373,9 +386,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </Accordion>
               </section>
             </div>
-            {/* Recommended products carousel */}
           </div>
-          <section>
+          {/* Recommended products carousel */}
+          <section className="py-2">
             {isRecommendedLoading || recommendedError ? (
               <div className="flex justify-center items-center min-h-screen">
                 <p>Cargando productos recomendados...</p>
@@ -385,6 +398,20 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 title="Productos similares a"
                 subtitle={productData.name}
                 products={recommendedProducts}
+              />
+            )}
+          </section>
+          {/* Top sellers products carousel */}
+          <section className="py-2">
+            {isTopSellersLoading || isTopSellersError ? (
+              <div className="flex justify-center items-center min-h-screen">
+                <p>Cargando productos recomendados...</p>
+              </div>
+            ) : (
+              <CarouselRecommened
+                title="Otras clientes también compraron"
+                subtitle="Estos productos te podrían interesar"
+                products={topSellersProducts as any}
               />
             )}
           </section>
