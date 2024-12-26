@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface CheckoutSectionProps {
   title: string;
@@ -6,11 +6,7 @@ interface CheckoutSectionProps {
   className?: string;
 }
 
-export default function CheckoutSection({
-  title,
-  children,
-  className,
-}: CheckoutSectionProps) {
+export default function CheckoutSection({ title, children, className }: CheckoutSectionProps) {
   return (
     <section aria-labelledby={`${title}-heading`} className={className}>
       <h2 id={`${title}-heading`} className="text-lg font-medium text-gray-900">

@@ -1,6 +1,6 @@
-import CheckoutSection from "@/components/checkout/CheckoutSection";
-import { LabeledInput } from "@/components/ui/input";
-import { FormState } from "@/types/forms";
+import CheckoutSection from '@/components/checkout/CheckoutSection';
+import { LabeledInput } from '@/components/ui/input';
+import { FormState } from '@/types/forms';
 
 interface ShippingAddressProps {
   shippingAddress?: string;
@@ -9,7 +9,7 @@ interface ShippingAddressProps {
   city?: string;
   state?: string;
   postal?: string;
-  errors?: FormState["errors"];
+  errors?: FormState['errors'];
 }
 
 export function ShippingAddress({
@@ -22,23 +22,19 @@ export function ShippingAddress({
   errors,
 }: ShippingAddressProps) {
   return (
-    <CheckoutSection
-      title="Shipping address"
-      aria-labelledby="shipping-heading"
-      className="mt-10"
-    >
+    <section className="flex flex-col gap-4 min-w-full">
       <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
         <div className="sm:col-span-3">
           <LabeledInput
             label="Company"
             inputProps={{
-              id: "company",
-              name: "company",
+              id: 'company',
+              name: 'company',
               defaultValue: shippingAddress,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "company",
+              htmlFor: 'company',
             }}
             error={errors?.shippingAddress}
           />
@@ -48,13 +44,13 @@ export function ShippingAddress({
           <LabeledInput
             label="Address"
             inputProps={{
-              id: "address",
-              name: "address",
+              id: 'address',
+              name: 'address',
               defaultValue: address,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "address",
+              htmlFor: 'address',
             }}
             error={errors?.address}
           />
@@ -64,13 +60,13 @@ export function ShippingAddress({
           <LabeledInput
             label="Apartment, suite, etc."
             inputProps={{
-              id: "apartment",
-              name: "apartment",
+              id: 'apartment',
+              name: 'apartment',
               defaultValue: apartment,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "apartment",
+              htmlFor: 'apartment',
             }}
             error={errors?.apartment}
           />
@@ -80,13 +76,13 @@ export function ShippingAddress({
           <LabeledInput
             label="City"
             inputProps={{
-              id: "city",
-              name: "city",
+              id: 'city',
+              name: 'city',
               defaultValue: city,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "city",
+              htmlFor: 'city',
             }}
             error={errors?.city}
           />
@@ -96,13 +92,13 @@ export function ShippingAddress({
           <LabeledInput
             label="State / Province"
             inputProps={{
-              id: "region",
-              name: "region",
+              id: 'region',
+              name: 'region',
               defaultValue: state,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "region",
+              htmlFor: 'region',
             }}
             error={errors?.state}
           />
@@ -112,18 +108,18 @@ export function ShippingAddress({
           <LabeledInput
             label="Postal code"
             inputProps={{
-              id: "postal-code",
-              name: "postal-code",
+              id: 'postal-code',
+              name: 'postal-code',
               defaultValue: postal,
-              type: "text",
+              type: 'text',
             }}
             labelProps={{
-              htmlFor: "postal-code",
+              htmlFor: 'postal-code',
             }}
             error={errors?.postal}
           />
         </div>
       </div>
-    </CheckoutSection>
+    </section>
   );
 }
