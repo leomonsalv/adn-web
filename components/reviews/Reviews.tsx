@@ -1,12 +1,13 @@
-import { classNames } from "@/lib/utils";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { classNames } from '@/lib/utils';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 interface ReviewsProps {
   rating: number;
   reviewCount: number;
+  showAllReviews?: boolean;
 }
 
-export default function Reviews({ rating, reviewCount }: ReviewsProps) {
+export default function Reviews({ rating, reviewCount, showAllReviews = true }: ReviewsProps) {
   return (
     <div className="mt-4">
       <h2 className="sr-only">Reviews</h2>
@@ -21,23 +22,24 @@ export default function Reviews({ rating, reviewCount }: ReviewsProps) {
               key={stars}
               aria-hidden="true"
               className={classNames(
-                rating > stars ? "text-yellow-400" : "text-gray-200",
-                "size-5 shrink-0",
+                rating > stars ? 'text-yellow-400' : 'text-gray-200',
+                'size-5 shrink-0',
               )}
             />
           ))}
         </div>
-        <div aria-hidden="true" className="ml-4 text-sm text-gray-300">
-          ·
-        </div>
-        <div className="ml-4 flex">
-          <a
-            href="#"
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            See all {reviewCount} reviews
-          </a>
-        </div>
+        {showAllReviews && (
+          <>
+            <div aria-hidden="true" className="ml-4 text-sm text-gray-300">
+              ·
+            </div>
+            <div className="ml-4 flex">
+              <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                See all {reviewCount} reviews
+              </a>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
