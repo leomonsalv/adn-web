@@ -40,7 +40,11 @@ const checkoutSteps = [
     ),
     component: <ContactInformation />,
   },
-  { id: 2, title: 'Dirección de envío', component: <ShippingAddress /> },
+  {
+    id: 2,
+    title: 'Dirección de envío',
+    component: <ShippingAddress phone={''} street={''} city={''} state={''} isDefault={false} />,
+  },
   {
     id: 3,
     title: 'Método de pago',
