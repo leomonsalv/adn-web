@@ -9,6 +9,8 @@ export const shippingAddressSchema = z.object({
   city: z.string().min(1, 'La ciudad es requerida'),
   state: z.string().min(1, 'El estado es requerido'),
   isDefault: z.boolean().default(false),
+  lat: z.number().optional(),
+  lng: z.number().optional(),
 });
 
 export type ShippingAddressSchema = z.infer<typeof shippingAddressSchema>;

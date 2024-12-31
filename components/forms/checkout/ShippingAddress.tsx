@@ -1,3 +1,5 @@
+// components/ShippingAddress.tsx
+
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LabeledInput } from '@/components/ui/input';
@@ -5,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ShippingAddressSchema, shippingAddressSchema } from '@/schemas/shipping-address-schema';
-import { MapPin } from 'lucide-react';
 import { useStates } from '@/hooks/use-states';
+import { MapPin } from 'lucide-react';
+import { useState } from 'react';
+import MapDialog from '@/components/address/MapDialog';
 
 interface SavedAddress {
   id: string;
@@ -17,7 +21,7 @@ interface SavedAddress {
   isDefault: boolean;
 }
 
-interface ShippingAddressProps extends ShippingAddressSchema {
+interface ShippingAddressProps extends Partial<ShippingAddressSchema> {
   savedAddresses?: SavedAddress[];
   onSaveAddress?: (address: Omit<SavedAddress, 'id'>) => void;
   onSelectAddress?: (addressId: string) => void;
@@ -29,8 +33,7 @@ export function ShippingAddress({
   onSelectAddress,
   ...data
 }: ShippingAddressProps) {
-  const { states } = useStates();
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit, setValue } = useForm<ShippingAddressSchema>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: {
       phone: data.phone || '',
@@ -38,43 +41,17 @@ export function ShippingAddress({
       city: data.city || '',
       state: data.state || '',
       isDefault: data.isDefault || false,
+      lat: data.lat,
+      lng: data.lng,
     },
   });
 
+  const { states } = useStates();
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
   const onSubmit = (formData: ShippingAddressSchema) => {
-    onSaveAddress?.(formData);
-  };
-
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const geocoder = new google.maps.Geocoder();
-          const response = await geocoder.geocode({
-            location: { lat: latitude, lng: longitude },
-          });
-
-          if (response.results[0]) {
-            const address = response.results[0].formatted_address;
-            // Extract city and state from address components
-            const addressComponents = response.results[0].address_components;
-            const city =
-              addressComponents.find((c) => c.types.includes('locality'))?.long_name || '';
-            const state =
-              addressComponents.find((c) => c.types.includes('administrative_area_level_1'))
-                ?.long_name || '';
-
-            // Update form fields
-            setValue('street', address);
-            setValue('city', city);
-            setValue('state', state);
-          }
-        } catch (error) {
-          console.error('Error geocoding location:', error);
-        }
-      });
-    }
+    const { lat, lng, ...rest } = formData;
+    onSaveAddress?.(rest);
   };
 
   return (
@@ -152,11 +129,11 @@ export function ShippingAddress({
                   />
                   <button
                     type="button"
-                    onClick={getCurrentLocation}
+                    onClick={() => setIsMapOpen(true)}
                     className="text-sm text-blue-600 hover:text-blue-500 flex items-center gap-1"
                   >
                     <MapPin size={16} />
-                    Detectar ubicación actual
+                    Usar ubicación
                   </button>
                 </div>
               )}
@@ -221,11 +198,24 @@ export function ShippingAddress({
             />
           </div>
 
-          <div className="sm:col-span-2 flex justify-start">
-            <Button type="submit">Continuar al pago</Button>
+          <div className="sm:col-span-2 flex justify-end">
+            <Button type="submit">Guardar dirección</Button>
           </div>
         </div>
       </form>
+
+      <MapDialog
+        open={isMapOpen}
+        onClose={() => setIsMapOpen(false)}
+        onLocationSelect={({ address, city, state, lat, lng }) => {
+          setValue('street', address);
+          if (city) setValue('city', city);
+          if (state) setValue('state', state);
+          setValue('lat', lat);
+          setValue('lng', lng);
+          setIsMapOpen(false);
+        }}
+      />
     </div>
   );
 }
