@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function ProductDetailSkeleton() {
   return (
@@ -19,7 +19,7 @@ function ProductDetailSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProductDetailSkeleton
+export default ProductDetailSkeleton;

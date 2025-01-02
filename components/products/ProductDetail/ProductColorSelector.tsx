@@ -31,21 +31,21 @@
  * ```
  */
 
-import { Radio, RadioGroup } from '@headlessui/react'
-import { product } from '@/lib/dummyData'
-import { classNames } from '@/lib/utils'
-import React from 'react'
+import { Radio, RadioGroup } from '@headlessui/react';
+import { product } from '@/lib/dummyData';
+import { classNames } from '@/lib/utils';
+import React from 'react';
 
 type Props = {
-  product: typeof product
-  selectedColor: (typeof product.colors)[0]
-  setSelectedColor: React.Dispatch<React.SetStateAction<(typeof product.colors)[0]>>
+  product: typeof product;
+  selectedColor: (typeof product.colors)[0];
+  setSelectedColor: React.Dispatch<React.SetStateAction<(typeof product.colors)[0]>>;
 } & React.HTMLAttributes<HTMLDivElement> & {
-    children?: React.ReactNode
-  }
+    children?: React.ReactNode;
+  };
 
 const ProductColorSelector = (props: Props) => {
-  const { product, selectedColor, setSelectedColor } = props
+  const { product, selectedColor, setSelectedColor } = props;
 
   return (
     <div>
@@ -76,7 +76,7 @@ const ProductColorSelector = (props: Props) => {
         </RadioGroup>
       </fieldset>
     </div>
-  )
-}
+  );
+};
 
-export default ProductColorSelector
+export default ProductColorSelector;
