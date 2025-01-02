@@ -5,7 +5,7 @@ import localFont from 'next/font/local';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CounterStoreProvider } from '@/providers/counter-store-provider';
 import { NavLinks } from '@/components/navigation/Header';
-import Footer from '@/components/navigation/Footer';
+import Footer from '@/components/navigation/Footer/index';
 import { Toaster } from '@/components/ui/toaster';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryProvider } from '@/providers/react-query-provider';

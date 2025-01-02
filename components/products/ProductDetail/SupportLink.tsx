@@ -1,9 +1,9 @@
-import { SquareArrowOutUpRight } from 'lucide-react'
-import Link from 'next/link'
+import { SquareArrowOutUpRight } from 'lucide-react';
+import Link from 'next/link';
 
 interface SupportLinkProps {
-  text: string
-  url: string
+  text: string;
+  url: string;
 }
 
 export const SupportLink: React.FC<SupportLinkProps> = ({ text, url }) => (
@@ -16,4 +16,4 @@ export const SupportLink: React.FC<SupportLinkProps> = ({ text, url }) => (
     <div className="self-stretch my-auto">{text}</div>
     <SquareArrowOutUpRight className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
   </Link>
-)
+);

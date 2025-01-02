@@ -30,20 +30,20 @@
  * ```
  */
 
-import { product } from '@/lib/dummyData'
-import { classNames } from '@/lib/utils'
-import { Radio, RadioGroup } from '@headlessui/react'
-import Link from 'next/link'
-import React from 'react'
+import { product } from '@/lib/dummyData';
+import { classNames } from '@/lib/utils';
+import { Radio, RadioGroup } from '@headlessui/react';
+import Link from 'next/link';
+import React from 'react';
 
 type Props = {
-  product: typeof product
-  selectedSize: (typeof product.sizes)[0]
-  setSelectedSize: React.Dispatch<React.SetStateAction<(typeof product.sizes)[0]>>
-}
+  product: typeof product;
+  selectedSize: (typeof product.sizes)[0];
+  setSelectedSize: React.Dispatch<React.SetStateAction<(typeof product.sizes)[0]>>;
+};
 
 const ProductSizePicker = (props: Props) => {
-  const { product, selectedSize, setSelectedSize } = props
+  const { product, selectedSize, setSelectedSize } = props;
 
   return (
     <div className="mt-8">
@@ -78,7 +78,7 @@ const ProductSizePicker = (props: Props) => {
         </RadioGroup>
       </fieldset>
     </div>
-  )
-}
+  );
+};
 
-export default ProductSizePicker
+export default ProductSizePicker;

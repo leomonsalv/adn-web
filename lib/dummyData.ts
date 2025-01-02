@@ -166,6 +166,48 @@ export const filters = [
 ];
 
 export const footerNavigation = {
+  categories: [
+    {
+      name: 'Farmacia',
+      href: '/farmacia',
+    },
+    {
+      name: 'Belleza',
+      href: '/belleza',
+    },
+    {
+      name: 'Comestibles',
+      href: '/comestibles',
+    },
+    {
+      name: 'Cuidado personal',
+      href: '/cuidado-personal',
+    },
+    {
+      name: 'Bebés',
+      href: '/bebes',
+    },
+    {
+      name: 'Hogar',
+      href: '/hogar',
+    },
+  ],
+
+  more: [
+    {
+      name: 'Su cuenta',
+      href: '#',
+    },
+    {
+      name: 'Pedidos anteriores',
+      href: '#',
+    },
+    {
+      name: 'Centro de ayuda',
+      href: '#',
+    },
+  ],
+
   products: [
     { name: 'Bags', href: '#' },
     { name: 'Tees', href: '#' },
@@ -189,6 +231,11 @@ export const footerNavigation = {
     { name: 'Secure Payments', href: '#' },
     { name: 'FAQ', href: '#' },
     { name: 'Find a store', href: '#' },
+  ],
+  translations: [
+    { label: 'Espanol', value: 'spanish' },
+    { label: 'Ingles', value: 'english' },
+    { label: 'Frances', value: 'french' },
   ],
 };
 
