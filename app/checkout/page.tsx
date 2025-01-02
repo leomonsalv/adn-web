@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ContactInformation } from '@/components/forms/checkout/ContactInformation';
 import { PaymentDetails } from '@/components/forms/checkout/PaymentDetails';
 import { ShippingAddress } from '@/components/forms/checkout/ShippingAddress';
