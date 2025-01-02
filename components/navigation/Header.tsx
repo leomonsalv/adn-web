@@ -1,7 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
 import { useUser } from '@/hooks/use-user';
 import { Button } from '../ui/button';
 import { logOutAccount } from '@/api/auth';
@@ -27,7 +25,7 @@ export function NavLinks() {
   const { user, loading } = useUser();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
-  const [search, setSearch] = useState({ value: '', category: '1' });
+  const [search, setSearch] = useState({ value: '', category: '0' });
   const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
@@ -67,10 +65,10 @@ export function NavLinks() {
   );
 
   useEffect(() => {
-    if (cartData && isSuccess) {
+    if (cartData && isSuccess && user) {
       setCart(cartData);
     }
-  }, [cartData, isSuccess]);
+  }, [cartData, isSuccess, user]);
 
   const handleLogout = async () => {
     try {

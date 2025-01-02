@@ -14,9 +14,12 @@ export default function SearchPage() {
   const params = useSearchParams();
   const query = params.get('query') || '';
   const category = params.get('category') || '';
+  const page = params.get('actualPage') || 1;
 
   const { searchProducts } = useSearchProduct();
   const { data, isLoading } = searchProducts({ query, category });
+
+  console.log('🚀 ~ SearchPage ~ data:', data);
 
   if (isLoading) return <SearchPageSkeleton />;
 
@@ -50,7 +53,12 @@ export default function SearchPage() {
               <Filters filters={filters} />
             </div>
           </aside>
-          {data?.data && <ProductGrid products={data.data} />}
+          {data?.pages[Number(page) - 1]?.data && (
+            <ProductGrid
+              products={data.pages[Number(page) - 1].data}
+              isFetchingNextPage={isLoading}
+            />
+          )}
         </div>
       </main>
     </main>

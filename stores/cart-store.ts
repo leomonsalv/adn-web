@@ -20,6 +20,7 @@ interface CartState {
   getCartTax: () => number;
   getCartCount: () => number;
   getItemCount: (productId: number) => number;
+  getCartRef: () => number;
   isItemInCart: (productId: number) => boolean;
   setLoading: (status: boolean) => void;
   decrementQuantity: (productId: number) => void;

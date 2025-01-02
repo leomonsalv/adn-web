@@ -6,27 +6,13 @@ import useCheckout from '@/hooks/use-checkout';
 import { FormState } from '@/types/forms';
 import { useState } from 'react';
 
-interface PaymentDetailsProps {
-  name?: string;
-  cardNumber?: string;
-  expirationDate?: string;
-  cvc?: string;
-  errors?: FormState['errors'];
-}
-
-export function PaymentDetails({
-  name,
-  cardNumber,
-  expirationDate,
-  cvc,
-  errors,
-}: PaymentDetailsProps) {
+export function PaymentDetails() {
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
   const { useGetPaymentMethods } = useCheckout();
   const { data, isLoading, isError } = useGetPaymentMethods();
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-6">
       <PaymentToggle
         value={paymentType}
         onChange={(value) => {
