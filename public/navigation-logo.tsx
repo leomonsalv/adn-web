@@ -43,5 +43,5 @@ export default function NavLogo() {
         </linearGradient>
       </defs>
     </svg>
-  )
+  );
 }

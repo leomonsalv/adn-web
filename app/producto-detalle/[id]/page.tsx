@@ -33,17 +33,43 @@ import DisponibilityCounter from '@/components/products/ProductDetail/Disponibil
 import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton';
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
+import CarouselRecommened from '@/components/carousel/CarouselRecommened';
+import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
-  const productId = Number(use(params).id);
-  const { useGetProductById } = useProducts();
-  const { useMutateCart, useGetCart } = useCart();
+  const payload: RecommendedProductsPayload = {
+    type: 'Details',
+    products: [Number(use(params).id)],
+    productBased: true,
+  };
 
+  const topSellersPayload: TopSellingProductsPayload = {
+    active: true,
+    priceRange: [0, 3000],
+  };
+  const productId = Number(use(params).id);
   const router = useRouter();
+  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
+  const { useMutateCart, useGetCart } = useCart();
+  const {
+    data: recommendedData,
+    isLoading: isRecommendedLoading,
+    error: recommendedError,
+  } = useGetRecommendedProducts(payload);
+
+  const recommendedProducts = recommendedData ? [recommendedData].flat() : [];
+
+  const {
+    data: topSellersData,
+    isLoading: isTopSellersLoading,
+    error: isTopSellersError,
+  } = useGetTopSellingProducts(topSellersPayload);
+
+  const topSellersProducts = topSellersData ? [topSellersData].flat() : [];
 
   const {
     data: productData,
@@ -71,7 +97,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     );
   }
 
-  if (!productData) {
+  if (!productData || !cartData) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
@@ -361,6 +387,34 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               </section>
             </div>
           </div>
+          {/* Recommended products carousel */}
+          <section className="py-2">
+            {isRecommendedLoading || recommendedError ? (
+              <div className="flex justify-center items-center min-h-screen">
+                <p>Cargando productos recomendados...</p>
+              </div>
+            ) : (
+              <CarouselRecommened
+                title="Productos similares a"
+                subtitle={productData.name}
+                products={recommendedProducts}
+              />
+            )}
+          </section>
+          {/* Top sellers products carousel */}
+          <section className="py-2">
+            {isTopSellersLoading || isTopSellersError ? (
+              <div className="flex justify-center items-center min-h-screen">
+                <p>Cargando productos recomendados...</p>
+              </div>
+            ) : (
+              <CarouselRecommened
+                title="Otras clientes también compraron"
+                subtitle="Estos productos te podrían interesar"
+                products={topSellersProducts as any}
+              />
+            )}
+          </section>
         </div>
       </div>
     </div>

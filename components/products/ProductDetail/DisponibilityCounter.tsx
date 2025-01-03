@@ -1,10 +1,10 @@
-import { X as XIcon, Check as CheckIcon } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
+import { X as XIcon, Check as CheckIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 type Props = {
-  productQuantity: number
-}
+  productQuantity: number;
+};
 
 function DisponibilityCounter({ productQuantity }: Props) {
   if (productQuantity === 0) {
@@ -15,56 +15,56 @@ function DisponibilityCounter({ productQuantity }: Props) {
           No disponible. Este producto no se encuentra en stock actualmente.
         </span>
       </div>
-    )
+    );
   }
 
-  const now = dayjs()
-  const currentHour = now.hour()
-  const currentDay = now.day()
-  const cutoffHour = 19 // 7 PM
+  const now = dayjs();
+  const currentHour = now.hour();
+  const currentDay = now.day();
+  const cutoffHour = 19; // 7 PM
 
-  let deliveryDayText = 'Hoy'
-  let showCountdown = false
-  let timeLeftSeconds = 0
+  let deliveryDayText = 'Hoy';
+  let showCountdown = false;
+  let timeLeftSeconds = 0;
 
   if (currentDay === 6 || currentDay === 0) {
     // Sábado (6) o Domingo (0) => entrega el lunes (sin countdown)
-    deliveryDayText = 'el Lunes'
-    showCountdown = false
+    deliveryDayText = 'el Lunes';
+    showCountdown = false;
   } else if (currentDay === 5 && currentHour >= cutoffHour) {
     // Viernes después de las 7 pm => entrega Lunes
-    deliveryDayText = 'el Lunes'
-    showCountdown = false
+    deliveryDayText = 'el Lunes';
+    showCountdown = false;
   } else if (currentHour >= cutoffHour) {
     // Después de las 7 pm en lunes a jueves => entrega Mañana
-    deliveryDayText = 'Mañana'
-    showCountdown = false
+    deliveryDayText = 'Mañana';
+    showCountdown = false;
   } else {
     // Antes de las 7 pm (lunes a viernes) => entrega Hoy, con countdown a las 7 pm
-    showCountdown = true
-    const cutoffTime = now.hour(cutoffHour).minute(0).second(0).millisecond(0)
-    const diff = cutoffTime.diff(now, 'second')
-    timeLeftSeconds = diff > 0 ? diff : 0
+    showCountdown = true;
+    const cutoffTime = now.hour(cutoffHour).minute(0).second(0).millisecond(0);
+    const diff = cutoffTime.diff(now, 'second');
+    timeLeftSeconds = diff > 0 ? diff : 0;
   }
 
-  const [timeLeft, setTimeLeft] = useState(timeLeftSeconds)
+  const [timeLeft, setTimeLeft] = useState(timeLeftSeconds);
 
   useEffect(() => {
-    if (!showCountdown) return
+    if (!showCountdown) return;
 
     const interval = setInterval(() => {
-      setTimeLeft((t) => (t > 0 ? t - 1 : 0))
-    }, 1000)
+      setTimeLeft((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
 
-    return () => clearInterval(interval)
-  }, [showCountdown])
+    return () => clearInterval(interval);
+  }, [showCountdown]);
 
-  let countdownText = ''
+  let countdownText = '';
   if (showCountdown && timeLeft > 0) {
-    const hours = Math.floor(timeLeft / 3600)
-    const minutes = Math.floor((timeLeft % 3600) / 60)
-    const seconds = timeLeft % 60
-    countdownText = `${hours}h ${minutes}m ${seconds}s`
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+    countdownText = `${hours}h ${minutes}m ${seconds}s`;
   }
 
   // Si llega a 0 el countdown, se puede actualizar el texto
@@ -91,7 +91,7 @@ function DisponibilityCounter({ productQuantity }: Props) {
         )}
       </span>
     </div>
-  )
+  );
 }
 
-export default DisponibilityCounter
+export default DisponibilityCounter;
