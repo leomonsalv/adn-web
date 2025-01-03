@@ -1,15 +1,16 @@
-import { useCartStore } from '@/stores/cart-store'
-import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react'
-import { ChevronUpIcon } from 'lucide-react'
-import React from 'react'
+import { useCartStore } from '@/stores/cart-store';
+import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react';
+import { ChevronUpIcon } from 'lucide-react';
+import Image from 'next/image';
+import React from 'react';
 
 export default function CheckoutOrderSummary() {
-  const { cart, getCartSubtotal, getCartTax, getCartTotal } = useCartStore()
+  const { cart, getCartSubtotal, getCartTax, getCartTotal } = useCartStore();
 
-  const subtotal = getCartSubtotal()
-  const shipping = 15.0
-  const taxes = getCartTax()
-  const total = getCartTotal()
+  const subtotal = getCartSubtotal();
+  const shipping = 15.0;
+  const taxes = getCartTax();
+  const total = getCartTotal();
 
   return (
     <section
@@ -24,11 +25,17 @@ export default function CheckoutOrderSummary() {
         <ul role="list" className="divide-y divide-gray-200 text-sm font-medium text-gray-900">
           {cart.products.map((item) => (
             <li key={item.id} className="flex items-start space-x-4 py-6">
-              <img
-                alt={item.name}
-                src={item.imageLarge}
-                className="size-20 flex-none rounded-md object-cover object-center"
-              />
+              {item.imageLarge ? (
+                <Image
+                  alt={item.name}
+                  src={item.imageLarge}
+                  className="size-20 flex-none rounded-md object-cover object-center"
+                  width={80}
+                  height={80}
+                />
+              ) : (
+                <div className="size-20 flex-none rounded-md bg-gray-200" />
+              )}
               <div className="flex-auto space-y-1">
                 <h3>{item.name}</h3>
                 {/* <p className="text-gray-500">{item.color}</p> */}
@@ -106,5 +113,5 @@ export default function CheckoutOrderSummary() {
         </Popover>
       </div>
     </section>
-  )
+  );
 }
