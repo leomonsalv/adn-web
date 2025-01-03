@@ -12,11 +12,13 @@ interface CheckoutState {
     dni: string;
   };
   shippingAddress: {
-    address: string;
-    apartment: string;
+    phone: string;
+    street: string;
     city: string;
     state: string;
-    postal: string;
+    isDefault: boolean;
+    lat: number;
+    lng: number;
   };
   billingInformation: {
     sameAsShipping: boolean;
@@ -55,11 +57,13 @@ const initialState: CheckoutState = {
     dni: '',
   },
   shippingAddress: {
-    address: '',
-    apartment: '',
+    phone: '',
+    street: '',
     city: '',
     state: '',
-    postal: '',
+    isDefault: false,
+    lat: 0,
+    lng: 0,
   },
   billingInformation: {
     sameAsShipping: true,

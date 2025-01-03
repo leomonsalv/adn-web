@@ -25,7 +25,7 @@ export interface ParishOption {
 
 export const useStates = () => {
   const states = venezuelaData.map((state) => ({
-    value: state.iso_31662.substring(3),
+    value: state.estado,
     label: state.estado,
     id: state.id_estado,
   }));

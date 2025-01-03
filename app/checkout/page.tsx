@@ -10,11 +10,29 @@ import { cn } from '@/lib/utils';
 import { useUser } from '@/hooks/use-user';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
+import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
 
 export default function CSCheckoutPage() {
-  const { currentStep, setCurrentStep, paymentType } = useCheckoutStore();
+  const { currentStep, setCurrentStep, paymentType, setShippingAddress, setContactInformation } =
+    useCheckoutStore();
 
   const { user, loading } = useUser();
+
+  const handleShippingSubmit = (formData: ShippingAddressSchema) => {
+    const { lat, lng, isDefault, phone, ...addressData } = formData;
+
+    setShippingAddress({
+      street: addressData.street,
+      city: addressData.city,
+      state: addressData.state,
+      isDefault,
+      lat: lat ?? 0,
+      lng: lng ?? 0,
+      phone,
+    });
+
+    setCurrentStep(currentStep + 1);
+  };
 
   const checkoutSteps = useMemo(
     () => [
@@ -32,7 +50,14 @@ export default function CSCheckoutPage() {
         id: 2,
         title: 'Dirección de envío',
         component: (
-          <ShippingAddress phone={''} street={''} city={''} state={''} isDefault={false} />
+          <ShippingAddress
+            phone={''}
+            street={''}
+            city={''}
+            state={''}
+            isDefault={false}
+            onSaveAddress={handleShippingSubmit}
+          />
         ),
       },
       {

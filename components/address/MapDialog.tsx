@@ -104,7 +104,7 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
       </DialogTitle>
       {currentAddress && (
         <div className="flex items-center gap-2">
-          <MapPin size={16} />
+          <MapPin size={24} />
           <p className="text-sm font-sans leading-5 text-gray-700">{currentAddress}</p>
         </div>
       )}
