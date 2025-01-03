@@ -1,39 +1,17 @@
 'use client';
-import { useState, useRef, useEffect, useActionState, useMemo } from 'react';
-import { useFormStatus } from 'react-dom';
-import { useToast } from '@/hooks/use-toast';
-import { FormState } from '@/types/forms';
-import { createOrderAction } from '@/app/_actions/actions';
+import { useRef, useMemo } from 'react';
 import { ContactInformation } from '@/components/forms/checkout/ContactInformation';
 import { PaymentDetails } from '@/components/forms/checkout/PaymentDetails';
-import { DeliveryMethodSection } from '@/components/forms/checkout/DeliveryMethod';
 import { ShippingAddress } from '@/components/forms/checkout/ShippingAddress';
-import { BillingInformation } from '@/components/forms/checkout/BillingInformation';
 import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
-import { Accordion, AccordionTrigger, AccordionTriggerContent } from '@/components/ui/accordion';
+import { Accordion, AccordionTriggerContent } from '@/components/ui/accordion';
 import { AccordionContent, AccordionItem } from '@radix-ui/react-accordion';
-import { Button } from '@/components/ui/button';
-import useCheckout from '@/hooks/use-checkout';
-import { Switch, SwitchField, SwitchGroup } from '@/components/ui/switch';
-import { PaymentToggle } from '@/components/checkout/PaymentToggle';
-import { PaymentMethodSelector } from '@/components/checkout/PaymentMethodSelector';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/hooks/use-user';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 
-const deliveryMethods = [
-  {
-    id: 1,
-    title: 'Standard',
-    turnaround: '4–10 business days',
-    price: '$5.00',
-  },
-  { id: 2, title: 'Express', turnaround: '2–5 business days', price: '$16.00' },
-];
-
 export default function CSCheckoutPage() {
-  const formRef = useRef<HTMLFormElement>(null);
   const { currentStep, setCurrentStep, paymentType } = useCheckoutStore();
 
   const { user, loading } = useUser();

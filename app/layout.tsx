@@ -11,6 +11,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryProvider } from '@/providers/react-query-provider';
 // import { Inter } from "next/font/google";
 import { AuthProvider } from '@/providers/auth-provider';
+import Script from 'next/script';
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
+          <Script
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+            strategy="lazyOnload"
+          />
           <Toaster />
           <NavLinks />
 

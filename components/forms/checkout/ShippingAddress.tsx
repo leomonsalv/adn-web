@@ -11,6 +11,7 @@ import { useStates } from '@/hooks/use-states';
 import { MapPin } from 'lucide-react';
 import { useState } from 'react';
 import MapDialog from '@/components/address/MapDialog';
+import AddressAutocomplete from '@/components/address/Autocomplete';
 
 interface SavedAddress {
   id: string;
@@ -33,7 +34,7 @@ export function ShippingAddress({
   onSelectAddress,
   ...data
 }: ShippingAddressProps) {
-  const { control, handleSubmit, setValue } = useForm<ShippingAddressSchema>({
+  const { control, handleSubmit, setValue, watch } = useForm<ShippingAddressSchema>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: {
       phone: data.phone || '',
@@ -48,6 +49,14 @@ export function ShippingAddress({
 
   const { states } = useStates();
   const [isMapOpen, setIsMapOpen] = useState(false);
+
+  const findStateMatch = (stateName: string) => {
+    return states.find(
+      (state) =>
+        state.label.toLowerCase().includes(stateName.toLowerCase()) ||
+        stateName.toLowerCase().includes(state.label.toLowerCase()),
+    );
+  };
 
   const onSubmit = (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
@@ -108,23 +117,29 @@ export function ShippingAddress({
               )}
             />
           </div>
-
           <div className="sm:col-span-2">
             <Controller
               control={control}
               name="street"
-              render={({ field, fieldState: { error } }) => (
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <div className="space-y-2">
-                  <LabeledInput
-                    label="Dirección"
-                    inputProps={{
-                      ...field,
-                      type: 'text',
-                      placeholder: 'Nombre de la calle o avenida',
+                  <label className="block text-sm font-medium text-gray-700">Dirección</label>
+                  <AddressAutocomplete
+                    value={value}
+                    onChange={onChange}
+                    onPlaceSelect={({ address, city, state, lat, lng }) => {
+                      setValue('street', address);
+                      if (city) setValue('city', city);
+                      if (state) {
+                        const stateMatch = findStateMatch(state);
+                        if (stateMatch) {
+                          setValue('state', stateMatch.value);
+                        }
+                      }
+                      setValue('lat', lat);
+                      setValue('lng', lng);
                     }}
-                    labelProps={{
-                      htmlFor: 'street',
-                    }}
+                    placeholder="Nombre de la calle o avenida"
                     error={error?.message}
                   />
                   <button
@@ -133,7 +148,7 @@ export function ShippingAddress({
                     className="text-sm text-blue-600 hover:text-blue-500 flex items-center gap-1"
                   >
                     <MapPin size={16} />
-                    Usar ubicación
+                    Detectar ubicación actual
                   </button>
                 </div>
               )}
@@ -191,15 +206,15 @@ export function ShippingAddress({
                 <>
                   <Checkbox id="isDefault" checked={value} onChange={onChange} />
                   <label htmlFor="isDefault" className="text-sm">
-                    Guardar como dirección predeterminada
+                    Guardar como dirección por defecto
                   </label>
                 </>
               )}
             />
           </div>
 
-          <div className="sm:col-span-2 flex justify-end">
-            <Button type="submit">Guardar dirección</Button>
+          <div className="sm:col-span-2 flex justify-start">
+            <Button type="submit">Continuar</Button>
           </div>
         </div>
       </form>
@@ -210,7 +225,12 @@ export function ShippingAddress({
         onLocationSelect={({ address, city, state, lat, lng }) => {
           setValue('street', address);
           if (city) setValue('city', city);
-          if (state) setValue('state', state);
+          if (state) {
+            const stateMatch = findStateMatch(state);
+            if (stateMatch) {
+              setValue('state', stateMatch.value);
+            }
+          }
           setValue('lat', lat);
           setValue('lng', lng);
           setIsMapOpen(false);

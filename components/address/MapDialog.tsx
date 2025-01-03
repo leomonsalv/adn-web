@@ -1,9 +1,11 @@
 // components/MapDialog.tsx
 
-import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, APIProvider, Map, Marker, Pin } from '@vis.gl/react-google-maps';
 import { Dialog, DialogTitle, DialogBody, DialogActions } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import React, { useState, useCallback } from 'react';
+import { MapPin, OptionIcon } from 'lucide-react';
+import AdanGoogleMapMarkerIcon from '@/public/adan-map-marker';
 
 interface MapDialogProps {
   open: boolean;
@@ -21,26 +23,43 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
   const [center, setCenter] = useState({ lat: 10.4806, lng: -66.9036 }); // Caracas
   const [markerPosition, setMarkerPosition] = useState(center);
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '';
+  const [currentAddress, setCurrentAddress] = useState('');
 
   const handleMapClick = useCallback((e: any) => {
     const lat = e.detail.latLng.lat;
     const lng = e.detail.latLng.lng;
-    setMarkerPosition({ lat, lng });
+    const newPosition = { lat, lng };
+    setMarkerPosition(newPosition);
+    updateAddressFromPosition(newPosition);
   }, []);
-
   const getCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          setCenter({ lat, lng });
-          setMarkerPosition({ lat, lng });
+          const newPosition = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setCenter(newPosition);
+          setMarkerPosition(newPosition);
+          updateAddressFromPosition(newPosition);
         },
         (error) => console.error('Error getting location:', error),
       );
     }
   }, []);
+
+  const updateAddressFromPosition = async (position: { lat: number; lng: number }) => {
+    try {
+      const geocoder = new google.maps.Geocoder();
+      const response = await geocoder.geocode({ location: position });
+      if (response.results[0]) {
+        setCurrentAddress(response.results[0].formatted_address);
+      }
+    } catch (error) {
+      console.error('Error getting address:', error);
+    }
+  };
 
   const handleConfirm = async () => {
     try {
@@ -72,9 +91,23 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
     }
   };
 
+  const CustomizedMarker = () => (
+    <AdvancedMarker position={markerPosition}>
+      <AdanGoogleMapMarkerIcon />
+    </AdvancedMarker>
+  );
+
   return (
-    <Dialog open={open} onClose={onClose} size="4xl">
-      <DialogTitle>Confirma tu ubicación</DialogTitle>
+    <Dialog open={open} onClose={onClose} size="xl">
+      <DialogTitle className="text-lg font-semibold font-sans leading-7">
+        Confirma tu ubicación
+      </DialogTitle>
+      {currentAddress && (
+        <div className="flex items-center gap-2">
+          <MapPin size={16} />
+          <p className="text-sm font-sans leading-5 text-gray-700">{currentAddress}</p>
+        </div>
+      )}
       <DialogBody>
         <div className="w-full h-[400px] relative">
           <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
@@ -85,7 +118,7 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
               onClick={handleMapClick}
               className="w-full h-full rounded-lg"
             >
-              <Marker position={markerPosition} />
+              <CustomizedMarker />
             </Map>
           </APIProvider>
           <button
@@ -98,10 +131,12 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
       </DialogBody>
 
       <DialogActions>
-        <Button plain onClick={onClose}>
+        <Button className="text-sm font-medium font-sans leading-5" plain onClick={onClose}>
           Cancelar
         </Button>
-        <Button onClick={handleConfirm}>Confirmar</Button>
+        <Button className="text-sm font-medium font-sans leading-5" onClick={handleConfirm}>
+          Confirmar
+        </Button>
       </DialogActions>
     </Dialog>
   );
