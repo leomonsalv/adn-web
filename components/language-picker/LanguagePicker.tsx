@@ -1,10 +1,10 @@
-'use client'
-import { footerNavigation } from '@/lib/dummyData'
-import { GlobeIcon } from 'lucide-react'
-import { useState } from 'react'
+'use client';
+import { footerNavigation } from '@/lib/dummyData';
+import { GlobeIcon } from 'lucide-react';
+import { useState } from 'react';
 
 export function LanguagePicker() {
-  const [language, setLanguage] = useState('spanish') // This should be set by the global lang
+  const [language, setLanguage] = useState('spanish'); // This should be set by the global lang
   return (
     <div className="px-4 py-1 bg-transparent flex border-[#4A5467] border rounded-sm font-semibold">
       <GlobeIcon className="w-5 self-center" />
@@ -20,5 +20,5 @@ export function LanguagePicker() {
         ))}
       </select>
     </div>
-  )
+  );
 }

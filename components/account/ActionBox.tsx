@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 interface ActionBoxProps {
   icon: any;
@@ -7,12 +7,7 @@ interface ActionBoxProps {
   route: string;
 }
 
-export default function ActionBox({
-  icon,
-  title,
-  label,
-  route,
-}: ActionBoxProps) {
+export default function ActionBox({ icon, title, label, route }: ActionBoxProps) {
   return (
     <div className="h-30">
       <Link href={route} className="flex h-full">

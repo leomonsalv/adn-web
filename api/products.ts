@@ -15,7 +15,7 @@ export const fetchProducts = async (
   params: SearchFormType,
 ): Promise<GetSearchCateroriesResponse> => {
   try {
-    const response = await httpsCallable<SearchFormType, GetSearchCateroriesResponse>(
+    const response = await httpsCallable<SearchFormType, SearchResponse>(
       functions,
       'es-search',
     )(params);

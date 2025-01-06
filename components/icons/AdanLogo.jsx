@@ -58,5 +58,5 @@ export function AdanLogo({ className = '', props = '' }) {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }

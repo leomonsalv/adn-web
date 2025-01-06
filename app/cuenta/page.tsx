@@ -1,4 +1,4 @@
-import ActionBox from "@/components/account/ActionBox";
+import ActionBox from '@/components/account/ActionBox';
 
 export default function AccountPage() {
   return (

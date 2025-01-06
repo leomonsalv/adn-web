@@ -20,6 +20,7 @@ interface CartState {
   getCartTax: () => number;
   getCartCount: () => number;
   getItemCount: (productId: number) => number;
+  getCartRef: () => number;
   isItemInCart: (productId: number) => boolean;
   setLoading: (status: boolean) => void;
   decrementQuantity: (productId: number) => void;
@@ -109,7 +110,7 @@ export const useCartStore = create<CartState>()(
       },
       getCartTax: () => {
         const tax = get().cart.products.reduce((total, item) => {
-          const itemTax = toSafeInteger(item.taxes?.[0].amount) * item.quantity;
+          const itemTax = toSafeInteger(item?.taxes?.[0].amount) * item.quantity;
           return total + itemTax;
         }, 0);
         return fromSafeInteger(tax);

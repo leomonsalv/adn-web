@@ -17,5 +17,5 @@ export function WhatsappIcon({ className = '', props = '' }) {
         ></path>
       </g>
     </svg>
-  )
+  );
 }
