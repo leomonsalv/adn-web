@@ -7,9 +7,10 @@ interface CheckoutState {
   paymentType: 'simple' | 'mixed';
   selectedPaymentMethod: Method | null;
   contactInformation: {
+    name: string;
     email: string;
-    phone: string;
     dni: string;
+    dniType: string;
   };
   shippingAddress: {
     phone: string;
@@ -53,8 +54,9 @@ const initialState: CheckoutState = {
   selectedPaymentMethod: null,
   contactInformation: {
     email: '',
-    phone: '',
     dni: '',
+    dniType: 'V',
+    name: '',
   },
   shippingAddress: {
     phone: '',

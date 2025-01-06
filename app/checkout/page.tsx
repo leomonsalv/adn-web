@@ -11,12 +11,24 @@ import { useUser } from '@/hooks/use-user';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
+import { ContactInformationSchema } from '@/schemas/contact-information-schema';
 
 export default function CSCheckoutPage() {
   const { currentStep, setCurrentStep, paymentType, setShippingAddress, setContactInformation } =
     useCheckoutStore();
 
   const { user, loading } = useUser();
+
+  const handleContactSubmit = (formData: ContactInformationSchema) => {
+    setContactInformation({
+      name: formData.name,
+      email: formData.email,
+      dni: formData.dni,
+      dniType: formData.dniType,
+    });
+
+    setCurrentStep(currentStep + 1);
+  };
 
   const handleShippingSubmit = (formData: ShippingAddressSchema) => {
     const { lat, lng, isDefault, phone, ...addressData } = formData;
@@ -44,7 +56,7 @@ export default function CSCheckoutPage() {
             ¿Tienes una cuenta? <span className="font-semibold">Iniciar sesión</span>
           </span>
         ),
-        component: <ContactInformation />,
+        component: <ContactInformation onSubmit={handleContactSubmit} />,
       },
       {
         id: 2,
