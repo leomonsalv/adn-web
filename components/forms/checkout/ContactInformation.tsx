@@ -13,7 +13,6 @@ import { useUser } from '@/hooks/use-user';
 export function ContactInformation({
   name,
   email,
-  phone,
   dni,
   dniType,
 }: Partial<ContactInformationSchema>) {
@@ -22,7 +21,6 @@ export function ContactInformation({
     defaultValues: {
       name: name || '',
       email: email || '',
-      phone: phone || '',
       dni: dni || '',
       dniType: dniType || '',
     },
@@ -76,22 +74,26 @@ export function ContactInformation({
           )}
         />
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-2">
           <Controller
             control={control}
-            name="dni"
+            name="dniType"
             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
               <LabeledInput
+                className="w-1/4"
                 labelProps={{
-                  htmlFor: 'dni',
+                  htmlFor: 'dniType',
                 }}
                 inputProps={{
-                  id: 'dni',
-                  name: 'dni',
-                  type: 'text',
-                  autoComplete: 'dni',
+                  id: 'dniType',
+                  name: 'dniType',
+                  onChange,
+                  onBlur,
+                  value,
+                  autoComplete: 'dniType',
                 }}
-                label="DNI"
+                label="Tipo de DNI"
+                error={error?.message}
               />
             )}
           />
@@ -101,18 +103,21 @@ export function ContactInformation({
             name="dni"
             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
               <LabeledInput
+                className="w-3/4"
+                error={error?.message}
+                labelProps={{
+                  htmlFor: 'dni',
+                }}
                 inputProps={{
-                  id: name,
-                  name: name,
-                  type: 'text',
                   onChange,
                   onBlur,
+                  id: name,
+                  name: name,
                   value,
+                  type: 'text',
                   autoComplete: 'dni',
                 }}
                 label="DNI"
-                labelProps={{ htmlFor: 'dni' }}
-                error={error?.message}
               />
             )}
           />

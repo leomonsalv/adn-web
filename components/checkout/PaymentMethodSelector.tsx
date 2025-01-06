@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
@@ -24,7 +24,18 @@ import {
 import { Button } from '../ui/button';
 
 export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Method[] }) {
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>(paymentMethods[0].value);
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>(
+    paymentMethods.find((method) => method.value === 'cash')?.value!,
+  );
+
+  const currency = useMemo(() => {
+    return paymentMethods.find((method) => method.value === selectedMethod)?.currency;
+  }, [selectedMethod, paymentMethods]);
+
+  const requiresAmount = useMemo(() => {
+    return selectedMethod === 'cash' || selectedMethod === 'bolivarCash';
+  }, [selectedMethod]);
+
   console.log('🚀 ~ PaymentMethodSelector ~ selectedMethod:', selectedMethod);
 
   const { getCartRef, getCartTotal } = useCartStore();
@@ -37,8 +48,9 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
     defaultValues: {
       type: selectedMethod,
       details: {
-        amount: '0',
+        amount: requiresAmount ? (currency === 'Bs' ? totalBs : totalUsd) : 0,
         email: 'juankrlosbn@gmail.com',
+        nombre: '',
       },
     },
   });
@@ -51,6 +63,11 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
     setSelectedMethod(value);
     form.reset({
       type: value,
+      details: {
+        amount: requiresAmount ? (currency === 'Bs' ? totalBs : totalUsd) : 0,
+        nombre: '',
+        email: 'juankrlosbn@gmail.com',
+      },
     });
   };
 
@@ -87,10 +104,13 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
               <Controller
                 control={form.control}
                 name="details.nombre"
-                render={({ field: { onChange, onBlur, value, name, ref }, fieldState }) => (
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { error },
+                }) => (
                   <LabeledInput
                     ref={ref}
-                    error={fieldState.error?.message}
+                    error={error?.message}
                     label="Nombre del titular"
                     inputProps={{
                       placeholder: 'Nombre del titular',
@@ -98,6 +118,7 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
                       onBlur: onBlur,
                       value: value,
                       name: name,
+                      type: 'text',
                     }}
                     labelProps={{ className: 'text-sm font-semibold' }}
                   />
@@ -135,33 +156,6 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
           </div>
         );
       case 'bolivarCash':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Bolivares en efectivo</h6>
-              <h5 className="text-base font-semibold">¿Con cuánto dinero vas a pagar?</h5>
-              <p className="text-sm">
-                Recuerda que el valor del pedido es de &nbsp;
-                <span className="font-semibold">Bs. {totalBs.toFixed(2)}</span>&nbsp;y el vuelto se
-                dará por Pago Móvil.
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <Controller
-                control={form.control}
-                name="details.amount"
-                render={({ field }) => (
-                  <LabeledInput
-                    label="Ingresa el monto de efectivo"
-                    helperText="Los billetes deben ser del cono monetario actual según BCV"
-                    inputProps={{ placeholder: 'Ingresa el monto' }}
-                    labelProps={{ className: 'text-sm font-semibold' }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-        );
       case 'motopos':
         return (
           <div className="flex flex-col gap-y-4">
@@ -224,9 +218,25 @@ export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Meth
       type="single"
       value={selectedMethod}
       onValueChange={handleRadioChange}
+      onKeyDown={(e) => {
+        if (e.target instanceof HTMLInputElement && e.target.type === 'text') {
+          e.stopPropagation();
+          e.preventDefault();
+          return true;
+        }
+      }}
       className="flex flex-col w-full border rounded-lg"
     >
-      <RadioGroup value={selectedMethod} onChange={handleRadioChange} className="space-y-0">
+      <RadioGroup
+        value={selectedMethod}
+        onChange={handleRadioChange}
+        onKeyDown={(e) => {
+          if (e.target instanceof HTMLInputElement) {
+            e.stopPropagation();
+          }
+        }}
+        className="space-y-0 p-0"
+      >
         {paymentMethods.map((method, index) => (
           <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
             <Card

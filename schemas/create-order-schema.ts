@@ -85,6 +85,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
     details: z.object({
       amount: z.number(),
       email: z.string().email(),
+      nombre: z.string().min(3),
     }),
   }),
   // TDCVE
@@ -173,7 +174,6 @@ const PaymentMethodSchema = z.object({
       destination: z.enum(['plaza', 'amiga']),
       reference: z.string().optional(),
     }),
-    // ... other detail types as needed
   ]),
 });
 
