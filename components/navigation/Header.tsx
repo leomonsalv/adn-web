@@ -25,7 +25,7 @@ export function NavLinks() {
   const { user, loading } = useUser();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
-  const [search, setSearch] = useState({ value: '', category: '0' });
+  const [search, setSearch] = useState({ value: '', category: '1' });
   const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
@@ -43,22 +43,20 @@ export function NavLinks() {
     },
     [search.value],
   );
-
   const handleEnterSearch = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-        router.push(
-          `${SEARCH}?query=${search.value.toLowerCase()}&category=${search.category.toLowerCase()}`,
-        );
+        const searchValue = (e.target as HTMLInputElement).value;
+        router.push(`/categoria?search=${searchValue}&category=${search.category}`);
       }
     },
-    [search],
+    [search.value, search.category, router],
   );
 
   const handleSearch = useCallback(
     (query: string) => {
       router.push(
-        `${SEARCH}?query=${query.toLowerCase()}&category=${search.category.toLowerCase()}`,
+        `/categoria?search=${query.toLowerCase()}&category=${search.category.toLowerCase()}`,
       );
     },
     [search.category],
