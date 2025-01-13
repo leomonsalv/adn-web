@@ -1,18 +1,20 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useDebounce } from '@/hooks/use-debounce';
+import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
-import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { Facets } from '@/types/categories';
-import { useDebounce } from '@/hooks/use-debounce';
-import SortFilterOptions from '@/components/categorias/sortFilterOptions';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
 
 export default function CategoryPage() {
+  const searchParams = useSearchParams();
+  const urlSearch = searchParams.get('search') ?? '';
+  const urlCategory = searchParams.get('category') ?? '1';
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
     {},
@@ -20,29 +22,32 @@ export default function CategoryPage() {
   const [sortOption, setSortOption] = useState<SortOption>();
   const [priceRange, setPriceRange] = useState<PriceRange>();
   const [searchQuery, setSearchQuery] = useState('');
-  const [actualSearch, setActualSearch] = useState('');
-  const debouncedSearch = useDebounce(searchQuery, 1000);
 
   const { searchProducts, updateSort, updatePriceRange, updateFilters, updateQuery } =
     useSearchProduct();
 
   useEffect(() => {
-    updateQuery(debouncedSearch);
+    setSearchQuery(urlSearch);
+  }, [urlSearch, urlCategory]);
+
+  const debouncedSearch = useDebounce(searchQuery, 600);
+
+  useEffect(() => {
+    updateQuery(debouncedSearch.trim());
   }, [debouncedSearch, updateQuery]);
 
-  const searchParams = useMemo(
-    () => ({
-      query: debouncedSearch,
+  const searchParamsObj = useMemo(() => {
+    return {
+      query: debouncedSearch.trim(),
       pageSize: 10,
       facets: selectedFilters,
       sort: sortOption,
       priceRange: priceRange,
-    }),
-    [debouncedSearch, selectedFilters, sortOption, priceRange],
-  );
+    };
+  }, [debouncedSearch, selectedFilters, sortOption, priceRange]);
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, isError, error } =
-    searchProducts(searchParams);
+    searchProducts(searchParamsObj);
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
     setSelectedFilters(newFilters);
@@ -57,28 +62,6 @@ export default function CategoryPage() {
   const handlePriceRangeChange = (newRange: PriceRange) => {
     setPriceRange(newRange);
     updatePriceRange(newRange);
-  };
-
-  const executeSearch = useCallback(() => {
-    setActualSearch(searchQuery.trim());
-    updateQuery(searchQuery.trim());
-  }, [searchQuery, updateQuery]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    executeSearch();
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      updateQuery(searchQuery.trim());
-    }
-  };
-
-  const handleClearSearch = () => {
-    setSearchQuery('');
-    updateQuery('');
   };
 
   const products = useMemo(() => {
@@ -101,9 +84,9 @@ export default function CategoryPage() {
       </div>
     );
   }
+
   return (
     <main className="bg-white">
-      {/* Diálogo móvil de filtros */}
       <MobileFilterDialog
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}
@@ -117,61 +100,28 @@ export default function CategoryPage() {
       />
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        {/* Header */}
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <div className="border-b border-gray-200 pb-10">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Productos</h1>
-
-            {/* Formulario de búsqueda */}
-            <form onSubmit={handleSubmit} className="mt-4 flex">
-              <div className="relative flex-grow">
-                <input
-                  type="text"
-                  placeholder="Buscar productos..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={handleClearSearch}
-                      className="p-1 hover:bg-gray-100 rounded-full"
-                    >
-                      <XMarkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                      <span className="sr-only">Limpiar búsqueda</span>
-                    </button>
-                  )}
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                </div>
-              </div>
-            </form>
-          </div>
+        {/* Título */}
+        <div className="border-b border-gray-200 pb-10">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">Productos</h1>
         </div>
 
         <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
           <aside>
             <h2 className="sr-only">Filtros</h2>
-
             <button
+              title="Filtros"
               type="button"
               onClick={() => setMobileFiltersOpen(true)}
               className="inline-flex items-center lg:hidden"
-            >
-              <span className="text-sm font-medium text-gray-700">Filtros</span>
-              <FunnelIcon className="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-            </button>
+            />
 
             <div className="hidden lg:block">
-              <SortFilterOptions
+              {/* <SortFilterOptions
                 onSortChange={handleSortChange}
                 onPriceRangeChange={handlePriceRangeChange}
                 currentSort={sortOption}
                 currentPriceRange={priceRange}
-              />
-
+              /> */}
               <div className="mt-6">
                 <Filters
                   facets={data?.pages[0]?.facets}
