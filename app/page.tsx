@@ -1,24 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from '@headlessui/react';
-import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { Link } from '@/components/ui/link';
 import MainIncentives from '@/components/incentives/MainIncentives';
-import { CARRITO, HISTORIAL } from '@/lib/routes';
 import CategoryBox from '@/components/categorias/categoryBox/CategoryBox';
 import ProductCard from '@/components/products/ProductHome/ProductCard';
+import GenericCarousel from '@/components/carousel/GenericCarousel';
+import BannerCarousel from '@/components/carousel/BannerCarousel';
 
-const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'];
 const favorites = [
   {
     id: 1,
@@ -73,71 +61,6 @@ const categories = [
     imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-01-category-03.jpg',
   },
 ];
-
-const navigation = {
-  categories: [
-    {
-      name: 'Women',
-      featured: [
-        { name: 'Sleep', href: '#' },
-        { name: 'Swimwear', href: '#' },
-        { name: 'Underwear', href: '#' },
-      ],
-      collection: [
-        { name: 'Everything', href: '#' },
-        { name: 'Core', href: '#' },
-        { name: 'New Arrivals', href: '#' },
-        { name: 'Sale', href: '#' },
-      ],
-      categories: [
-        { name: 'Basic Tees', href: '#' },
-        { name: 'Artwork Tees', href: '#' },
-        { name: 'Bottoms', href: '#' },
-        { name: 'Underwear', href: '#' },
-        { name: 'Accessories', href: '#' },
-      ],
-      brands: [
-        { name: 'Full Nelson', href: '#' },
-        { name: 'My Way', href: '#' },
-        { name: 'Re-Arranged', href: '#' },
-        { name: 'Counterfeit', href: '#' },
-        { name: 'Significant Other', href: '#' },
-      ],
-    },
-    {
-      name: 'Men',
-      featured: [
-        { name: 'Casual', href: '#' },
-        { name: 'Boxers', href: '#' },
-        { name: 'Outdoor', href: '#' },
-      ],
-      collection: [
-        { name: 'Everything', href: '#' },
-        { name: 'Core', href: '#' },
-        { name: 'New Arrivals', href: '#' },
-        { name: 'Sale', href: '#' },
-      ],
-      categories: [
-        { name: 'Artwork Tees', href: '#' },
-        { name: 'Pants', href: '#' },
-        { name: 'Accessories', href: '#' },
-        { name: 'Boxers', href: '#' },
-        { name: 'Basic Tees', href: '#' },
-      ],
-      brands: [
-        { name: 'Significant Other', href: '#' },
-        { name: 'My Way', href: '#' },
-        { name: 'Counterfeit', href: '#' },
-        { name: 'Re-Arranged', href: '#' },
-        { name: 'Full Nelson', href: '#' },
-      ],
-    },
-  ],
-  pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
-  ],
-};
 
 const collections = [
   {
@@ -212,86 +135,10 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="bg-white">
-      {/* Mobile menu */}
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="relative z-40 lg:hidden">
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
-        />
-
-        <div className="fixed inset-0 z-40 flex">
-          <DialogPanel
-            transition
-            className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full"
-          >
-            <div className="flex px-4 pb-2 pt-5">
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
-              </button>
-            </div>
-
-            {/* Links */}
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {navigation.pages.map((page) => (
-                <div key={page.name} className="flow-root">
-                  <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
-                    {page.name}
-                  </a>
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                  Create an account
-                </a>
-              </div>
-              <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                  Sign in
-                </a>
-              </div>
-            </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {/* Currency selector */}
-              <form>
-                <div className="inline-block">
-                  <label htmlFor="mobile-currency" className="sr-only">
-                    Currency
-                  </label>
-                  <div className="group relative -ml-2 rounded-md border-transparent focus-within:ring-2 focus-within:ring-white">
-                    <select
-                      id="mobile-currency"
-                      name="currency"
-                      className="flex items-center rounded-md border-transparent bg-none py-0.5 pl-2 pr-5 text-sm font-medium text-gray-700 focus:border-transparent focus:outline-none focus:ring-0 group-hover:text-gray-800"
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency}>{currency}</option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
-                      <ChevronDownIcon aria-hidden="true" className="size-5 text-gray-500" />
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
-
+    <div className="bg-[#F0F2F5]">
       <main>
         {/* Hero */}
-        <div className="flex flex-col border-b border-gray-200 lg:border-0">
+        {/* <div className="flex flex-col border-b border-gray-200 lg:border-0">
           <div className="relative">
             <div aria-hidden="true" className="absolute hidden h-full w-1/2 bg-gray-100 lg:block" />
             <div className="relative bg-gray-100 lg:bg-transparent">
@@ -331,181 +178,174 @@ export default function Example() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Category */}
+
+        <BannerCarousel />
 
         <section
           aria-labelledby="category-heading"
-          className="pt-24 sm:pt-32 xl:mx-auto xl:max-w-7xl xl:px-8 mb-24"
+          className="pt-24 sm:pt-12 xl:mx-auto xl:px-8 mb-12 flex flex-row gap-4 justify-center"
         >
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
           <CategoryBox />
         </section>
 
-        <section className="grid grid-cols-2 gap-4">
-          {productPayload.map((product) => (
-            <ProductCard
-              key={product.id}
-              image={product.image}
-              discount={product.discount}
-              price={product.price}
-              originalPrice={product.originalPrice}
-              title={product.title}
-            />
-          ))}
+        <section
+          aria-labelledby="category-heading"
+          className="pt-24 sm:pt-12 xl:mx-auto xl:px-8 mb-12 flex flex-row gap-4 justify-center"
+        >
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-gradient-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900] rounded-lg">
+          <h2 className="text-3xl font-bold text-[#A4003B] mb-6">
+            Lo más vendido en toda la tienda 🔥
+          </h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en hogar</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
         </section>
 
         <section
           aria-labelledby="category-heading"
-          className="pt-24 sm:pt-32 xl:mx-auto xl:max-w-7xl xl:px-8 mb-24"
+          className="pt-24 sm:pt-12 xl:mx-auto xl:px-8 mb-12 flex flex-row gap-4 justify-center"
         >
-          <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
-            <h2 id="category-heading" className="text-2xl font-bold tracking-tight text-gray-900">
-              Shop by Category
-            </h2>
-            <a
-              href="#"
-              className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
-            >
-              Browse all categories
-              <span aria-hidden="true"> &rarr;</span>
-            </a>
-          </div>
-
-          <div className="mt-4 flow-root">
-            <div className="-my-2">
-              <div className="relative box-content h-80 overflow-x-auto py-2 xl:overflow-visible">
-                <div className="absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">
-                  {categories.map((category) => (
-                    <a
-                      key={category.name}
-                      href={category.href}
-                      className="relative flex h-80 w-56 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto"
-                    >
-                      <span aria-hidden="true" className="absolute inset-0">
-                        <img alt="" src={category.imageSrc} className="size-full object-cover" />
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
-                      />
-                      <span className="relative mt-auto text-center text-xl font-bold text-white">
-                        {category.name}
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 px-4 sm:hidden">
-            <a
-              href="#"
-              className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500"
-            >
-              Browse all categories
-              <span aria-hidden="true"> &rarr;</span>
-            </a>
-          </div>
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
         </section>
 
-        {/* Collections */}
-        <section aria-labelledby="collections-heading" className="bg-gray-100">
-          {/* className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32 */}
-          <div className="py-16 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-              <h2 id="collections-heading" className="text-2xl font-bold text-gray-900">
-                Collections
-              </h2>
-
-              <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-                {collections.map((collection) => (
-                  <div key={collection.name} className="group relative">
-                    <img
-                      alt={collection.imageAlt}
-                      src={collection.imageSrc}
-                      className="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square"
-                    />
-                    <h3 className="mt-6 text-sm text-gray-500">
-                      <a href={collection.href}>
-                        <span className="absolute inset-0" />
-                        {collection.name}
-                      </a>
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900">
-                      {collection.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Favorites section */}
-        <section aria-labelledby="favorites-heading">
-          <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-            <div className="sm:flex sm:items-baseline sm:justify-between">
-              <h2
-                id="favorites-heading"
-                className="text-2xl font-bold tracking-tight text-gray-900"
-              >
-                Our Favorites
-              </h2>
-              <a
-                href="#"
-                className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
-              >
-                Browse all favorites
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 lg:gap-x-8">
-              {favorites.map((favorite) => (
-                <div key={favorite.id} className="group relative">
-                  <img
-                    alt={favorite.imageAlt}
-                    src={favorite.imageSrc}
-                    className="h-96 w-full rounded-lg object-cover group-hover:opacity-75 sm:aspect-[2/3] sm:h-auto"
-                  />
-                  <h3 className="mt-4 text-base font-semibold text-gray-900">
-                    <a href={favorite.href}>
-                      <span className="absolute inset-0" />
-                      {favorite.name}
-                    </a>
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">{favorite.price}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 sm:hidden">
-              <a
-                href="#"
-                className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500"
-              >
-                Browse all favorites
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
-            </div>
-          </div>
-        </section>
-        {/* Sale and testimonials */}
-        <div className="relative overflow-hidden">
-          {/* Decorative background image and gradient */}
-          <div aria-hidden="true" className="absolute inset-0">
-            <div className="absolute inset-0 mx-auto max-w-7xl overflow-hidden xl:px-8">
-              <img
-                alt=""
-                src="https://tailwindui.com/plus/img/ecommerce-images/home-page-02-sale-full-width.jpg"
-                className="size-full object-cover"
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en belleza</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
               />
-            </div>
-            <div className="absolute inset-0 bg-white/75" />
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white" />
-          </div>
-        </div>
+            ))}
+          </GenericCarousel>
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en alimentos</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
+        </section>
+
+        <section
+          aria-labelledby="category-heading"
+          className="pt-24 sm:pt-12 xl:mx-auto xl:px-8 mb-12 flex flex-row gap-4 justify-center"
+        >
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en farmacia</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en tecnología</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
+        </section>
+
+        <section
+          aria-labelledby="category-heading"
+          className="pt-24 sm:pt-12 xl:mx-auto xl:px-8 mb-12 flex flex-row gap-4 justify-center"
+        >
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+          <CategoryBox />
+        </section>
+
+        <section className="pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en librería</h2>
+          <GenericCarousel>
+            {productPayload.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                discount={product.discount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                title={product.title}
+              />
+            ))}
+          </GenericCarousel>
+        </section>
       </main>
 
       <MainIncentives />

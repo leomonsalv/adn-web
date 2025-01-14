@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 
@@ -17,20 +19,39 @@ const ProductCard: React.FC<ProductCardProps> = ({
   title,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center w-64">
-      <div className="w-full h-48 relative mb-4">
-        <Image height={100} width={60} src={image} alt={title} />
+    <div className="max-w-xs bg-white rounded-lg shadow-lg p-4 flex flex-col items-start">
+      {/* Imagen del Producto */}
+      <div className="w-40 h-40 relative mx-auto">
+        <Image
+          src={image}
+          alt={title}
+          width={130}
+          height={150}
+          className="w-full h-full rounded-md"
+        />
       </div>
-      <div className="flex items-center justify-start w-full mb-2">
-        <span className="bg-yellow-400 text-white text-xs font-bold py-1 px-2 rounded">
-          -{discount}%
-        </span>
+
+      <div className="flex flex-col items-start">
+        {/* Espacio reservado para el descuento */}
+        <div className="mt-4 h-6 flex items-center">
+          {discount > 0 ? (
+            <span className="px-2 py-1 bg-yellow-100 text-yellow-600 text-sm font-medium rounded-lg">
+              -{discount}%
+            </span>
+          ) : (
+            <div className="h-6"></div> // Caja vacía con altura fija
+          )}
+        </div>
+
+        {/* Precio */}
+        <div className="mt-2 flex items-baseline gap-2">
+          <p className="text-xl font-bold text-red-600">${price.toFixed(2)}</p>
+          <p className="text-sm line-through text-gray-500">${originalPrice.toFixed(2)}</p>
+        </div>
+
+        {/* Nombre del Producto */}
+        <p className="mt-2 text-gray-800 font-medium">{title}</p>
       </div>
-      <div className="flex items-baseline justify-start w-full mb-4">
-        <span className="text-red-500 text-lg font-bold mr-2">${price.toFixed(2)}</span>
-        <span className="text-gray-400 line-through text-sm">${originalPrice.toFixed(2)}</span>
-      </div>
-      <h3 className="text-gray-800 text-base font-medium text-center">{title}</h3>
     </div>
   );
 };
