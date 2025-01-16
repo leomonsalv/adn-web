@@ -29,7 +29,7 @@ export default function useOrders() {
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {
           webOrApp: 'web',
-          addressId: '',
+          addressId: 'ayACEUoSRYwOy3waPHD4',
           type: 'alpha',
           clientId: user?.uid!,
           clientName: checkoutData.contactInformation.name,
