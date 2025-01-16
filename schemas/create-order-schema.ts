@@ -1,7 +1,10 @@
+import { BANKS } from '@/constants/banks';
 import * as z from 'zod';
 
 // Custom type for DNI
-const DniTypeEnum = z.enum(['V', 'J', 'E', 'v', 'e', 'j']);
+const DniTypeEnum = z.enum(['V', 'J', 'E', 'P', 'G']);
+
+export type DniType = z.infer<typeof DniTypeEnum>;
 
 // Payment method type enum
 export const PaymentMethodTypeEnum = z.enum([
@@ -43,14 +46,36 @@ const ShippingSchema = z.object({
 });
 
 // Payment Details Schemas
-const BillsSchema = z.object({
-  amount: z.number(),
-  image: z.string().optional(),
-  code: z.string().optional(),
+const BillsSchema = z
+  .object({
+    requiredAmount: z.number(),
+    amount: z.number().int(),
+    image: z.string().optional(),
+    code: z.string().optional(),
+  })
+  .refine((data) => data.amount >= data.requiredAmount, {
+    message: 'El monto debe ser igual o mayor al monto requerido',
+  })
+  .refine((data) => data.amount <= data.requiredAmount + 100, {
+    message: 'El monto no puede exceder el monto requerido por más de 100',
+  });
+
+export const CashbackSchema = z.object({
+  banco: z.enum(BANKS.map((bank) => bank.value) as [string, ...string[]], {
+    message: 'Debes seleccionar un banco',
+  }),
+  cedula: z
+    .string({ required_error: 'Cédula es requerida' })
+    .regex(/^[VJPGE]\d{5,10}$/, {
+      message: 'Cédula debe comenzar con V, J, P, G o E seguido de 5-10 números',
+    }),
+  telefono: z.string({ required_error: 'Teléfono es requerido' }),
 });
 
+export type CashbackSchemaType = z.infer<typeof CashbackSchema>;
+
 export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
-  // Cash/BolivarCash
+  // Cash and Bolivar Cash
   z.object({
     type: z.enum(['cash', 'bolivarCash']),
     details: z.object({
@@ -153,28 +178,10 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
 export type PaymentDetailsUnionType = z.infer<typeof PaymentDetailsUnionSchema>;
 
 // Payment Method Schema
-const PaymentMethodSchema = z.object({
+export const PaymentMethodSchema = z.object({
   isConfirmed: z.literal(true),
-  details: z.union([
-    z.object({
-      bills: z.array(BillsSchema),
-      comments: z.string(),
-    }),
-    z.object({
-      amount: z.number(),
-      comments: z.string(),
-    }),
-    z.object({
-      amount: z.number(),
-      bank: z.string(),
-      prefix: z.string(),
-      phone: z.string(),
-      dniType: z.string(),
-      dni: z.string(),
-      destination: z.enum(['plaza', 'amiga']),
-      reference: z.string().optional(),
-    }),
-  ]),
+  type: PaymentDetailsUnionSchema.options[0].shape.type,
+  details: PaymentDetailsUnionSchema.options[0].shape.details,
 });
 
 export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
@@ -182,13 +189,7 @@ export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
 // Payment Schema
 const PaymentSchema = z.object({
   methods: z.array(PaymentMethodSchema),
-  cashback: z
-    .object({
-      banco: z.string(),
-      cedula: z.string(),
-      telefono: z.string(),
-    })
-    .optional(),
+  cashback: CashbackSchema.optional(),
 });
 
 // Odoo Order Schema

@@ -1,13 +1,17 @@
-import { fetchOrdersHistoric } from "@/api/orders";
-import { auth } from "@/lib/firebaseConfig";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { createOrder, fetchOrdersHistoric } from '@/api/orders';
+
+import { CashbackSchemaType, Order, PaymentMethod } from '@/schemas/create-order-schema';
+import { useCheckoutStore } from '@/stores/checkout-store';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useUser } from './use-user';
+import { useCartStore } from '@/stores/cart-store';
 
 export default function useOrders() {
   const useGetOrders = (pageSize = 5) => {
-    const user = auth.currentUser;
+    const { user } = useUser();
 
     return useInfiniteQuery({
-      queryKey: ["orders", user?.uid],
+      queryKey: ['orders', user?.uid],
       queryFn: ({ pageParam = null }) =>
         fetchOrdersHistoric(user?.uid as string, pageSize, pageParam),
       initialPageParam: 0 as any,
@@ -15,7 +19,59 @@ export default function useOrders() {
     });
   };
 
+  const useCreateOrder = () => {
+    const { user } = useUser();
+    const { getCheckoutData } = useCheckoutStore();
+    const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
+    const checkoutData = getCheckoutData();
+
+    return useMutation({
+      mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
+        const newOrder: Order = {
+          webOrApp: 'web',
+          addressId: '',
+          type: 'alpha',
+          clientId: user?.uid!,
+          clientName: checkoutData.contactInformation.name,
+          prescriptions: [],
+          subtotal: getCartSubtotal(),
+          tax: getCartTax(),
+          ref: getCartRef(),
+          deviceId: window.navigator.userAgent,
+          iosOrAnd: 'android',
+          coupon: '',
+          customizedInvoice: {
+            ...checkoutData.contactInformation,
+            phone: checkoutData.shippingAddress.phone,
+            prefix: checkoutData.shippingAddress.phone.slice(0, 4),
+          },
+          payment: {
+            ...data,
+          },
+          shipping: {
+            price: 0,
+            type: 'delivery',
+            details: {
+              type: 'instantaneous',
+              schedule: null,
+            },
+          },
+          odooOrder: {
+            product_list: cart.products.map((item) => ({
+              product_id: item.id,
+              product_uom_qty: item.quantity,
+              subtotal: item.price,
+              tax: item.price_extra,
+            })),
+          },
+        };
+        return createOrder(newOrder);
+      },
+    });
+  };
+
   return {
     useGetOrders,
+    useCreateOrder,
   };
 }
