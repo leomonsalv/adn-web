@@ -457,3 +457,218 @@ export const navbarMenuHover = [
   { name: 'Notificaciones', href: '#', id: '6' },
   { name: 'Centro de ayuda', href: '#', id: '7' },
 ];
+
+export const testimonials = [
+  {
+    id: 1,
+    quote:
+      'My order arrived super quickly. The product is even better than I hoped it would be. Very happy customer over here!',
+    attribution: 'Sarah Peters, New Orleans',
+  },
+  {
+    id: 2,
+    quote:
+      'I had to return a purchase that didn’t fit. The whole process was so simple that I ended up ordering two new items!',
+    attribution: 'Kelly McPherson, Chicago',
+  },
+  {
+    id: 3,
+    quote:
+      'Now that I’m on holiday for the summer, I’ll probably order a few more shirts. It’s just so convenient, and I know the quality will always be there.',
+    attribution: 'Chris Paul, Phoenix',
+  },
+];
+
+export const offers = [
+  {
+    name: 'Download the app',
+    description: 'Get an exclusive $5 off code',
+    href: '#',
+  },
+  {
+    name: "Return when you're ready",
+    description: '60 days of free returns',
+    href: '#',
+  },
+  {
+    name: 'Sign up for our newsletter',
+    description: '15% off your first order',
+    href: '#',
+  },
+];
+
+export const trendingProducts = [
+  {
+    id: 1,
+    name: 'Machined Pen',
+    color: 'Black',
+    price: '$35',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-02-product-01.jpg',
+    imageAlt: 'Black machined steel pen with hexagonal grip and small white logo at top.',
+    availableColors: [
+      { name: 'Black', colorBg: '#111827' },
+      { name: 'Brass', colorBg: '#FDE68A' },
+      { name: 'Chrome', colorBg: '#E5E7EB' },
+    ],
+  },
+  // More products...
+];
+
+export const productPayload = [
+  {
+    id: 1,
+    image: 'https://picsum.photos/0/100', // URL de la imagen del producto
+    discount: 40, // Descuento en porcentaje
+    price: 18.9, // Precio actual del producto
+    originalPrice: 31.5, // Precio original antes del descuento
+    title: 'Earthen Bottle', // Nombre del producto
+    seeMoreText: 'Ver más', // Texto del botón para ver más productos
+    productUrl: '/producto-detalle/78146', // URL del producto
+  },
+  {
+    id: 2,
+    image: 'https://picsum.photos/0/200',
+    discount: 20,
+    price: 24.0,
+    originalPrice: 30.0,
+    title: 'Ceramic Mug',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 3,
+    image: 'https://picsum.photos/0/300',
+    discount: 50,
+    price: 15.0,
+    originalPrice: 30.0,
+    title: 'Modern Vase',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 4,
+    image: 'https://picsum.photos/0/400',
+    discount: 0, // Sin descuento
+    price: 12.99,
+    originalPrice: 12.99,
+    title: 'Wooden Spoon',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 5,
+    image: 'https://picsum.photos/0/500',
+    discount: 25,
+    price: 45.0,
+    originalPrice: 60.0,
+    title: 'Classic Clock',
+    seeMoreText: 'Cosas del hogar',
+    productUrl: '/producto-detalle/78146',
+  },
+];
+
+export const RecentProducts = [
+  {
+    id: 1,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 2,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 3,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 4,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+];
+
+export const searchHistory = [
+  {
+    id: 1,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 2,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 3,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 4,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 5,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 6,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 7,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 8,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+];
+
+export const categoriesBox = [
+  {
+    title: 'Herramientas de limpiar',
+    description: 'Productos para limpieza del hogar',
+    image: 'https://picsum.photos/0/100',
+    link: '#',
+  },
+  {
+    title: 'Almacenamiento en casa',
+    description: 'Organiza tus espacios con estilo',
+    image: 'https://picsum.photos/100/200',
+    link: '#',
+  },
+  {
+    title: 'Decoración del hogar',
+    description: 'Embellece tu espacio con nuestras opciones',
+    image: 'https://picsum.photos/200/300',
+    link: '#',
+  },
+  {
+    title: 'Ropa de cama',
+    description: 'Encuentra comodidad y estilo',
+    image: 'https://picsum.photos/300/400',
+    link: '#',
+  },
+];
