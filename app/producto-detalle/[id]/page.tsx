@@ -110,16 +110,17 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     if (!productData) return;
 
     try {
+      await updateCart({
+        cartId: cartData?.id || '',
+        product: productData,
+      });
+
       if (isInCart) {
         updateQuantity(productData.id, itemCount + 1);
       } else {
         addToCart(productData);
       }
 
-      await updateCart({
-        cartId: cartData?.id || '',
-        product: productData,
-      });
       router.push(CARRITO);
     } catch (error) {
       console.error('Error adding to cart:', error);
