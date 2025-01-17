@@ -1,7 +1,9 @@
 import React from 'react';
 import CategoryGrid from './CategoryGrid';
+import { categoriesBox } from '@/lib/dummyData';
 
 type Props = {
+  //CategoryObject tiene que ser lo que vendria de BE
   CategoryObject: {
     title: string;
     imageUrl: string;
@@ -10,43 +12,16 @@ type Props = {
   }[];
 };
 
-const categories = [
-  {
-    title: 'Herramientas de limpiar',
-    description: 'Productos para limpieza del hogar',
-    image: 'https://picsum.photos/0/100',
-    link: '#',
-  },
-  {
-    title: 'Almacenamiento en casa',
-    description: 'Organiza tus espacios con estilo',
-    image: 'https://picsum.photos/100/200',
-    link: '#',
-  },
-  {
-    title: 'Decoración del hogar',
-    description: 'Embellece tu espacio con nuestras opciones',
-    image: 'https://picsum.photos/200/300',
-    link: '#',
-  },
-  {
-    title: 'Ropa de cama',
-    description: 'Encuentra comodidad y estilo',
-    image: 'https://picsum.photos/300/400',
-    link: '#',
-  },
-];
-
-function categoryBox({ CategoryObject: Items }: Props) {
+function categoryBox({ CategoryObject }: Props) {
   const handleViewMore = () => {
-    console.log('Ver más clickeado');
+    console.log('Aqui tiene que ir la url que lleva a la pagina de la categoria');
   };
 
   return (
     <div className=" flex items-center justify-center">
       <CategoryGrid
         title="Cosas para comprar"
-        categories={categories}
+        categories={categoriesBox}
         onViewMore={handleViewMore}
         seeMoreText="Ver más"
       />

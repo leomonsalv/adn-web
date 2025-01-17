@@ -514,3 +514,161 @@ export const trendingProducts = [
   },
   // More products...
 ];
+
+export const productPayload = [
+  {
+    id: 1,
+    image: 'https://picsum.photos/0/100', // URL de la imagen del producto
+    discount: 40, // Descuento en porcentaje
+    price: 18.9, // Precio actual del producto
+    originalPrice: 31.5, // Precio original antes del descuento
+    title: 'Earthen Bottle', // Nombre del producto
+    seeMoreText: 'Ver más', // Texto del botón para ver más productos
+    productUrl: '/producto-detalle/78146', // URL del producto
+  },
+  {
+    id: 2,
+    image: 'https://picsum.photos/0/200',
+    discount: 20,
+    price: 24.0,
+    originalPrice: 30.0,
+    title: 'Ceramic Mug',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 3,
+    image: 'https://picsum.photos/0/300',
+    discount: 50,
+    price: 15.0,
+    originalPrice: 30.0,
+    title: 'Modern Vase',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 4,
+    image: 'https://picsum.photos/0/400',
+    discount: 0, // Sin descuento
+    price: 12.99,
+    originalPrice: 12.99,
+    title: 'Wooden Spoon',
+    seeMoreText: 'Ver más',
+    productUrl: '/producto-detalle/78146',
+  },
+  {
+    id: 5,
+    image: 'https://picsum.photos/0/500',
+    discount: 25,
+    price: 45.0,
+    originalPrice: 60.0,
+    title: 'Classic Clock',
+    seeMoreText: 'Cosas del hogar',
+    productUrl: '/producto-detalle/78146',
+  },
+];
+
+export const RecentProducts = [
+  {
+    id: 1,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 2,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 3,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 4,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+];
+
+export const searchHistory = [
+  {
+    id: 1,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 2,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 3,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 4,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 5,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 6,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 7,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+  {
+    id: 8,
+    name: 'Energyplant 450 mg',
+    imageUrl: '/images/potedeproteina.png',
+    link: '/producto-detalle/58805',
+  },
+];
+
+export const categoriesBox = [
+  {
+    title: 'Herramientas de limpiar',
+    description: 'Productos para limpieza del hogar',
+    image: 'https://picsum.photos/0/100',
+    link: '#',
+  },
+  {
+    title: 'Almacenamiento en casa',
+    description: 'Organiza tus espacios con estilo',
+    image: 'https://picsum.photos/100/200',
+    link: '#',
+  },
+  {
+    title: 'Decoración del hogar',
+    description: 'Embellece tu espacio con nuestras opciones',
+    image: 'https://picsum.photos/200/300',
+    link: '#',
+  },
+  {
+    title: 'Ropa de cama',
+    description: 'Encuentra comodidad y estilo',
+    image: 'https://picsum.photos/300/400',
+    link: '#',
+  },
+];
