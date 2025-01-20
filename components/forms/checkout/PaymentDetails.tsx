@@ -17,14 +17,14 @@ import useOrders from '@/hooks/use-orders';
 import { CashbackModal } from '@/components/checkout/CashbackModal';
 import { PaymentDetailsSkeleton } from '@/components/skeletons/PaymentMethodsSkeleton';
 import { Loader2 } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
+import useUser from '@/hooks/use-user';
 
 export function PaymentDetails() {
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>();
   const [cashbackModal, setCashbackModal] = useState(false);
 
-  const { user } = useAuth();
+  const { user, isLoading } = useUser();
   const { useGetPaymentMethods } = useCheckout();
   const { useCreateOrder } = useOrders();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
@@ -81,13 +81,13 @@ export function PaymentDetails() {
           currency: newCurrency,
           totalUsd,
           totalBs,
-          userEmail: user?.email!,
+          userEmail: user?.data?.email!,
         }),
       });
     }
-  }, [paymentMethods, user?.email]);
+  }, [paymentMethods, user?.data?.email]);
 
-  if (isLoadingPaymentMethods) return <PaymentDetailsSkeleton />;
+  if (isLoadingPaymentMethods || isLoading) return <PaymentDetailsSkeleton />;
 
   return (
     <div className="flex flex-col gap-y-6">

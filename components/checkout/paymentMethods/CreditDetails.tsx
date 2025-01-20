@@ -9,6 +9,7 @@ export const CreditDetails = ({
     <div className="flex flex-col gap-y-2">
       <h6 className="text-sm font-semibold">Paga con billetera Adan</h6>
       <div className="flex flex-col gap-y-1 bg-[#232F3E] p-4 rounded-lg">
+        <span className="text-sm text-white">Tu billetera Adan</span>
         <p className="text-sm text-white">
           Usaras&nbsp;
           <span className="font-semibold">${totalUsd} USD</span> de los ${creditAvailable} USD

@@ -4,20 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserById, getUserByEmail } from '@/api/users';
 import { useAuth } from './use-auth';
 
-export function useFirebaseUser() {
+export default function useUser() {
   const { user } = useAuth();
 
-  const {
-    data: firebaseUser,
-    isLoading,
-    error,
-  } = useQuery({
+  const query = useQuery({
     queryKey: ['firebaseUser', user?.uid],
     queryFn: () => getUserById(user?.uid!),
     enabled: !!user?.uid,
   });
 
-  const getUserByEmailQuery = (email: string) => {
+  const useGetUserByEmail = (email: string) => {
     return useQuery({
       queryKey: ['firebaseUser', email],
       queryFn: () => getUserByEmail(email),
@@ -26,10 +22,11 @@ export function useFirebaseUser() {
   };
 
   return {
-    firebaseUser: firebaseUser?.data,
-    userId: firebaseUser?.id,
-    isLoading,
-    error,
-    getUserByEmail: getUserByEmailQuery,
+    ...query,
+    user: {
+      ...query.data,
+      id: query.data?.id,
+    },
+    useGetUserByEmail,
   };
 }

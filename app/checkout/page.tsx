@@ -13,8 +13,11 @@ import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { ContactInformationSchema } from '@/schemas/contact-information-schema';
 import { Button } from '@/components/ui/button';
+import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
+  const { user, isLoading } = useUser();
+
   const {
     currentStep,
     setCurrentStep,
@@ -24,8 +27,6 @@ export default function CSCheckoutPage() {
     contactInformation,
     shippingAddress,
   } = useCheckoutStore();
-
-  const { user, loading } = useAuth();
 
   const handleSaveData = (formData: ContactInformationSchema | ShippingAddressSchema) => {
     if ('email' in formData) {
@@ -70,10 +71,10 @@ export default function CSCheckoutPage() {
           ),
         component: (
           <ContactInformation
-            name={contactInformation.name}
-            email={contactInformation.email}
-            dni={contactInformation.dni}
-            dniType={contactInformation.dniType}
+            name={user?.data?.name ?? contactInformation.name}
+            email={user?.data?.email ?? contactInformation.email}
+            dni={user?.data?.dni ?? contactInformation.dni}
+            dniType={user?.data?.dniType ?? contactInformation.dniType}
             onSubmit={handleSaveData}
           />
         ),
@@ -103,7 +104,7 @@ export default function CSCheckoutPage() {
     [paymentType, user, contactInformation, currentStep],
   );
 
-  if (loading) return <CheckoutSkeleton />;
+  if (isLoading) return <CheckoutSkeleton />;
 
   return (
     <div className="bg-white">

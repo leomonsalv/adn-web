@@ -28,7 +28,7 @@ import { VippoDetails } from './paymentMethods/VippoDetails';
 import { PagoMovilDetails } from './paymentMethods/PagoMovilDetails';
 import { BncPosDetails } from './paymentMethods/BncPosDetails';
 import { Radio, RadioField, RadioGroup } from '../ui/radio';
-import { useAuth } from '@/hooks/use-auth';
+import useUser from '@/hooks/use-user';
 
 export function PaymentMethodSelector({
   paymentMethods,
@@ -41,8 +41,8 @@ export function PaymentMethodSelector({
 }) {
   const form = useFormContext<PaymentMethod>();
   const { getCartRef, getCartTotal } = useCartStore();
-  const { user } = useAuth();
-  console.log('🚀 ~ user:', user);
+  const { user } = useUser();
+  console.log('🚀 ~ user:', user.data);
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
 
@@ -59,7 +59,7 @@ export function PaymentMethodSelector({
         currency,
         totalUsd,
         totalBs,
-        userEmail: user?.email!,
+        userEmail: user?.data?.email!,
       });
 
       // Reset the form with the initial state
@@ -68,7 +68,7 @@ export function PaymentMethodSelector({
         ...initialState,
       });
     },
-    [paymentMethods, form, totalUsd, totalBs, user?.email],
+    [paymentMethods, form, totalUsd, totalBs, user?.data?.email],
   );
 
   const showPaymentDetails = useCallback(
@@ -87,7 +87,7 @@ export function PaymentMethodSelector({
         mBinance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
         pagomovil: <PagoMovilDetails {...detailProps} />,
         binance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
-        credit: <CreditDetails {...detailProps} creditAvailable={user?.creditAvailable ?? 0} />,
+        credit: <CreditDetails {...detailProps} creditAvailable={user?.data?.wallet.credit ?? 0} />,
         tdcve: <TdcveDetails {...detailProps} />,
         paypal: <PaypalDetails {...detailProps} />,
         botonbanesco: <BotonBanescoDetails {...detailProps} />,
