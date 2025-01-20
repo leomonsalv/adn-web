@@ -15,7 +15,6 @@ export function PaymentToggle({ onChange, value }: PaymentToggleProps) {
         onChange={(checked) => onChange(checked ? 'mixed' : 'simple')}
         className={cn(
           'relative w-full h-10 rounded-md transition-colors duration-200',
-
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
         )}
       >

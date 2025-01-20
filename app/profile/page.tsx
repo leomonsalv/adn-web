@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useUser } from '@/hooks/use-user';
+import { useAuth } from '@/hooks/use-auth';
 import { useUserProfile } from '@/hooks/use-user-profile';
 import { UserProfileForm } from '@/components/forms/profile/user-form';
 
 export default function ProfilePage() {
-  const { user, loading: authLoading } = useUser();
+  const { user, loading: authLoading } = useAuth();
   const uid = user?.uid;
   const { data: userProfile, isLoading: profileLoading, error } = useUserProfile(uid);
 

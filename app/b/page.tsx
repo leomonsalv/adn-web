@@ -19,8 +19,6 @@ export default function SearchPage() {
   const { searchProducts } = useSearchProduct();
   const { data, isLoading } = searchProducts({ query, category });
 
-  console.log('🚀 ~ SearchPage ~ data:', data);
-
   if (isLoading) return <SearchPageSkeleton />;
 
   return (

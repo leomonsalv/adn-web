@@ -40,15 +40,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReactQueryProvider>
-          <Script
-            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-            strategy="lazyOnload"
-          />
-          <Toaster />
-          <NavLinks />
-
-          <AuthProvider>
+        <AuthProvider>
+          <ReactQueryProvider>
+            <Script
+              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+              strategy="lazyOnload"
+            />
+            <Toaster />
+            <NavLinks />
             <ThemeProvider
               forcedTheme="light"
               attribute="class"
@@ -59,8 +58,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <CounterStoreProvider>{children}</CounterStoreProvider>
               <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>
-          </AuthProvider>
-        </ReactQueryProvider>
+          </ReactQueryProvider>
+        </AuthProvider>
         <Footer />
       </body>
     </html>

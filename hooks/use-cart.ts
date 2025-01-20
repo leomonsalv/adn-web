@@ -3,7 +3,7 @@ import { auth } from '@/lib/firebaseConfig';
 import { useCartStore } from '@/stores/cart-store';
 import { Product } from '@/types/product';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useUser } from './use-user';
+import { useAuth } from './use-auth';
 
 interface CartMutationProps {
   cartId: string;
@@ -14,7 +14,7 @@ export default function useCart() {
   const queryClient = useQueryClient();
 
   const useGetCart = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
 
     return useQuery({
       enabled: !!user?.uid,
@@ -24,7 +24,7 @@ export default function useCart() {
   };
 
   const useMutateCart = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const { cart } = useCartStore();
 
     const mutation = useMutation<void, Error, CartMutationProps>({
@@ -57,7 +57,7 @@ export default function useCart() {
   };
 
   const useRemoveProductFromCart = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const { cart } = useCartStore();
     return useMutation<void, Error, CartMutationProps>({
       mutationFn: async ({ cartId, product }) => {

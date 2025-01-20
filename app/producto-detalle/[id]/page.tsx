@@ -285,7 +285,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     type="button"
                     color="teal"
                     className="w-full h-12"
-                    onClick={() => console.log('Aqui deberia poder subirse la receta')}
+                    onClick={() => {
+                      // TODO: Add prescription upload logic
+                    }}
                   >
                     Subir prescripción
                   </Button>

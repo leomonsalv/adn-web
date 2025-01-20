@@ -1,25 +1,16 @@
-import {
-  collection,
-  query,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
-  where,
-} from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
-import { z } from "zod";
+import { collection, query, orderBy, startAfter, limit, getDocs, where } from 'firebase/firestore';
+import { db, functions } from '@/lib/firebaseConfig';
+import { z } from 'zod';
+import { httpsCallable } from 'firebase/functions';
+import { CREATE_ORDER } from '@/lib/urls';
+import { Order } from '@/schemas/create-order-schema';
 
-export const fetchOrdersHistoric = async (
-  userId: string,
-  pageSize = 5,
-  lastVisible: any,
-) => {
+export const fetchOrdersHistoric = async (userId: string, pageSize = 5, lastVisible: any) => {
   try {
     const baseQuery = query(
-      collection(db, "orders"),
-      where("clientId", "==", userId),
-      orderBy("date", "desc"),
+      collection(db, 'orders'),
+      where('clientId', '==', userId),
+      orderBy('date', 'desc'),
       ...(lastVisible ? [startAfter(lastVisible)] : []),
       limit(pageSize),
     );
@@ -39,7 +30,17 @@ export const fetchOrdersHistoric = async (
 
     return { orders, lastVisible: lastDoc };
   } catch (error) {
-    console.error("Error fetching paginated orders:", error);
+    console.error('Error fetching paginated orders:', error);
+    throw error;
+  }
+};
+
+export const createOrder = async (order: Order) => {
+  try {
+    const data = await httpsCallable(functions, CREATE_ORDER)(order);
+    return data;
+  } catch (error) {
+    console.error('Error creating order:', error);
     throw error;
   }
 };

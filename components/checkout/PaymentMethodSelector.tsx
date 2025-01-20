@@ -1,272 +1,156 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Method } from '@/schemas/payment-method-schema';
-import { Radio, RadioField, RadioGroup } from '../ui/radio';
-
 import {
   Accordion,
   AccordionContent,
   AccordionTriggerContent,
   AccordionItem,
 } from '../ui/accordion';
-import { LabeledInput } from '../ui/input';
 import { useCartStore } from '@/stores/cart-store';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  PaymentMethodType,
-  PaymentDetailsUnionType,
-  PaymentDetailsUnionSchema,
-} from '@/schemas/create-order-schema';
-import { Button } from '../ui/button';
+import { useFormContext } from 'react-hook-form';
+import { PaymentMethodType, PaymentMethod } from '@/schemas/create-order-schema';
+import { getInitialPaymentState } from '@/hooks/use-checkout';
+import { ZelleDetails } from './paymentMethods/ZelleDetails';
+import { CashDetails } from './paymentMethods/CashDetails';
+import { BinanceDetails } from './paymentMethods/BinanceDetails';
+import { BolivarCashDetails } from './paymentMethods/BolivarCashDetails';
+import { MotoPosDetails } from './paymentMethods/MotoPosDetails';
+import { BotonBanescoDetails } from './paymentMethods/BotonBanescoDetails';
+import { PaypalDetails } from './paymentMethods/PaypalDetails';
+import { TdcveDetails } from './paymentMethods/TdcveDetails';
+import { CreditDetails } from './paymentMethods/CreditDetails';
+import { PreCreditDetails } from './paymentMethods/PreCreditDetails';
+import { VippoDetails } from './paymentMethods/VippoDetails';
+import { PagoMovilDetails } from './paymentMethods/PagoMovilDetails';
+import { BncPosDetails } from './paymentMethods/BncPosDetails';
+import { Radio, RadioField, RadioGroup } from '../ui/radio';
+import useUser from '@/hooks/use-user';
 
-export function PaymentMethodSelector({ paymentMethods }: { paymentMethods: Method[] }) {
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>(paymentMethods[0].value);
-  console.log('🚀 ~ PaymentMethodSelector ~ selectedMethod:', selectedMethod);
+interface PaymentMethodSelectorProps {
+  paymentMethods: Method[];
+  selectedMethod: PaymentMethodType | undefined;
+  setSelectedMethod: (value: PaymentMethodType) => void;
+}
+
+export function PaymentMethodSelector({
+  paymentMethods,
+  selectedMethod,
+  setSelectedMethod,
+}: PaymentMethodSelectorProps) {
+  const form = useFormContext<PaymentMethod>();
 
   const { getCartRef, getCartTotal } = useCartStore();
+  const { user } = useUser();
 
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
 
-  const form = useForm<PaymentDetailsUnionType>({
-    resolver: zodResolver(PaymentDetailsUnionSchema),
-    defaultValues: {
-      type: selectedMethod,
-      details: {
-        amount: '0',
-        email: 'juankrlosbn@gmail.com',
-      },
+  const handleRadioChange = useCallback(
+    (value: PaymentMethodType) => {
+      setSelectedMethod(value);
+      // Get the initial state for the payment method
+      const method = paymentMethods.find((m) => m.value === value);
+      const requiresAmount = ['cash', 'bolivarCash'].includes(value);
+      const currency = method?.currency ?? 'Bs';
+      const initialState = getInitialPaymentState({
+        paymentType: value,
+        requiresAmount,
+        currency,
+        totalUsd,
+        totalBs,
+        userEmail: user?.data?.email!,
+      });
+
+      // Reset the form with the initial state
+      form.reset({
+        isConfirmed: true,
+        ...initialState,
+      } as PaymentMethod);
     },
-  });
+    [paymentMethods, form, totalUsd, totalBs, user?.data?.email],
+  );
 
-  const onSubmit = (data: PaymentDetailsUnionType) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
-  };
+  const showPaymentDetails = useCallback(
+    (method: Method) => {
+      const detailProps = {
+        totalUsd,
+        totalBs,
+        form,
+      };
 
-  const handleRadioChange = (value: PaymentMethodType) => {
-    setSelectedMethod(value);
-    form.reset({
-      type: value,
-    });
-  };
+      const detailsMap: Record<PaymentMethodType, React.ReactNode> = {
+        zelle: <ZelleDetails {...detailProps} />,
+        cash: <CashDetails {...detailProps} />,
+        bolivarCash: <BolivarCashDetails {...detailProps} />,
+        motopos: <MotoPosDetails {...detailProps} />,
+        mBinance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
+        pagomovil: <PagoMovilDetails {...detailProps} />,
+        binance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
+        credit: <CreditDetails {...detailProps} creditAvailable={user?.data?.wallet.credit ?? 0} />,
+        tdcve: <TdcveDetails {...detailProps} />,
+        paypal: <PaypalDetails {...detailProps} />,
+        botonbanesco: <BotonBanescoDetails {...detailProps} />,
+        bncPos: <BncPosDetails {...detailProps} />,
+        preCredit: (
+          <PreCreditDetails {...detailProps} creditAvailable={user?.data?.preWallet.credit ?? 0} />
+        ),
+        vippo: <VippoDetails {...detailProps} />,
+      };
 
-  console.log('🚀 ~ PaymentMethodSelector ~ form.formState.errors:', form.formState.errors);
-  console.log('🚀 ~ PaymentMethodSelector ~ form.formState.isValid:', form.getValues());
-
-  const showPaymentDetails = (method: Method) => {
-    switch (method.value) {
-      case 'zelle':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Zelle</h6>
-              <p className="text-sm">
-                Ingresa a la plataforma de tu banco y haz un pago por $8.1 USD a los siguientes
-                datos:
-              </p>
-            </div>
-            <Card className="bg-[#232F3E] pt-6">
-              <CardContent className="flex flex-col gap-y-1">
-                <span className="text-white">Monto</span>
-                <span className="text-white text-sm font-semibold">${totalUsd.toFixed(2)}</span>
-              </CardContent>
-              <CardContent className="flex flex-col gap-y-1">
-                <span className="text-white">A nombre de</span>
-                <span className="text-white text-sm font-semibold">Modu LLC</span>
-              </CardContent>
-              <CardContent className="flex flex-col gap-y-1">
-                <span className="text-white">Correo</span>
-                <span className="text-white text-sm font-semibold">pagos@adanfarmacia.com</span>
-              </CardContent>
-            </Card>
-            <div className="flex flex-col">
-              <Controller
-                control={form.control}
-                name="details.nombre"
-                render={({ field: { onChange, onBlur, value, name, ref }, fieldState }) => (
-                  <LabeledInput
-                    ref={ref}
-                    error={fieldState.error?.message}
-                    label="Nombre del titular"
-                    inputProps={{
-                      placeholder: 'Nombre del titular',
-                      onChange: onChange,
-                      onBlur: onBlur,
-                      value: value,
-                      name: name,
-                    }}
-                    labelProps={{ className: 'text-sm font-semibold' }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-        );
-      case 'cash':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Efectivo</h6>
-              <h5 className="text-base font-semibold">¿Con cuánto dinero vas a pagar?</h5>
-              <p className="text-sm">
-                Recuerda que el valor del pedido es de &nbsp;
-                <span className="font-semibold">${totalUsd.toFixed(2)}</span> USD y el vuelto se da
-                por Pago Móvil.
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <Controller
-                control={form.control}
-                name="details.amount"
-                render={({ field }) => (
-                  <LabeledInput
-                    {...field}
-                    label="Ingresa el monto de efectivo"
-                    inputProps={{ placeholder: 'Ingresa el monto' }}
-                    labelProps={{ className: 'text-sm font-semibold' }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-        );
-      case 'bolivarCash':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Bolivares en efectivo</h6>
-              <h5 className="text-base font-semibold">¿Con cuánto dinero vas a pagar?</h5>
-              <p className="text-sm">
-                Recuerda que el valor del pedido es de &nbsp;
-                <span className="font-semibold">Bs. {totalBs.toFixed(2)}</span>&nbsp;y el vuelto se
-                dará por Pago Móvil.
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <Controller
-                control={form.control}
-                name="details.amount"
-                render={({ field }) => (
-                  <LabeledInput
-                    label="Ingresa el monto de efectivo"
-                    helperText="Los billetes deben ser del cono monetario actual según BCV"
-                    inputProps={{ placeholder: 'Ingresa el monto' }}
-                    labelProps={{ className: 'text-sm font-semibold' }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-        );
-      case 'motopos':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Punto de Venta</h6>
-              <p className="text-sm">
-                El motorizado llevará el punto de venta a tu domicilio. Deberás pagar el total de
-                &nbsp;<span className="font-semibold">Bs. {totalBs.toFixed(2)}</span>.
-              </p>
-            </div>
-          </div>
-        );
-      case 'mBinance':
-        return (
-          <div className="flex flex-col gap-y-4">
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-sm font-semibold">Pagos por Binance</h6>
-              <p className="text-sm">
-                Ingresa a tu cuenta de Binance y haz un pago por{' '}
-                <span className="font-semibold">${totalUsd.toFixed(2)}</span> USD a los siguientes
-                datos:
-              </p>
-            </div>
-            <Card className="pt-6">
-              <CardContent className="flex flex-col gap-y-1">
-                {method.qr && (
-                  <Image
-                    src={method.qr}
-                    alt="Binance"
-                    width={300}
-                    height={300}
-                    className="rounded-lg w-full"
-                  />
-                )}
-              </CardContent>
-            </Card>
-            <form className="flex flex-col">
-              <Controller
-                control={form.control}
-                name="details.nombre"
-                render={({ field }) => (
-                  <LabeledInput
-                    {...field}
-                    label="Nombre del titular de Binance"
-                    inputProps={{ placeholder: 'Nombre del titular' }}
-                    labelProps={{ className: 'text-sm font-semibold' }}
-                  />
-                )}
-              />
-            </form>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+      return detailsMap[method.value] ?? null;
+    },
+    [totalUsd, totalBs, form],
+  );
 
   return (
     <Accordion
       type="single"
       value={selectedMethod}
       onValueChange={handleRadioChange}
+      onKeyDown={(e) => {
+        if (!(e.target instanceof HTMLInputElement)) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
       className="flex flex-col w-full border rounded-lg"
     >
-      <RadioGroup value={selectedMethod} onChange={handleRadioChange} className="space-y-0">
-        {paymentMethods.map((method, index) => (
-          <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
-            <Card
-              className={cn(
-                'border-0 rounded-none focus:ring-0 shadow-none bg-transparent mt-0',
-                selectedMethod === method.value || paymentMethods.length - 1 !== index
-                  ? 'border-b'
-                  : '',
-              )}
-            >
-              <AccordionTriggerContent className="flex w-full px-4 py-3 items-center justify-between">
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex gap-x-3">
+      {paymentMethods.map((method, index) => (
+        <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
+          <Card
+            className={cn(
+              'border-0 rounded-none focus:ring-0 shadow-none bg-transparent mt-0',
+              selectedMethod === method.value || paymentMethods.length - 1 !== index
+                ? 'border-b'
+                : '',
+            )}
+          >
+            <AccordionTriggerContent className="flex w-full px-4 py-3 items-center justify-between">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex gap-x-3 items-center">
+                  <RadioGroup value={selectedMethod} onChange={handleRadioChange}>
                     <RadioField>
                       <Radio value={method.value} />
                     </RadioField>
-                    {method.icon && (
-                      <Image src={method.icon} alt={method.name} width={24} height={24} />
-                    )}
-                    <span className="font-medium">{method.name}</span>
-                  </div>
+                  </RadioGroup>
+
+                  {method.icon && (
+                    <Image src={method.icon} alt={method.name} width={24} height={24} />
+                  )}
+                  <span className="font-medium">{method.name}</span>
                 </div>
-              </AccordionTriggerContent>
-            </Card>
-            <AccordionContent className={cn('px-3 border-b bg-gray-50')}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-y-4 px-2 pt-4 pb-2"
-              >
-                <div className="flex flex-col gap-y-4 px-2 pt-4 pb-2">
-                  {showPaymentDetails(method)}
-                </div>
-                <Button type="submit" className="self-end">
-                  Continuar
-                </Button>
-              </form>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </RadioGroup>
+              </div>
+            </AccordionTriggerContent>
+          </Card>
+          <AccordionContent className={cn('px-3 border-b bg-gray-50')}>
+            <div className="flex flex-col gap-y-4 px-2 pt-4 pb-2">{showPaymentDetails(method)}</div>
+          </AccordionContent>
+        </AccordionItem>
+      ))}
     </Accordion>
   );
 }
