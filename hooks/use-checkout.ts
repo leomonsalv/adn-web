@@ -1,8 +1,8 @@
 import { getPaymentMethods } from '@/api/checkout';
-import { PaymentDetailsUnionType, PaymentMethodType } from '@/schemas/create-order-schema';
+import { PaymentMethod, PaymentMethodType } from '@/schemas/create-order-schema';
 import { Method } from '@/schemas/payment-method-schema';
 import { useQuery } from '@tanstack/react-query';
-import { useUser } from './use-user';
+import { useAuth } from './use-auth';
 
 // Constants
 const PAYMENT_DETAILS_MAPS = {
@@ -22,12 +22,17 @@ const isSimpleAmountType = (
   PAYMENT_DETAILS_MAPS.simpleAmountTypes.includes(type as any);
 
 // Specific payment type handlers with improved type safety
-const getCashTypeState = (
-  currency: 'Bs' | 'USD',
-  totalBs: number,
-  totalUsd: number,
-  requiresAmount: boolean,
-) => ({
+const getCashTypeState = ({
+  currency,
+  totalBs,
+  totalUsd,
+  requiresAmount,
+}: {
+  currency: 'Bs' | 'USD';
+  totalBs: number;
+  totalUsd: number;
+  requiresAmount: boolean;
+}) => ({
   bills: [
     {
       amount: 0,
@@ -39,8 +44,19 @@ const getCashTypeState = (
   comments: '',
 });
 
-const getSimpleAmountState = (currency: 'Bs' | 'USD', totalBs: number, totalUsd: number) => ({
+const getSimpleAmountState = ({
+  currency,
+  totalBs,
+  totalUsd,
+  userEmail,
+}: {
+  currency: 'Bs' | 'USD';
+  totalBs: number;
+  totalUsd: number;
+  userEmail: string;
+}) => ({
   amount: currency === 'Bs' ? totalBs : totalUsd,
+  email: userEmail,
 });
 
 // Specific payment type handlers with improved maintainability
@@ -50,10 +66,20 @@ const PAYMENT_TYPE_HANDLERS: Record<
     | (typeof PAYMENT_DETAILS_MAPS.cashTypes)[number]
     | (typeof PAYMENT_DETAILS_MAPS.simpleAmountTypes)[number]
   >,
-  (currency: 'Bs' | 'USD', totalBs: number, totalUsd: number) => PaymentDetailsUnionType['details']
+  ({
+    currency,
+    totalBs,
+    totalUsd,
+    userEmail,
+  }: {
+    currency: 'Bs' | 'USD';
+    totalBs: number;
+    totalUsd: number;
+    userEmail: string;
+  }) => PaymentMethod['details']
 > = {
-  pagomovil: (_, totalBs) => ({
-    amount: totalBs,
+  pagomovil: (data) => ({
+    amount: data.currency === 'Bs' ? data.totalBs : data.totalUsd,
     bank: '',
     prefix: '',
     phone: '',
@@ -62,10 +88,10 @@ const PAYMENT_TYPE_HANDLERS: Record<
     destination: 'plaza',
     reference: '',
   }),
-  zelle: (_, __, totalUsd) => ({
-    amount: totalUsd,
-    email: '',
-    nombre: '',
+  zelle: (data) => ({
+    amount: data.totalUsd,
+    email: data.userEmail,
+    name: '',
   }),
   tdcve: () => ({
     cardNumber: '',
@@ -85,8 +111,8 @@ const PAYMENT_TYPE_HANDLERS: Record<
     nombre: '',
     tipoCuenta: 'corriente',
   }),
-  vippo: (_, __, totalUsd) => ({
-    amount: totalUsd,
+  vippo: (data) => ({
+    amount: data.totalUsd,
     holderName: '',
     cardNumber: '',
     vencimiento: { mes: 0, ano: 0 },
@@ -98,7 +124,7 @@ const PAYMENT_TYPE_HANDLERS: Record<
 
 export default function useCheckout() {
   const useGetPaymentMethods = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
 
     return useQuery({
       queryKey: ['payment-methods'],
@@ -112,24 +138,32 @@ export default function useCheckout() {
   return { useGetPaymentMethods };
 }
 
-export const getInitialPaymentState = (
-  paymentType: PaymentMethodType,
-  requiresAmount: boolean,
-  currency: 'Bs' | 'USD',
-  totalUsd: number,
-  totalBs: number,
-): PaymentDetailsUnionType => {
+export const getInitialPaymentState = ({
+  paymentType,
+  requiresAmount,
+  currency,
+  totalUsd,
+  totalBs,
+  userEmail,
+}: {
+  paymentType: PaymentMethodType;
+  requiresAmount: boolean;
+  currency: 'Bs' | 'USD';
+  totalUsd: number;
+  totalBs: number;
+  userEmail: string;
+}) => {
   if (isCashType(paymentType)) {
     return {
       type: paymentType,
-      details: getCashTypeState(currency, totalBs, totalUsd, requiresAmount),
+      details: getCashTypeState({ currency, totalBs, totalUsd, requiresAmount }),
     };
   }
 
   if (isSimpleAmountType(paymentType)) {
     return {
       type: paymentType,
-      details: getSimpleAmountState(currency, totalBs, totalUsd),
+      details: getSimpleAmountState({ currency, totalBs, totalUsd, userEmail }),
     };
   }
 
@@ -138,8 +172,8 @@ export const getInitialPaymentState = (
   if (handler && paymentType in PAYMENT_TYPE_HANDLERS) {
     return {
       type: paymentType,
-      details: handler(currency, totalBs, totalUsd),
-    } as PaymentDetailsUnionType;
+      details: handler({ currency, totalBs, totalUsd, userEmail }),
+    };
   }
 
   // Fallback for unknown payment types
@@ -151,5 +185,5 @@ export const getInitialPaymentState = (
       nombre: '',
       comments: '',
     },
-  } as PaymentDetailsUnionType;
+  };
 };

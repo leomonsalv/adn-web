@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Method } from '@/schemas/payment-method-schema';
-import { Radio, RadioField, RadioGroup } from '../ui/radio';
 import {
   Accordion,
   AccordionContent,
@@ -28,6 +27,8 @@ import { PreCreditDetails } from './paymentMethods/PreCreditDetails';
 import { VippoDetails } from './paymentMethods/VippoDetails';
 import { PagoMovilDetails } from './paymentMethods/PagoMovilDetails';
 import { BncPosDetails } from './paymentMethods/BncPosDetails';
+import { Radio, RadioField, RadioGroup } from '../ui/radio';
+import { useAuth } from '@/hooks/use-auth';
 
 export function PaymentMethodSelector({
   paymentMethods,
@@ -40,22 +41,34 @@ export function PaymentMethodSelector({
 }) {
   const form = useFormContext<PaymentMethod>();
   const { getCartRef, getCartTotal } = useCartStore();
-
+  const { user } = useAuth();
+  console.log('🚀 ~ user:', user);
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
 
   const handleRadioChange = useCallback(
     (value: PaymentMethodType) => {
       setSelectedMethod(value);
+      // Get the initial state for the payment method
       const method = paymentMethods.find((m) => m.value === value);
       const requiresAmount = ['cash', 'bolivarCash'].includes(value);
       const currency = method?.currency ?? 'Bs';
+      const initialState = getInitialPaymentState({
+        paymentType: value,
+        requiresAmount,
+        currency,
+        totalUsd,
+        totalBs,
+        userEmail: user?.email!,
+      });
+
+      // Reset the form with the initial state
       form.reset({
-        ...getInitialPaymentState(value, requiresAmount, currency, totalUsd, totalBs),
         isConfirmed: true,
-      } as PaymentMethod);
+        ...initialState,
+      });
     },
-    [paymentMethods, form, totalUsd, totalBs, setSelectedMethod],
+    [paymentMethods, form, totalUsd, totalBs, user?.email],
   );
 
   const showPaymentDetails = useCallback(
@@ -74,7 +87,7 @@ export function PaymentMethodSelector({
         mBinance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
         pagomovil: <PagoMovilDetails {...detailProps} />,
         binance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
-        credit: <CreditDetails {...detailProps} />,
+        credit: <CreditDetails {...detailProps} creditAvailable={user?.creditAvailable ?? 0} />,
         tdcve: <TdcveDetails {...detailProps} />,
         paypal: <PaypalDetails {...detailProps} />,
         botonbanesco: <BotonBanescoDetails {...detailProps} />,
@@ -95,53 +108,44 @@ export function PaymentMethodSelector({
       onValueChange={handleRadioChange}
       onKeyDown={(e) => {
         if (!(e.target instanceof HTMLInputElement)) {
+          e.preventDefault();
           e.stopPropagation();
         }
       }}
       className="flex flex-col w-full border rounded-lg"
     >
-      <RadioGroup
-        value={selectedMethod}
-        onChange={handleRadioChange}
-        onKeyDown={(e) => {
-          if (!(e.target instanceof HTMLInputElement)) {
-            e.stopPropagation();
-          }
-        }}
-        className="space-y-0 p-0"
-      >
-        {paymentMethods.map((method, index) => (
-          <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
-            <Card
-              className={cn(
-                'border-0 rounded-none focus:ring-0 shadow-none bg-transparent mt-0',
-                selectedMethod === method.value || paymentMethods.length - 1 !== index
-                  ? 'border-b'
-                  : '',
-              )}
-            >
-              <AccordionTriggerContent className="flex w-full px-4 py-3 items-center justify-between">
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex gap-x-3">
+      {paymentMethods.map((method, index) => (
+        <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
+          <Card
+            className={cn(
+              'border-0 rounded-none focus:ring-0 shadow-none bg-transparent mt-0',
+              selectedMethod === method.value || paymentMethods.length - 1 !== index
+                ? 'border-b'
+                : '',
+            )}
+          >
+            <AccordionTriggerContent className="flex w-full px-4 py-3 items-center justify-between">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex gap-x-3 items-center">
+                  <RadioGroup value={selectedMethod} onChange={handleRadioChange}>
                     <RadioField>
                       <Radio value={method.value} />
                     </RadioField>
-                    {method.icon && (
-                      <Image src={method.icon} alt={method.name} width={24} height={24} />
-                    )}
-                    <span className="font-medium">{method.name}</span>
-                  </div>
+                  </RadioGroup>
+
+                  {method.icon && (
+                    <Image src={method.icon} alt={method.name} width={24} height={24} />
+                  )}
+                  <span className="font-medium">{method.name}</span>
                 </div>
-              </AccordionTriggerContent>
-            </Card>
-            <AccordionContent className={cn('px-3 border-b bg-gray-50')}>
-              <div className="flex flex-col gap-y-4 px-2 pt-4 pb-2">
-                {showPaymentDetails(method)}
               </div>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </RadioGroup>
+            </AccordionTriggerContent>
+          </Card>
+          <AccordionContent className={cn('px-3 border-b bg-gray-50')}>
+            <div className="flex flex-col gap-y-4 px-2 pt-4 pb-2">{showPaymentDetails(method)}</div>
+          </AccordionContent>
+        </AccordionItem>
+      ))}
     </Accordion>
   );
 }

@@ -1,27 +1,35 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { onAuthStateChanged, User } from 'firebase/auth'
-import { auth } from '@/lib/firebaseConfig'
+import { useQuery } from '@tanstack/react-query';
+import { getUserById, getUserByEmail } from '@/api/users';
+import { useAuth } from './use-auth';
 
-/**
- * Hook para obtener el usuario autenticado desde Firebase Auth.
- * - user: el usuario de Firebase o null si no está autenticado.
- * - loading: boolean que indica si aún se está determinando el estado.
- * @return { user, loading }.
- */
-export function useUser() {
-  const [user, setUser] = useState<User | null>(auth.currentUser)
-  const [loading, setLoading] = useState(true)
+export function useFirebaseUser() {
+  const { user } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser)
-      setLoading(false)
-    })
+  const {
+    data: firebaseUser,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['firebaseUser', user?.uid],
+    queryFn: () => getUserById(user?.uid!),
+    enabled: !!user?.uid,
+  });
 
-    return () => unsubscribe()
-  }, [])
+  const getUserByEmailQuery = (email: string) => {
+    return useQuery({
+      queryKey: ['firebaseUser', email],
+      queryFn: () => getUserByEmail(email),
+      enabled: !!email,
+    });
+  };
 
-  return { user, loading }
+  return {
+    firebaseUser: firebaseUser?.data,
+    userId: firebaseUser?.id,
+    isLoading,
+    error,
+    getUserByEmail: getUserByEmailQuery,
+  };
 }

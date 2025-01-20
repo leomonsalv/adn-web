@@ -26,7 +26,9 @@ export const CashDetails = ({ totalUsd }: { totalUsd: number }) => {
           }) => (
             <LabeledInput
               ref={ref}
-              error={error?.message || errors?.details?.bills?.[0]?.root?.message}
+              error={
+                error?.message || (errors?.details as unknown as any)?.bills?.[0]?.root?.message
+              }
               label="Ingresa el monto de efectivo"
               inputProps={{
                 placeholder: 'Ingresa el monto',

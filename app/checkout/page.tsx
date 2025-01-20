@@ -7,7 +7,7 @@ import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import { Accordion, AccordionTriggerContent } from '@/components/ui/accordion';
 import { AccordionContent, AccordionItem } from '@radix-ui/react-accordion';
 import { cn } from '@/lib/utils';
-import { useUser } from '@/hooks/use-user';
+import { useAuth } from '@/hooks/use-auth';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
@@ -25,7 +25,7 @@ export default function CSCheckoutPage() {
     shippingAddress,
   } = useCheckoutStore();
 
-  const { user, loading } = useUser();
+  const { user, loading } = useAuth();
 
   const handleSaveData = (formData: ContactInformationSchema | ShippingAddressSchema) => {
     if ('email' in formData) {

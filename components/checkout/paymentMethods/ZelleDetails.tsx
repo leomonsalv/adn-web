@@ -30,7 +30,7 @@ export const ZelleDetails = ({ totalUsd }: { totalUsd: number }) => {
       <div className="flex flex-col">
         <Controller
           control={form.control}
-          name="details.nombre"
+          name="details.name"
           render={({ field: { onChange, onBlur, value, name, ref }, fieldState: { error } }) => (
             <LabeledInput
               ref={ref}

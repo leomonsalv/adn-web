@@ -64,19 +64,21 @@ export const CashbackSchema = z.object({
   banco: z.enum(BANKS.map((bank) => bank.value) as [string, ...string[]], {
     message: 'Debes seleccionar un banco',
   }),
-  cedula: z
-    .string({ required_error: 'Cédula es requerida' })
-    .regex(/^[VJPGE]\d{5,10}$/, {
-      message: 'Cédula debe comenzar con V, J, P, G o E seguido de 5-10 números',
-    }),
+  cedula: z.string({ required_error: 'Cédula es requerida' }).regex(/^[VJPGE]\d{5,10}$/, {
+    message: 'Cédula debe comenzar con V, J, P, G o E seguido de 5-10 números',
+  }),
   telefono: z.string({ required_error: 'Teléfono es requerido' }),
 });
 
 export type CashbackSchemaType = z.infer<typeof CashbackSchema>;
 
-export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
+export type PaymentDetailsUnionType = z.infer<typeof PaymentMethodSchema>;
+
+// Payment Method Schema
+export const PaymentMethodSchema = z.discriminatedUnion('type', [
   // Cash and Bolivar Cash
   z.object({
+    isConfirmed: z.boolean(),
     type: z.enum(['cash', 'bolivarCash']),
     details: z.object({
       bills: z.array(BillsSchema),
@@ -85,6 +87,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Pagomovil
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('pagomovil'),
     details: z.object({
       amount: z.number(),
@@ -99,6 +102,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Simple amount types (binance, credit, preCredit)
   z.object({
+    isConfirmed: z.boolean(),
     type: z.enum(['binance', 'credit', 'preCredit']),
     details: z.object({
       amount: z.number(),
@@ -106,15 +110,17 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Zelle
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('zelle'),
     details: z.object({
       amount: z.number(),
       email: z.string().email(),
-      nombre: z.string().min(3),
+      name: z.string().min(3),
     }),
   }),
   // TDCVE
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('tdcve'),
     details: z.object({
       cardNumber: z.string(),
@@ -128,6 +134,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Paypal
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('paypal'),
     details: z.object({
       orderId: z.string(),
@@ -135,11 +142,13 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Boton Banesco
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('botonbanesco'),
     details: z.object({}),
   }),
   // BNC Pos
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('bncPos'),
     details: z.object({
       tarjeta: z.number(),
@@ -153,6 +162,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // mBinance, motopos
   z.object({
+    isConfirmed: z.boolean(),
     type: z.enum(['mBinance', 'motopos']),
     details: z.object({
       amount: z.number(),
@@ -160,6 +170,7 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
   }),
   // Vippo
   z.object({
+    isConfirmed: z.boolean(),
     type: z.literal('vippo'),
     details: z.object({
       amount: z.number(),
@@ -174,15 +185,6 @@ export const PaymentDetailsUnionSchema = z.discriminatedUnion('type', [
     }),
   }),
 ]);
-
-export type PaymentDetailsUnionType = z.infer<typeof PaymentDetailsUnionSchema>;
-
-// Payment Method Schema
-export const PaymentMethodSchema = z.object({
-  isConfirmed: z.literal(true),
-  type: PaymentDetailsUnionSchema.options[0].shape.type,
-  details: PaymentDetailsUnionSchema.options[0].shape.details,
-});
 
 export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
 

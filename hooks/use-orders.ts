@@ -3,12 +3,12 @@ import { createOrder, fetchOrdersHistoric } from '@/api/orders';
 import { CashbackSchemaType, Order, PaymentMethod } from '@/schemas/create-order-schema';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import { useUser } from './use-user';
+import { useAuth } from './use-auth';
 import { useCartStore } from '@/stores/cart-store';
 
 export default function useOrders() {
   const useGetOrders = (pageSize = 5) => {
-    const { user } = useUser();
+    const { user } = useAuth();
 
     return useInfiniteQuery({
       queryKey: ['orders', user?.uid],
@@ -20,7 +20,7 @@ export default function useOrders() {
   };
 
   const useCreateOrder = () => {
-    const { user } = useUser();
+    const { user } = useAuth();
     const { getCheckoutData } = useCheckoutStore();
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const checkoutData = getCheckoutData();
@@ -29,7 +29,7 @@ export default function useOrders() {
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {
           webOrApp: 'web',
-          addressId: 'ayACEUoSRYwOy3waPHD4',
+          addressId: 'LxqvvoRoOC1K8inMTFcP',
           type: 'alpha',
           clientId: user?.uid!,
           clientName: checkoutData.contactInformation.name,
