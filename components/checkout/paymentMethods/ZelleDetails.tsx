@@ -2,7 +2,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Controller, useFormContext } from 'react-hook-form';
 import { LabeledInput } from '@/components/ui/input';
 
-export const ZelleDetails = ({ totalUsd }: { totalUsd: number }) => {
+interface ZelleDetailsProps {
+  totalUsd: number;
+}
+
+export const ZelleDetails = ({ totalUsd }: ZelleDetailsProps) => {
   const form = useFormContext();
 
   return (
@@ -10,7 +14,8 @@ export const ZelleDetails = ({ totalUsd }: { totalUsd: number }) => {
       <div className="flex flex-col gap-y-2">
         <h6 className="text-sm font-semibold">Pagos por Zelle</h6>
         <p className="text-sm">
-          Ingresa a la plataforma de tu banco y haz un pago por $8.1 USD a los siguientes datos:
+          Ingresa a la plataforma de tu banco y haz un pago por ${totalUsd} USD a los siguientes
+          datos:
         </p>
       </div>
       <Card className="bg-[#232F3E] pt-6">

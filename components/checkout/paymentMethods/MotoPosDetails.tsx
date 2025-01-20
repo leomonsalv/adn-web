@@ -1,7 +1,8 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import { LabeledInput } from '@/components/ui/input';
+interface MotoPosDetailsProps {
+  totalBs: number;
+}
 
-export const MotoPosDetails = ({ totalBs }: { totalBs: number }) => {
+export const MotoPosDetails = ({ totalBs }: MotoPosDetailsProps) => {
   return (
     <div className="flex flex-col gap-y-4">
       <div className="flex flex-col gap-y-2">

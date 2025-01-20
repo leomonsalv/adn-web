@@ -23,11 +23,9 @@ export default function useSearchProduct() {
           // ...debouncedOptions,
           ...params,
         };
-        console.log('🚀 ~ queryFn: ~ searchParams:', searchParams);
 
         try {
           const response = await fetchProducts(searchParams);
-          console.log('🚀 ~ queryFn: ~ response:', response);
           return response;
         } catch (error: unknown) {
           if (error instanceof Error) {

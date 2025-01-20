@@ -2,10 +2,13 @@ import { LabeledInput } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { BANKS } from '@/constants/banks';
 import { dniTypes } from '@/lib/utils';
-
 import { Controller, useFormContext } from 'react-hook-form';
 
-export const PagoMovilDetails = ({ totalBs }: { totalBs: number }) => {
+interface PagoMovilDetailsProps {
+  totalBs: number;
+}
+
+export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
   const form = useFormContext();
 
   return (

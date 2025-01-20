@@ -1,7 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { LabeledInput } from '@/components/ui/input';
 
-export const CashDetails = ({ totalUsd }: { totalUsd: number }) => {
+interface CashDetailsProps {
+  totalUsd: number;
+}
+
+export const CashDetails = ({ totalUsd }: CashDetailsProps) => {
   const form = useFormContext();
 
   return (

@@ -1,3 +1,5 @@
+import { formatCreditValue, formatUsdCurrency } from '@/lib/utils';
+
 export const PreCreditDetails = ({
   totalUsd,
   creditAvailable,
@@ -9,10 +11,11 @@ export const PreCreditDetails = ({
     <div className="flex flex-col gap-y-2">
       <h6 className="text-sm font-semibold">Paga con billetera REI</h6>
       <div className="flex flex-col gap-y-1 bg-[#232F3E] p-4 rounded-lg">
-        <span className="text-sm text-white">Tu billetera REI</span>
+        <span className="text-sm text-white font-semibold">Tu billetera REI</span>
         <p className="text-sm text-white">
           Usaras&nbsp;
-          <span className="font-semibold">${totalUsd} USD</span> de los ${creditAvailable} USD
+          <span className="font-semibold">{formatUsdCurrency(totalUsd)}</span> de los&nbsp;
+          <span className="font-semibold">{formatCreditValue(creditAvailable)}</span>&nbsp;
           disponibles en tu billetera Adan para pagar la orden.
         </p>
       </div>

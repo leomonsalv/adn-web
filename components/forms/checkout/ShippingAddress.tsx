@@ -61,8 +61,6 @@ export function ShippingAddress({
   const onSubmit = (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
     onSaveAddress?.(rest);
-
-    console.log('Shipping Address:', rest, lat, lng);
   };
 
   return (

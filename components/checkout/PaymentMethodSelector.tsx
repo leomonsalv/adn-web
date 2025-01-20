@@ -30,19 +30,22 @@ import { BncPosDetails } from './paymentMethods/BncPosDetails';
 import { Radio, RadioField, RadioGroup } from '../ui/radio';
 import useUser from '@/hooks/use-user';
 
+interface PaymentMethodSelectorProps {
+  paymentMethods: Method[];
+  selectedMethod: PaymentMethodType | undefined;
+  setSelectedMethod: (value: PaymentMethodType) => void;
+}
+
 export function PaymentMethodSelector({
   paymentMethods,
   selectedMethod,
   setSelectedMethod,
-}: {
-  paymentMethods: Method[];
-  selectedMethod: PaymentMethodType | undefined;
-  setSelectedMethod: (value: PaymentMethodType) => void;
-}) {
+}: PaymentMethodSelectorProps) {
   const form = useFormContext<PaymentMethod>();
+
   const { getCartRef, getCartTotal } = useCartStore();
   const { user } = useUser();
-  console.log('🚀 ~ user:', user.data);
+
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
 
@@ -66,7 +69,7 @@ export function PaymentMethodSelector({
       form.reset({
         isConfirmed: true,
         ...initialState,
-      });
+      } as PaymentMethod);
     },
     [paymentMethods, form, totalUsd, totalBs, user?.data?.email],
   );
@@ -92,7 +95,9 @@ export function PaymentMethodSelector({
         paypal: <PaypalDetails {...detailProps} />,
         botonbanesco: <BotonBanescoDetails {...detailProps} />,
         bncPos: <BncPosDetails {...detailProps} />,
-        preCredit: <PreCreditDetails {...detailProps} />,
+        preCredit: (
+          <PreCreditDetails {...detailProps} creditAvailable={user?.data?.preWallet.credit ?? 0} />
+        ),
         vippo: <VippoDetails {...detailProps} />,
       };
 

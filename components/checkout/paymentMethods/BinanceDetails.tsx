@@ -3,7 +3,12 @@ import { LabeledInput } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 
-export const BinanceDetails = ({ totalUsd, qr }: { totalUsd: number; qr: string }) => {
+interface BinanceDetailsProps {
+  totalUsd: number;
+  qr: string;
+}
+
+export const BinanceDetails = ({ totalUsd, qr }: BinanceDetailsProps) => {
   const form = useFormContext();
 
   return (

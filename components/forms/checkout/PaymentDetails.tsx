@@ -37,11 +37,8 @@ export function PaymentDetails() {
   const form = useForm<PaymentMethod>({
     resolver: zodResolver(PaymentMethodSchema),
   });
-  console.log('🚀 ~ PaymentDetails ~ Error:', form.formState.errors);
-  console.log('🚀 ~ PaymentDetails ~ form.getValues():', form.getValues());
 
   const onSubmit = (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     try {
       if ((data.type === 'cash' || data.type === 'bolivarCash') && !cashbackData) {
         setCashbackModal(true);
@@ -55,7 +52,6 @@ export function PaymentDetails() {
 
       createOrder(newOrder);
     } catch (error) {
-      console.log('🚀 ~ onSubmit ~ error:', error);
       throw new Error('Error creating order');
     }
   };
@@ -83,7 +79,7 @@ export function PaymentDetails() {
           totalBs,
           userEmail: user?.data?.email!,
         }),
-      });
+      } as PaymentMethod);
     }
   }, [paymentMethods, user?.data?.email]);
 

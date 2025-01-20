@@ -7,12 +7,11 @@ import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import { Accordion, AccordionTriggerContent } from '@/components/ui/accordion';
 import { AccordionContent, AccordionItem } from '@radix-ui/react-accordion';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/use-auth';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { ContactInformationSchema } from '@/schemas/contact-information-schema';
-import { Button } from '@/components/ui/button';
+
 import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
@@ -71,10 +70,10 @@ export default function CSCheckoutPage() {
           ),
         component: (
           <ContactInformation
-            name={user?.data?.name ?? contactInformation.name}
-            email={user?.data?.email ?? contactInformation.email}
-            dni={user?.data?.dni ?? contactInformation.dni}
-            dniType={user?.data?.dniType ?? contactInformation.dniType}
+            name={user?.data?.invoiceData?.fullname ?? contactInformation.name}
+            email={user?.data?.invoiceData?.email ?? contactInformation.email}
+            dni={user?.data?.invoiceData?.dni ?? contactInformation.dni}
+            dniType={user?.data?.invoiceData?.dniType ?? contactInformation.dniType}
             onSubmit={handleSaveData}
           />
         ),

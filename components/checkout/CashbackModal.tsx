@@ -30,7 +30,6 @@ export function CashbackModal({
   });
 
   const onSubmit = (data: CashbackSchemaType) => {
-    console.log(data);
     onClose();
     onNext(previousData, data);
   };

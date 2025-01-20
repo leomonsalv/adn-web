@@ -12,7 +12,7 @@ export function classNames(...classes: string[]) {
 }
 
 export const formatUsdCurrency = (value: number): string => {
-  const formattedValue = new Intl.NumberFormat('en-US', {
+  const formattedValue = new Intl.NumberFormat('es-VE', {
     style: 'currency',
     currency: 'USD',
   }).format(value);
@@ -29,6 +29,14 @@ export const formatVefCurrency = (value: number): string => {
   }).format(value);
 
   return formattedValue.replace('VEF', 'Bs.');
+};
+
+/**
+ * Format the credit and pre credit available to USD
+ */
+
+export const formatCreditValue = (value: number): string => {
+  return formatUsdCurrency(value / 100);
 };
 
 /**
