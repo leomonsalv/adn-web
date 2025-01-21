@@ -97,7 +97,9 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         {/* Título */}
         <div className="border-b border-gray-200 pb-10">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">Productos</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            {urlSearch || 'Productos'}
+          </h1>
         </div>
 
         <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
