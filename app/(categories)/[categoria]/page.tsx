@@ -1,25 +1,7 @@
-import { categories, subCategories } from '@/data/categories';
-import Link from 'next/link';
+// app/[categoria]/page.tsx
 
-export default function CategoryPage({ params }: { params: { categoryType: string } }) {
-  const category = categories.find((cat) => cat.id === params.categoryType);
-  const subCategoryList = subCategories[params.categoryType] || [];
+import CategoryProductGrid from '@/components/categorias/categoryProductGrid';
 
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">{category?.name}</h2>
-      <ul className="space-y-2">
-        {subCategoryList.map((sub) => (
-          <li key={sub.id}>
-            <Link
-              href={`/${params.categoryType}/${sub.id}`}
-              className="text-blue-500 hover:underline"
-            >
-              {sub.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+export default function CategoryPage({ params }: { params: { categoria: string } }) {
+  return <CategoryProductGrid category={params.categoria} subCategory={null} niche={null} />;
 }
