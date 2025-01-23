@@ -19,11 +19,13 @@ export default function useSearchProduct() {
     return useInfiniteQuery<SearchResponse>({
       queryKey: ['search-products', debouncedOptions],
       queryFn: async ({ pageParam }) => {
+        const currentPage = typeof pageParam === 'number' ? pageParam : 1;
+
         const searchParams: SearchFormType = {
-          // ...debouncedOptions,
+          ...debouncedOptions,
           ...params,
+          actualPage: currentPage,
         };
-        console.log('🚀 ~ queryFn: ~ searchParams:', searchParams);
 
         try {
           const response = await fetchProducts(searchParams);

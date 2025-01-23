@@ -7,6 +7,7 @@ import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
 import { Facets } from '@/types/categories';
+import { FunnelIcon } from '@heroicons/react/24/outline';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -108,20 +109,17 @@ export default function CategoryPage() {
         <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
           <aside>
             <h2 className="sr-only">Filtros</h2>
+
             <button
-              title="Filtros"
               type="button"
               onClick={() => setMobileFiltersOpen(true)}
               className="inline-flex items-center lg:hidden"
-            />
+            >
+              <span className="text-sm font-medium text-gray-700">Filtros</span>
+              <FunnelIcon className="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+            </button>
 
             <div className="hidden lg:block">
-              {/* <SortFilterOptions
-                onSortChange={handleSortChange}
-                onPriceRangeChange={handlePriceRangeChange}
-                currentSort={sortOption}
-                currentPriceRange={priceRange}
-              /> */}
               <div className="mt-6">
                 <Filters
                   facets={data?.pages[0]?.facets}
