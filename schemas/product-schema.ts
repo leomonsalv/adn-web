@@ -28,7 +28,7 @@ export const ProductSchema = z.object({
   price_extra: z.number(),
   description: z.string(),
   imageLarge: z.string(),
-  image: z.null(),
+  image: z.string(),
   imageSmall: z.string(),
   imageXtraSmall: z.string(),
   imageUltraSmall: z.string(),
@@ -37,7 +37,7 @@ export const ProductSchema = z.object({
   taxes_ids: z.array(z.string()),
   required_recipe: z.boolean(),
   laboratory: z.string(),
-  product_type: z.null(),
+  product_type: z.string(),
   recommended: z.boolean(),
   offers: z.null(),
   x_studio_previous_price: z.string(),
@@ -45,12 +45,13 @@ export const ProductSchema = z.object({
   categ_route: z.string(),
   saleslast7days: z.number(),
   discount_rate: z.string(),
-  move_location_id: z.null(),
-  moves_location_id: z.null(),
+  move_location_id: z.string(),
+  moves_location_id: z.string(),
   x_studio_libre_de_gluten: z.string(),
   x_studio_2x1: z.string(),
   x_studio_fecha_de_vencimiento: XStudioFechaDeVencimientoSchema,
   taxes: z.array(TaxSchema),
+  prescriptionUrl: z.string().optional(),
 });
 
 export const RecommendedProductsPayloadSchema = z.object({

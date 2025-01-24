@@ -35,6 +35,8 @@ import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
+import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
+import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -52,6 +54,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     priceRange: [0, 3000],
   };
   const productId = Number(use(params).id);
+  const { isPrescriptionUploaded } = usePrescriptionUpload();
+  const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
+
   const router = useRouter();
   const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
   const { useMutateCart, useGetCart } = useCart();
@@ -133,7 +138,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const requiresRecipe =
     productData.required_recipe === true || productData.product_type === 'prescripcion';
 
-  const disableAddToCart = noStock || requiresRecipe;
+  const disableAddToCart =
+    noStock || (requiresRecipe && !prescriptionUploaded && !isPrescriptionUploaded);
 
   return (
     <div className="bg-white">
@@ -280,22 +286,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               </form>
 
               {requiresRecipe && (
-                <div className="mt-4">
-                  <Button
-                    type="button"
-                    color="teal"
-                    className="w-full h-12"
-                    onClick={() => {
-                      // TODO: Add prescription upload logic
-                    }}
-                  >
-                    Subir prescripción
-                  </Button>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Este producto requiere una prescripción médica. Por favor, sube tu prescripción
-                    antes de agregarlo al carrito.
-                  </p>
-                </div>
+                <PrescriptionUpload
+                  product={productData}
+                  onUploadSuccess={() => setPrescriptionUploaded(true)}
+                />
               )}
 
               {/* Delivery details */}

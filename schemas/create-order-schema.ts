@@ -206,6 +206,13 @@ const OdooOrderSchema = z.object({
   ),
 });
 
+// Prescription Schema
+export const PrescriptionSchema = z.object({
+  product: z.number(),
+  url: z.string(),
+});
+export type Prescription = z.infer<typeof PrescriptionSchema>;
+
 // Main Order Schema
 export const OrderSchema = z.object({
   webOrApp: z.string(),
@@ -213,7 +220,7 @@ export const OrderSchema = z.object({
   addressId: z.string(),
   clientId: z.string(),
   clientName: z.string(),
-  prescriptions: z.array(z.any()),
+  prescriptions: z.array(PrescriptionSchema),
   subtotal: z.number(),
   tax: z.number(),
   ref: z.number(),
