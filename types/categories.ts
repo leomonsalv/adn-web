@@ -17,6 +17,43 @@ import {
 } from '@/schemas/categories-schema';
 import { z } from 'zod';
 
+export interface SEO {
+  title: string;
+  description: string;
+}
+
+export interface Niche {
+  _id: string;
+  name: string;
+  slug: string;
+  level: number;
+  parent: string | null;
+  seo: SEO;
+  niches?: Niche[];
+}
+
+export interface Subcategory {
+  _id: string;
+  name: string;
+  slug: string;
+  level: number;
+  parent: string | null;
+  seo: SEO;
+  niches?: Niche[];
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  level: number;
+  parent: string | null;
+  seo: SEO;
+  subcategories?: Subcategory[];
+}
+
+export interface CategoriesNavigationProps extends Array<Category> {}
+
 export type GetCategoriesResponse = z.infer<typeof GetCategoriesResponseSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type AmountType = z.infer<typeof AmountTypeSchema>;

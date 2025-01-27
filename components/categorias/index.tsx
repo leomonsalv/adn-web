@@ -3,7 +3,7 @@ import ProductGrid from './productGrid';
 import SortSection from './sortFilterOptions';
 import CategoryCard from './categoryBox/CategoryCard';
 import CategoryBox from './categoryBox/CategoryBox';
-import CategoryProductCard from './categoryBox/CategoryProductCard';
+import CategoryProductGrid from './categoryProductGrid';
 
 export default {
   Filters,
@@ -11,5 +11,5 @@ export default {
   SortSection,
   CategoryCard,
   CategoryBox,
-  CategoryProductCard,
+  CategoryProductGrid,
 };

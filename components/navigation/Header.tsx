@@ -47,7 +47,7 @@ export function NavLinks() {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const searchValue = (e.target as HTMLInputElement).value;
-        router.push(`/categoria?search=${searchValue}&category=${search.category}`);
+        router.push(`/b?q=${searchValue}`);
       }
     },
     [search.value, search.category, router],
@@ -55,9 +55,7 @@ export function NavLinks() {
 
   const handleSearch = useCallback(
     (query: string) => {
-      router.push(
-        `/categoria?search=${query.toLowerCase()}&category=${search.category.toLowerCase()}`,
-      );
+      router.push(`/b?q=${query.toLowerCase()}`);
     },
     [search.category],
   );
