@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@/hooks/use-user';
+import { useAuth } from '@/hooks/use-auth';
 import { Button } from '../ui/button';
 import { logOutAccount } from '@/api/auth';
 import { useToast } from '@/hooks/use-toast';
@@ -22,7 +22,7 @@ import { useCartStore } from '@/stores/cart-store';
 
 export function NavLinks() {
   const router = useRouter();
-  const { user, loading } = useUser();
+  const { user, loading } = useAuth();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
   const [search, setSearch] = useState({ value: '', category: '1' });

@@ -1,15 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Method } from '@/schemas/payment-method-schema';
+import { DniType } from '@/schemas/create-order-schema';
 
 interface CheckoutState {
-  currentStep: number;
+  currentStep: 1 | 2 | 3;
   paymentType: 'simple' | 'mixed';
   selectedPaymentMethod: Method | null;
   contactInformation: {
+    name: string;
     email: string;
-    phone: string;
     dni: string;
+    dniType: DniType;
   };
   shippingAddress: {
     phone: string;
@@ -19,6 +21,7 @@ interface CheckoutState {
     isDefault: boolean;
     lat: number;
     lng: number;
+    id: string;
   };
   billingInformation: {
     sameAsShipping: boolean;
@@ -44,6 +47,7 @@ interface CheckoutActions {
   setShippingAddress: (address: CheckoutState['shippingAddress']) => void;
   setBillingInformation: (info: CheckoutState['billingInformation']) => void;
   setDeliveryMethod: (method: CheckoutState['deliveryMethod']) => void;
+  getCheckoutData: () => CheckoutState;
   resetCheckout: () => void;
 }
 
@@ -53,8 +57,9 @@ const initialState: CheckoutState = {
   selectedPaymentMethod: null,
   contactInformation: {
     email: '',
-    phone: '',
     dni: '',
+    dniType: 'V',
+    name: '',
   },
   shippingAddress: {
     phone: '',
@@ -64,6 +69,7 @@ const initialState: CheckoutState = {
     isDefault: false,
     lat: 0,
     lng: 0,
+    id: '',
   },
   billingInformation: {
     sameAsShipping: true,
@@ -73,7 +79,7 @@ const initialState: CheckoutState = {
 
 export const useCheckoutStore = create<CheckoutState & CheckoutActions>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
       setCurrentStep: (step) => set({ currentStep: step }),
       setPaymentType: (type) => set({ paymentType: type }),
@@ -83,6 +89,7 @@ export const useCheckoutStore = create<CheckoutState & CheckoutActions>()(
       setBillingInformation: (info) => set({ billingInformation: info }),
       setDeliveryMethod: (method) => set({ deliveryMethod: method }),
       resetCheckout: () => set(initialState),
+      getCheckoutData: () => get(),
     }),
     {
       name: 'checkout-storage',

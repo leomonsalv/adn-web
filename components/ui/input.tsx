@@ -2,6 +2,7 @@ import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 import { Label } from './label';
+import { cn } from '@/lib/utils';
 
 interface LabeledInputProps {
   label: string;
@@ -9,6 +10,7 @@ interface LabeledInputProps {
   labelProps: React.ComponentPropsWithoutRef<'label'>;
   helperText?: string;
   error?: string;
+  className?: string;
 }
 
 export function InputGroup({ children }: React.ComponentPropsWithoutRef<'span'>) {
@@ -103,19 +105,19 @@ export const Input = forwardRef(function Input(
 });
 
 export const LabeledInput = forwardRef(function LabeledInput(
-  { label, inputProps, labelProps, helperText, error }: LabeledInputProps,
+  { label, inputProps, labelProps, helperText, error, className }: LabeledInputProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) {
   return (
-    <div>
+    <div className={cn('flex flex-col', className)}>
       <Label className="block text-sm font-medium text-gray-700" {...labelProps}>
         {label}
       </Label>
       <div className="mt-1">
         <Input
           ref={ref}
-          {...inputProps}
           className="block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          {...inputProps}
         />
       </div>
       {(error || helperText) && (

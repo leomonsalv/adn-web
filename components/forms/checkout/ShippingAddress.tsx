@@ -12,7 +12,6 @@ import { MapPin } from 'lucide-react';
 import { useState } from 'react';
 import MapDialog from '@/components/address/MapDialog';
 import AddressAutocomplete from '@/components/address/Autocomplete';
-
 interface SavedAddress {
   id: string;
   phone: string;
@@ -34,6 +33,18 @@ export function ShippingAddress({
   onSelectAddress,
   ...data
 }: ShippingAddressProps) {
+  const { states } = useStates();
+
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
+  const findStateMatch = (stateName: string) => {
+    return states.find(
+      (state) =>
+        state.label.toLowerCase().includes(stateName.toLowerCase()) ||
+        stateName.toLowerCase().includes(state.label.toLowerCase()),
+    );
+  };
+
   const { control, handleSubmit, setValue, watch } = useForm<ShippingAddressSchema>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: {
@@ -47,21 +58,9 @@ export function ShippingAddress({
     },
   });
 
-  const { states } = useStates();
-  const [isMapOpen, setIsMapOpen] = useState(false);
-
-  const findStateMatch = (stateName: string) => {
-    return states.find(
-      (state) =>
-        state.label.toLowerCase().includes(stateName.toLowerCase()) ||
-        stateName.toLowerCase().includes(state.label.toLowerCase()),
-    );
-  };
-
   const onSubmit = (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
     onSaveAddress?.(rest);
-    console.log('Shipping Address:', rest, lat, lng);
   };
 
   return (

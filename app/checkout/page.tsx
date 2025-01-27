@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ContactInformation } from '@/components/forms/checkout/ContactInformation';
 import { PaymentDetails } from '@/components/forms/checkout/PaymentDetails';
 import { ShippingAddress } from '@/components/forms/checkout/ShippingAddress';
@@ -7,30 +7,45 @@ import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import { Accordion, AccordionTriggerContent } from '@/components/ui/accordion';
 import { AccordionContent, AccordionItem } from '@radix-ui/react-accordion';
 import { cn } from '@/lib/utils';
-import { useUser } from '@/hooks/use-user';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
+import { ContactInformationSchema } from '@/schemas/contact-information-schema';
+
+import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
-  const { currentStep, setCurrentStep, paymentType, setShippingAddress, setContactInformation } =
-    useCheckoutStore();
+  const { user, isLoading } = useUser();
 
-  const { user, loading } = useUser();
+  const {
+    currentStep,
+    setCurrentStep,
+    paymentType,
+    setShippingAddress,
+    setContactInformation,
+    contactInformation,
+    shippingAddress,
+  } = useCheckoutStore();
 
-  const handleShippingSubmit = (formData: ShippingAddressSchema) => {
-    const { lat, lng, isDefault, phone, ...addressData } = formData;
-
-    setShippingAddress({
-      street: addressData.street,
-      city: addressData.city,
-      state: addressData.state,
-      isDefault,
-      lat: lat ?? 0,
-      lng: lng ?? 0,
-      phone,
-    });
-
+  const handleSaveData = (formData: ContactInformationSchema | ShippingAddressSchema) => {
+    if ('email' in formData) {
+      setContactInformation({
+        name: formData.name,
+        email: formData.email,
+        dni: formData.dni,
+        dniType: formData.dniType,
+      });
+    } else {
+      const { lat, lng, isDefault, phone, ...addressData } = formData;
+      setShippingAddress({
+        ...addressData,
+        isDefault,
+        lat: lat ?? 0,
+        lng: lng ?? 0,
+        phone,
+        id: 'new',
+      });
+    }
     setCurrentStep(currentStep + 1);
   };
 
@@ -39,12 +54,29 @@ export default function CSCheckoutPage() {
       {
         id: 1,
         title: 'Información de contacto',
-        button: !user && (
-          <span className="text-sm font-medium">
-            ¿Tienes una cuenta? <span className="font-semibold">Iniciar sesión</span>
-          </span>
+        button:
+          contactInformation.email && currentStep !== 1 ? (
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-sm">{contactInformation.name}</span>
+              <span className="text-sm">{contactInformation.email}</span>
+              <span className="text-sm">{`${contactInformation.dniType}-${contactInformation.dni}`}</span>
+            </div>
+          ) : (
+            !user && (
+              <span className="text-sm font-medium">
+                ¿Tienes una cuenta? <span className="font-semibold">Iniciar sesión</span>
+              </span>
+            )
+          ),
+        component: (
+          <ContactInformation
+            name={user?.data?.invoiceData?.fullname ?? contactInformation.name}
+            email={user?.data?.invoiceData?.email ?? contactInformation.email}
+            dni={user?.data?.invoiceData?.dni ?? contactInformation.dni}
+            dniType={user?.data?.invoiceData?.dniType ?? contactInformation.dniType}
+            onSubmit={handleSaveData}
+          />
         ),
-        component: <ContactInformation />,
       },
       {
         id: 2,
@@ -56,7 +88,7 @@ export default function CSCheckoutPage() {
             city={''}
             state={''}
             isDefault={false}
-            onSaveAddress={handleShippingSubmit}
+            onSaveAddress={handleSaveData}
           />
         ),
       },
@@ -68,10 +100,10 @@ export default function CSCheckoutPage() {
       },
       // { id: 5, title: 'Dirección de facturación', component: <BillingInformation /> },
     ],
-    [paymentType, user],
+    [paymentType, user, contactInformation, currentStep],
   );
 
-  if (loading) return <CheckoutSkeleton />;
+  if (isLoading) return <CheckoutSkeleton />;
 
   return (
     <div className="bg-white">
@@ -86,8 +118,8 @@ export default function CSCheckoutPage() {
             type="single"
             collapsible
             value={currentStep.toString()}
-            onValueChange={(value) => {
-              setCurrentStep(parseInt(value));
+            onValueChange={() => {
+              return;
             }}
             className="data-[state=open]:border-b-0 px-4 pb-36 pt-16 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
           >
@@ -97,9 +129,23 @@ export default function CSCheckoutPage() {
                   className={cn(
                     'flex w-full justify-between items-center py-6',
                     step.subtitle && 'flex-col items-start',
+                    step.id !== currentStep && 'flex-col items-start gap-2.5',
                   )}
                 >
-                  <h2 className="text-lg font-bold">{step.title}</h2>
+                  <div className="flex w-full items-center justify-between gap-2">
+                    <h2 className="text-lg font-bold">{step.title}</h2>
+                    {step.id === 1 && currentStep !== step.id && contactInformation.email && (
+                      <span
+                        className="text-sm font-normal text-blue-400 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentStep(step.id);
+                        }}
+                      >
+                        Cambiar
+                      </span>
+                    )}
+                  </div>
                   {step.button && <span className="text-sm">{step.button}</span>}
                   {step.subtitle && <span className="text-sm">{step.subtitle}</span>}
                 </AccordionTriggerContent>
