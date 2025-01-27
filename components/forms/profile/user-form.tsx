@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { useToast } from '@/hooks/use-toast'
+import React, { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 import {
   User2,
   UserCircle as Identification,
@@ -10,31 +10,31 @@ import {
   Edit,
   Check,
   XCircleIcon,
-} from 'lucide-react'
-import { Dialog, DialogActions, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import useAuth from '@/hooks/use-auth'
-import { useFormStatus } from 'react-dom'
-import { ProfileFieldWithOTP } from '@/components/forms/profile/modals/otp-form'
-import { useUserProfileMutations } from '@/hooks/use-user-profile'
+} from 'lucide-react';
+import { Dialog, DialogActions, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { useFormStatus } from 'react-dom';
+import { ProfileFieldWithOTP } from '@/components/forms/profile/modals/otp-form';
+import { useUserProfileMutations } from '@/hooks/use-user-profile';
 
 interface UserProfileFormProps {
   initialData: {
-    fullName: string
-    idDocument: string
-    phoneNumber?: string | null
-    email?: string | null
-    password: string
-    validatedPhone: boolean
-    validatedEmail: boolean
-  }
+    fullName: string;
+    idDocument: string;
+    phoneNumber?: string | null;
+    email?: string | null;
+    password: string;
+    validatedPhone: boolean;
+    validatedEmail: boolean;
+  };
 }
 
 export function UserProfileForm({ initialData }: UserProfileFormProps) {
-  const { toast } = useToast()
-  const { useDeleteAccountMutation } = useAuth()
-  const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccountMutation()
-  const [open, setOpen] = useState(false)
+  const { toast } = useToast();
+  const { useDeleteAccountMutation } = useAuth();
+  const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccountMutation();
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="space-y-6 bg-white p-6 rounded-lg max-w-md mx-auto">
@@ -123,8 +123,8 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
           <Button
             disabled={isDeleting}
             onClick={async () => {
-              await deleteAccount()
-              setOpen(false)
+              await deleteAccount();
+              setOpen(false);
             }}
           >
             Eliminar cuenta
@@ -132,7 +132,7 @@ export function UserProfileForm({ initialData }: UserProfileFormProps) {
         </DialogActions>
       </Dialog>
     </div>
-  )
+  );
 }
 
 function ProfileField({
@@ -144,41 +144,41 @@ function ProfileField({
   type = 'text',
   disabled = false,
 }: {
-  id: string
-  label: string
-  icon: React.ReactNode
-  defaultValue: string
-  onSuccess?: () => void
-  type?: string
-  disabled?: boolean
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  defaultValue: string;
+  onSuccess?: () => void;
+  type?: string;
+  disabled?: boolean;
 }) {
-  const [isEditing, setIsEditing] = React.useState(false)
-  const [tempValue, setTempValue] = React.useState(defaultValue)
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [tempValue, setTempValue] = React.useState(defaultValue);
 
-  const { updateMutation } = useUserProfileMutations()
-  const { isPending, isError, error, mutateAsync } = updateMutation
+  const { updateMutation } = useUserProfileMutations();
+  const { isPending, isError, error, mutateAsync } = updateMutation;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!isEditing || disabled) return
+    e.preventDefault();
+    if (!isEditing || disabled) return;
 
     if (tempValue === defaultValue) {
-      setIsEditing(false)
-      return
+      setIsEditing(false);
+      return;
     }
 
-    const result = await mutateAsync({ [id]: tempValue })
+    const result = await mutateAsync({ [id]: tempValue });
 
     if (result.success) {
-      onSuccess?.()
-      setIsEditing(false)
+      onSuccess?.();
+      setIsEditing(false);
     }
-  }
+  };
 
   const handleCancel = () => {
-    setTempValue(defaultValue)
-    setIsEditing(false)
-  }
+    setTempValue(defaultValue);
+    setIsEditing(false);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
@@ -239,11 +239,11 @@ function ProfileField({
         </p>
       )}
     </form>
-  )
+  );
 }
 
 function SubmitButton() {
-  const { pending } = useFormStatus()
+  const { pending } = useFormStatus();
 
   return (
     <Button
@@ -254,5 +254,5 @@ function SubmitButton() {
     >
       {pending ? 'Cargando...' : 'Finalizado'}
     </Button>
-  )
+  );
 }
