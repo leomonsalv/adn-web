@@ -1,48 +1,82 @@
-import { z } from "zod";
+import { z } from 'zod';
+
+// export const searchFormSchema = z.object({
+//   query: z.string().optional(),
+//   facets: z.record(z.array(z.string())).optional(),
+//   suggest: z.boolean().optional(),
+//   pageSize: z.number().optional(),
+//   actualPage: z.number().optional(),
+//   stock: z.boolean().optional(),
+//   category: z.string().optional(),
+//   carousel: z.boolean().optional(),
+//   priceRange: z
+//     .object({
+//       from: z.number(),
+//       to: z.number(),
+//     })
+//     .optional(),
+//   type: z.enum(["libre", "preescripcion", "tienda"]).optional(),
+//   sort: z
+//     .object({
+//       field: z.enum([
+//         "price",
+//         "price_extra",
+//         "name",
+//         "qty_available",
+//         "x_studio_laboratory",
+//       ]),
+//       order: z.enum(["asc", "desc"]),
+//     })
+//     .optional(),
+// });
+
+// Schema para las facetas/agregaciones
+export const FacetSchema = z.object({
+  key: z.string(),
+  doc_count: z.number(),
+});
+
+export const PriceRangeSchema = z.object({
+  min: z.number().optional(),
+  max: z.number().optional(),
+});
 
 export const searchFormSchema = z.object({
   query: z.string().optional(),
-  facets: z.record(z.array(z.string())).optional(),
-  suggest: z.boolean().optional(),
-  pageSize: z.number().optional(),
   actualPage: z.number().optional(),
-  stock: z.boolean().optional(),
-  category: z.string().optional(),
-  carousel: z.boolean().optional(),
-  priceRange: z
-    .object({
-      from: z.number(),
-      to: z.number(),
-    })
-    .optional(),
-  type: z.enum(["libre", "preescripcion", "tienda"]).optional(),
-  sort: z
-    .object({
-      field: z.enum([
-        "price",
-        "price_extra",
-        "name",
-        "qty_available",
-        "x_studio_laboratory",
-      ]),
-      order: z.enum(["asc", "desc"]),
-    })
-    .optional(),
+  pageSize: z.number().optional(),
+  sort: z.string().optional(),
+  categoryPath: z.string().optional(),
+  facets: z.record(z.string(), z.array(z.string())).optional(),
+  priceRange: PriceRangeSchema.optional(),
+  suggest: z.boolean().optional(),
 });
 
-export const CurrencySchema = z.enum(["VEF", "USD"]);
+// Schema para las sugerencias
+export const SuggestionSchema = z.object({
+  suggestion: z.string(),
+});
+
+// Schema para la respuesta de sugerencias
+export const SearchSuggestionsResponseSchema = z.object({
+  results: z.object({
+    documents: z.array(SuggestionSchema),
+  }),
+});
+
+export const CurrencySchema = z.enum(['VEF', 'USD']);
 export type Currency = z.infer<typeof CurrencySchema>;
 
-export const AmountTypeSchema = z.enum(["percent"]);
+export const AmountTypeSchema = z.enum(['percent']);
 export type AmountType = z.infer<typeof AmountTypeSchema>;
 
-export const NameSchema = z.enum(["Farmacia Adan de Venezuela, C.A."]);
+export const NameSchema = z.enum(['Farmacia Adan de Venezuela, C.A.']);
 export type Name = z.infer<typeof NameSchema>;
 
-export const DescriptionSchema = z.enum(["IVA (16%) ventas"]);
+export const DescriptionSchema = z.enum(['IVA (16%) ventas']);
 export type Description = z.infer<typeof DescriptionSchema>;
 
-export const TypeSchema = z.enum(["sale"]);
+export const TypeSchema = z.enum(['sale']);
 export type Type = z.infer<typeof TypeSchema>;
 
 export const CompanySchema = z.object({
@@ -52,9 +86,7 @@ export const CompanySchema = z.object({
 export type Company = z.infer<typeof CompanySchema>;
 
 export const XStudioFechaDeVencimientoSchema = z.object({});
-export type XStudioFechaDeVencimiento = z.infer<
-  typeof XStudioFechaDeVencimientoSchema
->;
+export type XStudioFechaDeVencimiento = z.infer<typeof XStudioFechaDeVencimientoSchema>;
 
 export const CategIdDatumSchema = z.object({
   value: z.string(),

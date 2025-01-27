@@ -12,8 +12,13 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['tailwindui.com'],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'tailwindui.com',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
