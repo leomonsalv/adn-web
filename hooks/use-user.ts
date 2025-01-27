@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getUserById, getUserByEmail } from '@/api/users';
+import { getUserById, getUserByEmail, getUserAddresses } from '@/api/users';
 import { useAuth } from './use-auth';
 
 export default function useUser() {
@@ -10,6 +10,12 @@ export default function useUser() {
   const query = useQuery({
     queryKey: ['firebaseUser', user?.uid],
     queryFn: () => getUserById(user?.uid!),
+    enabled: !!user?.uid,
+  });
+
+  const queryAddresses = useQuery({
+    queryKey: ['firebaseUserAddresses', user?.uid],
+    queryFn: () => getUserAddresses(user?.uid!),
     enabled: !!user?.uid,
   });
 
@@ -27,6 +33,7 @@ export default function useUser() {
       ...query.data,
       id: query.data?.id,
     },
+    addresses: queryAddresses.data,
     useGetUserByEmail,
   };
 }

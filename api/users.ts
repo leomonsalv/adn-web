@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, limit, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebaseConfig';
 import { UserCollectionResponse, UserProfileData } from '@/types/user';
 
@@ -17,6 +17,29 @@ export const getUserById = async (userId: string): Promise<UserCollectionRespons
     };
   } catch (error) {
     console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+export const getUserAddresses = async (userId: string): Promise<any> => {
+  try {
+    const q = query(
+      collection(db, 'users', userId, 'addresses'),
+      limit(5),
+      where('deletedAt', '==', null),
+      orderBy('createdAt', 'desc'),
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error('Addresses not found');
+    }
+
+    return {
+      data: querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+    };
+  } catch (error) {
+    console.error('Error fetching addresses:', error);
     throw error;
   }
 };

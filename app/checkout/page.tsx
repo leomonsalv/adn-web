@@ -15,7 +15,7 @@ import { ContactInformationSchema } from '@/schemas/contact-information-schema';
 import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, addresses } = useUser();
 
   const {
     currentStep,
@@ -36,14 +36,14 @@ export default function CSCheckoutPage() {
         dniType: formData.dniType,
       });
     } else {
-      const { lat, lng, isDefault, phone, ...addressData } = formData;
+      const { lat, lng, isDefault, id, phone, ...addressData } = formData;
       setShippingAddress({
         ...addressData,
         isDefault,
         lat: lat ?? 0,
         lng: lng ?? 0,
         phone,
-        id: 'new',
+        id: id ?? 'new',
       });
     }
     setCurrentStep(currentStep + 1);
@@ -80,7 +80,10 @@ export default function CSCheckoutPage() {
       },
       {
         id: 2,
-        title: 'Dirección de envío',
+        title:
+          addresses?.data?.length === 0
+            ? 'Dirección de envío'
+            : `Direcciones de entrega (${addresses?.data?.length})`,
         component: (
           <ShippingAddress
             phone={''}
@@ -89,6 +92,7 @@ export default function CSCheckoutPage() {
             state={''}
             isDefault={false}
             onSaveAddress={handleSaveData}
+            savedAddresses={addresses?.data}
           />
         ),
       },
@@ -100,7 +104,7 @@ export default function CSCheckoutPage() {
       },
       // { id: 5, title: 'Dirección de facturación', component: <BillingInformation /> },
     ],
-    [paymentType, user, contactInformation, currentStep],
+    [paymentType, user, contactInformation, currentStep, addresses],
   );
 
   if (isLoading) return <CheckoutSkeleton />;
@@ -135,6 +139,17 @@ export default function CSCheckoutPage() {
                   <div className="flex w-full items-center justify-between gap-2">
                     <h2 className="text-lg font-bold">{step.title}</h2>
                     {step.id === 1 && currentStep !== step.id && contactInformation.email && (
+                      <span
+                        className="text-sm font-normal text-blue-400 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentStep(step.id);
+                        }}
+                      >
+                        Cambiar
+                      </span>
+                    )}
+                    {step.id === 2 && currentStep !== step.id && (
                       <span
                         className="text-sm font-normal text-blue-400 cursor-pointer"
                         onClick={(e) => {
