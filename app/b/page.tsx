@@ -8,6 +8,7 @@ import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
+import { Product } from '@/schemas/orders';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -39,16 +40,16 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
 
   const searchParamsObj = useMemo(() => {
     return {
-      query: debouncedSearch.trim(),
+      search: debouncedSearch.trim(),
       pageSize: 10,
-      facets: selectedFilters,
+      lab: selectedFilters?.x_studio_laboratory?.[0], // Update filter mapping
       sort: sortOption,
-      priceRange: priceRange,
     };
-  }, [debouncedSearch, selectedFilters, sortOption, priceRange]);
+  }, [debouncedSearch, selectedFilters, sortOption]);
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, isError, error } =
     searchProducts(searchParamsObj);
+  console.log('🚀 ~ SearchPage ~ searchParamsObj:', data);
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
     setSelectedFilters(newFilters);
@@ -67,8 +68,10 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
 
   const products = useMemo(() => {
     if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.data);
+    return data.pages.flatMap((page) => page.data || []); // Remove the nested .data
   }, [data?.pages]);
+
+  console.log('Raw API response:', data?.pages[0]);
 
   if (isLoading) return <SearchPageSkeleton />;
 
@@ -115,7 +118,7 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
             <div className="hidden lg:block">
               <div className="mt-6">
                 <Filters
-                  facets={data?.pages[0]?.facets}
+                  facets={data?.pages[0]?.data?.facets}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
                   onSortChange={handleSortChange}

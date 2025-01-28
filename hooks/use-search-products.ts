@@ -16,31 +16,43 @@ export default function useSearchProduct() {
   const debouncedOptions = useDebounce(searchOptions, 500);
 
   const searchProducts = (params: SearchFormType) => {
-    return useInfiniteQuery<SearchResponse>({
+    return useInfiniteQuery({
       queryKey: ['search-products', debouncedOptions],
       queryFn: async ({ pageParam }) => {
         const currentPage = typeof pageParam === 'number' ? pageParam : 1;
 
-        const searchParams: SearchFormType = {
-          ...debouncedOptions,
-          ...params,
-          actualPage: currentPage,
+        const searchParams = {
+          search: params.search || '',
+          page: currentPage,
+          pageSize: params.pageSize || 10,
+          sort: params.sort || '',
+          lab: params.lab || '',
+          saveExcel: 'false',
         };
 
         try {
           const response = await fetchProducts(searchParams);
-          return response;
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error('Search error:', error.message);
-            throw error;
-          }
-          throw new Error('An unknown error occurred during search');
+          console.log('🚀 ~ queryFn: ~ response:', response);
+          // Transform the response to match expected structure
+          return {
+            data: response,
+            pagination: {
+              current: currentPage,
+              total_pages: response.pagination?.totalPages || 1,
+              total: response.pagination?.total || 0,
+            },
+          };
+        } catch (error) {
+          console.error('Search error:', error);
+          throw error;
         }
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
-        if (lastPage.pagination.current >= lastPage.pagination.total_pages) {
+        if (
+          !lastPage.pagination ||
+          lastPage.pagination.current >= lastPage.pagination.total_pages
+        ) {
           return undefined;
         }
         return lastPage.pagination.current + 1;
