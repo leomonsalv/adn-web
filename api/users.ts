@@ -27,7 +27,7 @@ export const getUserAddresses = async (userId: string): Promise<any> => {
       collection(db, 'users', userId, 'addresses'),
       limit(5),
       where('deletedAt', '==', null),
-      orderBy('createdAt', 'desc'),
+      orderBy('creationDate', 'desc'),
     );
     const querySnapshot = await getDocs(q);
 

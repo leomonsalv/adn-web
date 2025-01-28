@@ -81,7 +81,7 @@ export default function CSCheckoutPage() {
       {
         id: 2,
         title:
-          addresses?.data?.length === 0
+          addresses && addresses?.data?.length === 0
             ? 'Dirección de envío'
             : `Direcciones de entrega (${addresses?.data?.length})`,
         component: (

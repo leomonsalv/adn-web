@@ -64,12 +64,12 @@ export function ShippingAddress({
       isDefault: data.isDefault || false,
       lat: data.lat,
       lng: data.lng,
+      alias: data.alias,
     },
   });
 
   const onSubmit = (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
-    // onSaveAddress && onSaveAddress(rest);
     const addressData = {
       ...rest,
       house: 'Mi casa', // Add appropriate value
@@ -135,7 +135,27 @@ export function ShippingAddress({
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Controller
+                control={control}
+                name="alias"
+                render={({ field, fieldState: { error } }) => (
+                  <LabeledInput
+                    label="Alias"
+                    inputProps={{
+                      ...field,
+                      type: 'text',
+                      placeholder: 'Ej: Mi casa',
+                    }}
+                    labelProps={{
+                      htmlFor: 'alias',
+                    }}
+                    error={error?.message}
+                  />
+                )}
+              />
+            </div>
             <div className="sm:col-span-2">
               <Controller
                 control={control}
