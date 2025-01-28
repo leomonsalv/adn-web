@@ -1,6 +1,6 @@
 {
   "name": "adan-web",
-  "version": "0.1.0",
+  "version": "3.0.3",
   "private": true,
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
