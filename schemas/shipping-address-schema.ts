@@ -11,6 +11,8 @@ export const shippingAddressSchema = z.object({
   isDefault: z.boolean().default(false),
   lat: z.number().optional(),
   lng: z.number().optional(),
+  alias: z.string().min(1, 'El alias es requerido'),
+  id: z.string().optional(),
 });
 
 export type ShippingAddressSchema = z.infer<typeof shippingAddressSchema>;
