@@ -14,7 +14,7 @@ export default function useUser() {
   });
 
   const queryAddresses = useQuery({
-    queryKey: ['firebaseUserAddresses', user?.uid],
+    queryKey: ['firebaseUserAddresses'],
     queryFn: () => getUserAddresses(user?.uid!),
     enabled: !!user?.uid,
   });

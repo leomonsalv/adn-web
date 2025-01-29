@@ -8,7 +8,7 @@ import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ShippingAddressSchema, shippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { useStates } from '@/hooks/use-states';
-import { MapPin } from 'lucide-react';
+import { Loader2, MapPin } from 'lucide-react';
 import { useState } from 'react';
 import MapDialog from '@/components/address/MapDialog';
 import AddressAutocomplete from '@/components/address/Autocomplete';
@@ -30,21 +30,30 @@ interface ShippingAddressProps extends Partial<ShippingAddressSchema> {
   savedAddresses?: SavedAddress[];
   onSaveAddress?: (address: Omit<SavedAddress, 'id'>) => void;
   onSelectAddress?: (addressId: string) => void;
+  shippingAddressId: string;
 }
 
 export function ShippingAddress({
   savedAddresses = [],
   onSaveAddress,
   onSelectAddress,
+  shippingAddressId,
   ...data
 }: ShippingAddressProps) {
   const { useCreateAddress } = useAddress();
-  const { mutate: createAddress, isPending: isCreatingAddress } = useCreateAddress();
+  const { mutateAsync: createAddress, isPending: isCreatingAddress } = useCreateAddress();
   const { states } = useStates();
 
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [showNewAddress, setShowNewAddress] = useState(savedAddresses.length > 0);
-  const [selectedAddressId, setSelectedAddressId] = useState(savedAddresses[0]?.id);
+  const [selectedAddressId, setSelectedAddressId] = useState(() => {
+    if (shippingAddressId) {
+      const newAddress = savedAddresses.find((address) => address.id === shippingAddressId);
+      return newAddress ? shippingAddressId : savedAddresses[0].id;
+    } else {
+      return savedAddresses[0]?.id;
+    }
+  });
 
   const findStateMatch = (stateName: string) => {
     return states.find(
@@ -64,26 +73,34 @@ export function ShippingAddress({
       isDefault: data.isDefault || false,
       lat: data.lat,
       lng: data.lng,
-      alias: data.alias,
+      alias: data.alias || '',
     },
   });
 
-  const onSubmit = (formData: ShippingAddressSchema) => {
+  const onSubmit = async (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
     const addressData = {
       ...rest,
-      house: 'Mi casa', // Add appropriate value
+      house: 'Mi casa',
       position: { lat: formData.lat!, lng: formData.lng! },
-      zone: 'La Zona', // Add appropriate value
+      zone: 'La Zona',
       default: formData.isDefault,
-      alias: formData.alias || 'Alias', // Ensure alias is always a string
+      alias: formData.alias || 'Alias',
     };
-    createAddress({ addressData });
+
+    try {
+      const response = (await createAddress({ addressData })) as {
+        data: { addressId: string; addressData: Omit<SavedAddress, 'id'> };
+      };
+      onSaveAddress && onSaveAddress(response?.data?.addressData);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleNext = () => {
-    savedAddresses.filter((address) => address.id === selectedAddressId);
-    onSaveAddress && onSaveAddress(savedAddresses[0]);
+    const newAddress = savedAddresses.find((address) => address.id === selectedAddressId);
+    onSaveAddress && onSaveAddress(newAddress || savedAddresses[0]);
   };
 
   return (
@@ -252,7 +269,7 @@ export function ShippingAddress({
                         </option>
                       ))}
                     </Select>
-                    {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
+                    {error && <p className="mt-1 text-sm text-red-400">{error.message}</p>}
                   </div>
                 )}
               />
@@ -274,7 +291,9 @@ export function ShippingAddress({
             </div>
 
             <div className="sm:col-span-2 flex justify-start gap-2">
-              <Button type="submit">Continuar</Button>
+              <Button type="submit" disabled={isCreatingAddress}>
+                {isCreatingAddress ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Continuar'}
+              </Button>
               {savedAddresses.length > 0 && (
                 <Button color="white" onClick={() => setShowNewAddress(true)}>
                   Cancelar

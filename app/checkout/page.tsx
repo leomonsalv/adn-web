@@ -84,6 +84,16 @@ export default function CSCheckoutPage() {
           addresses && addresses?.data?.length === 0
             ? 'Dirección de envío'
             : `Direcciones de entrega (${addresses?.data?.length})`,
+        button:
+          currentStep !== 2 && shippingAddress && shippingAddress.alias !== '' ? (
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-sm">{shippingAddress.alias}</span>
+              <span className="text-sm">{shippingAddress.street}</span>
+              <span className="text-sm">{shippingAddress.city}</span>
+            </div>
+          ) : (
+            <></>
+          ),
         component: (
           <ShippingAddress
             phone={''}
@@ -93,6 +103,7 @@ export default function CSCheckoutPage() {
             isDefault={false}
             onSaveAddress={handleSaveData}
             savedAddresses={addresses?.data}
+            shippingAddressId={shippingAddress.id}
           />
         ),
       },
@@ -114,9 +125,7 @@ export default function CSCheckoutPage() {
       {/* Background dividers */}
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 xl:gap-x-48">
         <h1 className="sr-only">Order information</h1>
-
         <CheckoutOrderSummary />
-
         <div className="px-4 pb-10 pt-4 sm:px-6 lg:bg-transparent lg:px-0 lg:pb-16">
           <Accordion
             type="single"
