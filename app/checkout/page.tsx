@@ -15,7 +15,7 @@ import { ContactInformationSchema } from '@/schemas/contact-information-schema';
 import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, addresses } = useUser();
 
   const {
     currentStep,
@@ -36,14 +36,14 @@ export default function CSCheckoutPage() {
         dniType: formData.dniType,
       });
     } else {
-      const { lat, lng, isDefault, phone, ...addressData } = formData;
+      const { lat, lng, isDefault, id, phone, ...addressData } = formData;
       setShippingAddress({
         ...addressData,
         isDefault,
         lat: lat ?? 0,
         lng: lng ?? 0,
         phone,
-        id: 'new',
+        id: id ?? 'new',
       });
     }
     setCurrentStep(currentStep + 1);
@@ -80,7 +80,20 @@ export default function CSCheckoutPage() {
       },
       {
         id: 2,
-        title: 'Dirección de envío',
+        title:
+          addresses && addresses?.data?.length === 0
+            ? 'Dirección de envío'
+            : `Direcciones de entrega (${addresses?.data?.length})`,
+        button:
+          currentStep !== 2 && shippingAddress && shippingAddress.alias !== '' ? (
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-sm">{shippingAddress.alias}</span>
+              <span className="text-sm">{shippingAddress.street}</span>
+              <span className="text-sm">{shippingAddress.city}</span>
+            </div>
+          ) : (
+            <></>
+          ),
         component: (
           <ShippingAddress
             phone={''}
@@ -89,6 +102,8 @@ export default function CSCheckoutPage() {
             state={''}
             isDefault={false}
             onSaveAddress={handleSaveData}
+            savedAddresses={addresses?.data}
+            shippingAddressId={shippingAddress.id}
           />
         ),
       },
@@ -100,7 +115,7 @@ export default function CSCheckoutPage() {
       },
       // { id: 5, title: 'Dirección de facturación', component: <BillingInformation /> },
     ],
-    [paymentType, user, contactInformation, currentStep],
+    [paymentType, user, contactInformation, currentStep, addresses],
   );
 
   if (isLoading) return <CheckoutSkeleton />;
@@ -110,9 +125,7 @@ export default function CSCheckoutPage() {
       {/* Background dividers */}
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 xl:gap-x-48">
         <h1 className="sr-only">Order information</h1>
-
         <CheckoutOrderSummary />
-
         <div className="px-4 pb-10 pt-4 sm:px-6 lg:bg-transparent lg:px-0 lg:pb-16">
           <Accordion
             type="single"
@@ -135,6 +148,17 @@ export default function CSCheckoutPage() {
                   <div className="flex w-full items-center justify-between gap-2">
                     <h2 className="text-lg font-bold">{step.title}</h2>
                     {step.id === 1 && currentStep !== step.id && contactInformation.email && (
+                      <span
+                        className="text-sm font-normal text-blue-400 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentStep(step.id);
+                        }}
+                      >
+                        Cambiar
+                      </span>
+                    )}
+                    {step.id === 2 && currentStep !== step.id && (
                       <span
                         className="text-sm font-normal text-blue-400 cursor-pointer"
                         onClick={(e) => {

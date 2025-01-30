@@ -15,6 +15,7 @@ export const GET_PRODUCTS_AVAILABILITY = `${process.env.REACT_APP_ODOO_API_URL}/
 export const CREATE_ORDER = 'odoo-createOrderV2';
 export const CHECK_COUPON = 'es-couponData';
 export const CART_CALCULATION = 'es-cartCalculation';
+export const SAVE_ADDRESS = 'addresses-saveAddress';
 
 //OTP Validation
 export const OTP_GENERATION = 'otp-createSmsOTP';

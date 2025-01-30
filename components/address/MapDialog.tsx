@@ -1,6 +1,13 @@
 // components/MapDialog.tsx
 
-import { AdvancedMarker, APIProvider, Map, Marker, Pin } from '@vis.gl/react-google-maps';
+import {
+  AdvancedMarker,
+  APIProvider,
+  Map,
+  Marker,
+  Pin,
+  MapControl,
+} from '@vis.gl/react-google-maps';
 import { Dialog, DialogTitle, DialogBody, DialogActions } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import React, { useState, useCallback } from 'react';
@@ -92,7 +99,7 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
   };
 
   const CustomizedMarker = () => (
-    <AdvancedMarker position={markerPosition}>
+    <AdvancedMarker draggable position={markerPosition}>
       <AdanGoogleMapMarkerIcon />
     </AdvancedMarker>
   );
@@ -113,7 +120,7 @@ export default function MapDialog({ open, onClose, onLocationSelect }: MapDialog
           <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
             <Map
               defaultZoom={15}
-              center={center}
+              defaultCenter={center}
               mapId="bf51a910020fa25a"
               onClick={handleMapClick}
               className="w-full h-full rounded-lg"
