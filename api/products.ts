@@ -6,7 +6,13 @@ import { functions } from '@/lib/firebaseConfig';
 import { GetSearchCateroriesResponse } from '@/types/categories';
 import { Product } from '@/schemas/orders';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.tests.adanenlinea.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
+interface ProductResponse {
+  data: Product;
+  success: boolean;
+  message?: string;
+}
 
 export const fetchProducts = async ({
   page = 1,
@@ -52,17 +58,33 @@ export const fetchProducts = async ({
   }
 };
 
-export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product[] }> => {
+export const fetchProductsByIds = async (
+  productIds: number[],
+  typeId?: number,
+): Promise<{ data: Product[] }> => {
   try {
-    const response: HttpsCallableResult<{ data: Product[] }> = await httpsCallable<
-      { ids: number[] },
-      { data: Product[] }
-    >(
-      functions,
-      'es-searchById',
-    )({ ids });
+    const queryParams = new URLSearchParams();
 
-    return response.data;
+    // Add product IDs to query params
+    if (Array.isArray(productIds) && productIds.length > 0) {
+      productIds.forEach((id) => queryParams.append('id', id.toString()));
+    }
+
+    // Add type ID if provided
+    if (typeId !== undefined) {
+      queryParams.append('typeId', typeId.toString());
+    }
+
+    const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const products = await response.json();
+
+    // Assuming the API returns { data: Product[] }
+    return { data: products.data };
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching products by IDs:', error.message);
@@ -71,6 +93,50 @@ export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product
     throw new Error('An unknown error occurred while fetching products by IDs');
   }
 };
+
+// For cases where you need to fetch a single product
+export const fetchProductById = async (id: string): Promise<ProductResponse> => {
+  try {
+    const queryParams = new URLSearchParams({
+      id: id,
+    });
+
+    const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const product = await response.json();
+    console.log('🚀 ~ fetchProductById ~ product:', product);
+    return product;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching product by ID:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching the product');
+  }
+};
+
+// export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product[] }> => {
+//   try {
+//     const response: HttpsCallableResult<{ data: Product[] }> = await httpsCallable<
+//       { ids: number[] },
+//       { data: Product[] }
+//     >(
+//       functions,
+//       'es-searchById',
+//     )({ ids });
+
+//     return response.data;
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       console.error('Error fetching products by IDs:', error.message);
+//       throw error;
+//     }
+//     throw new Error('An unknown error occurred while fetching products by IDs');
+//   }
+// };
 
 export const fetchProductsSuggestions = async (
   query: string,

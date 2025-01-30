@@ -39,6 +39,11 @@ export const useCartStore = create<CartState>()(
       loading: false,
       // Cart actions
       addToCart: (product) => {
+        const cartProduct = {
+          ...product,
+          taxes: product.taxes,
+          quantity: 1,
+        };
         const existingItem = get().cart.products.find((item) => item.id === product.id);
         if (existingItem) {
           set({
@@ -53,7 +58,7 @@ export const useCartStore = create<CartState>()(
           set({
             cart: {
               ...get().cart,
-              products: [...get().cart.products, { ...product, quantity: 1 }],
+              products: [...get().cart.products, cartProduct],
             },
           });
         }
@@ -89,14 +94,14 @@ export const useCartStore = create<CartState>()(
       // Cart getters
       getCartSubtotal: () => {
         const subtotal = get().cart.products.reduce((total, item) => {
-          const itemTotal = toSafeInteger(item.price) * item.quantity;
+          const itemTotal = toSafeInteger(Number(item.bsPrice)) * item.quantity;
           return total + itemTotal;
         }, 0);
         return fromSafeInteger(subtotal);
       },
       getCartTotal: () => {
         const subtotal = get().cart.products.reduce((total, item) => {
-          const itemTotal = toSafeInteger(item.price) * item.quantity;
+          const itemTotal = toSafeInteger(Number(item.bsPrice)) * item.quantity;
           return total + itemTotal;
         }, 0);
         const tax = toSafeInteger(get().getCartTax());
@@ -104,13 +109,13 @@ export const useCartStore = create<CartState>()(
       },
       getCartRef: () => {
         return get().cart.products.reduce(
-          (total, item) => total + Number(item.price_ref) * item.quantity,
+          (total, item) => total + Number(item.refPrice) * item.quantity,
           0,
         );
       },
       getCartTax: () => {
         const tax = get().cart.products.reduce((total, item) => {
-          const itemTax = toSafeInteger(item?.taxes?.[0].amount) * item.quantity;
+          const itemTax = toSafeInteger(Number(item?.taxes?.amount || '0.0000')) * item.quantity;
           return total + itemTax;
         }, 0);
         return fromSafeInteger(tax);

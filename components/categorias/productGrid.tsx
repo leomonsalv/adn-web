@@ -3,6 +3,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 
+// Utility function to safely parse numeric values
+const safeParseFloat = (value: string | number | undefined): number => {
+  if (typeof value === 'number' && !isNaN(value)) return value;
+  if (typeof value === 'string') {
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+  return 0;
+};
+
+// Utility function to format price
+const formatPrice = (price: string | number | undefined): string => {
+  const numericPrice = safeParseFloat(price);
+  return `VEF ${numericPrice.toFixed(2)}`;
+};
+
 interface ProductVariantOption {
   SKU: string;
   price: number;
@@ -17,23 +33,23 @@ interface ProductCategory {
 
 interface Product {
   _id: string;
-  activeIngredients: string;
-  attack: string;
-  barcode: string;
-  betterAttack: string[];
-  betterIngredients: string[];
-  bsPrice: string;
-  category: ProductCategory;
-  description: string;
-  inventary: { total: number };
-  laboratory: string;
+  activeIngredients?: string;
+  attack?: string;
+  barcode?: string;
+  betterAttack?: string[];
+  betterIngredients?: string[];
+  bsPrice?: string | number;
+  category?: ProductCategory;
+  description?: string;
+  inventary?: { total: number };
+  laboratory?: string;
   name: string;
-  productId: number;
-  refPrice: number;
-  variantOptionsMap: {
+  productId?: number;
+  refPrice?: number;
+  variantOptionsMap?: {
     [key: string]: {
-      images: string[];
-      options: {
+      images?: string[];
+      options?: {
         [key: string]: ProductVariantOption;
       };
     };
@@ -53,11 +69,12 @@ function ProductGrid({
   isFetchingNextPage,
   fetchNextPage,
 }: ProductGridProps) {
-  console.log('🚀 ~ ProductGrid ~ products:', products);
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '300px',
   });
+
+  console.log(products);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -75,6 +92,10 @@ function ProductGrid({
     return variantImages?.[0] || '/delivery.jpeg';
   };
 
+  const validProducts = products.filter(
+    (product) => product && typeof product === 'object' && '_id' in product && product.name,
+  );
+
   return (
     <section aria-labelledby="product-heading" className="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
       <h2 id="product-heading" className="sr-only">
@@ -82,21 +103,21 @@ function ProductGrid({
       </h2>
 
       <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-        {products.map((product, idx) => (
+        {validProducts.map((product, idx) => (
           <div
             key={`${product._id}-${idx}`}
             className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
           >
-            <Image
-              width={400}
-              height={500}
-              style={{
-                objectFit: 'contain',
-              }}
-              alt={product.name || 'Product image'}
-              src={getDefaultImage(product)}
-              className="aspect-[3/4] bg-gray-200 object-cover group-hover:opacity-75 sm:h-96"
-            />
+            <div className="relative aspect-[3/4] bg-gray-200 sm:h-96">
+              <Image
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'contain' }}
+                alt={product.name || 'Product image'}
+                src={getDefaultImage(product)}
+                className="group-hover:opacity-75"
+              />
+            </div>
             <div className="flex flex-1 flex-col space-y-2 p-4">
               <h3 className="text-sm font-medium text-gray-900">
                 <Link href={`/producto-detalle/${product._id}`}>
@@ -104,10 +125,16 @@ function ProductGrid({
                   {product.name}
                 </Link>
               </h3>
-              <p className="text-sm text-gray-500">{product.activeIngredients}</p>
+              {product.activeIngredients && (
+                <p className="text-sm text-gray-500">{product.activeIngredients}</p>
+              )}
               <div className="flex flex-1 flex-col justify-end">
-                <p className="text-sm italic text-gray-500">{product.laboratory}</p>
-                <p className="text-base font-medium text-gray-900">{`VEF ${product.bsPrice}`}</p>
+                {product.laboratory && (
+                  <p className="text-sm italic text-gray-500">{product.laboratory}</p>
+                )}
+                <p className="text-base font-medium text-gray-900">
+                  {formatPrice(product.bsPrice)}
+                </p>
               </div>
             </div>
           </div>

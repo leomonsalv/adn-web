@@ -111,7 +111,9 @@ export const VariantOptionsMapSchema = z.object({
   xxl: XlSchema,
 });
 
-export const DatumSchema = z.object({
+export const ProductTypeSchema = z.enum(['libre']);
+
+export const ProductSchema = z.object({
   _id: z.string(),
   activeIngredients: z.union([z.null(), z.string()]),
   attack: z.union([z.null(), z.string()]),
@@ -129,7 +131,7 @@ export const DatumSchema = z.object({
   synons: z.union([z.null(), z.string()]),
   taxes: TaxesSchema,
   templateId: z.number(),
-  type: DatumTypeSchema,
+  type: ProductTypeSchema,
   updatedAt: z.coerce.date().optional(),
   variantMasterOption: VariantMasterOptionSchema.optional(),
   variantOptions: VariantOptionsSchema.optional(),
@@ -140,7 +142,7 @@ export const DatumSchema = z.object({
 });
 
 export const ProductResponseSchema = z.object({
-  data: z.array(DatumSchema),
+  data: z.array(ProductSchema),
   page: z.number(),
   pageSize: z.number(),
   totalItems: z.number(),

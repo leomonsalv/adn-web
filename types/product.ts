@@ -4,7 +4,7 @@ import {
   CategorySchema,
   ColorSchema,
   ColorTypeSchema,
-  DatumSchema,
+  ProductSchema,
   DatumTypeSchema,
   GreenClassSchema,
   GreenOptionsSchema,
@@ -26,6 +26,7 @@ import {
   VariantSchema,
   XlOptionsSchema,
   XlSchema,
+  ProductTypeSchema,
 } from '@/schemas/product-schema';
 import { z } from 'zod';
 
@@ -52,5 +53,6 @@ export type Xl = z.infer<typeof XlSchema>;
 export type Variant = z.infer<typeof VariantSchema>;
 export type Green = z.infer<typeof GreenSchema>;
 export type VariantOptionsMap = z.infer<typeof VariantOptionsMapSchema>;
-export type Datum = z.infer<typeof DatumSchema>;
+export type Product = z.infer<typeof ProductSchema>;
 export type ProductResponse = z.infer<typeof ProductResponseSchema>;
+export type ProductType = z.infer<typeof ProductTypeSchema>;

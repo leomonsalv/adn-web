@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { BreadcrumbList } from '@/components/ui/breadcrumb';
 import Reviews from '@/components/reviews/Reviews';
-import { formatUsdCurrency } from '@/lib/utils';
+import { formatUsdCurrency, formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
@@ -43,9 +43,12 @@ interface ProductPageProps {
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
+  console.log('🚀 ~ ProductDetailsPage ~ params:', params);
+  const productId = use(params).id;
+
   const payload: RecommendedProductsPayload = {
     type: 'Details',
-    products: [Number(use(params).id)],
+    products: [productId],
     productBased: true,
   };
 
@@ -53,13 +56,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     active: true,
     priceRange: [0, 3000],
   };
-  const productId = Number(use(params).id);
+  // const productId = Number(use(params).id);
   const { isPrescriptionUploaded } = usePrescriptionUpload();
   const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
 
   const router = useRouter();
-  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
   const { useMutateCart, useGetCart } = useCart();
+  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
+
   const {
     data: recommendedData,
     isLoading: isRecommendedLoading,
@@ -81,6 +85,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     isLoading: isProductLoading,
     error: productError,
   } = useGetProductById(productId);
+
+  console.log(productId, productData);
 
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
@@ -106,8 +112,36 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
-  const isInCart = isItemInCart(productData.id);
-  const itemCount = getItemCount(productData.id);
+  // const isInCart = isItemInCart(productData.id);
+  // const itemCount = getItemCount(productData.id);
+
+  const isInCart = isItemInCart(productData.productId);
+  const itemCount = getItemCount(productData.productId);
+
+  // const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   if (!productData) return;
+
+  //   try {
+  //     await updateCart({
+  //       cartId: cartData?.id || '',
+  //       product: productData,
+  //     });
+
+  //     if (isInCart) {
+  //       updateQuantity(productData.productId, itemCount + 1);
+  //     } else {
+  //       addToCart(productData);
+  //     }
+
+  //     router.push(CARRITO);
+  //   } catch (error) {
+  //     console.error('Error adding to cart:', error);
+  //   }
+  // };
+
+  // const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : [];
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,11 +151,16 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     try {
       await updateCart({
         cartId: cartData?.id || '',
-        product: productData,
+        product: {
+          ...productData,
+          id: productData.productId,
+          price: productData.refPrice,
+          price_extra: Number(productData.bsPrice),
+        },
       });
 
       if (isInCart) {
-        updateQuantity(productData.id, itemCount + 1);
+        updateQuantity(productData.productId, itemCount + 1);
       } else {
         addToCart(productData);
       }
@@ -132,14 +171,21 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     }
   };
 
-  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : [];
+  const breadcrumbs = productData.category.full_name
+    .split('/')
+    .map((crumb) => crumb.trim())
+    .filter((crumb) => crumb !== 'All');
 
-  const noStock = productData.qty_available <= 0;
-  const requiresRecipe =
-    productData.required_recipe === true || productData.product_type === 'prescripcion';
+  const noStock = productData.inventary.total <= 0;
+  const requiresRecipe = productData.type === 'prescripcion';
+  // const requiresRecipe =
+  //   productData.required_recipe === true || productData.product_type === 'prescripcion';
 
   const disableAddToCart =
     noStock || (requiresRecipe && !prescriptionUploaded && !isPrescriptionUploaded);
+
+  const regularPrice = Number(productData.bsPrice);
+  const refPrice = productData.refPrice;
 
   return (
     <div className="bg-white">
@@ -217,30 +263,37 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               )}
 
               {/* Reviews */}
-              <section aria-labelledby="reviews-heading" className="my-2">
+              {/* <section aria-labelledby="reviews-heading" className="my-2">
                 <h2 id="reviews-heading" className="sr-only">
                   Reseñas y Calificaciones
                 </h2>
                 <Reviews rating={product.rating} reviewCount={product.reviewCount} />
-              </section>
+              </section> */}
 
               {/* Descripción */}
               <section aria-labelledby="description-heading" className="my-10">
                 <h2 id="description-heading" className="sr-only">
                   Descripción del producto
                 </h2>
-                {productData.description ? (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: productData.description }}
-                    className="prose prose-base mt-4 text-gray-900"
-                  />
-                ) : (
-                  <p className="text-gray-500">No hay descripción disponible.</p>
-                )}
+                <div className="prose prose-base mt-4 text-gray-900">
+                  <p>{productData.description}</p>
+                  {productData.activeIngredients && (
+                    <div className="mt-4">
+                      <h3 className="text-sm font-semibold">Ingredientes activos:</h3>
+                      <p>{productData.activeIngredients}</p>
+                    </div>
+                  )}
+                  {productData.attack && (
+                    <div className="mt-2">
+                      <h3 className="text-sm font-semibold">Acción terapéutica:</h3>
+                      <p>{productData.attack}</p>
+                    </div>
+                  )}
+                </div>
               </section>
 
               {/* Color & Size pickers */}
-              <ProductColorSelector
+              {/* <ProductColorSelector
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
                 product={product}
@@ -249,8 +302,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
                 product={product}
-              />
-              <DisponibilityCounter productQuantity={productData.qty_available} />
+              /> */}
+              <DisponibilityCounter productQuantity={productData.inventary.total} />
+              {/* <DisponibilityCounter productQuantity={productData.qty_available} /> */}
 
               {/* Price tags */}
               <div className="mt-4">
@@ -258,18 +312,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 <div className="flex flex-row gap-1">
                   <span className="text-sm">Precio regular:</span>
                   <p className="text-sm text-gray-500 line-through">
-                    {formatUsdCurrency(productData.price_extra)}
+                    {formatVefCurrency(regularPrice)}
                   </p>
                 </div>
                 <div className="flex flex-row gap-1 items-baseline">
                   <p className="text-3xl font-semibold text-red-700">
-                    {formatUsdCurrency(Number(productData.price_ref))}
+                    {formatVefCurrency(regularPrice)}
                   </p>
-                  {productData.discount_rate && productData.discount_rate !== '0' && (
-                    <Badge color="blue" className="font-semibold font-sans">
-                      % {productData.discount_rate} OFF
-                    </Badge>
-                  )}
                 </div>
               </div>
 
