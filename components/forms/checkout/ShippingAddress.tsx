@@ -120,7 +120,7 @@ export function ShippingAddress({
                     <div className="flex items-start gap-4">
                       <Radio
                         value={address.id}
-                        className="cursor-pointer rounded-lg  border-gray-300 p-1 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500"
+                        className="cursor-pointer rounded-lg  border-gray-300 p-1 focus:outline-hidden data-focus:ring-2 data-focus:ring-indigo-500"
                       />
                       <div className="mt-1">
                         <p className="font-bold">{address.alias}</p>

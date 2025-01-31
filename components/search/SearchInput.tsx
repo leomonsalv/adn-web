@@ -49,7 +49,7 @@ export default function SearchInput({
 
   return (
     <div className="relative">
-      <div className="flex rounded-md bg-white shadow-sm ring-1 ring-inset ring-gray-300">
+      <div className="flex rounded-md bg-white shadow-xs ring-1 ring-inset ring-gray-300">
         <div className="hidden sm:flex items-center bg-[#E2E2E2] rounded-l-md">
           <select
             className="h-10 rounded-l-md border-0 bg-transparent text-gray-900 focus:ring-0 sm:text-sm val:bg-red-500 max-w-[8rem] truncate"

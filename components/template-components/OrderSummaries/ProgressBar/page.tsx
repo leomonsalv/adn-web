@@ -1,46 +1,46 @@
 const products = [
   {
     id: 1,
-    name: "Nomad Tumbler",
+    name: 'Nomad Tumbler',
     description:
-      "This durable and portable insulated tumbler will keep your beverage at the perfect temperature during your next adventure.",
-    href: "#",
-    price: "35.00",
-    status: "Preparing to ship",
+      'This durable and portable insulated tumbler will keep your beverage at the perfect temperature during your next adventure.',
+    href: '#',
+    price: '35.00',
+    status: 'Preparing to ship',
     step: 1,
-    date: "March 24, 2021",
-    datetime: "2021-03-24",
-    address: ["Floyd Miles", "7363 Cynthia Pass", "Toronto, ON N3Y 4H8"],
-    email: "f•••@example.com",
-    phone: "1•••••••••40",
+    date: 'March 24, 2021',
+    datetime: '2021-03-24',
+    address: ['Floyd Miles', '7363 Cynthia Pass', 'Toronto, ON N3Y 4H8'],
+    email: 'f•••@example.com',
+    phone: '1•••••••••40',
     imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/confirmation-page-03-product-01.jpg",
-    imageAlt: "Insulated bottle with white base and black snap lid.",
+      'https://tailwindui.com/plus/img/ecommerce-images/confirmation-page-03-product-01.jpg',
+    imageAlt: 'Insulated bottle with white base and black snap lid.',
   },
   {
     id: 2,
-    name: "Minimalist Wristwatch",
+    name: 'Minimalist Wristwatch',
     description:
-      "This contemporary wristwatch has a clean, minimalist look and high quality components.",
-    href: "#",
-    price: "149.00",
-    status: "Shipped",
+      'This contemporary wristwatch has a clean, minimalist look and high quality components.',
+    href: '#',
+    price: '149.00',
+    status: 'Shipped',
     step: 0,
-    date: "March 23, 2021",
-    datetime: "2021-03-23",
-    address: ["Floyd Miles", "7363 Cynthia Pass", "Toronto, ON N3Y 4H8"],
-    email: "f•••@example.com",
-    phone: "1•••••••••40",
+    date: 'March 23, 2021',
+    datetime: '2021-03-23',
+    address: ['Floyd Miles', '7363 Cynthia Pass', 'Toronto, ON N3Y 4H8'],
+    email: 'f•••@example.com',
+    phone: '1•••••••••40',
     imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/confirmation-page-03-product-02.jpg",
+      'https://tailwindui.com/plus/img/ecommerce-images/confirmation-page-03-product-02.jpg',
     imageAlt:
-      "Arm modeling wristwatch with black leather band, white watch face, thin watch hands, and fine time markings.",
+      'Arm modeling wristwatch with black leather band, white watch face, thin watch hands, and fine time markings.',
   },
   // More products...
 ];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -61,7 +61,7 @@ export default function Example() {
             </a>
           </div>
           <p className="text-sm text-gray-600">
-            Order placed{" "}
+            Order placed{' '}
             <time dateTime="2021-03-22" className="font-medium text-gray-900">
               March 22, 2021
             </time>
@@ -83,7 +83,7 @@ export default function Example() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                className="border-b border-t border-gray-200 bg-white shadow-xs sm:rounded-lg sm:border"
               >
                 <div className="px-4 py-6 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
                   <div className="sm:flex lg:col-span-7">
@@ -99,21 +99,15 @@ export default function Example() {
                       <h3 className="text-base font-medium text-gray-900">
                         <a href={product.href}>{product.name}</a>
                       </h3>
-                      <p className="mt-2 text-sm font-medium text-gray-900">
-                        ${product.price}
-                      </p>
-                      <p className="mt-3 text-sm text-gray-500">
-                        {product.description}
-                      </p>
+                      <p className="mt-2 text-sm font-medium text-gray-900">${product.price}</p>
+                      <p className="mt-3 text-sm text-gray-500">{product.description}</p>
                     </div>
                   </div>
 
                   <div className="mt-6 lg:col-span-5 lg:mt-0">
                     <dl className="grid grid-cols-2 gap-x-6 text-sm">
                       <div>
-                        <dt className="font-medium text-gray-900">
-                          Delivery address
-                        </dt>
+                        <dt className="font-medium text-gray-900">Delivery address</dt>
                         <dd className="mt-3 text-gray-500">
                           <span className="block">{product.address[0]}</span>
                           <span className="block">{product.address[1]}</span>
@@ -121,9 +115,7 @@ export default function Example() {
                         </dd>
                       </div>
                       <div>
-                        <dt className="font-medium text-gray-900">
-                          Shipping updates
-                        </dt>
+                        <dt className="font-medium text-gray-900">Shipping updates</dt>
                         <dd className="mt-3 space-y-3 text-gray-500">
                           <p>{product.email}</p>
                           <p>{product.phone}</p>
@@ -142,8 +134,7 @@ export default function Example() {
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6 lg:p-8">
                   <h4 className="sr-only">Status</h4>
                   <p className="text-sm font-medium text-gray-900">
-                    {product.status} on{" "}
-                    <time dateTime={product.datetime}>{product.date}</time>
+                    {product.status} on <time dateTime={product.datetime}>{product.date}</time>
                   </p>
                   <div aria-hidden="true" className="mt-6">
                     <div className="overflow-hidden rounded-full bg-gray-200">
@@ -158,24 +149,24 @@ export default function Example() {
                       <div className="text-indigo-600">Order placed</div>
                       <div
                         className={classNames(
-                          product.step > 0 ? "text-indigo-600" : "",
-                          "text-center",
+                          product.step > 0 ? 'text-indigo-600' : '',
+                          'text-center',
                         )}
                       >
                         Processing
                       </div>
                       <div
                         className={classNames(
-                          product.step > 1 ? "text-indigo-600" : "",
-                          "text-center",
+                          product.step > 1 ? 'text-indigo-600' : '',
+                          'text-center',
                         )}
                       >
                         Shipped
                       </div>
                       <div
                         className={classNames(
-                          product.step > 2 ? "text-indigo-600" : "",
-                          "text-right",
+                          product.step > 2 ? 'text-indigo-600' : '',
+                          'text-right',
                         )}
                       >
                         Delivered
@@ -203,9 +194,7 @@ export default function Example() {
                 </dd>
               </div>
               <div>
-                <dt className="font-medium text-gray-900">
-                  Payment information
-                </dt>
+                <dt className="font-medium text-gray-900">Payment information</dt>
                 <dd className="-ml-4 -mt-1 flex flex-wrap">
                   <div className="ml-4 mt-4 shrink-0">
                     <svg

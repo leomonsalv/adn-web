@@ -92,7 +92,7 @@ export function NavLinks() {
           <div className="flex h-14 md:h-16 items-center justify-between gap-x-2 sm:gap-x-4">
             {/* Logo and mobile menu */}
             <div className="flex items-center gap-x-2 sm:gap-x-4 hidden sm:flex">
-              <Link href="/" aria-label="adan" className="flex-shrink-0">
+              <Link href="/" aria-label="adan" className="shrink-0">
                 <NavLogo />
               </Link>
             </div>
@@ -142,7 +142,7 @@ export function NavLinks() {
                       <PopoverPanel
                         transition
                         anchor="bottom"
-                        className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100"
+                        className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-open:opacity-100 data-open:scale-100"
                       >
                         <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                           {navbarMenuHover.map((items) => (
@@ -302,7 +302,7 @@ export function NavLinks() {
                     <PopoverPanel
                       transition
                       anchor="bottom"
-                      className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-[open]:opacity-100 data-[open]:scale-100"
+                      className="absolute left-0 top-full mt-2 w-80 rounded-lg bg-white p-4 shadow-lg animate-accordion-down opacity-0 scale-95 data-open:opacity-100 data-open:scale-100"
                     >
                       <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                         {categories.map((category) => (

@@ -1,22 +1,21 @@
-import { Fragment } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { Fragment } from 'react';
+import { StarIcon } from '@heroicons/react/20/solid';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 const product = {
-  name: "Application UI Icon Pack",
-  version: { name: "1.0", date: "June 5, 2021", datetime: "2021-06-05" },
-  price: "$220",
+  name: 'Application UI Icon Pack',
+  version: { name: '1.0', date: 'June 5, 2021', datetime: '2021-06-05' },
+  price: '$220',
   description:
-    "The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.",
+    'The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.',
   highlights: [
-    "200+ SVG icons in 3 unique styles",
-    "Compatible with Figma, Sketch, and Adobe XD",
-    "Drawn on 24 x 24 pixel grid",
+    '200+ SVG icons in 3 unique styles',
+    'Compatible with Figma, Sketch, and Adobe XD',
+    'Drawn on 24 x 24 pixel grid',
   ],
-  imageSrc:
-    "https://tailwindui.com/plus/img/ecommerce-images/product-page-05-product-01.jpg",
+  imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-05-product-01.jpg',
   imageAlt:
-    "Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.",
+    'Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.',
 };
 const reviews = {
   average: 4,
@@ -27,11 +26,11 @@ const reviews = {
       content: `
         <p>This icon pack is just what I need for my latest project. There's an icon for just about anything I could ever need. Love the playful look!</p>
       `,
-      date: "July 16, 2021",
-      datetime: "2021-07-16",
-      author: "Emily Selman",
+      date: 'July 16, 2021',
+      datetime: '2021-07-16',
+      author: 'Emily Selman',
       avatarSrc:
-        "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
+        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
     },
     {
       id: 2,
@@ -39,32 +38,32 @@ const reviews = {
       content: `
         <p>Blown away by how polished this icon pack is. Everything looks so consistent and each SVG is optimized out of the box so I can use it directly with confidence. It would take me several hours to create a single icon this good, so it's a steal at this price.</p>
       `,
-      date: "July 12, 2021",
-      datetime: "2021-07-12",
-      author: "Hector Gibbons",
+      date: 'July 12, 2021',
+      datetime: '2021-07-12',
+      author: 'Hector Gibbons',
       avatarSrc:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
     },
     // More reviews...
   ],
 };
 const faqs = [
   {
-    question: "What format are these icons?",
+    question: 'What format are these icons?',
     answer:
-      "The icons are in SVG (Scalable Vector Graphic) format. They can be imported into your design tool of choice and used directly in code.",
+      'The icons are in SVG (Scalable Vector Graphic) format. They can be imported into your design tool of choice and used directly in code.',
   },
   {
-    question: "Can I use the icons at different sizes?",
+    question: 'Can I use the icons at different sizes?',
     answer:
       "Yes. The icons are drawn on a 24 x 24 pixel grid, but the icons can be scaled to different sizes as needed. We don't recommend going smaller than 20 x 20 or larger than 64 x 64 to retain legibility and visual balance.",
   },
   // More FAQs...
 ];
 const license = {
-  href: "#",
+  href: '#',
   summary:
-    "For personal and professional use. You cannot resell or redistribute these icons in their original or modified state.",
+    'For personal and professional use. You cannot resell or redistribute these icons in their original or modified state.',
   content: `
     <h4>Overview</h4>
     
@@ -92,7 +91,7 @@ const license = {
 };
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -124,11 +123,8 @@ export default function Example() {
                   Product information
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Version {product.version.name} (Updated{" "}
-                  <time dateTime={product.version.datetime}>
-                    {product.version.date}
-                  </time>
-                  )
+                  Version {product.version.name} (Updated{' '}
+                  <time dateTime={product.version.datetime}>{product.version.date}</time>)
                 </p>
               </div>
 
@@ -140,10 +136,8 @@ export default function Example() {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        reviews.average > rating
-                          ? "text-yellow-400"
-                          : "text-gray-300",
-                        "size-5 shrink-0",
+                        reviews.average > rating ? 'text-yellow-400' : 'text-gray-300',
+                        'size-5 shrink-0',
                       )}
                     />
                   ))}
@@ -157,13 +151,13 @@ export default function Example() {
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
               <button
                 type="button"
-                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >
                 Pay {product.price}
               </button>
               <button
                 type="button"
-                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >
                 Preview
               </button>
@@ -183,7 +177,7 @@ export default function Example() {
             <div className="mt-10 border-t border-gray-200 pt-10">
               <h3 className="text-sm font-medium text-gray-900">License</h3>
               <p className="mt-4 text-sm text-gray-500">
-                {license.summary}{" "}
+                {license.summary}{' '}
                 <a
                   href={license.href}
                   className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -260,13 +254,13 @@ export default function Example() {
             <TabGroup>
               <div className="border-b border-gray-200">
                 <TabList className="-mb-px flex space-x-8">
-                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-[selected]:border-indigo-600 data-[selected]:text-indigo-600">
+                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-selected:border-indigo-600 data-selected:text-indigo-600">
                     Customer Reviews
                   </Tab>
-                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-[selected]:border-indigo-600 data-[selected]:text-indigo-600">
+                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-selected:border-indigo-600 data-selected:text-indigo-600">
                     FAQ
                   </Tab>
-                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-[selected]:border-indigo-600 data-[selected]:text-indigo-600">
+                  <Tab className="whitespace-nowrap border-b-2 border-transparent py-6 text-sm font-medium text-gray-700 hover:border-gray-300 hover:text-gray-800 data-selected:border-indigo-600 data-selected:text-indigo-600">
                     License
                   </Tab>
                 </TabList>
@@ -276,10 +270,7 @@ export default function Example() {
                   <h3 className="sr-only">Customer Reviews</h3>
 
                   {reviews.featured.map((review, reviewIdx) => (
-                    <div
-                      key={review.id}
-                      className="flex space-x-4 text-sm text-gray-500"
-                    >
+                    <div key={review.id} className="flex space-x-4 text-sm text-gray-500">
                       <div className="flex-none py-10">
                         <img
                           alt=""
@@ -289,13 +280,11 @@ export default function Example() {
                       </div>
                       <div
                         className={classNames(
-                          reviewIdx === 0 ? "" : "border-t border-gray-200",
-                          "py-10",
+                          reviewIdx === 0 ? '' : 'border-t border-gray-200',
+                          'py-10',
                         )}
                       >
-                        <h3 className="font-medium text-gray-900">
-                          {review.author}
-                        </h3>
+                        <h3 className="font-medium text-gray-900">{review.author}</h3>
                         <p>
                           <time dateTime={review.datetime}>{review.date}</time>
                         </p>
@@ -306,17 +295,13 @@ export default function Example() {
                               key={rating}
                               aria-hidden="true"
                               className={classNames(
-                                review.rating > rating
-                                  ? "text-yellow-400"
-                                  : "text-gray-300",
-                                "size-5 shrink-0",
+                                review.rating > rating ? 'text-yellow-400' : 'text-gray-300',
+                                'size-5 shrink-0',
                               )}
                             />
                           ))}
                         </div>
-                        <p className="sr-only">
-                          {review.rating} out of 5 stars
-                        </p>
+                        <p className="sr-only">{review.rating} out of 5 stars</p>
 
                         <div
                           dangerouslySetInnerHTML={{ __html: review.content }}
@@ -333,9 +318,7 @@ export default function Example() {
                   <dl>
                     {faqs.map((faq) => (
                       <Fragment key={faq.question}>
-                        <dt className="mt-10 font-medium text-gray-900">
-                          {faq.question}
-                        </dt>
+                        <dt className="mt-10 font-medium text-gray-900">{faq.question}</dt>
                         <dd className="prose prose-sm mt-2 max-w-none text-gray-500">
                           <p>{faq.answer}</p>
                         </dd>

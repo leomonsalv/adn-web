@@ -129,8 +129,7 @@ export default function useCheckout() {
     return useQuery({
       queryKey: ['payment-methods'],
       queryFn: getPaymentMethods,
-      select: (data): Method[] =>
-        data?.methods.filter((method: Method) => method.available && user?.emailVerified) ?? [],
+      select: (data): Method[] => data?.methods.filter((method: Method) => method.available) ?? [],
       enabled: !!user,
     });
   };

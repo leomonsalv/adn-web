@@ -35,7 +35,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12">
             <LoginForm />
             <div>
               <div className="relative mt-10">
@@ -50,7 +50,7 @@ export default function LoginPage() {
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <Button
                   onClick={handleGoogleSignIn}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <GoogleIcon />
                   <span className="text-sm/6 font-semibold">Google</span>
@@ -58,7 +58,7 @@ export default function LoginPage() {
 
                 <a
                   href="#"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg
                     fill="currentColor"

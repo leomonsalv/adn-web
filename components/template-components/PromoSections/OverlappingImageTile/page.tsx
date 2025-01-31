@@ -1,25 +1,21 @@
 const collections = [
   {
     name: "Women's",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-01.jpg",
-    imageAlt: "Woman wearing an off-white cotton t-shirt.",
+    href: '#',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-01.jpg',
+    imageAlt: 'Woman wearing an off-white cotton t-shirt.',
   },
   {
     name: "Men's",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-02.jpg",
-    imageAlt: "Man wearing a charcoal gray cotton t-shirt.",
+    href: '#',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-02.jpg',
+    imageAlt: 'Man wearing a charcoal gray cotton t-shirt.',
   },
   {
-    name: "Desk Accessories",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-03.jpg",
-    imageAlt:
-      "Person sitting at a wooden desk with paper note organizer, pencil and tablet.",
+    name: 'Desk Accessories',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-04-collection-03.jpg',
+    imageAlt: 'Person sitting at a wooden desk with paper note organizer, pencil and tablet.',
   },
 ];
 
@@ -27,10 +23,7 @@ export default function Example() {
   return (
     <div className="relative bg-white">
       {/* Background image and overlap */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 hidden sm:flex sm:flex-col"
-      >
+      <div aria-hidden="true" className="absolute inset-0 hidden sm:flex sm:flex-col">
         <div className="relative w-full flex-1 bg-gray-800">
           <div className="absolute inset-0 overflow-hidden">
             <img
@@ -46,10 +39,7 @@ export default function Example() {
 
       <div className="relative mx-auto max-w-3xl px-4 pb-96 text-center sm:px-6 sm:pb-0 lg:px-8">
         {/* Background image and overlap */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 flex flex-col sm:hidden"
-        >
+        <div aria-hidden="true" className="absolute inset-0 flex flex-col sm:hidden">
           <div className="relative w-full flex-1 bg-gray-800">
             <div className="absolute inset-0 overflow-hidden">
               <img
@@ -77,10 +67,7 @@ export default function Example() {
         </div>
       </div>
 
-      <section
-        aria-labelledby="collection-heading"
-        className="relative -mt-96 sm:mt-0"
-      >
+      <section aria-labelledby="collection-heading" className="relative -mt-96 sm:mt-0">
         <h2 id="collection-heading" className="sr-only">
           Collections
         </h2>
@@ -91,10 +78,7 @@ export default function Example() {
               className="group relative h-96 rounded-lg bg-white shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto"
             >
               <div>
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 overflow-hidden rounded-lg"
-                >
+                <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-lg">
                   <div className="absolute inset-0 overflow-hidden group-hover:opacity-75">
                     <img
                       alt={collection.imageAlt}
@@ -102,7 +86,7 @@ export default function Example() {
                       className="size-full object-cover object-center"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50" />
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent to-black opacity-50" />
                 </div>
                 <div className="absolute inset-0 flex items-end rounded-lg p-6">
                   <div>

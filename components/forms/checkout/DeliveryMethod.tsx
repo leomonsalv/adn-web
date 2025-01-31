@@ -41,7 +41,7 @@ export function DeliveryMethodSection({
                   value={deliveryMethod}
                   aria-label={deliveryMethod.title}
                   aria-description={`${deliveryMethod.turnaround} for ${deliveryMethod.price}`}
-                  className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none data-[checked]:border-transparent data-[focus]:ring-2 data-[focus]:ring-indigo-500"
+                  className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-xs focus:outline-hidden data-checked:border-transparent data-focus:ring-2 data-focus:ring-indigo-500"
                 >
                   <span className="flex flex-1">
                     <span className="flex flex-col">
@@ -62,7 +62,7 @@ export function DeliveryMethodSection({
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
+                    className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-focus:border group-data-checked:border-indigo-500"
                   />
                 </Radio>
               ))}

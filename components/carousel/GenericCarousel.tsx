@@ -30,7 +30,7 @@ const GenericCarousel = ({ children, hasBackground, autoplay = true }: GenericCa
   return (
     <div
       className={`relative w-full overflow-hidden ${
-        hasBackground ? 'bg-gradient-to-r from-pink-100 via-pink-50 to-white py-6' : 'py-4'
+        hasBackground ? 'bg-linear-to-r from-pink-100 via-pink-50 to-white py-6' : 'py-4'
       }`}
     >
       <Carousel

@@ -102,7 +102,7 @@ export function PaymentDetails() {
               selectedMethod={selectedMethod}
               setSelectedMethod={setSelectedMethod}
             />
-            <span className="text-sm pt-3 text-gray-500 flex items-center gap-x-1 items-center">
+            <span className="text-sm pt-3 text-gray-500 flex items-center gap-x-1">
               <LockClosedIcon className="w-4 h-4" />
               Compra segura y encriptada
             </span>
