@@ -25,11 +25,13 @@ export default function useOrders() {
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const checkoutData = getCheckoutData();
 
+    console.log('checkoutData', checkoutData);
+
     return useMutation({
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {
           webOrApp: 'web',
-          addressId: 'LxqvvoRoOC1K8inMTFcP',
+          addressId: checkoutData.shippingAddress.id,
           type: 'alpha',
           clientId: user?.uid!,
           clientName: checkoutData.contactInformation.name,

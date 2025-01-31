@@ -22,6 +22,7 @@ interface CheckoutState {
     lat: number;
     lng: number;
     id: string;
+    alias: string;
   };
   billingInformation: {
     sameAsShipping: boolean;
@@ -70,6 +71,7 @@ const initialState: CheckoutState = {
     lat: 0,
     lng: 0,
     id: '',
+    alias: '',
   },
   billingInformation: {
     sameAsShipping: true,
