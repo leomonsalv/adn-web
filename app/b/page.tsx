@@ -8,7 +8,6 @@ import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
-import { Product } from '@/schemas/orders';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -47,9 +46,8 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
     };
   }, [debouncedSearch, selectedFilters, sortOption]);
 
-  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, isError, error } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
     searchProducts(searchParamsObj);
-  console.log('🚀 ~ SearchPage ~ searchParamsObj:', data);
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
     setSelectedFilters(newFilters);
@@ -66,10 +64,7 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
     updatePriceRange(newRange);
   };
 
-  const products = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.data || []); // Remove the nested .data
-  }, [data?.pages]);
+  const products = data?.pages.flatMap((page) => page.items) || [];
 
   console.log('Raw API response:', data?.pages[0]);
 
@@ -88,7 +83,7 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
       <MobileFilterDialog
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}
-        facets={data?.pages[0]?.facets}
+        facets={data?.pages[0]?.data?.metadata?.ingredients}
         selectedFilters={selectedFilters}
         onFilterChange={handleFilterChange}
         onSortChange={handleSortChange}

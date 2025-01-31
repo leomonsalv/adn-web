@@ -18,45 +18,36 @@ export default function useSearchProduct() {
   const searchProducts = (params: SearchFormType) => {
     return useInfiniteQuery({
       queryKey: ['search-products', debouncedOptions],
-      queryFn: async ({ pageParam }) => {
-        const currentPage = typeof pageParam === 'number' ? pageParam : 1;
-
+      queryFn: async ({ pageParam = 1 }) => {
         const searchParams = {
           search: params.search || '',
-          page: currentPage,
+          page: pageParam,
           pageSize: params.pageSize || 10,
           sort: params.sort || '',
           lab: params.lab || '',
-          saveExcel: 'false',
+          saveExcel: 'false', //FIXME: ADD saveExcel to SearchFormType
         };
 
         try {
           const response = await fetchProducts(searchParams);
-          console.log('🚀 ~ queryFn: ~ response:', response);
-          // Transform the response to match expected structure
           return {
-            data: response,
-            pagination: {
-              current: currentPage,
-              total_pages: response.pagination?.totalPages || 1,
-              total: response.pagination?.total || 0,
-            },
+            items: response.data,
+            nextPage:
+              response.page < Math.ceil(response.totalItems / response.pageSize)
+                ? response.page + 1
+                : undefined,
+            totalPages: Math.ceil(response.totalItems / response.pageSize),
+            currentPage: response.page,
+            totalItems: response.totalItems,
+            metadata: response.metadata,
           };
         } catch (error) {
           console.error('Search error:', error);
           throw error;
         }
       },
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        if (
-          !lastPage.pagination ||
-          lastPage.pagination.current >= lastPage.pagination.total_pages
-        ) {
-          return undefined;
-        }
-        return lastPage.pagination.current + 1;
-      },
       staleTime: 1000 * 60,
       gcTime: 1000 * 60 * 5,
       refetchOnWindowFocus: false,

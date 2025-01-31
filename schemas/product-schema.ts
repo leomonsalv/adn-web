@@ -12,12 +12,6 @@ export const SkuSchema = z.enum(['green l', 'rojo l', 'rojo xl', 'rojo xxl']);
 
 export const MetadataEnumSchema = z.enum(['string']);
 
-export const CategorySchema = z.object({
-  editable: z.string(),
-  full_name: z.string(),
-  name: z.string(),
-});
-
 export const TaxesSchema = z.object({
   amount: z.string(),
   name: NameSchema,
@@ -47,14 +41,6 @@ export const RedOptionsSchema = z.object({
 
 export const XlOptionsSchema = z.object({
   red: GreenClassSchema,
-});
-
-export const OptionSchema = z.object({
-  images: z.null(),
-  metadata: MetadataEnumSchema,
-  name: VariantMasterOptionSchema,
-  type: ColorTypeSchema,
-  value: z.string(),
 });
 
 export const MetadataClassSchema = z.object({
@@ -89,15 +75,6 @@ export const XlSchema = z.object({
   options: XlOptionsSchema,
 });
 
-export const VariantSchema = z.object({
-  images: z.array(z.string()),
-  isDefault: z.boolean(),
-  options: z.array(OptionSchema),
-  price: z.number(),
-  sku: SkuSchema,
-  stock: z.number(),
-});
-
 export const GreenSchema = z.object({
   images: z.array(z.string()),
   options: GreenOptionsSchema,
@@ -113,30 +90,84 @@ export const VariantOptionsMapSchema = z.object({
 
 export const ProductTypeSchema = z.enum(['libre']);
 
+const OptionSchema = z.object({
+  images: z.null(),
+  metadata: z.string(),
+  name: z.enum(['color', 'size']),
+  type: z.enum(['color', 'select']),
+  value: z.string(),
+});
+
+const VariantOptionsMapItemSchema = z.object({
+  SKU: z.string(),
+  price: z.number(),
+  stock: z.number(),
+});
+
+const VariantSchema = z.object({
+  images: z.array(z.string()),
+  isDefault: z.boolean(),
+  options: z.array(OptionSchema),
+  price: z.number(),
+  sku: z.string(),
+  stock: z.number(),
+});
+
+const CategorySchema = z.object({
+  editable: z.string(),
+  full_name: z.string(),
+  name: z.string(),
+});
+
+const TaxSchema = z.object({
+  amount: z.string(),
+  name: z.string(),
+});
+
 export const ProductSchema = z.object({
   _id: z.string(),
-  activeIngredients: z.union([z.null(), z.string()]),
-  attack: z.union([z.null(), z.string()]),
+  activeIngredients: z.string().nullable(),
+  attack: z.string().nullable(),
   barcode: z.string(),
   betterAttack: z.array(z.string()),
   betterIngredients: z.array(z.string()),
   bsPrice: z.string(),
   category: CategorySchema,
   description: z.string(),
+  images: z.array(z.string()).optional(),
   inventary: z.record(z.string(), z.number()),
   laboratory: z.string(),
   name: z.string(),
   productId: z.number(),
   refPrice: z.number(),
-  synons: z.union([z.null(), z.string()]),
-  taxes: TaxesSchema,
+  synons: z.string().nullable(),
+  taxes: TaxSchema,
   templateId: z.number(),
-  type: ProductTypeSchema,
+  type: z.enum(['libre', 'prescripcion', 'tienda']),
   updatedAt: z.coerce.date().optional(),
-  variantMasterOption: VariantMasterOptionSchema.optional(),
-  variantOptions: VariantOptionsSchema.optional(),
-  variantOptionsMap: VariantOptionsMapSchema.optional(),
-  variantTypes: z.array(VariantMasterOptionSchema).optional(),
+  variantMasterOption: z.enum(['color', 'size']).optional(),
+  variantOptions: z
+    .object({
+      color: z.object({
+        type: z.enum(['color']),
+        values: z.array(z.string()),
+      }),
+      size: z.object({
+        type: z.enum(['select']),
+        values: z.array(z.string()),
+      }),
+    })
+    .optional(),
+  variantOptionsMap: z
+    .record(
+      z.string(),
+      z.object({
+        images: z.array(z.string()),
+        options: z.record(z.string(), VariantOptionsMapItemSchema),
+      }),
+    )
+    .optional(),
+  variantTypes: z.array(z.enum(['color', 'size'])).optional(),
   variants: z.array(VariantSchema).optional(),
   visible: z.boolean(),
 });

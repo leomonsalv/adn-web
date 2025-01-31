@@ -1,34 +1,5 @@
 import { z } from 'zod';
-
-// export const searchFormSchema = z.object({
-//   query: z.string().optional(),
-//   facets: z.record(z.array(z.string())).optional(),
-//   suggest: z.boolean().optional(),
-//   pageSize: z.number().optional(),
-//   actualPage: z.number().optional(),
-//   stock: z.boolean().optional(),
-//   category: z.string().optional(),
-//   carousel: z.boolean().optional(),
-//   priceRange: z
-//     .object({
-//       from: z.number(),
-//       to: z.number(),
-//     })
-//     .optional(),
-//   type: z.enum(["libre", "preescripcion", "tienda"]).optional(),
-//   sort: z
-//     .object({
-//       field: z.enum([
-//         "price",
-//         "price_extra",
-//         "name",
-//         "qty_available",
-//         "x_studio_laboratory",
-//       ]),
-//       order: z.enum(["asc", "desc"]),
-//     })
-//     .optional(),
-// });
+import { ProductSchema } from './product-schema';
 
 // Schema para las facetas/agregaciones
 export const FacetSchema = z.object({
@@ -42,6 +13,8 @@ export const PriceRangeSchema = z.object({
 });
 
 export const searchFormSchema = z.object({
+  search: z.string().optional(),
+  lab: z.string().optional(),
   query: z.string().optional(),
   actualPage: z.number().optional(),
   pageSize: z.number().optional(),
@@ -120,50 +93,20 @@ export const CategIdSchema = z.object({
 });
 export type CategId = z.infer<typeof CategIdSchema>;
 
-export const SearchResponseProductSchema = z.object({
-  id: z.number(),
-  barcode: z.string(),
-  name: z.string(),
-  price: z.number(),
-  price_extra: z.number(),
-  description: z.string(),
-  imageLarge: z.string(),
-  image: z.null(),
-  imageSmall: z.string(),
-  imageXtraSmall: z.string(),
-  imageUltraSmall: z.string(),
-  qty_available: z.number(),
-  currency: CurrencySchema,
-  taxes_ids: z.array(z.string()),
-  required_recipe: z.boolean(),
-  laboratory: z.string(),
-  product_type: z.null(),
-  recommended: z.boolean(),
-  offers: z.null(),
-  x_studio_previous_price: z.number(),
-  price_ref: z.number(),
-  categ_route: z.string(),
-  saleslast7days: z.number(),
-  discount_rate: z.number(),
-  move_location_id: z.null(),
-  moves_location_id: z.null(),
-  x_studio_libre_de_gluten: z.string(),
-  x_studio_2x1: z.string(),
-  x_studio_fecha_de_vencimiento: XStudioFechaDeVencimientoSchema,
-  taxes: z.array(TaxSchema),
+export const MetadataClassSchema = z.object({
+  _id: z.null(),
+  attack: z.array(z.string()),
+  count: z.number(),
+  ingredients: z.array(z.string()),
+  laboratories: z.array(z.union([z.null(), z.string()])),
 });
-export type SearchResponseProduct = z.infer<typeof SearchResponseProductSchema>;
-
-export const FacetsSchema = z.object({
-  x_studio_laboratory: z.array(CategIdSchema),
-  categ_id: z.array(CategIdSchema),
-  x_studio_active_ingredient: z.array(CategIdSchema),
-});
-export type Facets = z.infer<typeof FacetsSchema>;
+export type MetadataClass = z.infer<typeof MetadataClassSchema>;
 
 export const SearchResponseSchema = z.object({
-  pagination: PaginationSchema,
-  data: z.array(SearchResponseProductSchema),
-  facets: FacetsSchema,
+  data: z.array(ProductSchema),
+  page: z.number(),
+  pageSize: z.number(),
+  totalItems: z.number(),
+  metadata: MetadataClassSchema,
 });
 export type SearchResponse = z.infer<typeof SearchResponseSchema>;

@@ -1,17 +1,19 @@
 // api/products.ts
 import { SearchFormType } from '@/types/search';
 import { GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
-import { httpsCallable, HttpsCallableResult } from 'firebase/functions';
+import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/lib/firebaseConfig';
-import { GetSearchCateroriesResponse } from '@/types/categories';
-import { Product } from '@/schemas/orders';
+import { Product, ProductResponse } from '@/types/product';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
-interface ProductResponse {
-  data: Product;
-  success: boolean;
-  message?: string;
+interface SearchParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  sort?: string;
+  lab?: string;
+  saveExcel?: string;
 }
 
 export const fetchProducts = async ({
@@ -21,14 +23,7 @@ export const fetchProducts = async ({
   sort = '',
   lab = '',
   saveExcel = 'false',
-}: {
-  page?: number;
-  pageSize?: number;
-  search?: string;
-  sort?: string;
-  lab?: string;
-  saveExcel?: string;
-}): Promise<GetSearchCateroriesResponse> => {
+}: SearchParams): Promise<ProductResponse> => {
   try {
     const queryParams = new URLSearchParams({
       page: page.toString(),
@@ -47,8 +42,7 @@ export const fetchProducts = async ({
     }
 
     const products = await response.json();
-    console.log('🚀 ~ products:', products);
-    return products.data;
+    return products;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching products:', error.message);
@@ -94,7 +88,6 @@ export const fetchProductsByIds = async (
   }
 };
 
-// For cases where you need to fetch a single product
 export const fetchProductById = async (id: string): Promise<ProductResponse> => {
   try {
     const queryParams = new URLSearchParams({
@@ -107,7 +100,6 @@ export const fetchProductById = async (id: string): Promise<ProductResponse> => 
     }
 
     const product = await response.json();
-    console.log('🚀 ~ fetchProductById ~ product:', product);
     return product;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -117,26 +109,6 @@ export const fetchProductById = async (id: string): Promise<ProductResponse> => 
     throw new Error('An unknown error occurred while fetching the product');
   }
 };
-
-// export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product[] }> => {
-//   try {
-//     const response: HttpsCallableResult<{ data: Product[] }> = await httpsCallable<
-//       { ids: number[] },
-//       { data: Product[] }
-//     >(
-//       functions,
-//       'es-searchById',
-//     )({ ids });
-
-//     return response.data;
-//   } catch (error: unknown) {
-//     if (error instanceof Error) {
-//       console.error('Error fetching products by IDs:', error.message);
-//       throw error;
-//     }
-//     throw new Error('An unknown error occurred while fetching products by IDs');
-//   }
-// };
 
 export const fetchProductsSuggestions = async (
   query: string,
