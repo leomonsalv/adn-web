@@ -1,6 +1,6 @@
-import { Order } from "@/types/order";
-import OrderHeader from "./OrderHeader";
-import ProductList from "./ProductList";
+import { Order } from '@/types/order';
+import OrderHeader from './OrderHeader';
+import ProductList from './ProductList';
 
 interface OrderCardProps {
   order: Order;
@@ -8,12 +8,10 @@ interface OrderCardProps {
 
 export default function OrderCard({ order }: OrderCardProps) {
   return (
-    <div className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
+    <div className="border-b border-t border-gray-200 bg-white shadow-xs sm:rounded-lg sm:border">
       <h3 className="sr-only">
-        Orden creada el:{" "}
-        <time dateTime={order.odooDataOrder.create_date}>
-          {order.odooDataOrder.create_date}
-        </time>
+        Orden creada el:{' '}
+        <time dateTime={order.odooDataOrder.create_date}>{order.odooDataOrder.create_date}</time>
       </h3>
       <OrderHeader order={order} />
       <ProductList

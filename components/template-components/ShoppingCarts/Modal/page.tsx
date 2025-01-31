@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const products = [
   {
     id: 1,
-    name: "Zip Tote Basket",
-    href: "#",
-    color: "White and black",
-    price: "$140.00",
+    name: 'Zip Tote Basket',
+    href: '#',
+    color: 'White and black',
+    price: '$140.00',
     imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
+      'https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-03.jpg',
     imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+      'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
   },
   {
     id: 2,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
+    name: 'Throwback Hip Bag',
+    href: '#',
+    color: 'Salmon',
+    price: '$90.00',
     imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+      'https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
     imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+      'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
   },
   // More products...
 ];
@@ -37,20 +37,18 @@ export default function Example() {
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
         transition
-        className="hidden data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:fixed sm:inset-0 sm:block sm:bg-gray-500/75 sm:transition-opacity"
+        className="hidden data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in sm:fixed sm:inset-0 sm:block sm:bg-gray-500/75 sm:transition-opacity"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-stretch justify-center text-center sm:items-center sm:px-6 lg:px-8">
           <DialogPanel
             transition
-            className="flex w-full max-w-3xl transform text-left text-base transition data-[closed]:scale-105 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8"
+            className="flex w-full max-w-3xl transform text-left text-base transition data-closed:scale-105 data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in sm:my-8"
           >
             <form className="relative flex w-full flex-col overflow-hidden bg-white pb-8 pt-6 sm:rounded-lg sm:pb-6 lg:py-8">
               <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8">
-                <h2 className="text-lg font-medium text-gray-900">
-                  Shopping Cart
-                </h2>
+                <h2 className="text-lg font-medium text-gray-900">Shopping Cart</h2>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -66,15 +64,9 @@ export default function Example() {
                   Items in your shopping cart
                 </h2>
 
-                <ul
-                  role="list"
-                  className="divide-y divide-gray-200 px-4 sm:px-6 lg:px-8"
-                >
+                <ul role="list" className="divide-y divide-gray-200 px-4 sm:px-6 lg:px-8">
                   {products.map((product, productIdx) => (
-                    <li
-                      key={product.id}
-                      className="flex py-8 text-sm sm:items-center"
-                    >
+                    <li key={product.id} className="flex py-8 text-sm sm:items-center">
                       <img
                         alt={product.imageAlt}
                         src={product.imageSrc}
@@ -91,16 +83,13 @@ export default function Example() {
                           {product.price}
                         </p>
                         <div className="flex items-center sm:block sm:flex-none sm:text-center">
-                          <label
-                            htmlFor={`quantity-${productIdx}`}
-                            className="sr-only"
-                          >
+                          <label htmlFor={`quantity-${productIdx}`} className="sr-only">
                             Quantity, {product.name}
                           </label>
                           <select
                             id={`quantity-${productIdx}`}
                             name={`quantity-${productIdx}`}
-                            className="block max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base/5 font-medium text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                            className="block max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base/5 font-medium text-gray-700 shadow-xs focus:border-indigo-500 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                           >
                             <option value={1}>1</option>
                             <option value={2}>2</option>
@@ -125,10 +114,7 @@ export default function Example() {
                 </ul>
               </section>
 
-              <section
-                aria-labelledby="summary-heading"
-                className="mt-auto sm:px-6 lg:px-8"
-              >
+              <section aria-labelledby="summary-heading" className="mt-auto sm:px-6 lg:px-8">
                 <div className="bg-gray-50 p-6 sm:rounded-lg sm:p-8">
                   <h2 id="summary-heading" className="sr-only">
                     Order summary
@@ -149,12 +135,8 @@ export default function Example() {
                         <dd className="font-medium text-gray-900">$53.40</dd>
                       </div>
                       <div className="flex items-center justify-between py-4">
-                        <dt className="text-base font-medium text-gray-900">
-                          Order total
-                        </dt>
-                        <dd className="text-base font-medium text-gray-900">
-                          $320.40
-                        </dd>
+                        <dt className="text-base font-medium text-gray-900">Order total</dt>
+                        <dd className="text-base font-medium text-gray-900">$320.40</dd>
                       </div>
                     </dl>
                   </div>
@@ -164,7 +146,7 @@ export default function Example() {
               <div className="mt-8 flex justify-end px-4 sm:px-6 lg:px-8">
                 <button
                   type="submit"
-                  className="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  className="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
                   Continue to Payment
                 </button>

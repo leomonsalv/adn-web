@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
-import { Edit, CheckCircle2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { SkeletonCard } from '@/components/ui/skeleton-card'
-import { useToast } from '@/hooks/use-toast'
-import { useOTPVerification } from '@/hooks/use-otp-verification'
-import OTPInput from '@/components/ui/otp-input'
+import React, { useState, useEffect, useRef } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Edit, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { SkeletonCard } from '@/components/ui/skeleton-card';
+import { useToast } from '@/hooks/use-toast';
+import { useOTPVerification } from '@/hooks/use-otp-verification';
+import OTPInput from '@/components/ui/otp-input';
 interface ProfileFieldWithOTPProps {
-  id: string
-  label: string
-  icon: React.ReactNode
-  defaultValue: string
-  onSuccess?: () => void
-  initialVerified?: boolean
-  otpType: 'phone' | 'email'
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  defaultValue: string;
+  onSuccess?: () => void;
+  initialVerified?: boolean;
+  otpType: 'phone' | 'email';
 }
 
 export const ProfileFieldWithOTP = ({
@@ -25,61 +25,61 @@ export const ProfileFieldWithOTP = ({
   initialVerified = false,
   otpType,
 }: ProfileFieldWithOTPProps) => {
-  const [open, setOpen] = useState(false)
-  const [showSkeleton, setShowSkeleton] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [verified, setVerified] = useState(initialVerified)
-  const { toast } = useToast()
+  const [open, setOpen] = useState(false);
+  const [showSkeleton, setShowSkeleton] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [verified, setVerified] = useState(initialVerified);
+  const { toast } = useToast();
 
-  const { sendOTPMutation, validateOTPMutation } = useOTPVerification(otpType)
+  const { sendOTPMutation, validateOTPMutation } = useOTPVerification(otpType);
 
-  const isLoading = sendOTPMutation.isPending || validateOTPMutation.isPending
+  const isLoading = sendOTPMutation.isPending || validateOTPMutation.isPending;
 
-  const isPhone = otpType === 'phone'
+  const isPhone = otpType === 'phone';
   const modalDescription = isPhone
     ? 'Ingresa el código que enviamos a tu número.'
-    : 'Ingresa el código que enviamos a tu correo.'
+    : 'Ingresa el código que enviamos a tu correo.';
 
   const successMessage = isPhone
     ? 'Tu número de teléfono se ha verificado correctamente.'
-    : 'Tu correo electrónico se ha verificado correctamente.'
+    : 'Tu correo electrónico se ha verificado correctamente.';
 
   // Manejo del Skeleton
   useEffect(() => {
-    let timer: NodeJS.Timeout
+    let timer: NodeJS.Timeout;
     if (isLoading) {
-      setShowSkeleton(true)
+      setShowSkeleton(true);
     } else {
-      timer = setTimeout(() => setShowSkeleton(false), 300)
+      timer = setTimeout(() => setShowSkeleton(false), 300);
     }
     return () => {
-      if (timer) clearTimeout(timer)
-    }
-  }, [isLoading])
+      if (timer) clearTimeout(timer);
+    };
+  }, [isLoading]);
 
   const handleOTPComplete = async (otp: string) => {
-    setErrorMessage(null)
-    const res = await validateOTPMutation.mutateAsync(otp)
+    setErrorMessage(null);
+    const res = await validateOTPMutation.mutateAsync(otp);
     if (res.validation) {
-      setOpen(false)
-      setVerified(true)
-      onSuccess?.()
-      toast({ title: 'Verificación exitosa', description: successMessage })
+      setOpen(false);
+      setVerified(true);
+      onSuccess?.();
+      toast({ title: 'Verificación exitosa', description: successMessage });
     } else {
-      setErrorMessage(res.message || 'Hubo un error al validar el código.')
+      setErrorMessage(res.message || 'Hubo un error al validar el código.');
     }
-  }
+  };
 
   const handleSendOtp = async () => {
-    if (verified) return
-    setErrorMessage(null)
-    const res = await sendOTPMutation.mutateAsync(defaultValue)
+    if (verified) return;
+    setErrorMessage(null);
+    const res = await sendOTPMutation.mutateAsync(defaultValue);
     if (res.validation) {
-      setOpen(true)
+      setOpen(true);
     } else {
-      setErrorMessage('No pudimos enviar el OTP. Por favor, intenta más tarde.')
+      setErrorMessage('No pudimos enviar el OTP. Por favor, intenta más tarde.');
     }
-  }
+  };
 
   return (
     <div className="space-y-2">
@@ -107,7 +107,7 @@ export const ProfileFieldWithOTP = ({
           <Button
             type="button"
             onClick={handleSendOtp}
-            className="p-2 rounded-md shadow-sm focus:outline-none"
+            className="p-2 rounded-md shadow-xs focus:outline-hidden"
             disabled={isLoading}
           >
             {isLoading ? 'Enviando...' : <Edit className="text-gray-600 hover:text-gray-500" />}
@@ -160,5 +160,5 @@ export const ProfileFieldWithOTP = ({
         </Dialog.Portal>
       </Dialog.Root>
     </div>
-  )
-}
+  );
+};

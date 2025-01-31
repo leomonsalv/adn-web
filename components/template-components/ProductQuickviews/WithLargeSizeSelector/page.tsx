@@ -1,37 +1,26 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Radio,
-  RadioGroup,
-} from "@headlessui/react";
-import { ShieldCheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  CheckIcon,
-  QuestionMarkCircleIcon,
-  StarIcon,
-} from "@heroicons/react/20/solid";
+import { useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel, Radio, RadioGroup } from '@headlessui/react';
+import { ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid';
 
 const product = {
-  name: "Everyday Ruck Snack",
-  price: "$220",
+  name: 'Everyday Ruck Snack',
+  price: '$220',
   rating: 3.9,
-  href: "#",
-  imageSrc:
-    "https://tailwindui.com/plus/img/ecommerce-images/product-quick-preview-03-detail.jpg",
+  href: '#',
+  imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/product-quick-preview-03-detail.jpg',
   imageAlt:
-    "Interior of light green canvas bag with padded laptop sleeve and internal organization pouch.",
+    'Interior of light green canvas bag with padded laptop sleeve and internal organization pouch.',
   sizes: [
-    { name: "18L", description: "Perfect for a reasonable amount of snacks." },
-    { name: "20L", description: "Enough room for a serious amount of snacks." },
+    { name: '18L', description: 'Perfect for a reasonable amount of snacks.' },
+    { name: '20L', description: 'Enough room for a serious amount of snacks.' },
   ],
 };
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -42,14 +31,14 @@ export default function Example() {
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
         transition
-        className="fixed inset-0 hidden bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
+        className="fixed inset-0 hidden bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in md:block"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
           <DialogPanel
             transition
-            className="flex w-full transform text-left text-base transition data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:my-8 md:max-w-2xl md:px-4 data-[closed]:md:translate-y-0 data-[closed]:md:scale-95 lg:max-w-4xl"
+            className="flex w-full transform text-left text-base transition data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in md:my-8 md:max-w-2xl md:px-4 md:data-closed:translate-y-0 md:data-closed:scale-95 lg:max-w-4xl"
           >
             <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
               <button
@@ -80,22 +69,15 @@ export default function Example() {
                   </p>
                 </div>
                 <div className="sm:col-span-8 lg:col-span-7">
-                  <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-                    {product.name}
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
 
-                  <section
-                    aria-labelledby="information-heading"
-                    className="mt-4"
-                  >
+                  <section aria-labelledby="information-heading" className="mt-4">
                     <h3 id="information-heading" className="sr-only">
                       Product information
                     </h3>
 
                     <div className="flex items-center">
-                      <p className="text-lg text-gray-900 sm:text-xl">
-                        {product.price}
-                      </p>
+                      <p className="text-lg text-gray-900 sm:text-xl">{product.price}</p>
 
                       <div className="ml-4 border-l border-gray-300 pl-4">
                         <h4 className="sr-only">Reviews</h4>
@@ -106,29 +88,20 @@ export default function Example() {
                                 key={rating}
                                 aria-hidden="true"
                                 className={classNames(
-                                  product.rating > rating
-                                    ? "text-yellow-400"
-                                    : "text-gray-300",
-                                  "size-5 shrink-0",
+                                  product.rating > rating ? 'text-yellow-400' : 'text-gray-300',
+                                  'size-5 shrink-0',
                                 )}
                               />
                             ))}
                           </div>
-                          <p className="sr-only">
-                            {product.rating} out of 5 stars
-                          </p>
+                          <p className="sr-only">{product.rating} out of 5 stars</p>
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-6 flex items-center">
-                      <CheckIcon
-                        aria-hidden="true"
-                        className="size-5 shrink-0 text-green-500"
-                      />
-                      <p className="ml-2 font-medium text-gray-500">
-                        In stock and ready to ship
-                      </p>
+                      <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-green-500" />
+                      <p className="ml-2 font-medium text-gray-500">In stock and ready to ship</p>
                     </div>
                   </section>
 
@@ -141,13 +114,8 @@ export default function Example() {
                       <div className="sm:flex sm:justify-between">
                         {/* Size selector */}
                         <fieldset>
-                          <legend className="block text-sm font-medium text-gray-700">
-                            Size
-                          </legend>
-                          <RadioGroup
-                            value={selectedSize}
-                            onChange={setSelectedSize}
-                          >
+                          <legend className="block text-sm font-medium text-gray-700">Size</legend>
+                          <RadioGroup value={selectedSize} onChange={setSelectedSize}>
                             <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
                               {product.sizes.map((size) => (
                                 <Radio
@@ -156,17 +124,13 @@ export default function Example() {
                                   value={size}
                                   aria-label={size.name}
                                   aria-description={size.description}
-                                  className="group relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500"
+                                  className="group relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden data-focus:ring-2 data-focus:ring-indigo-500"
                                 >
-                                  <p className="text-base font-medium text-gray-900">
-                                    {size.name}
-                                  </p>
-                                  <p className="mt-1 text-sm text-gray-500">
-                                    {size.description}
-                                  </p>
+                                  <p className="text-base font-medium text-gray-900">{size.name}</p>
+                                  <p className="mt-1 text-sm text-gray-500">{size.description}</p>
                                   <div
                                     aria-hidden="true"
-                                    className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
+                                    className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-focus:border group-data-checked:border-indigo-500"
                                   />
                                 </Radio>
                               ))}
@@ -189,16 +153,13 @@ export default function Example() {
                       <div className="mt-6">
                         <button
                           type="submit"
-                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                         >
                           Add to bag
                         </button>
                       </div>
                       <div className="mt-6 text-center">
-                        <a
-                          href="#"
-                          className="group inline-flex text-base font-medium"
-                        >
+                        <a href="#" className="group inline-flex text-base font-medium">
                           <ShieldCheckIcon
                             aria-hidden="true"
                             className="mr-2 size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
