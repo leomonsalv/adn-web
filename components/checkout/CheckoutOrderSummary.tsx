@@ -81,12 +81,12 @@ export default function CheckoutOrderSummary() {
 
           <PopoverBackdrop
             transition
-            className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
+            className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
           />
 
           <PopoverPanel
             transition
-            className="relative transform bg-white px-4 py-6 transition duration-300 ease-in-out data-[closed]:translate-y-full sm:px-6"
+            className="relative transform bg-white px-4 py-6 transition duration-300 ease-in-out data-closed:translate-y-full sm:px-6"
           >
             <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
               <div className="flex items-center justify-between">

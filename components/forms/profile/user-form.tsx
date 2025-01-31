@@ -206,7 +206,7 @@ function ProfileField({
           <>
             <button
               type="submit"
-              className="p-2 rounded-md shadow-sm focus:outline-none text-indigo-600 hover:text-indigo-500"
+              className="p-2 rounded-md shadow-xs focus:outline-hidden text-indigo-600 hover:text-indigo-500"
               disabled={isPending}
             >
               {isPending ? 'Guardando...' : <Check />}
@@ -215,7 +215,7 @@ function ProfileField({
               title="Cancelar"
               type="button"
               onClick={handleCancel}
-              className="p-2 rounded-md shadow-sm focus:outline-none text-indigo-600 hover:text-indigo-500"
+              className="p-2 rounded-md shadow-xs focus:outline-hidden text-indigo-600 hover:text-indigo-500"
               disabled={isPending}
             >
               <XCircleIcon />
@@ -226,7 +226,7 @@ function ProfileField({
             title="Editar campo"
             type="button"
             onClick={() => setIsEditing(true)}
-            className="p-2 rounded-md shadow-sm focus:outline-none text-gray-600 hover:text-gray-500"
+            className="p-2 rounded-md shadow-xs focus:outline-hidden text-gray-600 hover:text-gray-500"
             disabled={disabled}
           >
             <Edit />
@@ -250,7 +250,7 @@ function SubmitButton() {
       color="indigo"
       disabled={pending}
       type="submit"
-      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       {pending ? 'Cargando...' : 'Finalizado'}
     </Button>

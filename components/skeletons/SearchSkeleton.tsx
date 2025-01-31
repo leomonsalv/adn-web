@@ -49,7 +49,7 @@ export default function SearchPageSkeleton() {
                   key={i}
                   className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
                 >
-                  <Skeleton className="aspect-[3/4] bg-gray-200 sm:h-96" />
+                  <Skeleton className="aspect-3/4 bg-gray-200 sm:h-96" />
                   <div className="flex flex-1 flex-col space-y-2 p-4">
                     <Skeleton className="h-5 w-2/3 bg-gray-200" /> {/* Title */}
                     <Skeleton className="h-4 w-3/4 bg-gray-200" /> {/* Description */}

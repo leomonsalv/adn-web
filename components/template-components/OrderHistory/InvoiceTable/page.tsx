@@ -1,21 +1,21 @@
 const orders = [
   {
-    number: "WU88191111",
-    date: "January 22, 2021",
-    datetime: "2021-01-22",
-    invoiceHref: "#",
-    total: "$238.00",
+    number: 'WU88191111',
+    date: 'January 22, 2021',
+    datetime: '2021-01-22',
+    invoiceHref: '#',
+    total: '$238.00',
     products: [
       {
         id: 1,
-        name: "Machined Pen and Pencil Set",
-        href: "#",
-        price: "$70.00",
-        status: "Delivered Jan 25, 2021",
+        name: 'Machined Pen and Pencil Set',
+        href: '#',
+        price: '$70.00',
+        status: 'Delivered Jan 25, 2021',
         imageSrc:
-          "https://tailwindui.com/plus/img/ecommerce-images/order-history-page-02-product-01.jpg",
+          'https://tailwindui.com/plus/img/ecommerce-images/order-history-page-02-product-01.jpg',
         imageAlt:
-          "Detail of mechanical pencil tip with machined black steel shaft and chrome lead tip.",
+          'Detail of mechanical pencil tip with machined black steel shaft and chrome lead tip.',
       },
       // More products...
     ],
@@ -32,8 +32,7 @@ export default function Example() {
             Order history
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Check the status of recent orders, manage returns, and download
-            invoices.
+            Check the status of recent orders, manage returns, and download invoices.
           </p>
         </div>
 
@@ -44,8 +43,7 @@ export default function Example() {
             {orders.map((order) => (
               <div key={order.number}>
                 <h3 className="sr-only">
-                  Order placed on{" "}
-                  <time dateTime={order.datetime}>{order.date}</time>
+                  Order placed on <time dateTime={order.datetime}>{order.date}</time>
                 </h3>
 
                 <div className="rounded-lg bg-gray-50 px-4 py-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 sm:px-6 lg:space-x-8">
@@ -57,9 +55,7 @@ export default function Example() {
                       </dd>
                     </div>
                     <div className="flex justify-between pt-6 sm:block sm:pt-0">
-                      <dt className="font-medium text-gray-900">
-                        Order number
-                      </dt>
+                      <dt className="font-medium text-gray-900">Order number</dt>
                       <dd className="sm:mt-1">{order.number}</dd>
                     </div>
                     <div className="flex justify-between pt-6 font-medium text-gray-900 sm:block sm:pt-0">
@@ -69,7 +65,7 @@ export default function Example() {
                   </dl>
                   <a
                     href={order.invoiceHref}
-                    className="mt-6 flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto"
+                    className="mt-6 flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-xs hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto"
                   >
                     View Invoice
                     <span className="sr-only">for order {order.number}</span>
@@ -80,28 +76,16 @@ export default function Example() {
                   <caption className="sr-only">Products</caption>
                   <thead className="sr-only text-left text-sm text-gray-500 sm:not-sr-only">
                     <tr>
-                      <th
-                        scope="col"
-                        className="py-3 pr-8 font-normal sm:w-2/5 lg:w-1/3"
-                      >
+                      <th scope="col" className="py-3 pr-8 font-normal sm:w-2/5 lg:w-1/3">
                         Product
                       </th>
-                      <th
-                        scope="col"
-                        className="hidden w-1/5 py-3 pr-8 font-normal sm:table-cell"
-                      >
+                      <th scope="col" className="hidden w-1/5 py-3 pr-8 font-normal sm:table-cell">
                         Price
                       </th>
-                      <th
-                        scope="col"
-                        className="hidden py-3 pr-8 font-normal sm:table-cell"
-                      >
+                      <th scope="col" className="hidden py-3 pr-8 font-normal sm:table-cell">
                         Status
                       </th>
-                      <th
-                        scope="col"
-                        className="w-0 py-3 text-right font-normal"
-                      >
+                      <th scope="col" className="w-0 py-3 text-right font-normal">
                         Info
                       </th>
                     </tr>
@@ -117,21 +101,13 @@ export default function Example() {
                               className="mr-6 size-16 rounded object-cover object-center"
                             />
                             <div>
-                              <div className="font-medium text-gray-900">
-                                {product.name}
-                              </div>
-                              <div className="mt-1 sm:hidden">
-                                {product.price}
-                              </div>
+                              <div className="font-medium text-gray-900">{product.name}</div>
+                              <div className="mt-1 sm:hidden">{product.price}</div>
                             </div>
                           </div>
                         </td>
-                        <td className="hidden py-6 pr-8 sm:table-cell">
-                          {product.price}
-                        </td>
-                        <td className="hidden py-6 pr-8 sm:table-cell">
-                          {product.status}
-                        </td>
+                        <td className="hidden py-6 pr-8 sm:table-cell">{product.price}</td>
+                        <td className="hidden py-6 pr-8 sm:table-cell">{product.status}</td>
                         <td className="whitespace-nowrap py-6 text-right font-medium">
                           <a href={product.href} className="text-indigo-600">
                             View

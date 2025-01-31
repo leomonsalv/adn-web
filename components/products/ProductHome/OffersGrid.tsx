@@ -32,7 +32,7 @@ const OffersGrid = ({
         'w-full p-4 rounded-lg',
         variant === 'default'
           ? 'bg-white'
-          : 'bg-gradient-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900]',
+          : 'bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900]',
       )}
     >
       <h2

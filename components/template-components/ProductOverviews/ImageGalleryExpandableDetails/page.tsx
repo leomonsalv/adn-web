@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Disclosure,
   DisclosureButton,
@@ -12,34 +12,34 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-} from "@headlessui/react";
-import { StarIcon } from "@heroicons/react/20/solid";
-import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+} from '@headlessui/react';
+import { StarIcon } from '@heroicons/react/20/solid';
+import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 const product = {
-  name: "Zip Tote Basket",
-  price: "$140",
+  name: 'Zip Tote Basket',
+  price: '$140',
   rating: 4,
   images: [
     {
       id: 1,
-      name: "Angled view",
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-03-product-01.jpg",
-      alt: "Angled front view with bag zipped and handles upright.",
+      name: 'Angled view',
+      src: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-03-product-01.jpg',
+      alt: 'Angled front view with bag zipped and handles upright.',
     },
     // More images...
   ],
   colors: [
     {
-      name: "Washed Black",
-      bgColor: "bg-gray-700",
-      selectedColor: "ring-gray-700",
+      name: 'Washed Black',
+      bgColor: 'bg-gray-700',
+      selectedColor: 'ring-gray-700',
     },
-    { name: "White", bgColor: "bg-white", selectedColor: "ring-gray-400" },
+    { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
     {
-      name: "Washed Gray",
-      bgColor: "bg-gray-500",
-      selectedColor: "ring-gray-500",
+      name: 'Washed Gray',
+      bgColor: 'bg-gray-500',
+      selectedColor: 'ring-gray-500',
     },
   ],
   description: `
@@ -47,15 +47,15 @@ const product = {
   `,
   details: [
     {
-      name: "Features",
+      name: 'Features',
       items: [
-        "Multiple strap configurations",
-        "Spacious interior with top zip",
-        "Leather handle and tabs",
-        "Interior dividers",
-        "Stainless strap loops",
-        "Double stitched construction",
-        "Water-resistant",
+        'Multiple strap configurations',
+        'Spacious interior with top zip',
+        'Leather handle and tabs',
+        'Interior dividers',
+        'Stainless strap loops',
+        'Double stitched construction',
+        'Water-resistant',
       ],
     },
     // More sections...
@@ -63,7 +63,7 @@ const product = {
 };
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -81,7 +81,7 @@ export default function Example() {
                 {product.images.map((image) => (
                   <Tab
                     key={image.id}
-                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-500/50 focus:ring-offset-4"
+                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-hidden focus:ring-3 focus:ring-indigo-500/50 focus:ring-offset-4"
                   >
                     <span className="sr-only">{image.name}</span>
                     <span className="absolute inset-0 overflow-hidden rounded-md">
@@ -93,7 +93,7 @@ export default function Example() {
                     </span>
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-indigo-500"
+                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-selected:ring-indigo-500"
                     />
                   </Tab>
                 ))}
@@ -115,15 +115,11 @@ export default function Example() {
 
           {/* Product info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {product.name}
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{product.name}</h1>
 
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900">
-                {product.price}
-              </p>
+              <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
             </div>
 
             {/* Reviews */}
@@ -136,10 +132,8 @@ export default function Example() {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        product.rating > rating
-                          ? "text-indigo-500"
-                          : "text-gray-300",
-                        "size-5 shrink-0",
+                        product.rating > rating ? 'text-indigo-500' : 'text-gray-300',
+                        'size-5 shrink-0',
                       )}
                     />
                   ))}
@@ -175,14 +169,14 @@ export default function Example() {
                         aria-label={color.name}
                         className={classNames(
                           color.selectedColor,
-                          "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1",
+                          'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-hidden data-checked:ring-2 data-focus:data-checked:ring-3 data-focus:data-checked:ring-offset-1',
                         )}
                       >
                         <span
                           aria-hidden="true"
                           className={classNames(
                             color.bgColor,
-                            "size-8 rounded-full border border-black/10",
+                            'size-8 rounded-full border border-black/10',
                           )}
                         />
                       </Radio>
@@ -194,7 +188,7 @@ export default function Example() {
               <div className="mt-10 flex">
                 <button
                   type="submit"
-                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                 >
                   Add to bag
                 </button>
@@ -219,17 +213,17 @@ export default function Example() {
                   <Disclosure key={detail.name} as="div">
                     <h3>
                       <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
-                        <span className="text-sm font-medium text-gray-900 group-data-[open]:text-indigo-600">
+                        <span className="text-sm font-medium text-gray-900 group-data-open:text-indigo-600">
                           {detail.name}
                         </span>
                         <span className="ml-6 flex items-center">
                           <PlusIcon
                             aria-hidden="true"
-                            className="block size-6 text-gray-400 group-hover:text-gray-500 group-data-[open]:hidden"
+                            className="block size-6 text-gray-400 group-hover:text-gray-500 group-data-open:hidden"
                           />
                           <MinusIcon
                             aria-hidden="true"
-                            className="hidden size-6 text-indigo-400 group-hover:text-indigo-500 group-data-[open]:block"
+                            className="hidden size-6 text-indigo-400 group-hover:text-indigo-500 group-data-open:block"
                           />
                         </span>
                       </DisclosureButton>

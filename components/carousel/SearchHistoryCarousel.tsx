@@ -15,7 +15,7 @@ const SearchHistorySection = () => {
   };
 
   return (
-    <section className="pt-24 pb-12 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+    <section className="pt-24 pb-12 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
       <div className="flex items-center justify-start gap-4 mb-6 px-4">
         <h2 className="text-lg font-semibold text-gray-900">Tu historial de búsqueda</h2>
         <Link

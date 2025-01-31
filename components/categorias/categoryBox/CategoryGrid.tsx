@@ -30,7 +30,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
           <Link key={index} href={category.link} className="block">
             <Card
               key={index}
-              className="bg-[#EBF3ED] overflow-hidden transition-all duration-500 bg-gradient-to-br hover:to-[#7B8967] hover:from-[#1D280E] hover:shadow-lg p-6 w-full h-40 rounded-md shadow-sm flex flex-col justify-between text-left group relative"
+              className="bg-[#EBF3ED] overflow-hidden transition-all duration-500 bg-linear-to-br hover:to-[#7B8967] hover:from-[#1D280E] hover:shadow-lg p-6 w-full h-40 rounded-md shadow-xs flex flex-col justify-between text-left group relative"
             >
               <h3 className="text-lg font-medium">
                 <span className="text-black group-hover:text-[#7B8967] transition-colors">

@@ -50,7 +50,7 @@ const CarouselCard = ({
             />
           </div>
 
-          <div className="flex flex-col flex-grow mt-4 space-y-2">
+          <div className="flex flex-col grow mt-4 space-y-2">
             <h3 className="text-sm font-medium text-blue-400 line-clamp-2">{title}</h3>
 
             <Reviews rating={rating} reviewCount={reviewCount} showAllReviews={false} />

@@ -1,21 +1,18 @@
 const features = [
-  { name: "Origin", description: "Designed by Good Goods, Inc." },
+  { name: 'Origin', description: 'Designed by Good Goods, Inc.' },
   {
-    name: "Material",
-    description:
-      "Solid walnut base with rare earth magnets and polycarbonate add-ons.",
+    name: 'Material',
+    description: 'Solid walnut base with rare earth magnets and polycarbonate add-ons.',
   },
-  { name: "Dimensions", description: '15" x 3.75" x .75"' },
-  { name: "Finish", description: "Hand sanded and finished with natural oil" },
+  { name: 'Dimensions', description: '15" x 3.75" x .75"' },
+  { name: 'Finish', description: 'Hand sanded and finished with natural oil' },
   {
-    name: "Includes",
-    description:
-      "Pen Tray, Phone Tray, Small Tray, Large Tray, Sticky Note Holder",
+    name: 'Includes',
+    description: 'Pen Tray, Phone Tray, Small Tray, Large Tray, Sticky Note Holder',
   },
   {
-    name: "Considerations",
-    description:
-      "Made from natural materials. Grain and color vary with each item.",
+    name: 'Considerations',
+    description: 'Made from natural materials. Grain and color vary with each item.',
   },
 ];
 
@@ -28,7 +25,7 @@ export default function Example() {
           src="https://tailwindui.com/plus/img/ecommerce-images/product-feature-02-full-width.jpg"
           className="h-96 w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white" />
+        <div className="absolute inset-0 bg-linear-to-t from-white" />
       </div>
 
       <div className="relative mx-auto -mt-12 max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
@@ -37,9 +34,8 @@ export default function Example() {
             Technical Specifications
           </h2>
           <p className="mt-4 text-gray-500">
-            Organize is a system to keep your desk tidy and photo-worthy all day
-            long. Procrastinate your work while you meticulously arrange items
-            into dedicated trays.
+            Organize is a system to keep your desk tidy and photo-worthy all day long. Procrastinate
+            your work while you meticulously arrange items into dedicated trays.
           </p>
         </div>
 
@@ -47,9 +43,7 @@ export default function Example() {
           {features.map((feature) => (
             <div key={feature.name} className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">{feature.name}</dt>
-              <dd className="mt-2 text-sm text-gray-500">
-                {feature.description}
-              </dd>
+              <dd className="mt-2 text-sm text-gray-500">{feature.description}</dd>
             </div>
           ))}
         </dl>

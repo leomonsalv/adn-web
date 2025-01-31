@@ -1,43 +1,36 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Radio,
-  RadioGroup,
-} from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { StarIcon } from "@heroicons/react/20/solid";
+import { useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel, Radio, RadioGroup } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { StarIcon } from '@heroicons/react/20/solid';
 
 const product = {
-  name: "Zip Tote Basket",
-  price: "$220",
+  name: 'Zip Tote Basket',
+  price: '$220',
   rating: 3.9,
-  href: "#",
+  href: '#',
   description:
-    "The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.",
-  imageSrc:
-    "https://tailwindui.com/plus/img/ecommerce-images/product-page-03-product-04.jpg",
-  imageAlt: "Back angled view with bag open and handles to the side.",
+    'The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.',
+  imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/product-page-03-product-04.jpg',
+  imageAlt: 'Back angled view with bag open and handles to the side.',
   colors: [
     {
-      name: "Washed Black",
-      bgColor: "bg-gray-700",
-      selectedColor: "ring-gray-700",
+      name: 'Washed Black',
+      bgColor: 'bg-gray-700',
+      selectedColor: 'ring-gray-700',
     },
-    { name: "White", bgColor: "bg-white", selectedColor: "ring-gray-400" },
+    { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
     {
-      name: "Washed Gray",
-      bgColor: "bg-gray-500",
-      selectedColor: "ring-gray-500",
+      name: 'Washed Gray',
+      bgColor: 'bg-gray-500',
+      selectedColor: 'ring-gray-500',
     },
   ],
 };
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
@@ -48,14 +41,14 @@ export default function Example() {
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
         transition
-        className="fixed inset-0 hidden bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:block"
+        className="fixed inset-0 hidden bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in md:block"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
           <DialogPanel
             transition
-            className="flex w-full transform text-left text-base transition data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:my-8 md:max-w-2xl md:px-4 data-[closed]:md:translate-y-0 data-[closed]:md:scale-95 lg:max-w-4xl"
+            className="flex w-full transform text-left text-base transition data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in md:my-8 md:max-w-2xl md:px-4 md:data-closed:translate-y-0 md:data-closed:scale-95 lg:max-w-4xl"
           >
             <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
               <button
@@ -78,14 +71,9 @@ export default function Example() {
                   </div>
                 </div>
                 <div className="sm:col-span-8 lg:col-span-7">
-                  <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-                    {product.name}
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
 
-                  <section
-                    aria-labelledby="information-heading"
-                    className="mt-3"
-                  >
+                  <section aria-labelledby="information-heading" className="mt-3">
                     <h3 id="information-heading" className="sr-only">
                       Product information
                     </h3>
@@ -102,26 +90,20 @@ export default function Example() {
                               key={rating}
                               aria-hidden="true"
                               className={classNames(
-                                product.rating > rating
-                                  ? "text-gray-400"
-                                  : "text-gray-200",
-                                "size-5 shrink-0",
+                                product.rating > rating ? 'text-gray-400' : 'text-gray-200',
+                                'size-5 shrink-0',
                               )}
                             />
                           ))}
                         </div>
-                        <p className="sr-only">
-                          {product.rating} out of 5 stars
-                        </p>
+                        <p className="sr-only">{product.rating} out of 5 stars</p>
                       </div>
                     </div>
 
                     <div className="mt-6">
                       <h4 className="sr-only">Description</h4>
 
-                      <p className="text-sm text-gray-700">
-                        {product.description}
-                      </p>
+                      <p className="text-sm text-gray-700">{product.description}</p>
                     </div>
                   </section>
 
@@ -133,9 +115,7 @@ export default function Example() {
                     <form>
                       {/* Colors */}
                       <div>
-                        <h4 className="text-sm font-medium text-gray-600">
-                          Color
-                        </h4>
+                        <h4 className="text-sm font-medium text-gray-600">Color</h4>
 
                         <fieldset aria-label="Choose a color" className="mt-2">
                           <RadioGroup
@@ -150,14 +130,14 @@ export default function Example() {
                                 aria-label={color.name}
                                 className={classNames(
                                   color.selectedColor,
-                                  "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none data-[checked]:ring-2 data-[focus]:data-[checked]:ring data-[focus]:data-[checked]:ring-offset-1",
+                                  'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-hidden data-checked:ring-2 data-focus:data-checked:ring-3 data-focus:data-checked:ring-offset-1',
                                 )}
                               >
                                 <span
                                   aria-hidden="true"
                                   className={classNames(
                                     color.bgColor,
-                                    "size-8 rounded-full border border-black/10",
+                                    'size-8 rounded-full border border-black/10',
                                   )}
                                 />
                               </Radio>
@@ -169,7 +149,7 @@ export default function Example() {
                       <div className="mt-6">
                         <button
                           type="submit"
-                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                         >
                           Add to bag
                         </button>

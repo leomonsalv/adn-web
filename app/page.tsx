@@ -53,7 +53,7 @@ export default function HomePage() {
             {/* </div> */}
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-gradient-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900] rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900] rounded-lg">
             <h2 className="text-3xl font-bold text-[#A4003B] mb-6">
               Lo más vendido en toda la tienda 🔥
             </h2>
@@ -72,7 +72,7 @@ export default function HomePage() {
             </GenericCarousel>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en hogar</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (
@@ -104,7 +104,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en belleza</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (
@@ -121,7 +121,7 @@ export default function HomePage() {
             </GenericCarousel>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en alimentos</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (
@@ -153,7 +153,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en farmacia</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (
@@ -170,7 +170,7 @@ export default function HomePage() {
             </GenericCarousel>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en tecnología</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (
@@ -202,7 +202,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 bg-white rounded-lg">
+          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en librería</h2>
             <GenericCarousel autoplay={false}>
               {productPayload.map((product) => (

@@ -116,7 +116,7 @@ export default function CategoryPage() {
               className="inline-flex items-center lg:hidden"
             >
               <span className="text-sm font-medium text-gray-700">Filtros</span>
-              <FunnelIcon className="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+              <FunnelIcon className="ml-1 h-5 w-5 shrink-0 text-gray-400" aria-hidden="true" />
             </button>
 
             <div className="hidden lg:block">

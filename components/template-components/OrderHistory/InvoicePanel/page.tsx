@@ -1,29 +1,29 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 
 const orders = [
   {
-    number: "WU88191111",
-    href: "#",
-    invoiceHref: "#",
-    createdDate: "Jul 6, 2021",
-    createdDatetime: "2021-07-06",
-    deliveredDate: "July 12, 2021",
-    deliveredDatetime: "2021-07-12",
-    total: "$160.00",
+    number: 'WU88191111',
+    href: '#',
+    invoiceHref: '#',
+    createdDate: 'Jul 6, 2021',
+    createdDatetime: '2021-07-06',
+    deliveredDate: 'July 12, 2021',
+    deliveredDatetime: '2021-07-12',
+    total: '$160.00',
     products: [
       {
         id: 1,
-        name: "Micro Backpack",
+        name: 'Micro Backpack',
         description:
-          "Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.",
-        href: "#",
-        price: "$70.00",
+          'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+        href: '#',
+        price: '$70.00',
         imageSrc:
-          "https://tailwindui.com/plus/img/ecommerce-images/order-history-page-03-product-01.jpg",
+          'https://tailwindui.com/plus/img/ecommerce-images/order-history-page-03-product-01.jpg',
         imageAlt:
-          "Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.",
+          'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
       },
       // More products...
     ],
@@ -41,8 +41,7 @@ export default function Example() {
               Order history
             </h1>
             <p className="mt-2 text-sm text-gray-500">
-              Check the status of recent orders, manage returns, and discover
-              similar products.
+              Check the status of recent orders, manage returns, and discover similar products.
             </p>
           </div>
         </div>
@@ -54,68 +53,48 @@ export default function Example() {
               {orders.map((order) => (
                 <div
                   key={order.number}
-                  className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                  className="border-b border-t border-gray-200 bg-white shadow-xs sm:rounded-lg sm:border"
                 >
                   <h3 className="sr-only">
-                    Order placed on{" "}
-                    <time dateTime={order.createdDatetime}>
-                      {order.createdDate}
-                    </time>
+                    Order placed on{' '}
+                    <time dateTime={order.createdDatetime}>{order.createdDate}</time>
                   </h3>
 
                   <div className="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
                     <dl className="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
                       <div>
-                        <dt className="font-medium text-gray-900">
-                          Order number
-                        </dt>
+                        <dt className="font-medium text-gray-900">Order number</dt>
                         <dd className="mt-1 text-gray-500">{order.number}</dd>
                       </div>
                       <div className="hidden sm:block">
-                        <dt className="font-medium text-gray-900">
-                          Date placed
-                        </dt>
+                        <dt className="font-medium text-gray-900">Date placed</dt>
                         <dd className="mt-1 text-gray-500">
-                          <time dateTime={order.createdDatetime}>
-                            {order.createdDate}
-                          </time>
+                          <time dateTime={order.createdDatetime}>{order.createdDate}</time>
                         </dd>
                       </div>
                       <div>
-                        <dt className="font-medium text-gray-900">
-                          Total amount
-                        </dt>
-                        <dd className="mt-1 font-medium text-gray-900">
-                          {order.total}
-                        </dd>
+                        <dt className="font-medium text-gray-900">Total amount</dt>
+                        <dd className="mt-1 font-medium text-gray-900">{order.total}</dd>
                       </div>
                     </dl>
 
-                    <Menu
-                      as="div"
-                      className="relative flex justify-end lg:hidden"
-                    >
+                    <Menu as="div" className="relative flex justify-end lg:hidden">
                       <div className="flex items-center">
                         <MenuButton className="-m-2 flex items-center p-2 text-gray-400 hover:text-gray-500">
-                          <span className="sr-only">
-                            Options for order {order.number}
-                          </span>
-                          <EllipsisVerticalIcon
-                            aria-hidden="true"
-                            className="size-6"
-                          />
+                          <span className="sr-only">Options for order {order.number}</span>
+                          <EllipsisVerticalIcon aria-hidden="true" className="size-6" />
                         </MenuButton>
                       </div>
 
                       <MenuItems
                         transition
-                        className="absolute right-0 z-10 mt-2 w-40 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                        className="absolute right-0 z-10 mt-2 w-40 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-leave:duration-75 data-enter:ease-out data-leave:ease-in"
                       >
                         <div className="py-1">
                           <MenuItem>
                             <a
                               href={order.href}
-                              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                             >
                               View
                             </a>
@@ -123,7 +102,7 @@ export default function Example() {
                           <MenuItem>
                             <a
                               href={order.invoiceHref}
-                              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                             >
                               Invoice
                             </a>
@@ -135,19 +114,17 @@ export default function Example() {
                     <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                       <a
                         href={order.href}
-                        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm font-medium text-gray-700 shadow-xs hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
                         <span>View Order</span>
                         <span className="sr-only">{order.number}</span>
                       </a>
                       <a
                         href={order.invoiceHref}
-                        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm font-medium text-gray-700 shadow-xs hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
                         <span>View Invoice</span>
-                        <span className="sr-only">
-                          for order {order.number}
-                        </span>
+                        <span className="sr-only">for order {order.number}</span>
                       </a>
                     </div>
                   </div>
@@ -178,15 +155,10 @@ export default function Example() {
 
                         <div className="mt-6 sm:flex sm:justify-between">
                           <div className="flex items-center">
-                            <CheckCircleIcon
-                              aria-hidden="true"
-                              className="size-5 text-green-500"
-                            />
+                            <CheckCircleIcon aria-hidden="true" className="size-5 text-green-500" />
                             <p className="ml-2 text-sm font-medium text-gray-500">
-                              Delivered on{" "}
-                              <time dateTime={order.deliveredDatetime}>
-                                {order.deliveredDate}
-                              </time>
+                              Delivered on{' '}
+                              <time dateTime={order.deliveredDatetime}>{order.deliveredDate}</time>
                             </p>
                           </div>
 

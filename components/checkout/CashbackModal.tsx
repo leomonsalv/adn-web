@@ -38,7 +38,7 @@ export function CashbackModal({
     <Dialog open={open} onClose={onClose} className="relative z-10">
       <DialogBackdrop
         transition
-        className="fixed inset-0 bg-black/50 transition-opacity data-[closed]:opacity-0"
+        className="fixed inset-0 bg-black/50 transition-opacity data-closed:opacity-0"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">

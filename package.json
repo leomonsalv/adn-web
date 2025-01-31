@@ -41,6 +41,7 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.4",
+    "@tailwindcss/postcss": "^4.0.1",
     "@tanstack/react-query": "^5.62.2",
     "@tanstack/react-query-devtools": "^5.62.2",
     "@vis.gl/react-google-maps": "^1.4.2",
@@ -96,7 +97,7 @@
     "lint-staged": "^15.2.10",
     "postcss": "^8.4.49",
     "prettier": "3.3.3",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^4.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
