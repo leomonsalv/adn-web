@@ -88,7 +88,7 @@ export const fetchProductsByIds = async (
   }
 };
 
-export const fetchProductById = async (id: string): Promise<ProductResponse> => {
+export const fetchProductById = async (id: string): Promise<Product> => {
   try {
     const queryParams = new URLSearchParams({
       id: id,

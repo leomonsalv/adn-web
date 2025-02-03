@@ -1,4 +1,6 @@
 import * as z from 'zod';
+import { CurrencySchema, FacetsSchema } from './categories-schema';
+import { LaboratorySchema } from './orders';
 
 export const NameSchema = z.enum(['Exento (ventas)', 'IVA (16%) ventas']);
 
@@ -178,4 +180,60 @@ export const ProductResponseSchema = z.object({
   pageSize: z.number(),
   totalItems: z.number(),
   metadata: MetadataClassSchema,
+});
+
+// THIS IS THE OLD PAYLOAD TO RECOMMENDED PRODUCTS AND TOP SELLING PRODUCTS
+
+export const PageSizeSchema = z.object({
+  current: z.number(),
+  size: z.number(),
+});
+
+export const TopSellingProductsPayloadSchema = z.object({
+  active: z.boolean(),
+  offers: z.boolean().optional(),
+  pageSize: PageSizeSchema.optional(),
+  actualPage: z.number().optional(),
+  priceRange: z.array(z.number()),
+  facets: FacetsSchema.optional(),
+});
+
+export const RecommendedProductsPayloadSchema = z.object({
+  type: z.string(),
+  products: z.array(z.union([z.number(), z.string()])).optional(),
+  todos: z.boolean().optional(),
+  productBased: z.boolean().optional(),
+});
+
+export const RecommendedProductsResponseElementSchema = z.object({
+  id: z.number(),
+  barcode: z.string(),
+  name: z.string(),
+  price: z.number(),
+  price_extra: z.number(),
+  description: z.string(),
+  imageLarge: z.string(),
+  image: z.string(),
+  imageSmall: z.string(),
+  imageXtraSmall: z.string(),
+  imageUltraSmall: z.string(),
+  qty_available: z.number(),
+  currency: CurrencySchema,
+  taxes_ids: z.array(z.string()),
+  required_recipe: z.boolean(),
+  laboratory: LaboratorySchema,
+  product_type: ProductTypeSchema,
+  recommended: z.string(),
+  offers: z.string(),
+  x_studio_previous_price: z.number(),
+  price_ref: z.number(),
+  categ_route: z.string(),
+  saleslast7days: z.number(),
+  discount_rate: z.number(),
+  move_location_id: z.string(),
+  moves_location_id: z.string(),
+  x_studio_libre_de_gluten: z.string(),
+  x_studio_2x1: z.string(),
+  x_studio_fecha_de_vencimiento: z.string(),
+  taxes: z.array(TaxSchema),
 });

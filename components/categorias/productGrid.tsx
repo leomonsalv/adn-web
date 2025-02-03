@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
+import { Product } from '@/types/product';
 
 // Utility function to safely parse numeric values
 const safeParseFloat = (value: string | number | undefined): number => {
@@ -18,43 +19,6 @@ const formatPrice = (price: string | number | undefined): string => {
   const numericPrice = safeParseFloat(price);
   return `VEF ${numericPrice.toFixed(2)}`;
 };
-
-interface ProductVariantOption {
-  SKU: string;
-  price: number;
-  stock: number;
-}
-
-interface ProductCategory {
-  editable: string;
-  full_name: string;
-  name: string;
-}
-
-interface Product {
-  _id: string;
-  activeIngredients?: string;
-  attack?: string;
-  barcode?: string;
-  betterAttack?: string[];
-  betterIngredients?: string[];
-  bsPrice?: string | number;
-  category?: ProductCategory;
-  description?: string;
-  inventary?: { total: number };
-  laboratory?: string;
-  name: string;
-  productId?: number;
-  refPrice?: number;
-  variantOptionsMap?: {
-    [key: string]: {
-      images?: string[];
-      options?: {
-        [key: string]: ProductVariantOption;
-      };
-    };
-  };
-}
 
 interface ProductGridProps {
   products: Product[];
@@ -83,8 +47,8 @@ function ProductGrid({
   }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const getDefaultImage = (product: Product): string => {
-    if (!product.variantOptionsMap) return '/delivery.jpeg';
-
+    if (!product || typeof product !== 'object') return '/delivery.jpeg';
+    if (!product.variantOptionsMap) return product.images?.[0] || '/delivery.jpeg';
     const firstVariantKey = Object.keys(product.variantOptionsMap)[0];
     if (!firstVariantKey) return '/delivery.jpeg';
 
@@ -114,6 +78,7 @@ function ProductGrid({
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 style={{ objectFit: 'contain' }}
                 alt={product.name || 'Product image'}
+                priority
                 src={getDefaultImage(product)}
                 className="group-hover:opacity-75"
               />

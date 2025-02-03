@@ -13,13 +13,11 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { BreadcrumbList } from '@/components/ui/breadcrumb';
-import Reviews from '@/components/reviews/Reviews';
-import { formatUsdCurrency, formatVefCurrency } from '@/lib/utils';
+import { formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
-import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
 import { product } from '@/lib/dummyData';
 import {
   Accordion,
@@ -27,23 +25,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector';
-import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker';
 import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter';
 import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton';
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
-import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
+import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
-  console.log('🚀 ~ ProductDetailsPage ~ params:', params);
   const productId = use(params).id;
 
   const payload: RecommendedProductsPayload = {
@@ -56,7 +51,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     active: true,
     priceRange: [0, 3000],
   };
-  // const productId = Number(use(params).id);
   const { isPrescriptionUploaded } = usePrescriptionUpload();
   const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
 
@@ -86,8 +80,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     error: productError,
   } = useGetProductById(productId);
 
-  console.log(productId, productData);
-
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
   const { mutateAsync: updateCart } = useMutateCart();
@@ -112,36 +104,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
-  // const isInCart = isItemInCart(productData.id);
-  // const itemCount = getItemCount(productData.id);
+  console.log('productDataproductDataproductData', productData);
 
   const isInCart = isItemInCart(productData.productId);
   const itemCount = getItemCount(productData.productId);
-
-  // const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   if (!productData) return;
-
-  //   try {
-  //     await updateCart({
-  //       cartId: cartData?.id || '',
-  //       product: productData,
-  //     });
-
-  //     if (isInCart) {
-  //       updateQuantity(productData.productId, itemCount + 1);
-  //     } else {
-  //       addToCart(productData);
-  //     }
-
-  //     router.push(CARRITO);
-  //   } catch (error) {
-  //     console.error('Error adding to cart:', error);
-  //   }
-  // };
-
-  // const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : [];
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -153,6 +119,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         cartId: cartData?.id || '',
         product: {
           ...productData,
+          // productId: productData.productId,
           id: productData.productId,
           price: productData.refPrice,
           price_extra: Number(productData.bsPrice),
@@ -217,11 +184,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
                   <div className="lg:col-span-2 lg:row-span-2 flex justify-center items-center rounded-lg">
-                    {productData.imageLarge ? (
+                    {/* Image gallery TODO: THIS FUNCTIONALITY NEEDS REWORK WHEN BE IS DONE */}
+                    {productData.variants ? (
                       <Image
-                        key={productData.id}
+                        key={productData._id}
                         alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                        src={productData.imageLarge}
+                        src={productData.images?.[0] || '/delivery.jpeg'}
                         height={500}
                         width={500}
                         className="rounded-lg object-contain"
@@ -229,9 +197,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     ) : (
                       <div className="overflow-hidden rounded-lg flex justify-center items-center h-[500px] w-full">
                         <Image
-                          key={productData.id}
+                          key={productData._id}
                           alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                          src={productData.image || '/delivery.jpeg'}
+                          src={productData.images?.[0] || '/delivery.jpeg'}
                           height={500}
                           width={500}
                           className="size-full object-cover object-center"
@@ -244,15 +212,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             </div>
 
             <div className="lg:col-span-5 lg:col-start-8 mt-4 bg-slate-50 p-4 rounded-lg">
-              {/* Sales info */}
-              {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
+              {/* Sales info FIXME: THIS WAS DISABLED IN BE*/}
+              {/* {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
                 <div className="flex justify-start items-center py-2">
                   <FlameIcon color="red" aria-hidden="true" />
                   <h2 className="text-red-500 text-sm font-semibold">
                     +{productData.saleslast7days} comprados en el último mes
                   </h2>
                 </div>
-              ) : null}
+              ) : null} */}
               <h1 className="text-xl font-bold text-gray-900">{productData.name}</h1>
               {!!productData.laboratory && (
                 <div className="flex justify-between">
