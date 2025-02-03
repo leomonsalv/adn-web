@@ -93,10 +93,17 @@ function FilterSectionComponent({
   onOptionChange?: (sectionId: string, value: string, checked: boolean) => void;
 }) {
   return (
-    <div className={isFirst ? '' : 'pt-10'}>
-      <fieldset>
-        <legend className="block text-sm font-medium text-gray-900">{section.name}</legend>
-        <div className="space-y-3 pt-6">
+    <Disclosure as="div" className={`${isFirst ? '' : 'pt-6'}`} defaultOpen>
+      <h3 className="-my-3 flow-root">
+        <DisclosureButton className="flex w-full items-center justify-between py-3 text-gray-400 hover:text-gray-500">
+          <span className="text-sm font-medium text-gray-900">{section.name}</span>
+          <span className="ml-6 flex items-center">
+            <ChevronDownIcon className="size-5" aria-hidden="true" />
+          </span>
+        </DisclosureButton>
+      </h3>
+      <DisclosurePanel className="pt-6">
+        <div className="space-y-3">
           {section.options.map((option, optionIdx) => (
             <div key={option.value} className="flex items-center">
               <input
@@ -114,8 +121,8 @@ function FilterSectionComponent({
             </div>
           ))}
         </div>
-      </fieldset>
-    </div>
+      </DisclosurePanel>
+    </Disclosure>
   );
 }
 
@@ -154,7 +161,7 @@ export function Filters({
         currentSort={currentSort}
         currentPriceRange={currentPriceRange}
       />
-      <form className="space-y-10 divide-y divide-gray-200">
+      <div className="space-y-4 divide-y divide-gray-200">
         {filters.map((section, sectionIdx) => (
           <FilterSectionComponent
             key={section.name}
@@ -164,7 +171,7 @@ export function Filters({
             onOptionChange={handleOptionChange}
           />
         ))}
-      </form>
+      </div>
     </div>
   );
 }
