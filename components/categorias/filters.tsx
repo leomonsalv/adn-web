@@ -8,9 +8,13 @@ import SortSection from './sortFilterOptions';
 
 // Props comunes para ambos componentes
 interface BaseFilterProps {
-  facets?: Facets;
-  selectedFilters: Partial<Record<keyof Facets, string[]>>;
-  onFilterChange: (filters: Partial<Record<keyof Facets, string[]>>) => void;
+  facets?: {
+    attack?: string[];
+    ingredients?: string[];
+    laboratories?: string[];
+  };
+  selectedFilters: Partial<Record<string, string[]>>;
+  onFilterChange: (filters: Partial<Record<string, string[]>>) => void;
   onSortChange: (sort: NonNullable<SearchFormType['sort']>) => void;
   onPriceRangeChange: (range: NonNullable<SearchFormType['priceRange']>) => void;
   currentSort?: SearchFormType['sort'];
@@ -24,22 +28,49 @@ interface MobileFilterDialogProps extends BaseFilterProps {
 
 interface FiltersProps extends BaseFilterProps {}
 
-const transformFacetsToFilters = (facets?: Facets) => {
+const transformFacetsToFilters = (facets?: BaseFilterProps['facets']) => {
   if (!facets) return [];
 
-  return Object.entries(facets)
-    .filter(([key]) => key.startsWith('x_'))
-    .map(([key, facetData]) => ({
-      id: key,
-      name: key.split('_').slice(2).join(' ').toUpperCase(),
-      options: facetData[0].data.map((item) => ({
-        value: item.value,
-        label: `${item.value} (${item.count})`,
-        count: item.count,
-      })),
-    }));
-};
+  const filters = [];
 
+  if (facets.attack?.length) {
+    filters.push({
+      id: 'attack',
+      name: 'TIPO',
+      options: facets.attack.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  if (facets.ingredients?.length) {
+    filters.push({
+      id: 'ingredients',
+      name: 'INGREDIENTES ACTIVOS',
+      options: facets.ingredients.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  if (facets.laboratories?.length) {
+    filters.push({
+      id: 'laboratories',
+      name: 'LABORATORIO',
+      options: facets.laboratories.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  return filters;
+};
 interface FilterSection {
   id: string;
   name: string;

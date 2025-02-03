@@ -24,7 +24,9 @@ export default function useSearchProduct() {
           page: pageParam,
           pageSize: params.pageSize || 10,
           sort: params.sort || '',
-          lab: params.lab || '',
+          attack: params.attack || '',
+          ingredients: params.ingredients || '',
+          laboratories: params.laboratories || '',
           saveExcel: 'false', //FIXME: ADD saveExcel to SearchFormType
         };
 

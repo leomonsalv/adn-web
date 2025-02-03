@@ -38,8 +38,6 @@ function ProductGrid({
     rootMargin: '300px',
   });
 
-  console.log(products);
-
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();

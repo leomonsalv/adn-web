@@ -17,9 +17,9 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
   const urlSearch = searchParams.get('q') ?? '';
   const urlCategory = searchParams.get('b') ?? '1';
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
-    {},
-  );
+  const [selectedFilters, setSelectedFilters] = useState<
+    Partial<Record<keyof SearchFormType, string[]>>
+  >({});
   const [sortOption, setSortOption] = useState<SortOption>();
   const [priceRange, setPriceRange] = useState<PriceRange>();
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,16 +41,22 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
     return {
       search: debouncedSearch.trim(),
       pageSize: 10,
-      lab: selectedFilters?.x_studio_laboratory?.[0], // Update filter mapping
+      attack: selectedFilters?.attack,
+      ingredients: selectedFilters?.ingredients?.[0],
+      laboratories: selectedFilters?.laboratories?.[0],
       sort: sortOption,
+      priceRange: priceRange,
     };
-  }, [debouncedSearch, selectedFilters, sortOption]);
+  }, [debouncedSearch, selectedFilters, sortOption, priceRange]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
-    searchProducts(searchParamsObj);
+    searchProducts({
+      ...searchParamsObj,
+      attack: selectedFilters?.attack?.[0],
+    });
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
-    setSelectedFilters(newFilters);
+    setSelectedFilters(newFilters as Partial<Record<keyof SearchFormType, string[]>>);
     updateFilters(newFilters);
   };
 
@@ -65,8 +71,6 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
   };
 
   const products = data?.pages.flatMap((page) => page.items) || [];
-
-  console.log('Raw API response:', data?.pages[0]);
 
   if (isLoading) return <SearchPageSkeleton />;
 
@@ -83,7 +87,13 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
       <MobileFilterDialog
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}
-        facets={data?.pages[0]?.data?.metadata?.ingredients}
+        facets={{
+          attack: data?.pages[0]?.metadata?.attack,
+          ingredients: data?.pages[0]?.metadata?.ingredients,
+          laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+            (lab): lab is string => lab !== null,
+          ),
+        }}
         selectedFilters={selectedFilters}
         onFilterChange={handleFilterChange}
         onSortChange={handleSortChange}
@@ -113,7 +123,13 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
             <div className="hidden lg:block">
               <div className="mt-6">
                 <Filters
-                  facets={data?.pages[0]?.data?.facets}
+                  facets={{
+                    attack: data?.pages[0]?.metadata?.attack,
+                    ingredients: data?.pages[0]?.metadata?.ingredients,
+                    laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+                      (lab): lab is string => lab !== null,
+                    ),
+                  }}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
                   onSortChange={handleSortChange}

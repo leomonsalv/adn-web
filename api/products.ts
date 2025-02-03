@@ -12,7 +12,13 @@ interface SearchParams {
   pageSize?: number;
   search?: string;
   sort?: string;
-  lab?: string;
+  attack?: string;
+  ingredients?: string;
+  laboratories?: string;
+  priceRange?: {
+    min: number;
+    max: number;
+  };
   saveExcel?: string;
 }
 
@@ -21,7 +27,10 @@ export const fetchProducts = async ({
   pageSize = 10,
   search = '',
   sort = '',
-  lab = '',
+  attack = '',
+  ingredients = '',
+  laboratories = '',
+  priceRange,
   saveExcel = 'false',
 }: SearchParams): Promise<ProductResponse> => {
   try {
@@ -32,8 +41,15 @@ export const fetchProducts = async ({
     });
 
     if (search) queryParams.append('search', search);
+
     if (sort) queryParams.append('sort', sort);
-    if (lab) queryParams.append('lab', lab);
+    if (attack) queryParams.append('attack', attack);
+    if (ingredients) queryParams.append('ingredients', ingredients);
+    if (laboratories) queryParams.append('laboratories', laboratories);
+    if (priceRange) {
+      queryParams.append('minPrice', priceRange.min.toString());
+      queryParams.append('maxPrice', priceRange.max.toString());
+    }
 
     const response = await fetch(`${API_URL}/products?${queryParams.toString()}`);
 

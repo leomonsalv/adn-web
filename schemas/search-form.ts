@@ -13,8 +13,10 @@ export const PriceRangeSchema = z.object({
 });
 
 export const searchFormSchema = z.object({
+  attack: z.string().optional(),
+  laboratories: z.string().optional(),
+  ingredients: z.string().optional(),
   search: z.string().optional(),
-  lab: z.string().optional(),
   query: z.string().optional(),
   actualPage: z.number().optional(),
   pageSize: z.number().optional(),

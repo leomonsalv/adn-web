@@ -48,9 +48,11 @@ export const XlOptionsSchema = z.object({
 export const MetadataClassSchema = z.object({
   _id: z.null(),
   attack: z.array(z.string()),
+  activeIngredients: z.array(z.string()),
   count: z.number(),
   ingredients: z.array(z.string()),
   laboratories: z.array(z.union([z.null(), z.string()])),
+  laboratory: z.array(z.string()),
 });
 
 export const VariantOptionsSchema = z.object({
