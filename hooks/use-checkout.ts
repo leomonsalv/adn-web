@@ -118,7 +118,7 @@ const PAYMENT_TYPE_HANDLERS: Record<
     cardNumber: '',
     vencimiento: { mes: 0, ano: 0 },
     codigoSeguridad: '',
-    token: '',
+    token: '420',
   }),
   botonbanesco: () => ({}),
 };

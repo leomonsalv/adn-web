@@ -32,7 +32,7 @@ export function PaymentDetails() {
   const { useCreateOrder } = useOrders();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
   const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
-  const { mutate: validateVippo } = useValidateVippo();
+  const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
   const { getCartRef, getCartTotal } = useCartStore();
   const { toast } = useToast();
 
@@ -81,6 +81,7 @@ export function PaymentDetails() {
         };
         delete preNewData.details.expiration;
         await validateVippo(preNewData);
+        newData = preNewData;
       } catch (error) {
         const errorObject = JSON.parse((error as Error)?.message || '{}');
         if (errorObject.error?.details?.resultCredicardServices?.cardInfo?.pinRequired) {
@@ -147,7 +148,11 @@ export function PaymentDetails() {
               Compra segura y encriptada
             </span>
             <Button className="w-full mt-4 h-14" type="submit" disabled={isCreatingOrder}>
-              {isCreatingOrder ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Finalizar orden'}
+              {isCreatingOrder || isLoadingVippo ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                'Finalizar orden'
+              )}
             </Button>
           </form>
         </FormProvider>

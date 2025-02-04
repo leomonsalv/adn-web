@@ -48,7 +48,7 @@ export const VippoDetails = ({ totalBs }: VippoDetailsProps) => {
 
                   cardNumber = cardNumber.trim();
 
-                  if (cardNumber.length <= 19) {
+                  if (cardNumber.length <= 25) {
                     return onChange(cardNumber);
                   }
                 },
