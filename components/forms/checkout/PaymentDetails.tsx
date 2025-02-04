@@ -56,7 +56,26 @@ export function PaymentDetails() {
     }
   };
 
-  const handleSubmit = form.handleSubmit((data) => onSubmit(data));
+  const handleSubmit = form.handleSubmit((data) => {
+    let newData: any = data;
+    if (data.type === 'vippo') {
+      const splitVencimiento = newData.details.expiration.split('/');
+      const expirationMonth = splitVencimiento[0];
+      const expirationYear = splitVencimiento[1];
+      newData = {
+        ...newData,
+        details: {
+          ...newData.details,
+          vencimiento: {
+            mes: expirationMonth,
+            año: expirationYear,
+          },
+        },
+      };
+      delete newData.details.expiration;
+    }
+    onSubmit(newData);
+  });
 
   useEffect(() => {
     if (!isLoadingPaymentMethods && paymentMethods) {

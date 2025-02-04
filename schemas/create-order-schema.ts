@@ -182,6 +182,7 @@ export const PaymentMethodSchema = z.discriminatedUnion('type', [
       }),
       codigoSeguridad: z.string(),
       token: z.string(),
+      expiration: z.string().optional(),
     }),
   }),
 ]);
