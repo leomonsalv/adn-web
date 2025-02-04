@@ -14,22 +14,27 @@ import { useCartStore } from '@/stores/cart-store';
 import { LockClosedIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/components/ui/button';
 import useOrders from '@/hooks/use-orders';
+import { VippoModal } from '@/components/checkout/VippoModal';
 import { CashbackModal } from '@/components/checkout/CashbackModal';
 import { PaymentDetailsSkeleton } from '@/components/skeletons/PaymentMethodsSkeleton';
 import { Loader2 } from 'lucide-react';
 import useUser from '@/hooks/use-user';
+import { useToast } from '@/hooks/use-toast';
 
 export function PaymentDetails() {
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>();
   const [cashbackModal, setCashbackModal] = useState(false);
+  const [vippoModal, setVippoModal] = useState(false);
 
   const { user, isLoading } = useUser();
-  const { useGetPaymentMethods } = useCheckout();
+  const { useGetPaymentMethods, useValidateVippo } = useCheckout();
   const { useCreateOrder } = useOrders();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
   const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
+  const { mutate: validateVippo } = useValidateVippo();
   const { getCartRef, getCartTotal } = useCartStore();
+  const { toast } = useToast();
 
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
@@ -56,23 +61,39 @@ export function PaymentDetails() {
     }
   };
 
-  const handleSubmit = form.handleSubmit((data) => {
+  const handleSubmit = form.handleSubmit(async (data) => {
     let newData: any = data;
     if (data.type === 'vippo') {
-      const splitVencimiento = newData.details.expiration.split('/');
-      const expirationMonth = splitVencimiento[0];
-      const expirationYear = splitVencimiento[1];
-      newData = {
-        ...newData,
-        details: {
-          ...newData.details,
-          vencimiento: {
-            mes: expirationMonth,
-            año: expirationYear,
+      try {
+        const splitVencimiento = newData.details.expiration.split('/');
+        const expirationMonth = splitVencimiento[0];
+        const expirationYear = splitVencimiento[1];
+        const preNewData = {
+          ...newData,
+          details: {
+            ...newData.details,
+            vencimiento: {
+              mes: expirationMonth,
+              ano: expirationYear,
+            },
+            cardNumber: newData.details.cardNumber.replace(/ /g, ''),
           },
-        },
-      };
-      delete newData.details.expiration;
+        };
+        delete preNewData.details.expiration;
+        await validateVippo(preNewData);
+      } catch (error) {
+        const errorObject = JSON.parse((error as Error)?.message || '{}');
+        if (errorObject.error?.details?.resultCredicardServices?.cardInfo?.pinRequired) {
+          setVippoModal(true);
+        } else {
+          toast({
+            title: 'Verificación fallida',
+            description: 'Por favor revisa tus datos.',
+            variant: 'destructive',
+          });
+        }
+        return;
+      }
     }
     onSubmit(newData);
   });
@@ -137,6 +158,14 @@ export function PaymentDetails() {
           onClose={() => setCashbackModal(false)}
           amount={selectedMethod === 'cash' ? totalUsd : totalBs}
           currency={selectedMethod === 'cash' ? 'USD' : 'Bs'}
+          onNext={onSubmit}
+          previousData={form.getValues()}
+        />
+      )}
+      {vippoModal && (
+        <VippoModal
+          open={vippoModal}
+          onClose={() => setVippoModal(false)}
           onNext={onSubmit}
           previousData={form.getValues()}
         />

@@ -1,8 +1,9 @@
-import { getPaymentMethods } from '@/api/checkout';
+import { getPaymentMethods, validateVippo } from '@/api/checkout';
 import { PaymentMethod, PaymentMethodType } from '@/schemas/create-order-schema';
 import { Method } from '@/schemas/payment-method-schema';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
+import { useCheckoutStore } from '@/stores/checkout-store';
 
 // Constants
 const PAYMENT_DETAILS_MAPS = {
@@ -134,7 +135,35 @@ export default function useCheckout() {
     });
   };
 
-  return { useGetPaymentMethods };
+  const useValidateVippo = () => {
+    const { getCheckoutData } = useCheckoutStore();
+    const checkoutData = getCheckoutData();
+    const dniType = (type: string) => {
+      if (type === 'V' || type === 'E') {
+        return 'CI';
+      }
+      return 'RIF';
+    };
+
+    return useMutation({
+      mutationFn: (data: any) => {
+        const dataVippo = data.details;
+        const newData = {
+          cardNumber: dataVippo.cardNumber,
+          expirationMonth: Number(dataVippo.vencimiento.mes),
+          expirationYear: Number(dataVippo.vencimiento.ano),
+          holderName: dataVippo.holderName,
+          holderIdDoc: dniType(checkoutData.contactInformation.dniType),
+          holderId: checkoutData.contactInformation.dni,
+          cvc: dataVippo.codigoSeguridad,
+          currency: 'VES',
+        };
+        return validateVippo(newData);
+      },
+    });
+  };
+
+  return { useGetPaymentMethods, useValidateVippo };
 }
 
 export const getInitialPaymentState = ({

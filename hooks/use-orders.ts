@@ -25,8 +25,6 @@ export default function useOrders() {
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const checkoutData = getCheckoutData();
 
-    console.log('checkoutData', checkoutData);
-
     return useMutation({
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {

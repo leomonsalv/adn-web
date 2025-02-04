@@ -36,7 +36,22 @@ export const VippoDetails = ({ totalBs }: VippoDetailsProps) => {
               inputProps={{
                 placeholder: 'Número de tarjeta',
                 value,
-                onChange,
+                onChange: (e) => {
+                  const { value } = e.target;
+
+                  const numericValue = value.replace(/\D/g, '');
+
+                  let cardNumber = '';
+                  for (let i = 0; i < numericValue.length; i += 4) {
+                    cardNumber += numericValue.slice(i, i + 4) + ' ';
+                  }
+
+                  cardNumber = cardNumber.trim();
+
+                  if (cardNumber.length <= 19) {
+                    return onChange(cardNumber);
+                  }
+                },
               }}
               labelProps={{ className: 'text-sm font-semibold' }}
               suffix={cardMap[value?.[0] as keyof typeof cardMap] ?? cardMap.all}
@@ -73,7 +88,22 @@ export const VippoDetails = ({ totalBs }: VippoDetailsProps) => {
                   inputProps={{
                     placeholder: 'MM/YY',
                     value,
-                    onChange,
+                    onChange: (e) => {
+                      const { value } = e.target;
+                      if (!/^\d*\/?\d*$/.test(value)) return;
+                      if (value.length > 5) return;
+
+                      // Evitar agregar '/' si el usuario está borrando
+                      if (
+                        value.length === 2 &&
+                        !value.includes('/') &&
+                        (e.nativeEvent as InputEvent).inputType !== 'deleteContentBackward'
+                      ) {
+                        return onChange(value + '/');
+                      }
+
+                      return onChange(value);
+                    },
                     type: 'text',
                   }}
                   labelProps={{ className: 'text-sm font-semibold' }}
@@ -92,7 +122,14 @@ export const VippoDetails = ({ totalBs }: VippoDetailsProps) => {
                   inputProps={{
                     placeholder: 'Ej: 123',
                     value,
-                    onChange,
+                    onChange: (e) => {
+                      const { value } = e.target;
+                      if (!/^\d*$/.test(value)) return;
+                      if (value.length > 3) return;
+
+                      return onChange(value);
+                    },
+                    maxLength: 3,
                   }}
                   labelProps={{ className: 'text-sm font-semibold' }}
                 />

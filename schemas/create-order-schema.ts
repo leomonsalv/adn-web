@@ -1,4 +1,5 @@
 import { BANKS } from '@/constants/banks';
+import exp from 'constants';
 import * as z from 'zod';
 
 // Custom type for DNI
@@ -60,6 +61,12 @@ const BillsSchema = z
     message: 'El monto no puede exceder el monto requerido por más de 100',
   });
 
+export const OtpSchema = z.object({
+  token: z.string().min(3, {
+    message: 'Debe contener al menos 3 caracteres',
+  }),
+});
+
 export const CashbackSchema = z.object({
   banco: z.enum(BANKS.map((bank) => bank.value) as [string, ...string[]], {
     message: 'Debes seleccionar un banco',
@@ -69,6 +76,8 @@ export const CashbackSchema = z.object({
   }),
   telefono: z.string({ required_error: 'Teléfono es requerido' }),
 });
+
+export type OtpSchemaType = z.infer<typeof OtpSchema>;
 
 export type CashbackSchemaType = z.infer<typeof CashbackSchema>;
 
