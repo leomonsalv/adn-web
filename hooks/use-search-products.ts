@@ -16,35 +16,40 @@ export default function useSearchProduct() {
   const debouncedOptions = useDebounce(searchOptions, 500);
 
   const searchProducts = (params: SearchFormType) => {
-    return useInfiniteQuery<SearchResponse>({
+    return useInfiniteQuery({
       queryKey: ['search-products', debouncedOptions],
-      queryFn: async ({ pageParam }) => {
-        const currentPage = typeof pageParam === 'number' ? pageParam : 1;
-
-        const searchParams: SearchFormType = {
-          ...debouncedOptions,
-          ...params,
-          actualPage: currentPage,
+      queryFn: async ({ pageParam = 1 }) => {
+        const searchParams = {
+          search: params.search || '',
+          page: pageParam,
+          pageSize: params.pageSize || 10,
+          sort: params.sort || '',
+          attack: params.attack || '',
+          ingredients: params.ingredients || '',
+          laboratories: params.laboratories || '',
+          saveExcel: 'false', //FIXME: ADD saveExcel to SearchFormType
         };
 
         try {
           const response = await fetchProducts(searchParams);
-          return response;
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error('Search error:', error.message);
-            throw error;
-          }
-          throw new Error('An unknown error occurred during search');
+          return {
+            items: response.data,
+            nextPage:
+              response.page < Math.ceil(response.totalItems / response.pageSize)
+                ? response.page + 1
+                : undefined,
+            totalPages: Math.ceil(response.totalItems / response.pageSize),
+            currentPage: response.page,
+            totalItems: response.totalItems,
+            metadata: response.metadata,
+          };
+        } catch (error) {
+          console.error('Search error:', error);
+          throw error;
         }
       },
+      getNextPageParam: (lastPage) => lastPage.nextPage,
       initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        if (lastPage.pagination.current >= lastPage.pagination.total_pages) {
-          return undefined;
-        }
-        return lastPage.pagination.current + 1;
-      },
       staleTime: 1000 * 60,
       gcTime: 1000 * 60 * 5,
       refetchOnWindowFocus: false,

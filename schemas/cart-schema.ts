@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { ProductSchema } from './product-schema'
+import { z } from 'zod';
+import { ProductSchema } from './product-schema';
 
 export const CartSchema = z.object({
   id: z.string(),
@@ -10,4 +10,4 @@ export const CartSchema = z.object({
     })
     .array(),
   userId: z.string(),
-})
+});

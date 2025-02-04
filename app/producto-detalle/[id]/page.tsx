@@ -13,13 +13,11 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { BreadcrumbList } from '@/components/ui/breadcrumb';
-import Reviews from '@/components/reviews/Reviews';
-import { formatUsdCurrency } from '@/lib/utils';
+import { formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
-import { FlameIcon, TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
 import { product } from '@/lib/dummyData';
 import {
   Accordion,
@@ -27,25 +25,25 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import ProductColorSelector from '@/components/products/ProductDetail/ProductColorSelector';
-import ProductSizePicker from '@/components/products/ProductDetail/ProductSizePicker';
 import DisponibilityCounter from '@/components/products/ProductDetail/DisponibilityCounter';
 import ProductDetailSkeleton from '@/components/products/ProductDetail/ProductDetailSkeleton';
 import { SupportLink } from '@/components/products/ProductDetail/SupportLink';
 import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
-import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
+import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
+  const productId = use(params).id;
+
   const payload: RecommendedProductsPayload = {
     type: 'Details',
-    products: [Number(use(params).id)],
+    products: [productId],
     productBased: true,
   };
 
@@ -53,13 +51,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     active: true,
     priceRange: [0, 3000],
   };
-  const productId = Number(use(params).id);
   const { isPrescriptionUploaded } = usePrescriptionUpload();
   const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
 
   const router = useRouter();
-  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
   const { useMutateCart, useGetCart } = useCart();
+  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
+
   const {
     data: recommendedData,
     isLoading: isRecommendedLoading,
@@ -106,8 +104,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
 
-  const isInCart = isItemInCart(productData.id);
-  const itemCount = getItemCount(productData.id);
+  console.log('productDataproductDataproductData', productData);
+
+  const isInCart = isItemInCart(productData.productId);
+  const itemCount = getItemCount(productData.productId);
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,11 +117,17 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     try {
       await updateCart({
         cartId: cartData?.id || '',
-        product: productData,
+        product: {
+          ...productData,
+          // productId: productData.productId,
+          id: productData.productId,
+          price: productData.refPrice,
+          price_extra: Number(productData.bsPrice),
+        },
       });
 
       if (isInCart) {
-        updateQuantity(productData.id, itemCount + 1);
+        updateQuantity(productData.productId, itemCount + 1);
       } else {
         addToCart(productData);
       }
@@ -132,14 +138,21 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     }
   };
 
-  const breadcrumbs = productData.categ_route ? productData.categ_route.split('/') : [];
+  const breadcrumbs = productData.category.full_name
+    .split('/')
+    .map((crumb) => crumb.trim())
+    .filter((crumb) => crumb !== 'All');
 
-  const noStock = productData.qty_available <= 0;
-  const requiresRecipe =
-    productData.required_recipe === true || productData.product_type === 'prescripcion';
+  const noStock = productData.inventary.total <= 0;
+  const requiresRecipe = productData.type === 'prescripcion';
+  // const requiresRecipe =
+  //   productData.required_recipe === true || productData.product_type === 'prescripcion';
 
   const disableAddToCart =
     noStock || (requiresRecipe && !prescriptionUploaded && !isPrescriptionUploaded);
+
+  const regularPrice = Number(productData.bsPrice);
+  const refPrice = productData.refPrice;
 
   return (
     <div className="bg-white">
@@ -171,11 +184,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
                   <div className="lg:col-span-2 lg:row-span-2 flex justify-center items-center rounded-lg">
-                    {productData.imageLarge ? (
+                    {/* Image gallery TODO: THIS FUNCTIONALITY NEEDS REWORK WHEN BE IS DONE */}
+                    {productData.variants ? (
                       <Image
-                        key={productData.id}
+                        key={productData._id}
                         alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                        src={productData.imageLarge}
+                        src={productData.images?.[0] || '/delivery.jpeg'}
                         height={500}
                         width={500}
                         className="rounded-lg object-contain"
@@ -183,9 +197,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     ) : (
                       <div className="overflow-hidden rounded-lg flex justify-center items-center h-[500px] w-full">
                         <Image
-                          key={productData.id}
+                          key={productData._id}
                           alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                          src={productData.image || '/delivery.jpeg'}
+                          src={productData.images?.[0] || '/delivery.jpeg'}
                           height={500}
                           width={500}
                           className="size-full object-cover object-center"
@@ -198,15 +212,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             </div>
 
             <div className="lg:col-span-5 lg:col-start-8 mt-4 bg-slate-50 p-4 rounded-lg">
-              {/* Sales info */}
-              {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
+              {/* Sales info FIXME: THIS WAS DISABLED IN BE*/}
+              {/* {productData.saleslast7days > 0 && productData.saleslast7days !== null ? (
                 <div className="flex justify-start items-center py-2">
                   <FlameIcon color="red" aria-hidden="true" />
                   <h2 className="text-red-500 text-sm font-semibold">
                     +{productData.saleslast7days} comprados en el último mes
                   </h2>
                 </div>
-              ) : null}
+              ) : null} */}
               <h1 className="text-xl font-bold text-gray-900">{productData.name}</h1>
               {!!productData.laboratory && (
                 <div className="flex justify-between">
@@ -217,30 +231,37 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               )}
 
               {/* Reviews */}
-              <section aria-labelledby="reviews-heading" className="my-2">
+              {/* <section aria-labelledby="reviews-heading" className="my-2">
                 <h2 id="reviews-heading" className="sr-only">
                   Reseñas y Calificaciones
                 </h2>
                 <Reviews rating={product.rating} reviewCount={product.reviewCount} />
-              </section>
+              </section> */}
 
               {/* Descripción */}
               <section aria-labelledby="description-heading" className="my-10">
                 <h2 id="description-heading" className="sr-only">
                   Descripción del producto
                 </h2>
-                {productData.description ? (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: productData.description }}
-                    className="prose prose-base mt-4 text-gray-900"
-                  />
-                ) : (
-                  <p className="text-gray-500">No hay descripción disponible.</p>
-                )}
+                <div className="prose prose-base mt-4 text-gray-900">
+                  <p>{productData.description}</p>
+                  {productData.activeIngredients && (
+                    <div className="mt-4">
+                      <h3 className="text-sm font-semibold">Ingredientes activos:</h3>
+                      <p>{productData.activeIngredients}</p>
+                    </div>
+                  )}
+                  {productData.attack && (
+                    <div className="mt-2">
+                      <h3 className="text-sm font-semibold">Acción terapéutica:</h3>
+                      <p>{productData.attack}</p>
+                    </div>
+                  )}
+                </div>
               </section>
 
               {/* Color & Size pickers */}
-              <ProductColorSelector
+              {/* <ProductColorSelector
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
                 product={product}
@@ -249,8 +270,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
                 product={product}
-              />
-              <DisponibilityCounter productQuantity={productData.qty_available} />
+              /> */}
+              <DisponibilityCounter productQuantity={productData.inventary.total} />
+              {/* <DisponibilityCounter productQuantity={productData.qty_available} /> */}
 
               {/* Price tags */}
               <div className="mt-4">
@@ -258,18 +280,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 <div className="flex flex-row gap-1">
                   <span className="text-sm">Precio regular:</span>
                   <p className="text-sm text-gray-500 line-through">
-                    {formatUsdCurrency(productData.price_extra)}
+                    {formatVefCurrency(regularPrice)}
                   </p>
                 </div>
                 <div className="flex flex-row gap-1 items-baseline">
                   <p className="text-3xl font-semibold text-red-700">
-                    {formatUsdCurrency(Number(productData.price_ref))}
+                    {formatVefCurrency(regularPrice)}
                   </p>
-                  {productData.discount_rate && productData.discount_rate !== '0' && (
-                    <Badge color="blue" className="font-semibold font-sans">
-                      % {productData.discount_rate} OFF
-                    </Badge>
-                  )}
                 </div>
               </div>
 

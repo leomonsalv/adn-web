@@ -8,9 +8,13 @@ import SortSection from './sortFilterOptions';
 
 // Props comunes para ambos componentes
 interface BaseFilterProps {
-  facets?: Facets;
-  selectedFilters: Partial<Record<keyof Facets, string[]>>;
-  onFilterChange: (filters: Partial<Record<keyof Facets, string[]>>) => void;
+  facets?: {
+    attack?: string[];
+    ingredients?: string[];
+    laboratories?: string[];
+  };
+  selectedFilters: Partial<Record<string, string[]>>;
+  onFilterChange: (filters: Partial<Record<string, string[]>>) => void;
   onSortChange: (sort: NonNullable<SearchFormType['sort']>) => void;
   onPriceRangeChange: (range: NonNullable<SearchFormType['priceRange']>) => void;
   currentSort?: SearchFormType['sort'];
@@ -24,22 +28,49 @@ interface MobileFilterDialogProps extends BaseFilterProps {
 
 interface FiltersProps extends BaseFilterProps {}
 
-const transformFacetsToFilters = (facets?: Facets) => {
+const transformFacetsToFilters = (facets?: BaseFilterProps['facets']) => {
   if (!facets) return [];
 
-  return Object.entries(facets)
-    .filter(([key]) => key.startsWith('x_'))
-    .map(([key, facetData]) => ({
-      id: key,
-      name: key.split('_').slice(2).join(' ').toUpperCase(),
-      options: facetData[0].data.map((item) => ({
-        value: item.value,
-        label: `${item.value} (${item.count})`,
-        count: item.count,
-      })),
-    }));
-};
+  const filters = [];
 
+  if (facets.attack?.length) {
+    filters.push({
+      id: 'attack',
+      name: 'TIPO',
+      options: facets.attack.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  if (facets.ingredients?.length) {
+    filters.push({
+      id: 'ingredients',
+      name: 'INGREDIENTES ACTIVOS',
+      options: facets.ingredients.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  if (facets.laboratories?.length) {
+    filters.push({
+      id: 'laboratories',
+      name: 'LABORATORIO',
+      options: facets.laboratories.map((value) => ({
+        value,
+        label: value,
+        count: 0,
+      })),
+    });
+  }
+
+  return filters;
+};
 interface FilterSection {
   id: string;
   name: string;
@@ -62,10 +93,17 @@ function FilterSectionComponent({
   onOptionChange?: (sectionId: string, value: string, checked: boolean) => void;
 }) {
   return (
-    <div className={isFirst ? '' : 'pt-10'}>
-      <fieldset>
-        <legend className="block text-sm font-medium text-gray-900">{section.name}</legend>
-        <div className="space-y-3 pt-6">
+    <Disclosure as="div" className={`${isFirst ? '' : 'pt-6'}`} defaultOpen>
+      <h3 className="-my-3 flow-root">
+        <DisclosureButton className="flex w-full items-center justify-between py-3 text-gray-400 hover:text-gray-500">
+          <span className="text-sm font-medium text-gray-900">{section.name}</span>
+          <span className="ml-6 flex items-center">
+            <ChevronDownIcon className="size-5" aria-hidden="true" />
+          </span>
+        </DisclosureButton>
+      </h3>
+      <DisclosurePanel className="pt-6">
+        <div className="space-y-3">
           {section.options.map((option, optionIdx) => (
             <div key={option.value} className="flex items-center">
               <input
@@ -83,8 +121,8 @@ function FilterSectionComponent({
             </div>
           ))}
         </div>
-      </fieldset>
-    </div>
+      </DisclosurePanel>
+    </Disclosure>
   );
 }
 
@@ -123,7 +161,7 @@ export function Filters({
         currentSort={currentSort}
         currentPriceRange={currentPriceRange}
       />
-      <form className="space-y-10 divide-y divide-gray-200">
+      <div className="space-y-4 divide-y divide-gray-200">
         {filters.map((section, sectionIdx) => (
           <FilterSectionComponent
             key={section.name}
@@ -133,7 +171,7 @@ export function Filters({
             onOptionChange={handleOptionChange}
           />
         ))}
-      </form>
+      </div>
     </div>
   );
 }

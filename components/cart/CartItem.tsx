@@ -1,40 +1,40 @@
-import { XMarkIcon, CheckIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, CheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 
-import { useCartStore } from '@/stores/cart-store'
-import AmountSelector from '../products/AmountSelectors/AmountSelector'
-import { Button } from '../ui/button'
-import { CartProduct } from '@/types/cart'
-import Image from 'next/image'
-import useCart from '@/hooks/use-cart'
-import { Product } from '@/types/product'
+import { useCartStore } from '@/stores/cart-store';
+import AmountSelector from '../products/AmountSelectors/AmountSelector';
+import { Button } from '../ui/button';
+import { CartProduct } from '@/types/cart';
+import Image from 'next/image';
+import useCart from '@/hooks/use-cart';
+import { Product } from '@/types/product';
 
 interface CartItemProps {
-  item: CartProduct
-  cartId: string
+  item: CartProduct;
+  cartId: string;
 }
 
 export default function CartItem({ item, cartId }: CartItemProps) {
-  const { updateQuantity, removeFromCart } = useCartStore()
-  const { useMutateCart, useRemoveProductFromCart } = useCart()
-  const { mutateAsync: mutateCart } = useMutateCart()
-  const { mutateAsync: mutateRemoveCart } = useRemoveProductFromCart()
+  const { updateQuantity, removeFromCart } = useCartStore();
+  const { useMutateCart, useRemoveProductFromCart } = useCart();
+  const { mutateAsync: mutateCart } = useMutateCart();
+  const { mutateAsync: mutateRemoveCart } = useRemoveProductFromCart();
 
   const handleQuantityChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const quantity = parseInt(e.target.value)
+    const quantity = parseInt(e.target.value);
     await mutateCart({
       cartId: cartId,
       product: item,
-    })
-    updateQuantity(item.id, quantity)
-  }
+    });
+    updateQuantity(item.id, quantity);
+  };
 
   const handleRemoveFromCart = async () => {
     await mutateRemoveCart({
       cartId: cartId,
       product: item,
-    })
-    removeFromCart(item.id)
-  }
+    });
+    removeFromCart(item.id);
+  };
 
   return (
     <li className="flex py-6 sm:py-10">
@@ -57,7 +57,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
             <div className="flex justify-between">
               <h3 className="text-sm">
                 <a
-                  href={`/productos/${item.id}`}
+                  href={`/producto-detalle/${item._id}`}
                   className="font-medium text-gray-700 hover:text-gray-800"
                 >
                   {item.name}
@@ -70,7 +70,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
                 <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{item.size}</p>
               ) : null}
             </div> */}
-            <p className="mt-1 text-sm font-medium text-gray-900">{`Bs. ${item.price}`}</p>
+            <p className="mt-1 text-sm font-medium text-gray-900">{`Bs. ${item.bsPrice}`}</p>
           </div>
 
           <div className="mt-4 sm:mt-0 sm:pr-9">
@@ -99,15 +99,15 @@ export default function CartItem({ item, cartId }: CartItemProps) {
         </div>
 
         <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-          {item.qty_available > 0 ? (
+          {item.inventary.total > 0 ? (
             <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-green-500" />
           ) : (
             <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-gray-300" />
           )}
           {/* Needs to be changed for a real number */}
-          <span>{item.qty_available > 0 ? 'In stock' : `Ships in 45 minutes`}</span>
+          <span>{item.inventary.total > 0 ? 'Si hay' : `Ships in 45 minutes`}</span>
         </p>
       </div>
     </li>
-  )
+  );
 }

@@ -17,9 +17,9 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
   const urlSearch = searchParams.get('q') ?? '';
   const urlCategory = searchParams.get('b') ?? '1';
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
-    {},
-  );
+  const [selectedFilters, setSelectedFilters] = useState<
+    Partial<Record<keyof SearchFormType, string[]>>
+  >({});
   const [sortOption, setSortOption] = useState<SortOption>();
   const [priceRange, setPriceRange] = useState<PriceRange>();
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,19 +39,24 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
 
   const searchParamsObj = useMemo(() => {
     return {
-      query: debouncedSearch.trim(),
+      search: debouncedSearch.trim(),
       pageSize: 10,
-      facets: selectedFilters,
+      attack: selectedFilters?.attack,
+      ingredients: selectedFilters?.ingredients?.[0],
+      laboratories: selectedFilters?.laboratories?.[0],
       sort: sortOption,
       priceRange: priceRange,
     };
   }, [debouncedSearch, selectedFilters, sortOption, priceRange]);
 
-  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, isError, error } =
-    searchProducts(searchParamsObj);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
+    searchProducts({
+      ...searchParamsObj,
+      attack: selectedFilters?.attack?.[0],
+    });
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
-    setSelectedFilters(newFilters);
+    setSelectedFilters(newFilters as Partial<Record<keyof SearchFormType, string[]>>);
     updateFilters(newFilters);
   };
 
@@ -65,10 +70,7 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
     updatePriceRange(newRange);
   };
 
-  const products = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.data);
-  }, [data?.pages]);
+  const products = data?.pages.flatMap((page) => page.items) || [];
 
   if (isLoading) return <SearchPageSkeleton />;
 
@@ -85,7 +87,13 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
       <MobileFilterDialog
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}
-        facets={data?.pages[0]?.facets}
+        facets={{
+          attack: data?.pages[0]?.metadata?.attack,
+          ingredients: data?.pages[0]?.metadata?.ingredients,
+          laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+            (lab): lab is string => lab !== null,
+          ),
+        }}
         selectedFilters={selectedFilters}
         onFilterChange={handleFilterChange}
         onSortChange={handleSortChange}
@@ -115,7 +123,13 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
             <div className="hidden lg:block">
               <div className="mt-6">
                 <Filters
-                  facets={data?.pages[0]?.facets}
+                  facets={{
+                    attack: data?.pages[0]?.metadata?.attack,
+                    ingredients: data?.pages[0]?.metadata?.ingredients,
+                    laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+                      (lab): lab is string => lab !== null,
+                    ),
+                  }}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
                   onSortChange={handleSortChange}

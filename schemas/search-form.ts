@@ -1,48 +1,57 @@
-import { z } from "zod";
+import { z } from 'zod';
+import { ProductSchema } from './product-schema';
 
-export const searchFormSchema = z.object({
-  query: z.string().optional(),
-  facets: z.record(z.array(z.string())).optional(),
-  suggest: z.boolean().optional(),
-  pageSize: z.number().optional(),
-  actualPage: z.number().optional(),
-  stock: z.boolean().optional(),
-  category: z.string().optional(),
-  carousel: z.boolean().optional(),
-  priceRange: z
-    .object({
-      from: z.number(),
-      to: z.number(),
-    })
-    .optional(),
-  type: z.enum(["libre", "preescripcion", "tienda"]).optional(),
-  sort: z
-    .object({
-      field: z.enum([
-        "price",
-        "price_extra",
-        "name",
-        "qty_available",
-        "x_studio_laboratory",
-      ]),
-      order: z.enum(["asc", "desc"]),
-    })
-    .optional(),
+// Schema para las facetas/agregaciones
+export const FacetSchema = z.object({
+  key: z.string(),
+  doc_count: z.number(),
 });
 
-export const CurrencySchema = z.enum(["VEF", "USD"]);
+export const PriceRangeSchema = z.object({
+  min: z.number().optional(),
+  max: z.number().optional(),
+});
+
+export const searchFormSchema = z.object({
+  attack: z.string().optional(),
+  laboratories: z.string().optional(),
+  ingredients: z.string().optional(),
+  search: z.string().optional(),
+  query: z.string().optional(),
+  actualPage: z.number().optional(),
+  pageSize: z.number().optional(),
+  sort: z.string().optional(),
+  categoryPath: z.string().optional(),
+  facets: z.record(z.string(), z.array(z.string())).optional(),
+  priceRange: PriceRangeSchema.optional(),
+  suggest: z.boolean().optional(),
+});
+
+// Schema para las sugerencias
+export const SuggestionSchema = z.object({
+  suggestion: z.string(),
+});
+
+// Schema para la respuesta de sugerencias
+export const SearchSuggestionsResponseSchema = z.object({
+  results: z.object({
+    documents: z.array(SuggestionSchema),
+  }),
+});
+
+export const CurrencySchema = z.enum(['VEF', 'USD']);
 export type Currency = z.infer<typeof CurrencySchema>;
 
-export const AmountTypeSchema = z.enum(["percent"]);
+export const AmountTypeSchema = z.enum(['percent']);
 export type AmountType = z.infer<typeof AmountTypeSchema>;
 
-export const NameSchema = z.enum(["Farmacia Adan de Venezuela, C.A."]);
+export const NameSchema = z.enum(['Farmacia Adan de Venezuela, C.A.']);
 export type Name = z.infer<typeof NameSchema>;
 
-export const DescriptionSchema = z.enum(["IVA (16%) ventas"]);
+export const DescriptionSchema = z.enum(['IVA (16%) ventas']);
 export type Description = z.infer<typeof DescriptionSchema>;
 
-export const TypeSchema = z.enum(["sale"]);
+export const TypeSchema = z.enum(['sale']);
 export type Type = z.infer<typeof TypeSchema>;
 
 export const CompanySchema = z.object({
@@ -52,9 +61,7 @@ export const CompanySchema = z.object({
 export type Company = z.infer<typeof CompanySchema>;
 
 export const XStudioFechaDeVencimientoSchema = z.object({});
-export type XStudioFechaDeVencimiento = z.infer<
-  typeof XStudioFechaDeVencimientoSchema
->;
+export type XStudioFechaDeVencimiento = z.infer<typeof XStudioFechaDeVencimientoSchema>;
 
 export const CategIdDatumSchema = z.object({
   value: z.string(),
@@ -88,50 +95,20 @@ export const CategIdSchema = z.object({
 });
 export type CategId = z.infer<typeof CategIdSchema>;
 
-export const SearchResponseProductSchema = z.object({
-  id: z.number(),
-  barcode: z.string(),
-  name: z.string(),
-  price: z.number(),
-  price_extra: z.number(),
-  description: z.string(),
-  imageLarge: z.string(),
-  image: z.null(),
-  imageSmall: z.string(),
-  imageXtraSmall: z.string(),
-  imageUltraSmall: z.string(),
-  qty_available: z.number(),
-  currency: CurrencySchema,
-  taxes_ids: z.array(z.string()),
-  required_recipe: z.boolean(),
-  laboratory: z.string(),
-  product_type: z.null(),
-  recommended: z.boolean(),
-  offers: z.null(),
-  x_studio_previous_price: z.number(),
-  price_ref: z.number(),
-  categ_route: z.string(),
-  saleslast7days: z.number(),
-  discount_rate: z.number(),
-  move_location_id: z.null(),
-  moves_location_id: z.null(),
-  x_studio_libre_de_gluten: z.string(),
-  x_studio_2x1: z.string(),
-  x_studio_fecha_de_vencimiento: XStudioFechaDeVencimientoSchema,
-  taxes: z.array(TaxSchema),
+export const MetadataClassSchema = z.object({
+  _id: z.null(),
+  attack: z.array(z.string()),
+  count: z.number(),
+  ingredients: z.array(z.string()),
+  laboratories: z.array(z.union([z.null(), z.string()])),
 });
-export type SearchResponseProduct = z.infer<typeof SearchResponseProductSchema>;
-
-export const FacetsSchema = z.object({
-  x_studio_laboratory: z.array(CategIdSchema),
-  categ_id: z.array(CategIdSchema),
-  x_studio_active_ingredient: z.array(CategIdSchema),
-});
-export type Facets = z.infer<typeof FacetsSchema>;
+export type MetadataClass = z.infer<typeof MetadataClassSchema>;
 
 export const SearchResponseSchema = z.object({
-  pagination: PaginationSchema,
-  data: z.array(SearchResponseProductSchema),
-  facets: FacetsSchema,
+  data: z.array(ProductSchema),
+  page: z.number(),
+  pageSize: z.number(),
+  totalItems: z.number(),
+  metadata: MetadataClassSchema,
 });
 export type SearchResponse = z.infer<typeof SearchResponseSchema>;

@@ -1,26 +1,64 @@
-import { functions } from '@/lib/firebaseConfig';
-import { SearchFormType, SearchResponse } from '@/types/search';
-import {
-  Product,
-  RecommendedProductsPayload,
-  RecommendedProductsResponseElement,
-  TopSellingProductsPayload,
-  TopSellingProductsResponse,
-} from '@/types/product';
+// api/products.ts
+import { SearchFormType } from '@/types/search';
 import { GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
-import { httpsCallable, HttpsCallableResult } from 'firebase/functions';
-import { GetSearchCateroriesResponse } from '@/types/categories';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '@/lib/firebaseConfig';
+import { Product, ProductResponse } from '@/types/product';
 
-export const fetchProducts = async (
-  params: SearchFormType,
-): Promise<GetSearchCateroriesResponse> => {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
+interface SearchParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  sort?: string;
+  attack?: string;
+  ingredients?: string;
+  laboratories?: string;
+  priceRange?: {
+    min: number;
+    max: number;
+  };
+  saveExcel?: string;
+}
+
+export const fetchProducts = async ({
+  page = 1,
+  pageSize = 10,
+  search = '',
+  sort = '',
+  attack = '',
+  ingredients = '',
+  laboratories = '',
+  priceRange,
+  saveExcel = 'false',
+}: SearchParams): Promise<ProductResponse> => {
   try {
-    const response = await httpsCallable<SearchFormType, SearchResponse>(
-      functions,
-      'es-search',
-    )(params);
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+      saveExcel: saveExcel,
+    });
 
-    return response.data;
+    if (search) queryParams.append('search', search);
+
+    if (sort) queryParams.append('sort', sort);
+    if (attack) queryParams.append('attack', attack);
+    if (ingredients) queryParams.append('ingredients', ingredients);
+    if (laboratories) queryParams.append('laboratories', laboratories);
+    if (priceRange) {
+      queryParams.append('minPrice', priceRange.min.toString());
+      queryParams.append('maxPrice', priceRange.max.toString());
+    }
+
+    const response = await fetch(`${API_URL}/products?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const products = await response.json();
+    return products;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching products:', error.message);
@@ -30,23 +68,61 @@ export const fetchProducts = async (
   }
 };
 
-export const fetchProductsByIds = async (ids: number[]): Promise<{ data: Product[] }> => {
+export const fetchProductsByIds = async (
+  productIds: number[],
+  typeId?: number,
+): Promise<{ data: Product[] }> => {
   try {
-    const response: HttpsCallableResult<{ data: Product[] }> = await httpsCallable<
-      { ids: number[] },
-      { data: Product[] }
-    >(
-      functions,
-      'es-searchById',
-    )({ ids });
+    const queryParams = new URLSearchParams();
 
-    return response.data;
+    // Add product IDs to query params
+    if (Array.isArray(productIds) && productIds.length > 0) {
+      productIds.forEach((id) => queryParams.append('id', id.toString()));
+    }
+
+    // Add type ID if provided
+    if (typeId !== undefined) {
+      queryParams.append('typeId', typeId.toString());
+    }
+
+    const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const products = await response.json();
+
+    // Assuming the API returns { data: Product[] }
+    return { data: products.data };
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching products by IDs:', error.message);
       throw error;
     }
     throw new Error('An unknown error occurred while fetching products by IDs');
+  }
+};
+
+export const fetchProductById = async (id: string): Promise<Product> => {
+  try {
+    const queryParams = new URLSearchParams({
+      id: id,
+    });
+
+    const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const product = await response.json();
+    return product;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching product by ID:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching the product');
   }
 };
 
@@ -63,25 +139,14 @@ export const fetchProductsSuggestions = async (
   return response.data;
 };
 
-export const fetchRecommendedProducts = async (
-  payload: RecommendedProductsPayload,
-): Promise<RecommendedProductsResponseElement> => {
-  const response = await httpsCallable<
-    RecommendedProductsPayload,
-    RecommendedProductsResponseElement
-  >(
-    functions,
-    GET_RECOMMENDED_PRODUCTS,
-  )(payload);
+//THIS CALL WILL CHANGE IN THE FUTURE WHEN MOVED TO MONGO
+export const fetchRecommendedProducts = async (payload: any): Promise<any> => {
+  const response = await httpsCallable<any, any>(functions, GET_RECOMMENDED_PRODUCTS)(payload);
   return response.data;
 };
 
-export const fetchTopSellingProducts = async (
-  payload: any,
-): Promise<TopSellingProductsResponse> => {
-  const response = await httpsCallable<TopSellingProductsPayload, TopSellingProductsResponse>(
-    functions,
-    GET_TOP_SELLERS_PRODUCTS,
-  )(payload);
+//THIS CALL WILL CHANGE IN THE FUTURE WHEN MOVED TO MONGO
+export const fetchTopSellingProducts = async (payload: any): Promise<any> => {
+  const response = await httpsCallable<any, any>(functions, GET_TOP_SELLERS_PRODUCTS)(payload);
   return response.data;
 };
