@@ -28,7 +28,7 @@ export interface Niche {
   slug: string;
   level: number;
   parent: string | null;
-  seo: SEO;
+  seo?: SEO;
   niches?: Niche[];
 }
 
@@ -38,7 +38,7 @@ export interface Subcategory {
   slug: string;
   level: number;
   parent: string | null;
-  seo: SEO;
+  seo?: SEO;
   niches?: Niche[];
 }
 
@@ -48,7 +48,7 @@ export interface Category {
   slug: string;
   level: number;
   parent: string | null;
-  seo: SEO;
+  seo?: SEO;
   subcategories?: Subcategory[];
 }
 

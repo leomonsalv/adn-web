@@ -16,9 +16,11 @@ import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/
 import { CustomBadge } from '../ui/badge';
 import SearchInput from '../search/SearchInput';
 import { useRouter } from 'next/navigation';
-import { categories, navbarMenuHover } from '@/lib/dummyData';
+import { navbarMenuHover } from '@/lib/dummyData';
 import useCart from '@/hooks/use-cart';
 import { useCartStore } from '@/stores/cart-store';
+import { categories } from '@/lib/categories';
+import useSearchProduct from '@/hooks/use-search-products';
 
 export function NavLinks() {
   const router = useRouter();
@@ -29,6 +31,12 @@ export function NavLinks() {
   const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
+  const { updateCategory } = useSearchProduct();
+
+  const handleCategorySelect = (categorySlug: string) => {
+    updateCategory(categorySlug);
+    router.push(`/categoria/${categorySlug}`);
+  };
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +99,7 @@ export function NavLinks() {
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="flex h-14 md:h-16 items-center justify-between gap-x-2 sm:gap-x-4">
             {/* Logo and mobile menu */}
-            <div className="flex items-center gap-x-2 sm:gap-x-4 hidden sm:flex">
+            <div className="flex items-center gap-x-2 sm:gap-x-4 sm:flex">
               <Link href="/" aria-label="adan" className="shrink-0">
                 <NavLogo />
               </Link>
@@ -103,7 +111,7 @@ export function NavLinks() {
                 <SearchInput
                   selectedCategory={search.category}
                   setSelectedCategory={handleSelectCategory}
-                  categories={categories}
+                  categories={[]}
                   value={search.value}
                   onChange={handleChange}
                   onKeyDown={handleEnterSearch}
@@ -253,7 +261,7 @@ export function NavLinks() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                {categories.map((category) => (
+                {ap((category) => (
                   <Link
                     key={category.name}
                     href={category.href}
@@ -308,7 +316,7 @@ export function NavLinks() {
                         {categories.map((category) => (
                           <Link
                             key={category.name}
-                            href={category.href}
+                            href={category.slug}
                             className="flex items-center rounded-lg p-2 text-sm text-gray-900 hover:bg-gray-50"
                           >
                             <span>{category.name}</span>
@@ -335,7 +343,8 @@ export function NavLinks() {
                 {categories.slice(0, 8).map((category) => (
                   <Link
                     key={category.name}
-                    href={category.href}
+                    href={category.slug}
+                    onClick={() => handleCategorySelect(category.slug)}
                     className="text-sm font-medium text-white hover:opacity-75 whitespace-nowrap py-3 "
                   >
                     {category.name}

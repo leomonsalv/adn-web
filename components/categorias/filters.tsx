@@ -233,7 +233,7 @@ export function MobileFilterDialog({
                 key={section.name}
                 as="div"
                 className="border-t border-gray-200 px-4 py-6"
-                defaultOpen
+                defaultOpen={Boolean(selectedFilters[section.id as keyof Facets]?.length) || false}
               >
                 <h3 className="-mx-2 -my-3 flow-root">
                   <DisclosureButton className="flex w-full items-center justify-between px-2 py-3 text-gray-400 hover:text-gray-500">

@@ -13,6 +13,7 @@ interface SearchParams {
   search?: string;
   sort?: string;
   attack?: string;
+  category?: string;
   ingredients?: string;
   laboratories?: string;
   priceRange?: {
@@ -32,6 +33,7 @@ export const fetchProducts = async ({
   laboratories = '',
   priceRange,
   saveExcel = 'false',
+  category = '',
 }: SearchParams): Promise<ProductResponse> => {
   try {
     const queryParams = new URLSearchParams({
@@ -41,7 +43,7 @@ export const fetchProducts = async ({
     });
 
     if (search) queryParams.append('search', search);
-
+    if (category) queryParams.append('category', category);
     if (sort) queryParams.append('sort', sort);
     if (attack) queryParams.append('attack', attack);
     if (ingredients) queryParams.append('ingredients', ingredients);

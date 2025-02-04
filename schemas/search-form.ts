@@ -21,7 +21,7 @@ export const searchFormSchema = z.object({
   actualPage: z.number().optional(),
   pageSize: z.number().optional(),
   sort: z.string().optional(),
-  categoryPath: z.string().optional(),
+  category: z.string().optional(),
   facets: z.record(z.string(), z.array(z.string())).optional(),
   priceRange: PriceRangeSchema.optional(),
   suggest: z.boolean().optional(),

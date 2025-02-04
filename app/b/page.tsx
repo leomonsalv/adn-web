@@ -53,6 +53,8 @@ export default function SearchPage({ params }: { params: { b: string; q: string 
     searchProducts({
       ...searchParamsObj,
       attack: selectedFilters?.attack?.[0],
+      ingredients: selectedFilters?.ingredients?.[0],
+      laboratories: selectedFilters?.laboratories?.[0],
     });
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {

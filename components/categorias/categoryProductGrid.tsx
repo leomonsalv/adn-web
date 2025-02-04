@@ -21,7 +21,8 @@ export default function CategoryProductGrid({
   subCategory,
   niche,
 }: CategoryProductGridProps) {
-  // A lo mejor construyes un "filtro" con estos valores
+  console.log(category, subCategory, niche);
+
   const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
     {},
   );
@@ -33,15 +34,12 @@ export default function CategoryProductGrid({
   const { searchProducts, updateSort, updatePriceRange, updateFilters, updateQuery } =
     useSearchProduct();
 
-  // Por ejemplo, puedes combinar category/subCategory/niche en un "path" de búsqueda
-  // O lo podrías pasar por un param en la búsqueda:
   const fullCategoryPath = [category, subCategory, niche].filter(Boolean).join('/');
+  console.log('🚀 ~ fullCategoryPath:', fullCategoryPath);
 
-  // Usas un debounce para la query
   const debouncedSearch = useDebounce(searchQuery, 600);
 
   useEffect(() => {
-    // Cada vez que cambien category, subCategory o niche, reseteas la búsqueda
     setSearchQuery('');
   }, [category, subCategory, niche]);
 
@@ -51,14 +49,12 @@ export default function CategoryProductGrid({
 
   const searchParamsObj = useMemo(() => {
     return {
-      // Podrías pasar fullCategoryPath a tu hook, si tu backend
-      // lo usa para filtrar / routear la solicitud de productos
-      categoryPath: fullCategoryPath,
+      category: fullCategoryPath,
       query: debouncedSearch.trim(),
       pageSize: 10,
       facets: selectedFilters,
       sort: sortOption,
-      priceRange,
+      priceRange: priceRange,
     };
   }, [debouncedSearch, selectedFilters, sortOption, priceRange, fullCategoryPath]);
 
@@ -82,7 +78,7 @@ export default function CategoryProductGrid({
 
   const products = useMemo(() => {
     if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.data);
+    return data.pages.flatMap((page) => page.items);
   }, [data?.pages]);
 
   if (isLoading) {
@@ -106,7 +102,13 @@ export default function CategoryProductGrid({
         <MobileFilterDialog
           isOpen={mobileFiltersOpen}
           setIsOpen={setMobileFiltersOpen}
-          facets={data?.pages[0]?.facets}
+          facets={{
+            attack: data?.pages[0]?.metadata?.attack,
+            ingredients: data?.pages[0]?.metadata?.ingredients,
+            laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+              (lab): lab is string => lab !== null,
+            ),
+          }}
           selectedFilters={selectedFilters}
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
@@ -132,15 +134,15 @@ export default function CategoryProductGrid({
               />
 
               <div className="hidden lg:block">
-                {/* <SortFilterOptions
-                onSortChange={handleSortChange}
-                onPriceRangeChange={handlePriceRangeChange}
-                currentSort={sortOption}
-                currentPriceRange={priceRange}
-              /> */}
                 <div className="mt-6">
                   <Filters
-                    facets={data?.pages[0]?.facets}
+                    facets={{
+                      attack: data?.pages[0]?.metadata?.attack,
+                      ingredients: data?.pages[0]?.metadata?.ingredients,
+                      laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
+                        (lab): lab is string => lab !== null,
+                      ),
+                    }}
                     selectedFilters={selectedFilters}
                     onFilterChange={handleFilterChange}
                     onSortChange={handleSortChange}
