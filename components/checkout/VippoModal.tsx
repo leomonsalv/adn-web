@@ -23,7 +23,10 @@ export function VippoModal({ open, onClose, onNext, previousData }: VippoModalPr
 
   const onSubmit = (data: any) => {
     onClose();
-    onNext({ ...previousData, details: { ...previousData.details, token: data.token } });
+    onNext({
+      ...previousData,
+      details: { ...previousData.details, token: parseFloat(data.token) },
+    });
   };
 
   return (

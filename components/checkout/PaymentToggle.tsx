@@ -28,14 +28,14 @@ export function PaymentToggle({ onChange, value }: PaymentToggleProps) {
         <div className="relative flex h-full z-10">
           <span
             className={cn(
-              'flex-1 flex items-center justify-center text-sm font-medium transition-colors duration-200',
+              'flex-1 flex items-center justify-center text-sm font-medium transition-colors duration-200 cursor-pointer',
             )}
           >
             Pago Simple
           </span>
           <span
             className={cn(
-              'flex-1 flex items-center justify-center text-sm font-medium transition-colors duration-200',
+              'flex-1 flex items-center justify-center text-sm font-medium transition-colors duration-200 cursor-pointer',
             )}
           >
             Pago Mixto

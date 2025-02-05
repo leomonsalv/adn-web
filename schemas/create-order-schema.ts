@@ -183,15 +183,15 @@ export const PaymentMethodSchema = z.discriminatedUnion('type', [
     type: z.literal('vippo'),
     details: z.object({
       amount: z.number(),
-      holderName: z.string(),
-      cardNumber: z.string(),
+      holderName: z.string().min(1),
+      cardNumber: z.string().min(16),
       vencimiento: z.object({
         mes: z.number(),
         ano: z.number(),
       }),
-      codigoSeguridad: z.string(),
-      token: z.string(),
-      expiration: z.string().optional(),
+      codigoSeguridad: z.string().min(3),
+      token: z.number(),
+      expiration: z.string().min(5),
     }),
   }),
 ]);

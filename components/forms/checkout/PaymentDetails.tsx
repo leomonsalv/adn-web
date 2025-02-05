@@ -65,7 +65,7 @@ export function PaymentDetails() {
     let newData: any = data;
     if (data.type === 'vippo') {
       try {
-        const splitVencimiento = newData.details.expiration.split('/');
+        const splitVencimiento = newData?.details?.expiration?.split('/');
         const expirationMonth = splitVencimiento[0];
         const expirationYear = splitVencimiento[1];
         const preNewData = {
@@ -83,6 +83,7 @@ export function PaymentDetails() {
         await validateVippo(preNewData);
         newData = preNewData;
       } catch (error) {
+        console.log(error);
         const errorObject = JSON.parse((error as Error)?.message || '{}');
         if (errorObject.error?.details?.resultCredicardServices?.cardInfo?.pinRequired) {
           setVippoModal(true);
@@ -135,7 +136,7 @@ export function PaymentDetails() {
         }}
       />
 
-      {paymentMethods && (
+      {paymentMethods && paymentType === 'simple' ? (
         <FormProvider {...form}>
           <form onSubmit={handleSubmit}>
             <PaymentMethodSelector
@@ -156,6 +157,8 @@ export function PaymentDetails() {
             </Button>
           </form>
         </FormProvider>
+      ) : (
+        <></>
       )}
       {cashbackModal && (
         <CashbackModal
