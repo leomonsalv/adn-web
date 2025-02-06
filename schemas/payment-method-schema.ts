@@ -23,3 +23,9 @@ export const SearchResponseSchema = z.object({
 });
 
 export type SearchResponse = z.infer<typeof SearchResponseSchema>;
+
+export const MixedPaymentSchema = z.object({
+  methods: z.array(MethodSchema),
+});
+
+export type MixedPayment = z.infer<typeof MixedPaymentSchema>;

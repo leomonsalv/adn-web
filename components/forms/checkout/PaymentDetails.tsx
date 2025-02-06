@@ -20,6 +20,7 @@ import { PaymentDetailsSkeleton } from '@/components/skeletons/PaymentMethodsSke
 import { Loader2 } from 'lucide-react';
 import useUser from '@/hooks/use-user';
 import { useToast } from '@/hooks/use-toast';
+import PaymentMixed from '@/components/checkout/PaymentMixed';
 
 export function PaymentDetails() {
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
@@ -157,8 +158,19 @@ export function PaymentDetails() {
             </Button>
           </form>
         </FormProvider>
+      ) : paymentMethods ? (
+        <>
+          <PaymentMixed paymentMethods={paymentMethods} />
+          <Button className="w-full mt-4 h-14" type="submit" disabled={isCreatingOrder}>
+            {isCreatingOrder || isLoadingVippo ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              'Continuar con la  orden'
+            )}
+          </Button>
+        </>
       ) : (
-        <></>
+        <>Loading</>
       )}
       {cashbackModal && (
         <CashbackModal

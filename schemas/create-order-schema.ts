@@ -244,3 +244,15 @@ export const OrderSchema = z.object({
 });
 
 export type Order = z.infer<typeof OrderSchema>;
+
+export const SelectPaymentMixedSchema = z.object({
+  methods: z.array(z.string()),
+  details: z.array(
+    z.object({
+      name: z.string(),
+      monto: z.number(),
+    }),
+  ),
+});
+
+export type SelectPaymentMixed = z.infer<typeof SelectPaymentMixedSchema>;
