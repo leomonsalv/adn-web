@@ -23,32 +23,23 @@ export interface SEO {
 }
 
 export interface Niche {
-  _id: string;
   name: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo?: SEO;
+  _id: string;
   niches?: Niche[];
 }
 
 export interface Subcategory {
-  _id: string;
   name: string;
+  _id: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo?: SEO;
   niches?: Niche[];
 }
 
 export interface Category {
-  _id: string;
   name: string;
+  _id: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo?: SEO;
   subcategories?: Subcategory[];
 }
 
