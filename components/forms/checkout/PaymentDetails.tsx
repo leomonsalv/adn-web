@@ -20,9 +20,10 @@ import { PaymentDetailsSkeleton } from '@/components/skeletons/PaymentMethodsSke
 import { Loader2 } from 'lucide-react';
 import useUser from '@/hooks/use-user';
 import { useToast } from '@/hooks/use-toast';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export function PaymentDetails() {
+  const router = useRouter();
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>();
   const [cashbackModal, setCashbackModal] = useState(false);
@@ -32,7 +33,7 @@ export function PaymentDetails() {
   const { useGetPaymentMethods, useValidateVippo } = useCheckout();
   const { useCreateOrder } = useOrders();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
-  const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
+  const { mutateAsync: createOrder, isPending: isCreatingOrder } = useCreateOrder();
   const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
   const { getCartRef, getCartTotal } = useCartStore();
   const { toast } = useToast();
@@ -44,7 +45,7 @@ export function PaymentDetails() {
     resolver: zodResolver(PaymentMethodSchema),
   });
 
-  const onSubmit = (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
+  const onSubmit = async (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
     try {
       if ((data.type === 'cash' || data.type === 'bolivarCash') && !cashbackData) {
         setCashbackModal(true);
@@ -56,16 +57,8 @@ export function PaymentDetails() {
         cashbackData,
       };
 
-      createOrder(newOrder, {
-        onSuccess: () => {
-          console.log('Order created successfully');
-          router.push('/gracias');
-        },
-        onError: (error) => {
-          console.error('Error creating order:', error);
-          throw new Error('Error creating order');
-        },
-      });
+      const response: any = await createOrder(newOrder);
+      router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } catch (error) {
       throw new Error('Error creating order');
     }
