@@ -7,6 +7,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   sendPasswordResetEmail,
+  updateProfile,
 } from 'firebase/auth';
 import { auth, db, provider } from '@/lib/firebaseConfig';
 import { RegisterFormSchema } from '@/schemas/register-form';
@@ -118,6 +119,10 @@ export async function registerAction(state: FormState, formData: FormData) {
       email: validatedFields.data.email,
       referral: validatedFields.data.referral,
       createdAt: serverTimestamp(),
+    });
+
+    await updateProfile(signedInUser, {
+      displayName: validatedFields.data.name,
     });
 
     return { success: true, user: signedInUser };
