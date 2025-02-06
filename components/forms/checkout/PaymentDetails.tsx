@@ -2,10 +2,10 @@ import { PaymentMethodSelector } from '@/components/checkout/PaymentMethodSelect
 import { PaymentToggle } from '@/components/checkout/PaymentToggle';
 import useCheckout, { getInitialPaymentState } from '@/hooks/use-checkout';
 import {
-  CashbackSchemaType,
-  PaymentMethod,
+  type CashbackSchemaType,
+  type PaymentMethod,
   PaymentMethodSchema,
-  PaymentMethodType,
+  type PaymentMethodType,
 } from '@/schemas/create-order-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { PaymentDetailsSkeleton } from '@/components/skeletons/PaymentMethodsSke
 import { Loader2 } from 'lucide-react';
 import useUser from '@/hooks/use-user';
 import { useToast } from '@/hooks/use-toast';
+import router from 'next/router';
 
 export function PaymentDetails() {
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
@@ -55,7 +56,16 @@ export function PaymentDetails() {
         cashbackData,
       };
 
-      createOrder(newOrder);
+      createOrder(newOrder, {
+        onSuccess: () => {
+          console.log('Order created successfully');
+          router.push('/gracias');
+        },
+        onError: (error) => {
+          console.error('Error creating order:', error);
+          throw new Error('Error creating order');
+        },
+      });
     } catch (error) {
       throw new Error('Error creating order');
     }

@@ -19,16 +19,16 @@ export default function CheckoutOrderSummary() {
     >
       <div className="mx-auto max-w-lg lg:max-w-none">
         <h2 id="summary-heading" className="text-lg font-medium text-gray-900">
-          Order summary
+          Resumen de tu orden
         </h2>
 
         <ul role="list" className="divide-y divide-gray-200 text-sm font-medium text-gray-900">
           {cart.products.map((item) => (
             <li key={item.id} className="flex items-start space-x-4 py-6">
-              {item.imageLarge ? (
+              {item.images ? (
                 <Image
                   alt={item.name}
-                  src={item.imageLarge}
+                  src={item.images[0]}
                   className="size-20 flex-none rounded-md object-cover object-center"
                   width={80}
                   height={80}
@@ -49,22 +49,22 @@ export default function CheckoutOrderSummary() {
         <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Subtotal</dt>
-            <dd>${subtotal.toFixed(2)}</dd>
+            <dd>Bs {subtotal.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
-            <dt className="text-gray-600">Shipping</dt>
-            <dd>${shipping.toFixed(2)}</dd>
+            <dt className="text-gray-600">Envío</dt>
+            <dd>Bs {shipping.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
-            <dt className="text-gray-600">Taxes</dt>
-            <dd>${taxes.toFixed(2)}</dd>
+            <dt className="text-gray-600">Impuestos</dt>
+            <dd>Bs {taxes.toFixed(2)}</dd>
           </div>
 
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
             <dt className="text-base">Total</dt>
-            <dd className="text-base">${total.toFixed(2)}</dd>
+            <dd className="text-base">Bs {total.toFixed(2)}</dd>
           </div>
         </dl>
 
