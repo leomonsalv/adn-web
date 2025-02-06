@@ -1,8 +1,7 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
-import { useDebounce } from '@/hooks/use-debounce';
 import ProductGrid from '@/components/categorias/productGrid';
 import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { useSearchParams } from 'next/navigation';
@@ -12,49 +11,28 @@ import { Facets } from '@/types/categories';
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
 
-export default function SearchPage({ params }: { params: { b: string; q: string } }) {
+export default function SearchPage({ params }: { params: { q: string } }) {
   const searchParams = useSearchParams();
   const urlSearch = searchParams.get('q') ?? '';
-  const urlCategory = searchParams.get('b') ?? '1';
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Partial<Record<keyof SearchFormType, string[]>>
   >({});
   const [sortOption, setSortOption] = useState<SortOption>();
   const [priceRange, setPriceRange] = useState<PriceRange>();
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const debouncedSearch = useDebounce(searchQuery, 600);
 
   const { searchProducts, updateSort, updatePriceRange, updateFilters, updateQuery } =
     useSearchProduct();
 
-  useEffect(() => {
-    setSearchQuery(urlSearch);
-  }, [urlSearch, urlCategory]);
-
-  useEffect(() => {
-    updateQuery(debouncedSearch.trim());
-  }, [debouncedSearch, updateQuery]);
-
-  const searchParamsObj = useMemo(() => {
-    return {
-      search: debouncedSearch.trim(),
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
+    searchProducts({
+      search: urlSearch,
       pageSize: 10,
-      attack: selectedFilters?.attack,
+      attack: selectedFilters?.attack?.[0],
       ingredients: selectedFilters?.ingredients?.[0],
       laboratories: selectedFilters?.laboratories?.[0],
       sort: sortOption,
       priceRange: priceRange,
-    };
-  }, [debouncedSearch, selectedFilters, sortOption, priceRange]);
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
-    searchProducts({
-      ...searchParamsObj,
-      attack: selectedFilters?.attack?.[0],
-      ingredients: selectedFilters?.ingredients?.[0],
-      laboratories: selectedFilters?.laboratories?.[0],
     });
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {

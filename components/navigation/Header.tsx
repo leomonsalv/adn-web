@@ -27,8 +27,8 @@ import { getCategories } from '@/api/categories';
 export function NavLinks() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });
   const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
   const { useGetCart } = useCart();

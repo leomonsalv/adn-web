@@ -20,6 +20,7 @@ export function ContactInformation({
   dniType,
   onSubmit,
 }: ContactInformationProps) {
+  console.log(name, email, dni, dniType);
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(contactInformationSchema),
     defaultValues: {

@@ -1,6 +1,6 @@
 import { createOrder, fetchOrdersHistoric } from '@/api/orders';
 
-import { CashbackSchemaType, Order, PaymentMethod } from '@/schemas/create-order-schema';
+import type { CashbackSchemaType, Order, PaymentMethod } from '@/schemas/create-order-schema';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
@@ -24,8 +24,6 @@ export default function useOrders() {
     const { getCheckoutData } = useCheckoutStore();
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const checkoutData = getCheckoutData();
-
-    console.log('checkoutData', checkoutData);
 
     return useMutation({
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {

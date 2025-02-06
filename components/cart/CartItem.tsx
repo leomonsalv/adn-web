@@ -3,7 +3,7 @@ import { XMarkIcon, CheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { useCartStore } from '@/stores/cart-store';
 import AmountSelector from '../products/AmountSelectors/AmountSelector';
 import { Button } from '../ui/button';
-import { CartProduct } from '@/types/cart';
+import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
 import { Product } from '@/types/product';
@@ -20,7 +20,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
   const { mutateAsync: mutateRemoveCart } = useRemoveProductFromCart();
 
   const handleQuantityChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const quantity = parseInt(e.target.value);
+    const quantity = Number.parseInt(e.target.value);
     await mutateCart({
       cartId: cartId,
       product: item,
@@ -44,7 +44,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
           height={100}
           alt={item.name}
           src={
-            item.imageLarge ||
+            item.images[0] ||
             'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-featured-product-shot.jpg'
           }
           className="size-24 rounded-md object-cover object-center sm:size-48"

@@ -44,6 +44,7 @@ const CarouselCard = ({
           <div className="relative w-full pt-[100%]">
             <Image
               fill
+              sizes="100%"
               src={imageUrl}
               alt={title}
               className="absolute top-0 left-0 object-contain transition-opacity hover:opacity-75"

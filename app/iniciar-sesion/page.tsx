@@ -24,13 +24,13 @@ export default function LoginPage() {
     <section>
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
+          {/* <img
             alt="Your Company"
             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"
-          />
+          /> */}
           <h2 className="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign in to your account
+            Inicia Sesión en tu cuenta
           </h2>
         </div>
 
@@ -43,7 +43,7 @@ export default function LoginPage() {
                   <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-sm/6 font-medium">
-                  <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                  <span className="bg-white px-6 text-gray-900">O continua con</span>
                 </div>
               </div>
 
@@ -72,16 +72,16 @@ export default function LoginPage() {
                       fillRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm/6 font-semibold">GitHub</span>
+                  <span className="text-sm/6 font-semibold">Apple</span>
                 </a>
               </div>
             </div>
           </div>
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?{' '}
+            No estas registrado?{' '}
             <Link href={REGISTER} className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Register
+              Registrate
             </Link>
           </p>
         </div>
