@@ -1,11 +1,15 @@
 /* eslint-disable no-undef */
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
 // ODOO
 export const GET_PRODUCTS = 'odoo-getProducts';
 export const GET_PRODUCT_BY_ID = 'odoo-getProduct?id=';
 export const GET_RECOMMENDED_PRODUCTS = 'odoo-getRecommendedProducts';
 export const GET_RECOMMENDED = 'odoo-getRecommended';
 export const GET_OFFERS = 'odoo-getOffers';
-export const GET_CATEGORIES = 'externos-getCategories';
+// export const GET_CATEGORIES = 'externos-getCategories';
+export const GET_CATEGORIES = 'category';
 export const GET_TOP_SELLERS_PRODUCTS = 'products-topSellingProducts';
 
 // Products Availability

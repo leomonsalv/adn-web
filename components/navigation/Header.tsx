@@ -21,6 +21,8 @@ import useCart from '@/hooks/use-cart';
 import { useCartStore } from '@/stores/cart-store';
 import { categories } from '@/lib/categories';
 import useSearchProduct from '@/hooks/use-search-products';
+import { categories as initialCategories } from '@/lib/categories';
+import { getCategories } from '@/api/categories';
 
 export function NavLinks() {
   const router = useRouter();

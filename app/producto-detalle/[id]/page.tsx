@@ -40,6 +40,7 @@ interface ProductPageProps {
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const productId = use(params).id;
+  console.log('🚀 ~ ProductDetailsPage ~ productId:', productId);
 
   const payload: RecommendedProductsPayload = {
     type: 'Details',

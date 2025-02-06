@@ -1,11 +1,9 @@
 // api/products.ts
 import { SearchFormType } from '@/types/search';
-import { GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
+import { API_URL, GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/lib/firebaseConfig';
 import { Product, ProductResponse } from '@/types/product';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 interface SearchParams {
   page?: number;
@@ -107,6 +105,7 @@ export const fetchProductsByIds = async (
 };
 
 export const fetchProductById = async (id: string): Promise<Product> => {
+  console.log('🚀 ~ fetchProductById ~ id:', id);
   try {
     const queryParams = new URLSearchParams({
       id: id,
@@ -114,6 +113,7 @@ export const fetchProductById = async (id: string): Promise<Product> => {
 
     const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
     if (!response.ok) {
+      console.log('🚀 ~ fetchProductById ~ response:', response);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
