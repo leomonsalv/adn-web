@@ -7,21 +7,18 @@ import { useToast } from '@/hooks/use-toast';
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { CARRITO, HISTORIAL, LOGIN, SEARCH, HOME } from '@/lib/routes';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { CARRITO, HISTORIAL, LOGIN, HOME } from '@/lib/routes';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 
 import NavLogo from '@/public/navigation-logo';
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
-import { CustomBadge } from '../ui/badge';
 import SearchInput from '../search/SearchInput';
 import { useRouter } from 'next/navigation';
 import { navbarMenuHover } from '@/lib/dummyData';
 import useCart from '@/hooks/use-cart';
 import { useCartStore } from '@/stores/cart-store';
 import { categories } from '@/lib/categories';
-import useSearchProduct from '@/hooks/use-search-products';
-import { categories as initialCategories } from '@/lib/categories';
 import MegaMenu from '@/components/navigation/MegaMenu';
 
 export function NavLinks() {
@@ -33,12 +30,6 @@ export function NavLinks() {
   const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
-  const { updateCategory } = useSearchProduct();
-
-  const handleCategorySelect = (categorySlug: string) => {
-    updateCategory(categorySlug);
-    router.push(`/categoria/${categorySlug}`);
-  };
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,7 +218,7 @@ export function NavLinks() {
         </div>
       </div>
 
-      <MegaMenu />
+      <MegaMenu categories={categories} />
     </header>
   );
 }
