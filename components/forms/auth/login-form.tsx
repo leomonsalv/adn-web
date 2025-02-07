@@ -35,7 +35,7 @@ function LoginForm({}: Props) {
     <form action={formAction} className="space-y-6">
       <div>
         <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-          Email address
+          Correo Electrónico
         </label>
         <div className="mt-2">
           <input
@@ -52,7 +52,7 @@ function LoginForm({}: Props) {
 
       <div>
         <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-          Password
+          Contraseña
         </label>
         <div className="mt-2">
           <input
@@ -66,7 +66,7 @@ function LoginForm({}: Props) {
         </div>
         {formState?.errors?.password && (
           <div>
-            <p>Password must:</p>
+            <p>La contraseña debe: </p>
             <ul>
               {formState.errors.password.map((error) => (
                 <li className="text-red-500" key={error}>
@@ -88,7 +88,7 @@ function LoginForm({}: Props) {
             className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
           />
           <label htmlFor="remember-me" className="ml-3 block text-sm/6 text-gray-900">
-            Remember me
+            Recuerdame
           </label>
         </div>
 
@@ -117,7 +117,7 @@ function SubmitButton() {
       type="submit"
       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-      {pending ? 'Loading...' : 'Sign in'}
+      {pending ? 'Cargando...' : 'Inicia Sesión'}
     </button>
   );
 }

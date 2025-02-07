@@ -3,7 +3,7 @@ import { XMarkIcon, CheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { useCartStore } from '@/stores/cart-store';
 import AmountSelector from '../products/AmountSelectors/AmountSelector';
 import { Button } from '../ui/button';
-import { CartProduct } from '@/types/cart';
+import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
 import { Product } from '@/types/product';
@@ -20,7 +20,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
   const { mutateAsync: mutateRemoveCart } = useRemoveProductFromCart();
 
   const handleQuantityChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const quantity = parseInt(e.target.value);
+    const quantity = Number.parseInt(e.target.value);
     await mutateCart({
       cartId: cartId,
       product: item,
@@ -44,7 +44,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
           height={100}
           alt={item.name}
           src={
-            item.imageLarge ||
+            item.images?.[0] ||
             'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-featured-product-shot.jpg'
           }
           className="size-24 rounded-md object-cover object-center sm:size-48"
@@ -99,13 +99,13 @@ export default function CartItem({ item, cartId }: CartItemProps) {
         </div>
 
         <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-          {item.inventary.total > 0 ? (
+          {item.inventary?.total > 0 ? (
             <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-green-500" />
           ) : (
             <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-gray-300" />
           )}
           {/* Needs to be changed for a real number */}
-          <span>{item.inventary.total > 0 ? 'Si hay' : `Ships in 45 minutes`}</span>
+          <span>{item.inventary?.total > 0 ? 'Si hay' : `Ships in 45 minutes`}</span>
         </p>
       </div>
     </li>

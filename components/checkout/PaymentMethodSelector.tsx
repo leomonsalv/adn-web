@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { Method } from '@/schemas/payment-method-schema';
+import type { Method } from '@/schemas/payment-method-schema';
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +12,7 @@ import {
 } from '../ui/accordion';
 import { useCartStore } from '@/stores/cart-store';
 import { useFormContext } from 'react-hook-form';
-import { PaymentMethodType, PaymentMethod } from '@/schemas/create-order-schema';
+import type { PaymentMethodType, PaymentMethod } from '@/schemas/create-order-schema';
 import { getInitialPaymentState } from '@/hooks/use-checkout';
 import { ZelleDetails } from './paymentMethods/ZelleDetails';
 import { CashDetails } from './paymentMethods/CashDetails';
@@ -82,6 +82,9 @@ export function PaymentMethodSelector({
         form,
       };
 
+      const creditAvailable = user?.data?.wallet?.credit ?? 0;
+      const preCreditAvailable = user?.data?.preWallet?.credit ?? 0;
+
       const detailsMap: Record<PaymentMethodType, React.ReactNode> = {
         zelle: <ZelleDetails {...detailProps} />,
         cash: <CashDetails {...detailProps} />,
@@ -90,14 +93,16 @@ export function PaymentMethodSelector({
         mBinance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
         pagomovil: <PagoMovilDetails {...detailProps} />,
         binance: <BinanceDetails {...detailProps} qr={method.qr ?? ''} />,
-        credit: <CreditDetails {...detailProps} creditAvailable={user?.data?.wallet.credit ?? 0} />,
+        ...(creditAvailable > 0 && {
+          credit: <CreditDetails {...detailProps} creditAvailable={creditAvailable} />,
+        }),
         tdcve: <TdcveDetails {...detailProps} />,
         paypal: <PaypalDetails {...detailProps} />,
         botonbanesco: <BotonBanescoDetails {...detailProps} />,
         bncPos: <BncPosDetails {...detailProps} />,
-        preCredit: (
-          <PreCreditDetails {...detailProps} creditAvailable={user?.data?.preWallet.credit ?? 0} />
-        ),
+        ...(preCreditAvailable > 0 && {
+          preCredit: <PreCreditDetails {...detailProps} creditAvailable={preCreditAvailable} />,
+        }),
         vippo: <VippoDetails {...detailProps} />,
       };
 

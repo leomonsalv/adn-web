@@ -2,10 +2,10 @@ import { PaymentMethodSelector } from '@/components/checkout/PaymentMethodSelect
 import { PaymentToggle } from '@/components/checkout/PaymentToggle';
 import useCheckout, { getInitialPaymentState } from '@/hooks/use-checkout';
 import {
-  CashbackSchemaType,
-  PaymentMethod,
+  type CashbackSchemaType,
+  type PaymentMethod,
   PaymentMethodSchema,
-  PaymentMethodType,
+  type PaymentMethodType,
 } from '@/schemas/create-order-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -21,8 +21,10 @@ import { Loader2 } from 'lucide-react';
 import useUser from '@/hooks/use-user';
 import { useToast } from '@/hooks/use-toast';
 import PaymentMixed from '@/components/checkout/PaymentMixed';
+import { useRouter } from 'next/navigation';
 
 export function PaymentDetails() {
+  const router = useRouter();
   const [paymentType, setPaymentType] = useState<'simple' | 'mixed'>('simple');
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>();
   const [cashbackModal, setCashbackModal] = useState(false);
@@ -32,7 +34,7 @@ export function PaymentDetails() {
   const { useGetPaymentMethods, useValidateVippo } = useCheckout();
   const { useCreateOrder } = useOrders();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
-  const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
+  const { mutateAsync: createOrder, isPending: isCreatingOrder } = useCreateOrder();
   const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
   const { getCartRef, getCartTotal } = useCartStore();
   const { toast } = useToast();
@@ -44,7 +46,7 @@ export function PaymentDetails() {
     resolver: zodResolver(PaymentMethodSchema),
   });
 
-  const onSubmit = (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
+  const onSubmit = async (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
     try {
       if ((data.type === 'cash' || data.type === 'bolivarCash') && !cashbackData) {
         setCashbackModal(true);
@@ -56,7 +58,8 @@ export function PaymentDetails() {
         cashbackData,
       };
 
-      createOrder(newOrder);
+      const response: any = await createOrder(newOrder);
+      router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } catch (error) {
       throw new Error('Error creating order');
     }

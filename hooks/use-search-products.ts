@@ -1,23 +1,15 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { fetchProducts, fetchProductsSuggestions } from '@/api/products';
 import { useQuery } from '@tanstack/react-query';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { useDebounce } from '@/hooks/use-debounce';
 import { SearchFormType, SearchResponse } from '@/types/search';
 
 export default function useSearchProduct() {
   const queryClient = useQueryClient();
 
-  const [searchOptions, setSearchOptions] = useState<SearchFormType>({
-    query: '',
-    pageSize: 10,
-  });
-
-  const debouncedOptions = useDebounce(searchOptions, 500);
-
   const searchProducts = (params: SearchFormType) => {
     return useInfiniteQuery({
-      queryKey: ['search-products', debouncedOptions],
+      queryKey: ['search-products', params],
       queryFn: async ({ pageParam = 1 }) => {
         const searchParams = {
           search: params.search || '',
@@ -59,7 +51,6 @@ export default function useSearchProduct() {
   // Actualizadores con tipos correctos de Zod
   const updateSort = useCallback(
     (sort: NonNullable<SearchFormType['sort']>) => {
-      setSearchOptions((prev) => ({ ...prev, sort }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
@@ -67,7 +58,6 @@ export default function useSearchProduct() {
 
   const updatePriceRange = useCallback(
     (priceRange: NonNullable<SearchFormType['priceRange']>) => {
-      setSearchOptions((prev) => ({ ...prev, priceRange }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
@@ -75,7 +65,6 @@ export default function useSearchProduct() {
 
   const updateFilters = useCallback(
     (facets: NonNullable<SearchFormType['facets']>) => {
-      setSearchOptions((prev) => ({ ...prev, facets }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
@@ -83,7 +72,6 @@ export default function useSearchProduct() {
 
   const updateQuery = useCallback(
     (query: string) => {
-      setSearchOptions((prev) => ({ ...prev, query }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
@@ -103,7 +91,6 @@ export default function useSearchProduct() {
     updatePriceRange,
     updateFilters,
     updateQuery,
-    searchOptions: debouncedOptions,
     searchSuggestions,
   };
 }

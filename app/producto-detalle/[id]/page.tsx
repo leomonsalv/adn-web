@@ -32,7 +32,7 @@ import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
-import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
+import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -99,12 +99,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       </div>
     );
   }
-
-  if (!productData || !cartData) {
+  if (!productData) {
     return <div className="text-center py-16">No se encontró el producto</div>;
   }
-
-  console.log('productDataproductDataproductData', productData);
 
   const isInCart = isItemInCart(productData.productId);
   const itemCount = getItemCount(productData.productId);
