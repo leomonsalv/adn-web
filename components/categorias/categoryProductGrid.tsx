@@ -21,8 +21,6 @@ export default function CategoryProductGrid({
   subCategory,
   niche,
 }: CategoryProductGridProps) {
-  console.log(category, subCategory, niche);
-
   const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
     {},
   );
@@ -35,7 +33,6 @@ export default function CategoryProductGrid({
     useSearchProduct();
 
   const fullCategoryPath = [category, subCategory, niche].filter(Boolean).join('/');
-  console.log('🚀 ~ fullCategoryPath:', fullCategoryPath);
 
   const debouncedSearch = useDebounce(searchQuery, 600);
 

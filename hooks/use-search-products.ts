@@ -22,7 +22,6 @@ export default function useSearchProduct() {
           laboratories: params.laboratories || '',
           saveExcel: 'false', //FIXME: ADD saveExcel to SearchFormType
         };
-        console.log('🚀 ~ SEARCH OARMARMASMDAMS:', searchParams);
 
         try {
           const response = await fetchProducts({
@@ -58,7 +57,6 @@ export default function useSearchProduct() {
 
   const updateCategory = useCallback(
     (category: string) => {
-      setSearchOptions((prev) => ({ ...prev, category }));
       queryClient.resetQueries({ queryKey: ['search-products'] });
     },
     [queryClient],
