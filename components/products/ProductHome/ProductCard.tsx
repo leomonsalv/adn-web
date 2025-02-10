@@ -1,5 +1,6 @@
 'use client';
 
+import { formatVefCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -36,8 +37,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className="mt-4 flex flex-col items-start w-full">
           <div className="flex items-baseline gap-2">
-            <p className="text-xl font-bold text-red-600">${price.toFixed(2)}</p>
-            <p className="text-sm line-through text-gray-500">${originalPrice.toFixed(2)}</p>
+            <p className="text-xl font-bold text-red-600">{formatVefCurrency(price)}</p>
+            <p className="text-sm line-through text-gray-500">{formatVefCurrency(originalPrice)}</p>
           </div>
 
           <p className="mt-2 text-gray-800 font-medium">{title}</p>

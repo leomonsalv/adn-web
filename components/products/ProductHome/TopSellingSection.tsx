@@ -40,7 +40,7 @@ export default function TopSellingSection({
             key={product._id}
             image={product.images?.[0] || ''}
             price={Number(product.bsPrice) || 0}
-            originalPrice={product.refPrice || 0}
+            originalPrice={Number(product.bsPrice) || 0}
             productUrl={`/producto-detalle/${product._id}`}
             title={product.name || product.description || 'Producto sin nombre'}
             discount={
