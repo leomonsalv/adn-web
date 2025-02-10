@@ -93,3 +93,23 @@ export const GetSearchCateroriesResponseSchema = z.object({
   data: z.array(GetSearchCateroriesResponseDatumSchema),
   facets: FacetsSchema,
 });
+
+//** GetCategoriesResponseSchema
+
+export const IdSchema = z.object({
+  $oid: z.string(),
+});
+
+export const SeoSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+export const GetCategoriesSeoResponseSchema = z.object({
+  _id: IdSchema,
+  name: z.string(),
+  slug: z.string(),
+  level: z.number(),
+  parent: z.string(),
+  seo: SeoSchema,
+});

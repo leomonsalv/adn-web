@@ -7,10 +7,13 @@ import {
   DescriptionSchema,
   FacetsSchema,
   GetCategoriesResponseSchema,
+  GetCategoriesSeoResponseSchema,
   GetSearchCateroriesResponseDatumSchema,
   GetSearchCateroriesResponseSchema,
+  IdSchema,
   NameSchema,
   PaginationSchema,
+  SeoSchema,
   TaxSchema,
   TypeSchema,
   XStudioFechaDeVencimientoSchema,
@@ -45,6 +48,9 @@ export interface Category {
 
 export interface CategoriesNavigationProps extends Array<Category> {}
 
+export type Id = z.infer<typeof IdSchema>;
+export type Seo = z.infer<typeof SeoSchema>;
+export type GetCategoriesSeoResponse = z.infer<typeof GetCategoriesSeoResponseSchema>;
 export type GetCategoriesResponse = z.infer<typeof GetCategoriesResponseSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type AmountType = z.infer<typeof AmountTypeSchema>;
