@@ -1,9 +1,29 @@
-import { functions } from '@/lib/firebaseConfig';
-import { httpsCallable } from 'firebase/functions';
-import { GET_CATEGORIES } from '@/lib/urls';
-import { GetCategoriesResponse } from '@/types/categories';
+import { API_URL } from '@/lib/urls';
+import { GetCategoriesSeoResponse } from '@/types/categories';
 
-export const getCategories = async (): Promise<GetCategoriesResponse> => {
-  const response = await httpsCallable<string, GetCategoriesResponse>(functions, GET_CATEGORIES)();
-  return response.data;
+interface GetCategoryProps {
+  slug?: string;
+}
+
+export const getCategories = async ({ slug = '' }: GetCategoryProps = {}): Promise<
+  GetCategoriesSeoResponse[]
+> => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (slug) queryParams.append('slug', slug);
+
+    const response = await fetch(
+      `${API_URL}/api/category${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const categories = await response.json();
+    return categories.data;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw error;
+  }
 };

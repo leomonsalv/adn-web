@@ -12,6 +12,7 @@ export default function useSearchProduct() {
       queryKey: ['search-products', params],
       queryFn: async ({ pageParam = 1 }) => {
         const searchParams = {
+          category: params.category || '',
           search: params.search || '',
           page: pageParam,
           pageSize: params.pageSize || 10,
@@ -23,7 +24,13 @@ export default function useSearchProduct() {
         };
 
         try {
-          const response = await fetchProducts(searchParams);
+          const response = await fetchProducts({
+            ...searchParams,
+            // attack:
+            //   typeof searchParams.attack === 'string'
+            //     ? searchParams.attack
+            //     : searchParams.attack?.join(',') || '',
+          });
           return {
             items: response.data,
             nextPage:
@@ -47,6 +54,13 @@ export default function useSearchProduct() {
       refetchOnWindowFocus: false,
     });
   };
+
+  const updateCategory = useCallback(
+    (category: string) => {
+      queryClient.resetQueries({ queryKey: ['search-products'] });
+    },
+    [queryClient],
+  );
 
   // Actualizadores con tipos correctos de Zod
   const updateSort = useCallback(
@@ -92,6 +106,7 @@ export default function useSearchProduct() {
     updateFilters,
     updateQuery,
     searchSuggestions,
+    updateCategory,
   };
 }
 

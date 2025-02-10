@@ -1,14 +1,35 @@
 import { getCategories } from '@/api/categories';
+import { Category } from '@/types/categories';
 import { useQuery } from '@tanstack/react-query';
 
-export default function useCategories() {
-  const useGetCategories = () => {
+interface UseCategoriesProps {
+  slug?: string;
+}
+
+export default function useCategories({ slug }: UseCategoriesProps = {}) {
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['categories', slug],
+    queryFn: () => getCategories({ slug }),
+    select: (data) => data,
+  });
+
+  const getCategoryBySlug = (searchSlug: string) => {
     return useQuery({
-      queryKey: ['categories'],
-      queryFn: () => getCategories(),
-      select: (data) => data,
+      queryKey: ['category', searchSlug],
+      queryFn: () => getCategories({ slug: searchSlug }),
+      select: (data) => data[0],
+      enabled: !!searchSlug,
     });
   };
 
-  return { useGetCategories };
+  return {
+    categories,
+    isLoading,
+    error,
+    getCategoryBySlug,
+  };
 }

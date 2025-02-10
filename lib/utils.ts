@@ -55,3 +55,20 @@ export const dniTypes: Array<{ value: string; label: string }> = [
   { value: 'J', label: 'J' },
   { value: 'G', label: 'G' },
 ];
+
+/**
+ * Generates a URL-friendly slug from a given text.
+ *
+ * This function converts the input text to lowercase, replaces spaces with hyphens,
+ * and removes any non-alphanumeric characters (except hyphens).
+ *
+ * @param text - The input text to be converted into a slug.
+ * @returns The generated slug as a string.
+ */
+
+export function generateSlug(text: string): string {
+  return text
+    .toLowerCase() // Convertir a minúsculas
+    .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+    .replace(/[^\w\-]+/g, ''); // Eliminar caracteres no alfanuméricos
+}

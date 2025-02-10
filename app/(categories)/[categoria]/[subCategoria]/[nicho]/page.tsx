@@ -2,11 +2,10 @@
 
 import CategoryProductGrid from '@/components/categorias/categoryProductGrid';
 
-export default function NichePage({
-  params,
-}: {
-  params: { categoria: string; subCategoria: string; niche: string };
+export default async function NichePage(props: {
+  params: Promise<{ categoria: string; subCategoria: string; niche: string }>;
 }) {
+  const params = await props.params;
   return (
     <CategoryProductGrid
       category={params.categoria}

@@ -13,7 +13,7 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { BreadcrumbList } from '@/components/ui/breadcrumb';
-import { formatVefCurrency } from '@/lib/utils';
+import { formatVefCurrency, generateSlug } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
@@ -40,7 +40,6 @@ interface ProductPageProps {
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const productId = use(params).id;
-
   const payload: RecommendedProductsPayload = {
     type: 'Details',
     products: [productId],
@@ -135,10 +134,18 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     }
   };
 
-  const breadcrumbs = productData.category.full_name
+  const paths = productData.category.full_name
     .split('/')
     .map((crumb) => crumb.trim())
     .filter((crumb) => crumb !== 'All');
+
+  const breadcrumbs = paths.map((path, index) => ({
+    name: path,
+    href: `/${paths
+      .slice(0, index + 1)
+      .map(generateSlug)
+      .join('-')}`,
+  }));
 
   const noStock = productData.inventary.total <= 0;
   const requiresRecipe = productData.type === 'prescripcion';
@@ -157,14 +164,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         {/* Breadcrumb */}
         <Breadcrumb>
           <BreadcrumbList>
-            {breadcrumbs.map((breadcrumb) => (
-              <Fragment key={breadcrumb}>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <Fragment key={breadcrumb.name}>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/categoria/${breadcrumb}`}>{breadcrumb}</BreadcrumbLink>
+                  <BreadcrumbLink href={breadcrumb.href}>{breadcrumb.name}</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
               </Fragment>
             ))}
+            <BreadcrumbSeparator />
             <BreadcrumbPage className="font-medium text-gray-500 hover:text-gray-600">
               {productData.name}
             </BreadcrumbPage>

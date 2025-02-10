@@ -10,7 +10,6 @@ export default function useAddress() {
         return createAddress(data.addressData);
       },
       onSuccess: () => {
-        console.log('Address created');
         queryClient.invalidateQueries({ queryKey: ['firebaseUserAddresses'] }); // Do something
       },
     });

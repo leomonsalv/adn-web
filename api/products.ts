@@ -1,11 +1,9 @@
 // api/products.ts
 import { SearchFormType } from '@/types/search';
-import { GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
+import { API_URL, GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/lib/firebaseConfig';
 import { Product, ProductResponse } from '@/types/product';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 interface SearchParams {
   page?: number;
@@ -13,6 +11,7 @@ interface SearchParams {
   search?: string;
   sort?: string;
   attack?: string;
+  category?: string;
   ingredients?: string;
   laboratories?: string;
   priceRange?: {
@@ -32,6 +31,7 @@ export const fetchProducts = async ({
   laboratories = '',
   priceRange,
   saveExcel = 'false',
+  category = '',
 }: SearchParams): Promise<ProductResponse> => {
   try {
     const queryParams = new URLSearchParams({
@@ -41,7 +41,7 @@ export const fetchProducts = async ({
     });
 
     if (search) queryParams.append('search', search);
-
+    if (category) queryParams.append('category', category);
     if (sort) queryParams.append('sort', sort);
     if (attack) queryParams.append('attack', attack);
     if (ingredients) queryParams.append('ingredients', ingredients);

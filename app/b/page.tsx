@@ -7,6 +7,7 @@ import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
+import { NextSeo } from 'next-seo';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -64,6 +65,15 @@ export default function SearchPage({ params }: { params: { q: string } }) {
 
   return (
     <main className="bg-white">
+      <NextSeo
+        title={'Búsqueda'}
+        description={'Tus productos favoritos en Adan Farmacia'}
+        openGraph={{
+          title: 'Búsqueda',
+          description: 'Tus productos favoritos en Adan Farmacia',
+          siteName: 'Adan Farmacia',
+        }}
+      />
       <MobileFilterDialog
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}

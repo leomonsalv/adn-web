@@ -7,10 +7,13 @@ import {
   DescriptionSchema,
   FacetsSchema,
   GetCategoriesResponseSchema,
+  GetCategoriesSeoResponseSchema,
   GetSearchCateroriesResponseDatumSchema,
   GetSearchCateroriesResponseSchema,
+  IdSchema,
   NameSchema,
   PaginationSchema,
+  SeoSchema,
   TaxSchema,
   TypeSchema,
   XStudioFechaDeVencimientoSchema,
@@ -23,37 +26,31 @@ export interface SEO {
 }
 
 export interface Niche {
-  _id: string;
   name: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo: SEO;
+  _id: string;
   niches?: Niche[];
 }
 
 export interface Subcategory {
-  _id: string;
   name: string;
+  _id: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo: SEO;
   niches?: Niche[];
 }
 
 export interface Category {
-  _id: string;
   name: string;
+  _id: string;
   slug: string;
-  level: number;
-  parent: string | null;
-  seo: SEO;
   subcategories?: Subcategory[];
 }
 
 export interface CategoriesNavigationProps extends Array<Category> {}
 
+export type Id = z.infer<typeof IdSchema>;
+export type Seo = z.infer<typeof SeoSchema>;
+export type GetCategoriesSeoResponse = z.infer<typeof GetCategoriesSeoResponseSchema>;
 export type GetCategoriesResponse = z.infer<typeof GetCategoriesResponseSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type AmountType = z.infer<typeof AmountTypeSchema>;
