@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import MainIncentives from '@/components/incentives/MainIncentives';
 import CategoryBox from '@/components/categorias/categoryBox/CategoryBox';
-import ProductCard from '@/components/products/ProductHome/ProductCard';
-import GenericCarousel from '@/components/carousel/GenericCarousel';
 import BannerCarousel from '@/components/carousel/BannerCarousel';
 import OffersGrid from '@/components/products/ProductHome/OffersGrid';
 import { FlameIcon } from 'lucide-react';
 import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
-import { RecentProducts, productPayload } from '@/lib/dummyData';
+import { RecentProducts } from '@/lib/dummyData';
+import useTopSelling from '@/hooks/use-top-selling';
+import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
+import { Product } from '@/types/product';
 
 export default function HomePage() {
+  const { data: topProducts, isLoading, error } = useTopSelling();
   return (
     <div className="min-h-screen bg-[#F0F2F5]">
       <div className="relative">
@@ -53,41 +54,19 @@ export default function HomePage() {
             {/* </div> */}
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900] rounded-lg">
-            <h2 className="text-3xl font-bold text-[#A4003B] mb-6">
-              Lo más vendido en toda la tienda 🔥
-            </h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en toda la tienda 🔥"
+            products={topProducts?.BELLEZA as unknown as Product[]}
+            isLoading={isLoading}
+            variant="gradient"
+          />
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en hogar</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en hogar"
+            products={topProducts?.HOGAR as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
 
           <section
             aria-labelledby="category-heading"
@@ -104,39 +83,19 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en belleza</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en belleza"
+            products={topProducts?.BELLEZA as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en alimentos</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en alimentos"
+            products={topProducts?.COMESTIBLES as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
 
           <section
             aria-labelledby="category-heading"
@@ -153,39 +112,19 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en farmacia</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  title={product.title}
-                  productUrl={product.productUrl}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en farmacia"
+            products={topProducts?.MEDICAMENTOS as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en tecnología</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en bienestar"
+            products={topProducts?.BIENESTAR as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
 
           <section
             aria-labelledby="category-heading"
@@ -202,22 +141,26 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="container px-8 pt-24 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 bg-white rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Lo más vendido en librería</h2>
-            <GenericCarousel autoplay={false}>
-              {productPayload.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  image={product.image}
-                  discount={product.discount}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  productUrl={product.productUrl}
-                  title={product.title}
-                />
-              ))}
-            </GenericCarousel>
-          </section>
+          <TopSellingSection
+            title="Lo más vendido en HIJOS"
+            products={topProducts?.HIJOS as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
+
+          <TopSellingSection
+            title="Lo más vendido en BOTIQUIN"
+            products={topProducts?.BOTIQUIN as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
+
+          <TopSellingSection
+            title="Lo más vendido en CUIDADO PERSONAL"
+            products={topProducts?.['CUIDADO PERSONAL'] as unknown as Product[]}
+            isLoading={isLoading}
+            variant="default"
+          />
         </main>
       </div>
       <SearchHistorySection />

@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           )}
 
-          <Image src={image} alt={title} fill className="object-cover rounded-md" />
+          <Image src={image} alt={title} fill sizes="100%" className="object-cover rounded-md" />
         </div>
 
         <div className="mt-4 flex flex-col items-start w-full">
