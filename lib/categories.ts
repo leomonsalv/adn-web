@@ -1,4 +1,4 @@
-import { CategoriesNavigationProps } from '@/types/categories';
+import type { CategoriesNavigationProps } from '@/types/categories';
 
 export const categories: CategoriesNavigationProps = [
   {
@@ -880,7 +880,7 @@ export const categories: CategoriesNavigationProps = [
           },
           {
             name: 'Salud respiratoria, tos y gripe ',
-            slug: 'medicamentos-de-venta-libre-salud-respiratoria,-tos-y-gripe',
+            slug: 'medicamentos-de-venta-libre-salud-respiratoria-tos-y-gripe',
             _id: '67a112e95e7a85a193e2343a',
           },
         ],
@@ -902,7 +902,7 @@ export const categories: CategoriesNavigationProps = [
           },
           {
             name: 'Analgesicos, narcotivos y anestesicos',
-            slug: 'medicamentos-prescripción-facultativa-analgesicos,-narcotivos-y-anestesicos',
+            slug: 'medicamentos-prescripción-facultativa-analgesicos-narcotivos-y-anestesicos',
             _id: '67a112ea5e7a85a193e2343d',
           },
           {
@@ -952,7 +952,7 @@ export const categories: CategoriesNavigationProps = [
           },
           {
             name: 'Antihistaminicos, corticosteroides y gluco-corticoides',
-            slug: 'medicamentos-prescripción-facultativa-antihistaminicos,-corticosteroides-y-gluco-corticoides',
+            slug: 'medicamentos-prescripción-facultativa-antihistaminicos-corticosteroides-y-gluco-corticoides',
             _id: '67a112eb5e7a85a193e23447',
           },
           {
@@ -2482,46 +2482,46 @@ export const categories: CategoriesNavigationProps = [
       },
       {
         name: 'Pequeños mamíferos (hámsters, conejos, etc.)',
-        slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)',
+        slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)',
         niches: [
           {
             name: 'Alimentos',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-alimentos',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-alimentos',
             _id: '67a112fe5e7a85a193e23525',
           },
           {
             name: 'Jaulas y casitas',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-jaulas-y-casitas',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-jaulas-y-casitas',
             _id: '67a112fe5e7a85a193e23526',
           },
           {
             name: ' Juguetes',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-juguetes',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-juguetes',
             _id: '67a112fe5e7a85a193e23527',
           },
           {
             name: 'Camas y sustratos',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-camas-y-sustratos',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-camas-y-sustratos',
             _id: '67a112fe5e7a85a193e23528',
           },
           {
             name: 'Higiene',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-higiene',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-higiene',
             _id: '67a112fe5e7a85a193e23529',
           },
           {
             name: 'Salud',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-salud',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-salud',
             _id: '67a112fe5e7a85a193e2352a',
           },
           {
             name: 'Bebederos y comederos',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-bebederos-y-comederos',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-bebederos-y-comederos',
             _id: '67a112fe5e7a85a193e2352b',
           },
           {
             name: 'Accesorios',
-            slug: 'mascotas-pequeños-mamíferos-(hámsters,-conejos,-etc.)-accesorios',
+            slug: 'mascotas-pequeños-mamíferos-(hámsters-conejos-etc.)-accesorios',
             _id: '67a112fe5e7a85a193e2352c',
           },
         ],
@@ -2910,19 +2910,19 @@ export const categories: CategoriesNavigationProps = [
       },
       {
         name: 'Articulos para escritura, lapiz, lapicero, borradores.',
-        slug: 'oficina-y-escuela-articulos-para-escritura,-lapiz,-lapicero,-borradores.',
+        slug: 'oficina-y-escuela-articulos-para-escritura-lapiz-lapicero-borradores.',
         niches: [],
         _id: '67a112df5e7a85a193e233c2',
       },
       {
         name: 'Cintas, adhesivos, chinches y clips ',
-        slug: 'oficina-y-escuela-cintas,-adhesivos,-chinches-y-clips',
+        slug: 'oficina-y-escuela-cintas-adhesivos-chinches-y-clips',
         niches: [],
         _id: '67a112df5e7a85a193e233c3',
       },
       {
         name: 'Cuadernos, libretas, otros.',
-        slug: 'oficina-y-escuela-cuadernos,-libretas,-otros.',
+        slug: 'oficina-y-escuela-cuadernos-libretas-otros.',
         niches: [],
         _id: '67a112df5e7a85a193e233c4',
       },
