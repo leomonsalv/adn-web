@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ContactInformation } from '@/components/forms/checkout/ContactInformation';
 import { PaymentDetails } from '@/components/forms/checkout/PaymentDetails';
 import { ShippingAddress } from '@/components/forms/checkout/ShippingAddress';
@@ -11,11 +11,13 @@ import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { ContactInformationSchema } from '@/schemas/contact-information-schema';
+import { DeliveryToggle } from '@/components/checkout/DeliveryToggle';
 
 import useUser from '@/hooks/use-user';
 
 export default function CSCheckoutPage() {
   const { user, isLoading, addresses } = useUser();
+  const [deliveryMethod, setDeliveryMethod] = useState<'delivery' | 'pickup'>('delivery');
 
   const {
     currentStep,
@@ -49,6 +51,13 @@ export default function CSCheckoutPage() {
     setCurrentStep(currentStep + 1);
   };
 
+  const filteredAddresses = useMemo(() => {
+    if (!addresses?.data) return [];
+    return addresses.data.filter((addr: any) =>
+      deliveryMethod === 'pickup' ? addr.type === 'pickup' : addr.type === 'delivery',
+    );
+  }, [addresses?.data, deliveryMethod]);
+
   const checkoutSteps = useMemo(
     () => [
       {
@@ -80,13 +89,13 @@ export default function CSCheckoutPage() {
       },
       {
         id: 2,
-        title:
-          addresses && addresses?.data?.length === 0
-            ? 'Dirección de envío'
-            : `Direcciones de entrega (${addresses?.data?.length})`,
+        title: 'Método de entrega',
         button:
           currentStep !== 2 && shippingAddress && shippingAddress.alias !== '' ? (
             <div className="flex flex-col items-start gap-1">
+              <span className="text-sm">
+                {deliveryMethod === 'pickup' ? 'Retirar en tienda' : 'Envío a domicilio'}
+              </span>
               <span className="text-sm">{shippingAddress.alias}</span>
               <span className="text-sm">{shippingAddress.street}</span>
               <span className="text-sm">{shippingAddress.city}</span>
@@ -95,16 +104,38 @@ export default function CSCheckoutPage() {
             <></>
           ),
         component: (
-          <ShippingAddress
-            phone={''}
-            street={''}
-            city={''}
-            state={''}
-            isDefault={false}
-            onSaveAddress={handleSaveData}
-            savedAddresses={addresses?.data}
-            shippingAddressId={shippingAddress.id}
-          />
+          <div className="space-y-6">
+            <DeliveryToggle
+              value={deliveryMethod}
+              onChange={(method) => {
+                setDeliveryMethod(method);
+                setShippingAddress({
+                  alias: '',
+                  street: '',
+                  city: '',
+                  state: '',
+                  phone: '',
+                  isDefault: false,
+                  lat: 0,
+                  lng: 0,
+                  id: 'new',
+                });
+              }}
+            />
+
+            <ShippingAddress
+              title={deliveryMethod === 'pickup' ? 'Punto de retiro' : 'Dirección de envío'}
+              type={deliveryMethod === 'pickup' ? 'pickup' : 'delivery'}
+              phone={''}
+              street={''}
+              city={''}
+              state={''}
+              isDefault={false}
+              onSaveAddress={handleSaveData}
+              savedAddresses={filteredAddresses}
+              shippingAddressId={shippingAddress.id}
+            />
+          </div>
         ),
       },
       {
