@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ShippingAddressSchema, shippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { useStates } from '@/hooks/use-states';
 import { Loader2, MapPin } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import MapDialog from '@/components/address/MapDialog';
 import AddressAutocomplete from '@/components/address/Autocomplete';
 import { Radio, RadioGroup } from '@/components/ui/radio';
@@ -24,16 +24,45 @@ interface SavedAddress {
   state: string;
   isDefault: boolean;
   alias: string;
+  type?: 'delivery' | 'pickup' | 'zoom';
 }
 
 interface ShippingAddressProps extends Partial<ShippingAddressSchema> {
+  title?: string;
+  type?: 'delivery' | 'pickup';
   savedAddresses?: SavedAddress[];
-  onSaveAddress?: (address: Omit<SavedAddress, 'id'>) => void;
+  onSaveAddress?: (address: SavedAddress | Omit<SavedAddress, 'id'>) => void;
   onSelectAddress?: (addressId: string) => void;
   shippingAddressId: string;
 }
 
+const PICKUP_LOCATIONS = [
+  {
+    id: 'pick-up-id',
+    name: 'Farmacia Adan de Venezuela - Boleita',
+    address: 'Calle Vargas, Edif. Rusegal',
+    city: 'Caracas',
+    state: 'Sucre',
+    zone: 'Boleita Norte',
+    phone: '04241613016',
+    type: 'pickup',
+  },
+  {
+    id: 'zoom',
+    name: 'Oficina Zoom',
+    address: 'Oficina destino de Zoom',
+    city: 'Por confirmar',
+    state: 'Envío por Zoom',
+    zone: '',
+    phone: '04241613016',
+    description: 'ATENCIÓN AL CLIENTE POR WHATSAPP, PARA CONFIRMAR ENVÍO',
+    type: 'zoom',
+  },
+];
+
 export function ShippingAddress({
+  title = 'Dirección de envío',
+  type = 'delivery',
   savedAddresses = [],
   onSaveAddress,
   onSelectAddress,
@@ -49,11 +78,15 @@ export function ShippingAddress({
   const [selectedAddressId, setSelectedAddressId] = useState(() => {
     if (shippingAddressId) {
       const newAddress = savedAddresses.find((address) => address.id === shippingAddressId);
-      return newAddress ? shippingAddressId : savedAddresses[0].id;
+      return newAddress ? shippingAddressId : savedAddresses[0]?.id;
     } else {
       return savedAddresses[0]?.id;
     }
   });
+
+  const filteredAddresses = useMemo(() => {
+    return savedAddresses.filter((address) => address.type === type);
+  }, [savedAddresses, type]);
 
   const findStateMatch = (stateName: string) => {
     return states.find(
@@ -105,224 +138,280 @@ export function ShippingAddress({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Saved Addresses List */}
-      {showNewAddress ? (
+      <h3 className="text-lg font-semibold">{title}</h3>
+
+      {type === 'pickup' ? (
         <div className="space-y-4">
           <RadioGroup value={selectedAddressId} onChange={setSelectedAddressId}>
             <div className="grid gap-4">
-              {savedAddresses.map((address) => (
+              {PICKUP_LOCATIONS.map((location) => (
                 <div
-                  key={address.id}
-                  className={`${selectedAddressId === address.id ? 'border-primary' : ''} p-4 border rounded-lg cursor-pointer hover:border-primary`}
-                  onClick={() => setSelectedAddressId(address.id)}
+                  key={location.id}
+                  className={`${
+                    selectedAddressId === location.id ? 'border-primary' : ''
+                  } p-4 border rounded-lg cursor-pointer hover:border-primary`}
+                  onClick={() => setSelectedAddressId(location.id)}
                 >
                   <div className="flex items-center gap-4 justify-between">
                     <div className="flex items-start gap-4">
                       <Radio
-                        value={address.id}
-                        className="cursor-pointer rounded-lg  border-gray-300 p-1 focus:outline-hidden data-focus:ring-2 data-focus:ring-indigo-500"
+                        value={location.id}
+                        className="cursor-pointer rounded-lg border-gray-300 p-1 focus:outline-hidden"
                       />
                       <div className="mt-1">
-                        <p className="font-bold">{address.alias}</p>
+                        <p className="font-bold">{location.name}</p>
+                        <p>{location.address}</p>
                         <p>
-                          {address.city}, {address.state}
+                          {location.city}, {location.state}, {location.zone}
                         </p>
-                        <p>{address.phone}</p>
-                        {address.isDefault && (
-                          <span className="text-sm text-primary">Dirección predeterminada</span>
-                        )}
+                        <p className="text-sm text-gray-500">{location.phone}</p>
                       </div>
                     </div>
-                    <EllipsisVerticalIcon className="size-8" />
                   </div>
                 </div>
               ))}
             </div>
           </RadioGroup>
-          <div
-            className="flex items-center gap-1 cursor-pointer"
-            onClick={() => setShowNewAddress(false)}
+          <Button
+            onClick={() => {
+              const location = PICKUP_LOCATIONS.find((loc) => loc.id === selectedAddressId);
+              if (location) {
+                onSaveAddress &&
+                  onSaveAddress({
+                    id: location.id,
+                    alias: location.name,
+                    street: location.address,
+                    city: location.city,
+                    state: location.state,
+                    phone: location.phone,
+                    isDefault: false,
+                    type: location.type as 'pickup' | 'zoom',
+                  });
+              }
+            }}
+            className="cursor-pointer"
           >
-            <PlusIcon className="size-5" />
-            <span className="text-primary font-medium">Usar una dirección diferente</span>
-          </div>
-          <Button onClick={handleNext} className="cursor-pointer">
-            Entregar a esta dirección
+            Confirmar punto de retiro
           </Button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <Controller
-                control={control}
-                name="alias"
-                render={({ field, fieldState: { error } }) => (
-                  <LabeledInput
-                    label="Alias"
-                    inputProps={{
-                      ...field,
-                      type: 'text',
-                      placeholder: 'Ej: Mi casa',
-                    }}
-                    labelProps={{
-                      htmlFor: 'alias',
-                    }}
-                    error={error?.message}
-                  />
-                )}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <Controller
-                control={control}
-                name="phone"
-                render={({ field, fieldState: { error } }) => (
-                  <LabeledInput
-                    label="Teléfono"
-                    inputProps={{
-                      ...field,
-                      type: 'tel',
-                      placeholder: 'Ej: 0412 555 5555',
-                    }}
-                    labelProps={{
-                      htmlFor: 'phone',
-                    }}
-                    error={error?.message}
-                    helperText="Lo necesitamos para contactarte al hacer la entrega"
-                  />
-                )}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <Controller
-                control={control}
-                name="street"
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Dirección</label>
-                    <AddressAutocomplete
-                      value={value}
-                      onChange={onChange}
-                      onPlaceSelect={({ address, city, state, lat, lng }) => {
-                        setValue('street', address);
-                        if (city) setValue('city', city);
-                        if (state) {
-                          const stateMatch = findStateMatch(state);
-                          if (stateMatch) {
-                            setValue('state', stateMatch.value);
-                          }
-                        }
-                        setValue('lat', lat);
-                        setValue('lng', lng);
-                      }}
-                      placeholder="Nombre de la calle o avenida"
-                      error={error?.message}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setIsMapOpen(true)}
-                      className="text-sm text-blue-600 hover:text-blue-500 flex items-center gap-1"
+        <div className="space-y-4">
+          {showNewAddress ? (
+            <>
+              <RadioGroup value={selectedAddressId} onChange={setSelectedAddressId}>
+                <div className="grid gap-4">
+                  {filteredAddresses.map((address) => (
+                    <div
+                      key={address.id}
+                      className={`${selectedAddressId === address.id ? 'border-primary' : ''} p-4 border rounded-lg cursor-pointer hover:border-primary`}
+                      onClick={() => setSelectedAddressId(address.id)}
                     >
-                      <MapPin size={16} />
-                      Detectar ubicación actual
-                    </button>
-                  </div>
-                )}
-              />
-            </div>
-
-            <div>
-              <Controller
-                control={control}
-                name="city"
-                render={({ field, fieldState: { error } }) => (
-                  <LabeledInput
-                    label="Ciudad"
-                    inputProps={{
-                      ...field,
-                      type: 'text',
-                    }}
-                    labelProps={{
-                      htmlFor: 'city',
-                    }}
-                    error={error?.message}
+                      <div className="flex items-center gap-4 justify-between">
+                        <div className="flex items-start gap-4">
+                          <Radio
+                            value={address.id}
+                            className="cursor-pointer rounded-lg border-gray-300 p-1 focus:outline-hidden"
+                          />
+                          <div className="mt-1">
+                            <p className="font-bold">{address.alias}</p>
+                            <p>{address.street}</p>
+                            <p>
+                              {address.city}, {address.state}
+                            </p>
+                            <p className="text-sm text-gray-500">{address.phone}</p>
+                            {address.isDefault && (
+                              <span className="text-sm text-primary">Dirección predeterminada</span>
+                            )}
+                          </div>
+                        </div>
+                        <EllipsisVerticalIcon className="size-8" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </RadioGroup>
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={() => setShowNewAddress(false)}
+              >
+                <PlusIcon className="size-5" />
+                <span className="text-primary font-medium">Usar una dirección diferente</span>
+              </div>
+              <Button onClick={handleNext} className="cursor-pointer">
+                Entregar a esta dirección
+              </Button>
+            </>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {/* Always show these fields */}
+                <div className="sm:col-span-2">
+                  <Controller
+                    control={control}
+                    name="alias"
+                    render={({ field, fieldState: { error } }) => (
+                      <LabeledInput
+                        label="Alias"
+                        inputProps={{ ...field, type: 'text', placeholder: 'Ej: Mi casa' }}
+                        labelProps={{ htmlFor: 'alias' }}
+                        error={error?.message}
+                      />
+                    )}
                   />
-                )}
-              />
-            </div>
+                </div>
 
-            <div>
-              <Controller
-                control={control}
-                name="state"
-                render={({ field, fieldState: { error } }) => (
-                  <div>
-                    <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
-                      Estado/Provincia
-                    </label>
-                    <Select {...field} id="state">
-                      <option value="">Selecciona un estado</option>
-                      {states.map((state) => (
-                        <option key={state.value} value={state.value}>
-                          {state.label}
-                        </option>
-                      ))}
-                    </Select>
-                    {error && <p className="mt-1 text-sm text-red-400">{error.message}</p>}
-                  </div>
-                )}
-              />
-            </div>
+                <div className="sm:col-span-2">
+                  <Controller
+                    control={control}
+                    name="phone"
+                    render={({ field, fieldState: { error } }) => (
+                      <LabeledInput
+                        label="Teléfono"
+                        inputProps={{ ...field, type: 'tel', placeholder: 'Ej: 0412 555 5555' }}
+                        labelProps={{ htmlFor: 'phone' }}
+                        error={error?.message}
+                        helperText="Lo necesitamos para contactarte al hacer la entrega"
+                      />
+                    )}
+                  />
+                </div>
 
-            <div className="sm:col-span-2 flex items-center gap-2">
-              <Controller
-                control={control}
-                name="isDefault"
-                render={({ field: { value, onChange } }) => (
+                {/* Only show address fields for delivery */}
+                {type === 'delivery' && (
                   <>
-                    <Checkbox id="isDefault" checked={value} onChange={onChange} />
-                    <label htmlFor="isDefault" className="text-sm">
-                      Guardar como dirección por defecto
-                    </label>
+                    <div className="sm:col-span-2">
+                      <Controller
+                        control={control}
+                        name="street"
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                          <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              Dirección
+                            </label>
+                            <AddressAutocomplete
+                              value={value}
+                              onChange={onChange}
+                              onPlaceSelect={({ address, city, state, lat, lng }) => {
+                                setValue('street', address);
+                                if (city) setValue('city', city);
+                                if (state) {
+                                  const stateMatch = findStateMatch(state);
+                                  if (stateMatch) {
+                                    setValue('state', stateMatch.value);
+                                  }
+                                }
+                                setValue('lat', lat);
+                                setValue('lng', lng);
+                              }}
+                              placeholder="Nombre de la calle o avenida"
+                              error={error?.message}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setIsMapOpen(true)}
+                              className="text-sm text-blue-600 hover:text-blue-500 flex items-center gap-1"
+                            >
+                              <MapPin size={16} />
+                              Detectar ubicación actual
+                            </button>
+                          </div>
+                        )}
+                      />
+                    </div>
+
+                    <div>
+                      <Controller
+                        control={control}
+                        name="city"
+                        render={({ field, fieldState: { error } }) => (
+                          <LabeledInput
+                            label="Ciudad"
+                            inputProps={{ ...field, type: 'text' }}
+                            labelProps={{ htmlFor: 'city' }}
+                            error={error?.message}
+                          />
+                        )}
+                      />
+                    </div>
+
+                    <div>
+                      <Controller
+                        control={control}
+                        name="state"
+                        render={({ field, fieldState: { error } }) => (
+                          <div>
+                            <label
+                              htmlFor="state"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Estado/Provincia
+                            </label>
+                            <Select {...field} id="state">
+                              <option value="">Selecciona un estado</option>
+                              {states.map((state) => (
+                                <option key={state.value} value={state.value}>
+                                  {state.label}
+                                </option>
+                              ))}
+                            </Select>
+                            {error && <p className="mt-1 text-sm text-red-400">{error.message}</p>}
+                          </div>
+                        )}
+                      />
+                    </div>
                   </>
                 )}
-              />
-            </div>
 
-            <div className="sm:col-span-2 flex justify-start gap-2">
-              <Button type="submit" disabled={isCreatingAddress}>
-                {isCreatingAddress ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Continuar'}
-              </Button>
-              {savedAddresses.length > 0 && (
-                <Button color="white" onClick={() => setShowNewAddress(true)}>
-                  Cancelar
-                </Button>
-              )}
-            </div>
-          </div>
-        </form>
+                <div className="sm:col-span-2 flex items-center gap-2">
+                  <Controller
+                    control={control}
+                    name="isDefault"
+                    render={({ field: { value, onChange } }) => (
+                      <>
+                        <Checkbox id="isDefault" checked={value} onChange={onChange} />
+                        <label htmlFor="isDefault" className="text-sm">
+                          Guardar como dirección por defecto
+                        </label>
+                      </>
+                    )}
+                  />
+                </div>
+
+                <div className="sm:col-span-2 flex justify-start gap-2">
+                  <Button type="submit" disabled={isCreatingAddress}>
+                    {isCreatingAddress ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Continuar'}
+                  </Button>
+                  {savedAddresses.length > 0 && (
+                    <Button color="white" onClick={() => setShowNewAddress(true)}>
+                      Cancelar
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </form>
+          )}
+        </div>
       )}
 
-      {/* Address Form */}
-
-      <MapDialog
-        open={isMapOpen}
-        onClose={() => setIsMapOpen(false)}
-        onLocationSelect={({ address, city, state, lat, lng }) => {
-          setValue('street', address);
-          if (city) setValue('city', city);
-          if (state) {
-            const stateMatch = findStateMatch(state);
-            if (stateMatch) {
-              setValue('state', stateMatch.value);
+      {type === 'delivery' && (
+        <MapDialog
+          open={isMapOpen}
+          onClose={() => setIsMapOpen(false)}
+          onLocationSelect={({ address, city, state, lat, lng }) => {
+            setValue('street', address);
+            if (city) setValue('city', city);
+            if (state) {
+              const stateMatch = findStateMatch(state);
+              if (stateMatch) {
+                setValue('state', stateMatch.value);
+              }
             }
-          }
-          setValue('lat', lat);
-          setValue('lng', lng);
-          setIsMapOpen(false);
-        }}
-      />
+            setValue('lat', lat);
+            setValue('lng', lng);
+            setIsMapOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
