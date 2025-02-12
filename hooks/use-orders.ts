@@ -24,7 +24,6 @@ export default function useOrders() {
     const { getCheckoutData } = useCheckoutStore();
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const checkoutData = getCheckoutData();
-
     return useMutation({
       mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {
@@ -50,7 +49,7 @@ export default function useOrders() {
           },
           shipping: {
             price: 0,
-            type: 'delivery',
+            type: checkoutData.shippingAddress.type ?? 'delivery',
             details: {
               type: 'instantaneous',
               schedule: null,

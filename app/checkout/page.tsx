@@ -119,6 +119,7 @@ export default function CSCheckoutPage() {
                   lat: 0,
                   lng: 0,
                   id: 'new',
+                  type: deliveryMethod,
                 });
               }}
             />

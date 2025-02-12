@@ -23,6 +23,7 @@ interface CheckoutState {
     lng: number;
     id: string;
     alias: string;
+    type?: 'pickup' | 'delivery' | 'zoom';
   };
   billingInformation: {
     sameAsShipping: boolean;

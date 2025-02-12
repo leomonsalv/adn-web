@@ -24,27 +24,28 @@ interface SavedAddress {
   state: string;
   isDefault: boolean;
   alias: string;
-  type?: 'delivery' | 'pickup';
+  type?: 'delivery' | 'pickup' | 'zoom';
 }
 
 interface ShippingAddressProps extends Partial<ShippingAddressSchema> {
   title?: string;
   type?: 'delivery' | 'pickup';
   savedAddresses?: SavedAddress[];
-  onSaveAddress?: (address: Omit<SavedAddress, 'id'>) => void;
+  onSaveAddress?: (address: SavedAddress | Omit<SavedAddress, 'id'>) => void;
   onSelectAddress?: (addressId: string) => void;
   shippingAddressId: string;
 }
 
 const PICKUP_LOCATIONS = [
   {
-    id: 'boleita',
+    id: 'pick-up-id',
     name: 'Farmacia Adan de Venezuela - Boleita',
     address: 'Calle Vargas, Edif. Rusegal',
     city: 'Caracas',
     state: 'Sucre',
     zone: 'Boleita Norte',
-    phone: '(+58) 424-1613016',
+    phone: '04241613016',
+    type: 'pickup',
   },
   {
     id: 'zoom',
@@ -53,8 +54,9 @@ const PICKUP_LOCATIONS = [
     city: 'Por confirmar',
     state: 'Envío por Zoom',
     zone: '',
-    phone: '(+58) 424-1613016',
+    phone: '04241613016',
     description: 'ATENCIÓN AL CLIENTE POR WHATSAPP, PARA CONFIRMAR ENVÍO',
+    type: 'zoom',
   },
 ];
 
@@ -176,13 +178,14 @@ export function ShippingAddress({
               if (location) {
                 onSaveAddress &&
                   onSaveAddress({
+                    id: location.id,
                     alias: location.name,
                     street: location.address,
                     city: location.city,
                     state: location.state,
                     phone: location.phone,
                     isDefault: false,
-                    type: 'pickup',
+                    type: location.type as 'pickup' | 'zoom',
                   });
               }
             }}
