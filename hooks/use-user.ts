@@ -7,23 +7,25 @@ import { useAuth } from './use-auth';
 export default function useUser() {
   const { user } = useAuth();
 
+  const isAnonymous = user?.isAnonymous;
+
   const query = useQuery({
     queryKey: ['firebaseUser', user?.uid],
     queryFn: () => getUserById(user?.uid!),
-    enabled: !!user?.uid,
+    enabled: !!user?.uid && !isAnonymous,
   });
 
   const queryAddresses = useQuery({
     queryKey: ['firebaseUserAddresses'],
     queryFn: () => getUserAddresses(user?.uid!),
-    enabled: !!user?.uid,
+    enabled: !!user?.uid && !isAnonymous,
   });
 
   const useGetUserByEmail = (email: string) => {
     return useQuery({
       queryKey: ['firebaseUser', email],
       queryFn: () => getUserByEmail(email),
-      enabled: !!email,
+      enabled: !!email && !isAnonymous,
     });
   };
 

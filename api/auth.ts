@@ -1,4 +1,4 @@
-import { User, signOut } from 'firebase/auth';
+import { User, signOut, signInAnonymously } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
 import { db, functions } from '@/lib/firebaseConfig';
 import { OTP_GENERATION, OTP_VALIDATION, OTP_EMAIL_GENERATOR, USERDELETE } from '@/lib/urls';
@@ -24,6 +24,23 @@ export const deleteAccount = async (user: User) => {
 
 export const logOutAccount = async () => {
   await signOut(auth);
+};
+
+/**
+ * Signs in a user anonymously using Firebase authentication.
+ *
+ * This function attempts to sign in a user without requiring any credentials.
+ * If the sign-in process fails, an error is logged to the console and the error is rethrown.
+ *
+ * @throws {Error} If there is an error during the sign-in process.
+ */
+export const anonymousSignIn = async () => {
+  try {
+    return await signInAnonymously(auth);
+  } catch (error) {
+    console.error('Error signing in anonymously:', error);
+    throw error;
+  }
 };
 
 export async function updateUserProfile(data: { [key: string]: any }) {

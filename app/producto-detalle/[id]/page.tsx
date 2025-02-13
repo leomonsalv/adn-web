@@ -33,12 +33,16 @@ import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
 import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
+import { anonymousSignIn } from '@/api/auth';
+import { useAuth } from '@/hooks/use-auth';
+import { getCart, getOrCreateCart } from '@/api/cart';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailsPage({ params }: ProductPageProps) {
+  const { user } = useAuth();
   const productId = use(params).id;
   const payload: RecommendedProductsPayload = {
     type: 'Details',
@@ -106,29 +110,42 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const itemCount = getItemCount(productData.productId);
 
   const handleAddToCart = async (e: React.FormEvent<HTMLFormElement>) => {
+    let userId = user?.uid;
     e.preventDefault();
 
     if (!productData) return;
 
     try {
-      await updateCart({
-        cartId: cartData?.id || '',
-        product: {
-          ...productData,
-          // productId: productData.productId,
-          id: productData.productId,
-          price: productData.refPrice,
-          price_extra: Number(productData.bsPrice),
-        },
-      });
-
-      if (isInCart) {
-        updateQuantity(productData.productId, itemCount + 1);
-      } else {
-        addToCart(productData);
+      if (!user) {
+        await anonymousSignIn().then(async (user) => {
+          userId = user?.user.uid;
+        });
       }
 
-      router.push(CARRITO);
+      if (userId) {
+        const cart = await getOrCreateCart(userId);
+
+        await updateCart({
+          cartId: cart?.id,
+          product: {
+            ...productData,
+            // productId: productData.productId,
+            id: productData.productId,
+            price: productData.refPrice,
+            price_extra: Number(productData.bsPrice),
+          },
+        });
+
+        if (isInCart) {
+          updateQuantity(productData.productId, itemCount + 1);
+        } else {
+          addToCart(productData);
+        }
+
+        router.push(CARRITO);
+      } else {
+        throw new Error('No se pudo agregar el producto al carrito');
+      }
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
