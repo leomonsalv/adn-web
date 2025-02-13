@@ -1,25 +1,47 @@
-'use client'
+'use client';
 
-import MainIncentives from '@/components/incentives/MainIncentives'
-import CartList from '@/components/cart/CartList'
-import LinkedProductList from '@/components/products/ProductLists/LinkedProductList'
-import { useCartStore } from '@/stores/cart-store'
-import CartOrderSummary from '@/components/cart/CartOrderSummary'
-import useCart from '@/hooks/use-cart'
-import { useEffect } from 'react'
+import MainIncentives from '@/components/incentives/MainIncentives';
+import CartList from '@/components/cart/CartList';
+import { useCartStore } from '@/stores/cart-store';
+import CartOrderSummary from '@/components/cart/CartOrderSummary';
+import useCart from '@/hooks/use-cart';
+import { useEffect, useMemo } from 'react';
+import { RecommendedProductsPayload } from '@/types/product';
+import useProducts from '@/hooks/use-products';
+import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 
 export default function Cart() {
-  const { cart, setCart } = useCartStore()
-  const { useGetCart } = useCart()
-  const { data, isLoading } = useGetCart()
+  const { cart, setCart } = useCartStore();
+  const { useGetCart } = useCart();
+  const { data, isLoading } = useGetCart();
+  const { useGetRecommendedProducts } = useProducts();
+
+  const productIds = useMemo(() => {
+    return cart?.products?.map((product) => product.productId) || [];
+  }, [cart]);
+
+  const payload: RecommendedProductsPayload | null = useMemo(() => {
+    if (productIds.length === 0) return null;
+    return {
+      type: 'Cart',
+      products: productIds,
+      productBased: true,
+    };
+  }, [productIds]);
+
+  const {
+    data: recommendedData,
+    isLoading: isRecommendedLoading,
+    error: recommendedError,
+  } = useGetRecommendedProducts(payload!);
 
   useEffect(() => {
     if (data) {
-      setCart(data)
+      setCart(data);
     }
-  }, [data])
+  }, [data]);
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="bg-white">
@@ -30,8 +52,28 @@ export default function Cart() {
           <CartOrderSummary />
         </form>
       </div>
-      <LinkedProductList />
+
+      {productIds.length > 0 && (
+        <section className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+          {isRecommendedLoading ? (
+            <div className="flex justify-center items-center">
+              <p>Cargando productos recomendados...</p>
+            </div>
+          ) : recommendedError ? (
+            <div className="flex justify-center items-center">
+              <p>Error cargando recomendaciones</p>
+            </div>
+          ) : (
+            <CarouselRecommened
+              title="Productos similares a"
+              subtitle={cart.products[0]?.name || 'tus productos'}
+              products={recommendedData || []}
+            />
+          )}
+        </section>
+      )}
+
       <MainIncentives />
     </div>
-  )
+  );
 }
