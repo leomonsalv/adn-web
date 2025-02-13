@@ -1,7 +1,9 @@
 import React from 'react';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/components/ui/carousel';
 import CarouselCard from './CarouselCard';
 import { RecommendedProductsResponseElement } from '@/types/product';
+import { ChevronRight } from 'lucide-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 export interface ProductWithRating extends RecommendedProductsResponseElement {
   rating?: number;
@@ -13,9 +15,27 @@ interface CarouselRecommenedProps {
   title: string;
   subtitle: string;
   products: ProductWithRating[];
+  autoplay?: boolean;
 }
 
-const CarouselRecommened = ({ title, subtitle, products }: CarouselRecommenedProps) => {
+const CarouselRecommened = ({
+  title,
+  subtitle,
+  products,
+  autoplay = true,
+}: CarouselRecommenedProps) => {
+  const [api, setApi] = React.useState<CarouselApi>();
+
+  const plugin = React.useRef(
+    Autoplay({
+      delay: 6000,
+    }),
+  );
+
+  const scrollNext = () => {
+    api?.scrollNext();
+  };
+
   return (
     <div className="w-full">
       <div className="mb-6">
@@ -30,7 +50,9 @@ const CarouselRecommened = ({ title, subtitle, products }: CarouselRecommenedPro
           dragFree: true,
           duration: 25,
         }}
+        plugins={autoplay ? [plugin.current] : []}
         className="relative w-full"
+        setApi={setApi}
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {products.map((product) => (
@@ -52,6 +74,13 @@ const CarouselRecommened = ({ title, subtitle, products }: CarouselRecommenedPro
             </CarouselItem>
           ))}
         </CarouselContent>
+        <button
+          onClick={scrollNext}
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
       </Carousel>
     </div>
   );
