@@ -10,4 +10,5 @@ export const CartSchema = z.object({
     })
     .array(),
   userId: z.string(),
+  updatedAt: z.date(),
 });

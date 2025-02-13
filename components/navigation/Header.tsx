@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '../ui/button';
 import { logOutAccount } from '@/api/auth';
 import { useToast } from '@/hooks/use-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
@@ -27,9 +28,10 @@ export function NavLinks() {
   const { toast } = useToast();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });
-  const { cart, setCart, getCartTotal, getCartCount } = useCartStore();
+  const { cart, setCart, getCartTotal, getCartCount, clearCart } = useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
+  const queryClient = useQueryClient();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +72,10 @@ export function NavLinks() {
   const handleLogout = async () => {
     try {
       await logOutAccount();
+      queryClient.clear();
+      localStorage.clear();
+      clearCart();
+
       router.replace(HOME);
       toast({
         title: 'Sesión cerrada',
