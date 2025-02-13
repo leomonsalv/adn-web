@@ -164,7 +164,7 @@ export function PaymentDetails() {
       ) : paymentMethods ? (
         <>
           <PaymentMixed paymentMethods={paymentMethods} />
-          <Button className="w-full mt-4 h-14" type="submit" disabled={isCreatingOrder}>
+          <Button className="w-full mt-4 h-14" disabled={isCreatingOrder}>
             {isCreatingOrder || isLoadingVippo ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
