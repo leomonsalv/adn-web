@@ -77,6 +77,21 @@ export const CashbackSchema = z.object({
   telefono: z.string({ required_error: 'Teléfono es requerido' }),
 });
 
+export const PagoMovilSchema = z.object({
+  isConfirmed: z.boolean(),
+  type: z.literal('pagomovil'),
+  details: z.object({
+    amount: z.number(),
+    bank: z.string(),
+    phone: z.string().min(3),
+    dniType: z.string(),
+    dni: z.string().min(6),
+    destination: z.enum(['plaza', 'amiga']),
+    reference: z.string().optional(),
+  }),
+});
+
+export type PagoMovil = z.infer<typeof PagoMovilSchema>;
 export type OtpSchemaType = z.infer<typeof OtpSchema>;
 
 export type CashbackSchemaType = z.infer<typeof CashbackSchema>;

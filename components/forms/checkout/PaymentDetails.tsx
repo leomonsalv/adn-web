@@ -22,6 +22,7 @@ import useUser from '@/hooks/use-user';
 import { useToast } from '@/hooks/use-toast';
 import PaymentMixed from '@/components/checkout/PaymentMixed';
 import { useRouter } from 'next/navigation';
+import { PaymentsModal } from '@/components/checkout/PaymentsModal';
 
 export function PaymentDetails() {
   const router = useRouter();
@@ -29,6 +30,8 @@ export function PaymentDetails() {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodType>();
   const [cashbackModal, setCashbackModal] = useState(false);
   const [vippoModal, setVippoModal] = useState(false);
+  const [pagoMix, setPagoMix] = useState<any>(null);
+  const [totalAmount, setTotalAmount] = useState<number>(0);
 
   const { user, isLoading } = useUser();
   const { useGetPaymentMethods, useValidateVippo } = useCheckout();
@@ -41,6 +44,7 @@ export function PaymentDetails() {
 
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
+  const usd = parseFloat((totalBs / totalUsd).toFixed(2));
 
   const form = useForm<PaymentMethod>({
     resolver: zodResolver(PaymentMethodSchema),
@@ -104,7 +108,82 @@ export function PaymentDetails() {
     onSubmit(newData);
   });
 
-  useEffect(() => {
+  const mapPayments = (method: string, amount: number) => {
+    const map: any = {
+      Cash: 'cash',
+      'Bolívares en Efectivo': 'bolivarCash',
+      'Punto de Venta': 'motopos',
+      'Billetera Adan': 'credit',
+      REI: 'preCredit',
+    };
+    if (method === 'Cash' || 'Bolívares en Efectivo') {
+      return {
+        isConfirmed: true,
+        type: map[method],
+        details: {
+          bills: [{ amount: amount, code: '4ef7ec97-8a26-4dfd-a3a0-5fec582969c9' }],
+          comments: '',
+        },
+      };
+    } else if (method === 'Punto de Venta' || method === 'Billetera Adan' || method === 'REI') {
+      return {
+        isConfirmed: true,
+        type: map[method],
+        details: {
+          amount: amount,
+        },
+      };
+    }
+  };
+
+  const handleSubmitMixed = async (
+    data: any,
+    setPagoMovil?: boolean,
+    cashbackData?: CashbackSchemaType,
+  ) => {
+    if (cashbackData) {
+      const newOrder: any = {
+        methods: [
+          mapPayments(pagoMix.method1, pagoMix.amount1),
+          mapPayments(pagoMix.method2, pagoMix.amount2),
+        ],
+        cashbackData: data,
+      };
+      const response: any = await createOrder(newOrder);
+      router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
+    } else {
+      if (!setPagoMovil) {
+        const isPagoMovil = data.method1 === 'Pago Movil' || data.method2 === 'Pago Movil';
+        if (isPagoMovil) setPagoMix({ ...data, isPagoMovil });
+        else {
+          if (handleActiveCashback(data)) {
+            setCashbackModal(true);
+          } else {
+            console.log('Aqui va el create');
+            const newOrder: any = {
+              methods: [
+                mapPayments(data.method1, data.amount1),
+                mapPayments(data.method2, data.amount2),
+              ],
+            };
+            const response: any = await createOrder(newOrder);
+            router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
+          }
+        }
+      } else {
+        const item = pagoMix.method1 === 'Pago Movil' ? pagoMix.method1 : pagoMix.method2;
+        const amount = pagoMix.method1 === 'Pago Movil' ? pagoMix.amount1 : pagoMix.amount2;
+
+        const newOrder = {
+          methods: [data, mapPayments(item, amount)],
+        };
+        const response: any = await createOrder(newOrder);
+        router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
+      }
+    }
+  };
+
+  const handleSetPagoMovil = useEffect(() => {
     if (!isLoadingPaymentMethods && paymentMethods) {
       // Get the initial state for the payment method
       const newMethod = paymentMethods.find((method) => method.value === 'cash')?.value!;
@@ -128,6 +207,25 @@ export function PaymentDetails() {
       } as PaymentMethod);
     }
   }, [paymentMethods, user?.data?.email]);
+
+  const handleActiveCashback = (data: any) => {
+    let totalAmount = 0;
+    const method1 = paymentMethods?.find((t) => t.name === data.method1);
+    const method2 = paymentMethods?.find((t) => t.name === data.method2);
+    if (method1?.currency === 'USD') {
+      totalAmount = totalAmount + data.amount1 * usd;
+    } else if (method1?.currency === 'Bs') {
+      totalAmount = totalAmount + data.amount1;
+    }
+
+    if (method2?.currency === 'USD') {
+      totalAmount = totalAmount + data.amount2 * usd;
+    } else if (method1?.currency === 'Bs') {
+      totalAmount = totalAmount + data.amount1;
+    }
+    setTotalAmount(totalAmount);
+    return totalAmount > totalBs;
+  };
 
   if (isLoadingPaymentMethods || isLoading) return <PaymentDetailsSkeleton />;
 
@@ -162,16 +260,11 @@ export function PaymentDetails() {
           </form>
         </FormProvider>
       ) : paymentMethods ? (
-        <>
-          <PaymentMixed paymentMethods={paymentMethods} />
-          <Button className="w-full mt-4 h-14" disabled={isCreatingOrder}>
-            {isCreatingOrder || isLoadingVippo ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              'Continuar con la  orden'
-            )}
-          </Button>
-        </>
+        <PaymentMixed
+          paymentMethods={paymentMethods}
+          handleSubmit={handleSubmitMixed}
+          isCreatingOrder={isCreatingOrder}
+        />
       ) : (
         <>Loading</>
       )}
@@ -179,10 +272,24 @@ export function PaymentDetails() {
         <CashbackModal
           open={cashbackModal}
           onClose={() => setCashbackModal(false)}
-          amount={selectedMethod === 'cash' ? totalUsd : totalBs}
+          amount={pagoMix ? totalAmount - totalBs : selectedMethod === 'cash' ? totalUsd : totalBs}
           currency={selectedMethod === 'cash' ? 'USD' : 'Bs'}
-          onNext={onSubmit}
+          onNext={(data) => {
+            if (pagoMix) {
+              handleSubmitMixed(null, false, data);
+            } else {
+              onSubmit(data);
+            }
+          }}
           previousData={form.getValues()}
+        />
+      )}
+      {pagoMix?.isPagoMovil && (
+        <PaymentsModal
+          open={pagoMix.isPagoMovil}
+          onClose={() => setPagoMix({ ...pagoMix, isPagoMovil: false })}
+          onNext={handleSubmitMixed}
+          pagoMix={pagoMix}
         />
       )}
       {vippoModal && (

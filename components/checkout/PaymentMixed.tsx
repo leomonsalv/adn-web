@@ -5,18 +5,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LabeledInput } from '../ui/input';
 import { Method, ValuesPaymentMixedSchema } from '@/schemas/payment-method-schema';
 import { useCartStore } from '@/stores/cart-store';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 interface PaymentMixedProps {
   paymentMethods: Method[];
+  handleSubmit: any;
+  isCreatingOrder: boolean;
 }
 
-const PaymentMixed: React.FC<PaymentMixedProps> = ({ paymentMethods }) => {
+const PaymentMixed: React.FC<PaymentMixedProps> = ({
+  paymentMethods,
+  handleSubmit,
+  isCreatingOrder,
+}) => {
   const { getCartRef, getCartTotal } = useCartStore();
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
   const usd = parseFloat((totalBs / totalUsd).toFixed(2));
-
-  console.log(usd);
 
   const excludeMethods = {
     // Add methods to exclude from the mix payment options
@@ -47,9 +53,9 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({ paymentMethods }) => {
     resolver: zodResolver(ValuesPaymentMixedSchema),
     defaultValues: {
       method1: paymentOptions[0]?.name,
-      amount1: 0,
+      amount1: '',
       method2: paymentOptions[1]?.name,
-      amount2: 0,
+      amount2: '',
     },
   });
 
@@ -60,10 +66,27 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({ paymentMethods }) => {
     const method1Currency = method1?.currency;
     const method2Currency = method2?.currency;
 
+    if ((method1Currency === 'USD' || method2Currency === 'USD') && value > totalUsd) {
+      form.setError(`amount${newItem}`, {
+        type: 'manual',
+        message: 'El monto ingresado no puede ser mayor al total de la orden',
+      });
+      return;
+    }
+    if (method1Currency === 'Bs' && value > totalBs) {
+      form.setError(`amount${newItem}`, {
+        type: 'manual',
+        message: 'El monto ingresado no puede ser mayor al total de la orden',
+      });
+      return;
+    }
+
     if (method1Currency === 'USD' && method2Currency === 'USD') {
       form.setValue(
         `amount${newItem}`,
-        method2?.value === 'cash' ? Math.ceil(totalUsd - value) : totalUsd - value,
+        method2?.value === 'cash'
+          ? Math.ceil(totalUsd - value)
+          : parseFloat((totalUsd - value).toFixed(2)),
       );
     } else if (method1Currency === 'Bs' && method2Currency === 'Bs') {
       form.setValue(
@@ -83,10 +106,8 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({ paymentMethods }) => {
     }
   };
 
-  console.log(paymentOptions);
-
   return (
-    <>
+    <form onSubmit={form.handleSubmit((data) => handleSubmit(data))}>
       {[1, 2].map((item) => (
         <div className="flex flex-col gap-4">
           <span className="text-sm font-bold">Metodo de Pago N: {item}</span>
@@ -151,7 +172,10 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({ paymentMethods }) => {
           </div>
         </div>
       ))}
-    </>
+      <Button className="w-full mt-4 h-14" type="submit" disabled={isCreatingOrder}>
+        {isCreatingOrder ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Continuar con la orden'}
+      </Button>
+    </form>
   );
 };
 
