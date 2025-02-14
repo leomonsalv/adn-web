@@ -299,12 +299,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               {/* Price tags */}
               <div className="mt-4">
                 <h2 className="sr-only">Información de precios</h2>
-                <div className="flex flex-row gap-1">
+                {/* <div className="flex flex-row gap-1">
                   <span className="text-sm">Precio regular:</span>
                   <p className="text-sm text-gray-500 line-through">
                     {formatVefCurrency(regularPrice)}
                   </p>
-                </div>
+                </div> */}
                 <div className="flex flex-row gap-1 items-baseline">
                   <p className="text-3xl font-semibold text-red-700">
                     {formatVefCurrency(regularPrice)}

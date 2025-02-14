@@ -7,18 +7,18 @@ import React from 'react';
 
 interface ProductCardProps {
   image: string;
-  discount: number;
+  discount?: number;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   title: string;
   productUrl: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   image,
-  discount,
+  discount = 0,
   price,
-  originalPrice,
+  originalPrice = 0,
   title,
   productUrl,
 }) => {
@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="mt-4 flex flex-col items-start w-full">
           <div className="flex items-baseline gap-2">
             <p className="text-xl font-bold text-red-600">{formatVefCurrency(price)}</p>
-            <p className="text-sm line-through text-gray-500">{formatVefCurrency(originalPrice)}</p>
+            {/* <p className="text-sm line-through text-gray-500">{formatVefCurrency(originalPrice)}</p> */}
           </div>
 
           <p className="mt-2 text-gray-800 font-medium">{title}</p>
