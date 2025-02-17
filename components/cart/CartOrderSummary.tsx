@@ -1,16 +1,26 @@
+'use client';
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/navigation';
 import { CHECKOUT } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '../ui/button';
 import { formatVefCurrency } from '@/lib/utils';
+import useProducts from '@/hooks/use-products';
+import useRate from '@/hooks/use-rate';
 
 export default function CartOrderSummary() {
-  const router = useRouter();
+  const { useGetDelivery } = useProducts();
+  const { useGetRate } = useRate();
   const { getCartSubtotal, getCartTotal, getCartTax } = useCartStore();
-  const total = getCartTotal();
+
+  const { data: deliveryProduct } = useGetDelivery();
+  const { data: rate } = useGetRate();
+
+  const deliveryPriceUSD = rate ? Number(deliveryProduct?.bsPrice || 0) / Number(rate) : 0;
+  const deliveryFee = deliveryPriceUSD <= 7 ? Number(deliveryProduct?.bsPrice || 0) : 0;
+  const total = getCartTotal() + deliveryFee;
   const tax = getCartTax();
   const subtotal = getCartSubtotal();
+
   return (
     <section
       aria-labelledby="summary-heading"
@@ -33,7 +43,7 @@ export default function CartOrderSummary() {
               <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
             </a>
           </dt>
-          <dd className="text-sm font-medium text-gray-900">{`Bs. ${Number(7.0).toFixed(2)}`}</dd>
+          <dd className="text-sm font-medium text-gray-900">{formatVefCurrency(deliveryFee)}</dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="flex text-sm text-gray-600">

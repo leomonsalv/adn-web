@@ -3,6 +3,7 @@ import {
   fetchProductsByIds,
   fetchRecommendedProducts,
   fetchTopSellingProducts,
+  getDeliveryPrice,
 } from '@/api/products';
 import { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
 import { useQuery } from '@tanstack/react-query';
@@ -12,6 +13,13 @@ export default function useProducts() {
     return useQuery({
       queryKey: ['product', id],
       queryFn: () => fetchProductById(id),
+      select: (data) => data,
+    });
+  };
+  const useGetDelivery = () => {
+    return useQuery({
+      queryKey: ['deliveryProduct'],
+      queryFn: () => getDeliveryPrice(),
       select: (data) => data,
     });
   };
@@ -31,5 +39,5 @@ export default function useProducts() {
     });
   };
 
-  return { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts };
+  return { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts, useGetDelivery };
 }
