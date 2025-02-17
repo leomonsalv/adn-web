@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { CHECKOUT } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '../ui/button';
+import { formatVefCurrency } from '@/lib/utils';
 
 export default function CartOrderSummary() {
   const router = useRouter();
@@ -21,12 +22,12 @@ export default function CartOrderSummary() {
 
       <dl className="mt-6 space-y-4">
         <div className="flex items-center justify-between">
-          <dt className="text-sm text-gray-600">Subtotal</dt>
-          <dd className="text-sm font-medium text-gray-900">{`Bs. ${subtotal.toFixed(2)}`}</dd>
+          <dt className="text-sm text-gray-600">Subtotal:</dt>
+          <dd className="text-sm font-medium text-gray-900">{formatVefCurrency(subtotal)}</dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="flex items-center text-sm text-gray-600">
-            <span>Estimado de envío</span>
+            <span>Estimado de envío:</span>
             <a href="#" className="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
               <span className="sr-only">Lee mas de como se calcula el envío</span>
               <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
@@ -42,11 +43,11 @@ export default function CartOrderSummary() {
               <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
             </a>
           </dt>
-          <dd className="text-sm font-medium text-gray-900">{`Bs. ${tax.toFixed(2)}`}</dd>
+          <dd className="text-sm font-medium text-gray-900">{formatVefCurrency(tax)}</dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-          <dt className="text-base font-medium text-gray-900">Order total</dt>
-          <dd className="text-base font-medium text-gray-900">{`Bs. ${total.toFixed(2)}`}</dd>
+          <dt className="text-base font-medium text-gray-900">Total de la orden:</dt>
+          <dd className="text-base font-medium text-gray-900">{formatVefCurrency(total)}</dd>
         </div>
       </dl>
 
