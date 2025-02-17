@@ -39,7 +39,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
       <div className="flex flex-col gap-2">
         <Controller
           control={form.control}
-          name="banco"
+          name="details.bank"
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <div>
               <label htmlFor="banco" className="block text-sm font-semibold mb-1">
@@ -61,7 +61,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
         <div className="flex flex-row gap-2">
           <Controller
             control={form.control}
-            name="cedula"
+            name="details.dniType"
             render={({ field, fieldState: { error } }) => (
               <div className="w-1/4">
                 <label htmlFor="dniType" className="block text-sm font-medium text-gray-700 mb-1">
@@ -94,7 +94,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
 
           <Controller
             control={form.control}
-            name="cedula"
+            name="details.dni"
             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
               <LabeledInput
                 className="w-3/4"
@@ -124,7 +124,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
 
         <Controller
           control={form.control}
-          name="telefono"
+          name="details.phone"
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <LabeledInput
               label="Número de teléfono"
