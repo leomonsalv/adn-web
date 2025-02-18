@@ -10,6 +10,7 @@ interface CartState {
   cart: Cart;
   isOpen: boolean;
   loading: boolean;
+  deliveryFee: number;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
@@ -25,6 +26,7 @@ interface CartState {
   setLoading: (status: boolean) => void;
   decrementQuantity: (productId: number) => void;
   setCart: (cart: Cart) => void;
+  setDeliveryFee: (fee: number) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -38,6 +40,7 @@ export const useCartStore = create<CartState>()(
       },
       isOpen: false,
       loading: false,
+      deliveryFee: 0,
       // Cart actions
       addToCart: (product) => {
         const cartProduct = {
@@ -80,6 +83,7 @@ export const useCartStore = create<CartState>()(
             id: '',
             updatedAt: new Date(),
           },
+          deliveryFee: 0,
         }),
       updateQuantity: (productId, quantity) => {
         if (quantity < 1) {
@@ -114,7 +118,8 @@ export const useCartStore = create<CartState>()(
           return total + itemTotal;
         }, 0);
         const tax = toSafeInteger(get().getCartTax());
-        return fromSafeInteger(subtotal + tax);
+        const deliveryFee = toSafeInteger(get().deliveryFee);
+        return fromSafeInteger(subtotal + tax + deliveryFee);
       },
       getCartRef: () => {
         return get().cart.products.reduce(
@@ -165,6 +170,7 @@ export const useCartStore = create<CartState>()(
         }
       },
       setCart: (cart) => set({ cart }),
+      setDeliveryFee: (fee) => set({ deliveryFee: fee }),
     }),
     {
       name: 'cart-storage',

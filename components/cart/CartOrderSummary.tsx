@@ -5,16 +5,34 @@ import { useCartStore } from '@/stores/cart-store';
 import { Button } from '../ui/button';
 import { formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
+import { useEffect } from 'react';
 
 export default function CartOrderSummary() {
   const { useGetDelivery } = useProducts();
-  const { getCartSubtotal, getCartTotal, getCartTax, getCartRef } = useCartStore();
+  const { getCartSubtotal, getCartTotal, getCartTax, getCartRef, setDeliveryFee, deliveryFee } =
+    useCartStore();
   const cartRef = getCartRef();
-  const { data: deliveryProduct } = useGetDelivery();
-  const deliveryFee = cartRef <= 7 ? Number(deliveryProduct?.bsPrice || 0) : 0;
-  const total = getCartTotal() + deliveryFee;
+
+  const { data: deliveryProduct, isLoading, isError } = useGetDelivery();
+
+  useEffect(() => {
+    if (deliveryProduct) {
+      const deliveryFee = cartRef <= 7 ? Number(deliveryProduct.bsPrice || 0) : 0;
+      setDeliveryFee(deliveryFee);
+    }
+  }, [deliveryProduct, cartRef, setDeliveryFee]);
+
+  const total = getCartTotal();
   const tax = getCartTax();
   const subtotal = getCartSubtotal();
+
+  if (isLoading) {
+    return <div>Cargando costo de envío...</div>;
+  }
+
+  if (isError) {
+    return <div>Error al cargar el costo de envío.</div>;
+  }
 
   return (
     <section

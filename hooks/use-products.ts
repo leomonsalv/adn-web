@@ -21,6 +21,7 @@ export default function useProducts() {
       queryKey: ['deliveryProduct'],
       queryFn: () => getDeliveryPrice(),
       select: (data) => data,
+      staleTime: 1000 * 60 * 5, // Cache de 5 minutos
     });
   };
   const useGetRecommendedProducts = (payload: RecommendedProductsPayload) => {

@@ -1,3 +1,4 @@
+import { formatVefCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart-store';
 import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react';
 import { ChevronUpIcon } from 'lucide-react';
@@ -5,10 +6,9 @@ import Image from 'next/image';
 import React from 'react';
 
 export default function CheckoutOrderSummary() {
-  const { cart, getCartSubtotal, getCartTax, getCartTotal } = useCartStore();
+  const { cart, getCartSubtotal, getCartTax, getCartTotal, deliveryFee } = useCartStore();
 
   const subtotal = getCartSubtotal();
-  const shipping = 15.0;
   const taxes = getCartTax();
   const total = getCartTotal();
 
@@ -41,7 +41,9 @@ export default function CheckoutOrderSummary() {
                 {/* <p className="text-gray-500">{item.color}</p> */}
                 {/* <p className="text-gray-500">{item.size}</p> */}
               </div>
-              <p className="flex-none text-base font-medium">{item.price}</p>
+              <p className="flex-none text-base font-medium">
+                {formatVefCurrency(Number(item.bsPrice))}
+              </p>
             </li>
           ))}
         </ul>
@@ -49,22 +51,22 @@ export default function CheckoutOrderSummary() {
         <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Subtotal</dt>
-            <dd>Bs {subtotal.toFixed(2)}</dd>
+            <dd>{formatVefCurrency(subtotal)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Envío</dt>
-            <dd>Bs {shipping.toFixed(2)}</dd>
+            <dd>{formatVefCurrency(deliveryFee)}</dd> {/* Mostrar deliveryFee desde el store */}
           </div>
 
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Impuestos</dt>
-            <dd>Bs {taxes.toFixed(2)}</dd>
+            <dd>{formatVefCurrency(taxes)}</dd>
           </div>
 
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
             <dt className="text-base">Total</dt>
-            <dd className="text-base">Bs {total.toFixed(2)}</dd>
+            <dd className="text-base">{formatVefCurrency(total)}</dd>{' '}
           </div>
         </dl>
 
@@ -73,7 +75,7 @@ export default function CheckoutOrderSummary() {
             <div className="mx-auto max-w-lg">
               <PopoverButton className="flex w-full items-center py-6 font-medium">
                 <span className="mr-auto text-base">Total</span>
-                <span className="mr-2 text-base">${total.toFixed(2)}</span>
+                <span className="mr-2 text-base">{formatVefCurrency(total)}</span>{' '}
                 <ChevronUpIcon aria-hidden="true" className="size-5 text-gray-500" />
               </PopoverButton>
             </div>
@@ -91,22 +93,22 @@ export default function CheckoutOrderSummary() {
             <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Subtotal</dt>
-                <dd>${subtotal.toFixed(2)}</dd>
+                <dd>{formatVefCurrency(subtotal)}</dd>
               </div>
 
               <div className="flex items-center justify-between">
-                <dt className="text-gray-600">Shipping</dt>
-                <dd>${shipping.toFixed(2)}</dd>
+                <dt className="text-gray-600">Envío</dt>
+                <dd>{formatVefCurrency(deliveryFee)}</dd> {/* Mostrar deliveryFee desde el store */}
               </div>
 
               <div className="flex items-center justify-between">
-                <dt className="text-gray-600">Taxes</dt>
-                <dd>${taxes.toFixed(2)}</dd>
+                <dt className="text-gray-600">Impuestos</dt>
+                <dd>{formatVefCurrency(taxes)}</dd>
               </div>
 
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt className="text-base">Total</dt>
-                <dd className="text-base">${total.toFixed(2)}</dd>
+                <dd className="text-base">{formatVefCurrency(total)}</dd>{' '}
               </div>
             </dl>
           </PopoverPanel>
