@@ -29,7 +29,7 @@ export const getRate = async (): Promise<Number> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const rate = await response.json();
-    return rate;
+    return rate.rate;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching rate:', error.message);

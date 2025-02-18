@@ -5,18 +5,13 @@ import { useCartStore } from '@/stores/cart-store';
 import { Button } from '../ui/button';
 import { formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
-import useRate from '@/hooks/use-rate';
 
 export default function CartOrderSummary() {
   const { useGetDelivery } = useProducts();
-  const { useGetRate } = useRate();
-  const { getCartSubtotal, getCartTotal, getCartTax } = useCartStore();
-
+  const { getCartSubtotal, getCartTotal, getCartTax, getCartRef } = useCartStore();
+  const cartRef = getCartRef();
   const { data: deliveryProduct } = useGetDelivery();
-  const { data: rate } = useGetRate();
-
-  const deliveryPriceUSD = rate ? Number(deliveryProduct?.bsPrice || 0) / Number(rate) : 0;
-  const deliveryFee = deliveryPriceUSD <= 7 ? Number(deliveryProduct?.bsPrice || 0) : 0;
+  const deliveryFee = cartRef <= 7 ? Number(deliveryProduct?.bsPrice || 0) : 0;
   const total = getCartTotal() + deliveryFee;
   const tax = getCartTax();
   const subtotal = getCartSubtotal();
