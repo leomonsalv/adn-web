@@ -16,12 +16,17 @@ function RegisterForm({}: Props) {
   const router = useRouter();
 
   React.useEffect(() => {
+    router.prefetch(HOME);
     if (formState?.success) {
       toast({
         title: 'Registro exitoso',
         description: 'Redirigiendo al home...',
       });
-      router.push(HOME);
+      const navigate = async () => {
+        router.replace(HOME);
+      };
+      navigate();
+      window.location.href = HOME;
     } else if (formState?.errorCode || formState?.errors) {
       toast({
         title: 'Verificación fallida',
