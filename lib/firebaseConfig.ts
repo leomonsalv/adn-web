@@ -1,6 +1,6 @@
 'use client';
 
-import { getApps, initializeApp, getApp } from 'firebase/app';
+import { getApps, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 import { getAuth } from 'firebase/auth';
@@ -34,5 +34,6 @@ export const getFirebaseAuthUser = () => {
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
-export const functions = getFunctions(firebaseApp);
+const region = process.env.NEXT_PUBLIC_DEPLOYMENT_REGION;
+export const functions = getFunctions(firebaseApp, region);
 export const provider = new GoogleAuthProvider();
