@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { getApps, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getFunctions } from "firebase/functions";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
-import { GoogleAuthProvider } from "firebase/auth";
+import { getApps, initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getFunctions } from 'firebase/functions';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,11 +17,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp =
-  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
-export const functions = getFunctions(firebaseApp);
+const region = process.env.NEXT_PUBLIC_DEPLOYMENT_REGION;
+export const functions = getFunctions(firebaseApp, region);
 export const provider = new GoogleAuthProvider();
