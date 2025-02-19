@@ -36,6 +36,8 @@ import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/ty
 import { anonymousSignIn } from '@/api/auth';
 import { useAuth } from '@/hooks/use-auth';
 import { getCart, getOrCreateCart } from '@/api/cart';
+import Reviews from '@/components/reviews/Reviews';
+import ReviewsSection from '@/components/reviews/ReviewSection';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -261,12 +263,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               )}
 
               {/* Reviews */}
-              {/* <section aria-labelledby="reviews-heading" className="my-2">
+              <section aria-labelledby="reviews-heading" className="my-2">
                 <h2 id="reviews-heading" className="sr-only">
                   Reseñas y Calificaciones
                 </h2>
                 <Reviews rating={product.rating} reviewCount={product.reviewCount} />
-              </section> */}
+              </section>
 
               {/* Descripción */}
               <section aria-labelledby="description-heading" className="my-10">
@@ -450,6 +452,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 products={recommendedProducts}
               />
             )}
+          </section>
+          {/* Reviews section */}
+          <section className="py-2">
+            <ReviewsSection product={productData} />
           </section>
           {/* Top sellers products carousel */}
           <section className="py-2">
