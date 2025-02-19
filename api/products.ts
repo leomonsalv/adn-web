@@ -107,10 +107,31 @@ export const fetchProductsByIds = async (
 export const fetchProductById = async (id: string): Promise<Product> => {
   try {
     const queryParams = new URLSearchParams({
+      // type: 'product',
       id: id,
     });
 
     const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const product = await response.json();
+    return product;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching product by ID:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching the product');
+  }
+};
+
+export const getDeliveryPrice = async (): Promise<Product> => {
+  try {
+    const response = await fetch(
+      `${API_URL}/product?type=product&id=${process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID}`,
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

@@ -83,6 +83,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     error: productError,
   } = useGetProductById(productId);
 
+  console.log(productData);
+
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
   const { mutateAsync: updateCart } = useMutateCart();
@@ -129,7 +131,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           cartId: cart?.id,
           product: {
             ...productData,
-            // productId: productData.productId,
             id: productData.productId,
             price: productData.refPrice,
             price_extra: Number(productData.bsPrice),
@@ -139,7 +140,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         if (isInCart) {
           updateQuantity(productData.productId, itemCount + 1);
         } else {
-          addToCart(productData);
+          addToCart({
+            ...productData,
+          });
         }
 
         router.push(CARRITO);
@@ -174,6 +177,11 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
   const regularPrice = Number(productData.bsPrice);
   const refPrice = productData.refPrice;
+
+  const TAX_CALC =
+    productData.taxes && Array.isArray(productData.taxes) && productData.taxes.length > 0
+      ? Number(productData.bsPrice) * (Number(productData.taxes[0].amount) / 100)
+      : 0;
 
   return (
     <div className="bg-white">
@@ -310,6 +318,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     {formatVefCurrency(regularPrice)}
                   </p>
                 </div>
+                {TAX_CALC > 0 && (
+                  <div className="flex flex-row gap-1">
+                    <span className="text-sm">Impuesto:</span>
+                    <p className="text-sm text-gray-500">{formatVefCurrency(TAX_CALC)}</p>
+                  </div>
+                )}
               </div>
 
               {/* Add to cart */}

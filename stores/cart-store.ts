@@ -10,6 +10,7 @@ interface CartState {
   cart: Cart;
   isOpen: boolean;
   loading: boolean;
+  deliveryFee: number;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
@@ -25,6 +26,7 @@ interface CartState {
   setLoading: (status: boolean) => void;
   decrementQuantity: (productId: number) => void;
   setCart: (cart: Cart) => void;
+  setDeliveryFee: (fee: number) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -34,9 +36,11 @@ export const useCartStore = create<CartState>()(
         id: '',
         products: [],
         userId: '',
+        updatedAt: new Date(),
       },
       isOpen: false,
       loading: false,
+      deliveryFee: 0,
       // Cart actions
       addToCart: (product) => {
         const cartProduct = {
@@ -71,7 +75,16 @@ export const useCartStore = create<CartState>()(
           },
         });
       },
-      clearCart: () => set({ cart: { products: [], userId: '', id: '' } }),
+      clearCart: () =>
+        set({
+          cart: {
+            products: [],
+            userId: '',
+            id: '',
+            updatedAt: new Date(),
+          },
+          deliveryFee: 0,
+        }),
       updateQuantity: (productId, quantity) => {
         if (quantity < 1) {
           set({
@@ -105,7 +118,8 @@ export const useCartStore = create<CartState>()(
           return total + itemTotal;
         }, 0);
         const tax = toSafeInteger(get().getCartTax());
-        return fromSafeInteger(subtotal + tax);
+        const deliveryFee = toSafeInteger(get().deliveryFee);
+        return fromSafeInteger(subtotal + tax + deliveryFee);
       },
       getCartRef: () => {
         return get().cart.products.reduce(
@@ -115,7 +129,15 @@ export const useCartStore = create<CartState>()(
       },
       getCartTax: () => {
         const tax = get().cart.products.reduce((total, item) => {
-          const itemTax = toSafeInteger(Number(item?.taxes?.amount || '0.0000')) * item.quantity;
+          const itemPrice = toSafeInteger(Number(item.bsPrice));
+          const taxRate =
+            item?.taxes &&
+            Array.isArray(item.taxes) &&
+            item.taxes.length > 0 &&
+            item.taxes[0].amount
+              ? Number(item.taxes[0].amount) / 100
+              : 0;
+          const itemTax = itemPrice * taxRate * item.quantity;
           return total + itemTax;
         }, 0);
         return fromSafeInteger(tax);
@@ -148,6 +170,7 @@ export const useCartStore = create<CartState>()(
         }
       },
       setCart: (cart) => set({ cart }),
+      setDeliveryFee: (fee) => set({ deliveryFee: fee }),
     }),
     {
       name: 'cart-storage',
