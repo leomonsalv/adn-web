@@ -36,6 +36,7 @@ import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/ty
 import { anonymousSignIn } from '@/api/auth';
 import { useAuth } from '@/hooks/use-auth';
 import { getCart, getOrCreateCart } from '@/api/cart';
+import useReviews from '@/hooks/use-reviews';
 import Reviews from '@/components/reviews/Reviews';
 import ReviewsSection from '@/components/reviews/ReviewSection';
 
@@ -46,6 +47,14 @@ interface ProductPageProps {
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
+  const { useGetProductReviews } = useReviews();
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
+    productId: productId,
+    page: 1,
+    pageSize: 10,
+    sort: 'newest',
+  });
+
   const payload: RecommendedProductsPayload = {
     type: 'Details',
     products: [productId],
@@ -455,7 +464,11 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           </section>
           {/* Reviews section */}
           <section className="py-2">
-            <ReviewsSection product={productData} />
+            <ReviewsSection
+              productData={productData}
+              reviews={reviewsData}
+              isLoading={isReviewsLoading}
+            />
           </section>
           {/* Top sellers products carousel */}
           <section className="py-2">

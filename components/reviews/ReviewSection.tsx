@@ -2,21 +2,50 @@ import { Product } from '@/types/product';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { Button } from '../ui/button';
 import Reviews from './Reviews';
+import { ReviewsResponse } from '@/types/review';
 
 type Props = {
   productData: Product;
+  reviews?: ReviewsResponse;
+  isLoading?: boolean;
 };
 
-function ReviewsSection({ productData }: Props) {
-  const totalReviews = 3452;
-  const averageRating = 4.6;
+function ReviewsSection({ productData, reviews, isLoading }: Props) {
+  const totalReviews = reviews?.totalItems || 0;
+  const averageRating = reviews?.metadata.averageRating || 0;
+
+  // Convert rating counts to percentage
   const ratings = [
-    { stars: 5, percentage: 63 },
-    { stars: 4, percentage: 10 },
-    { stars: 3, percentage: 6 },
-    { stars: 2, percentage: 12 },
-    { stars: 1, percentage: 9 },
+    {
+      stars: 5,
+      percentage: calculatePercentage(reviews?.metadata.ratingCounts.fiveStar || 0, totalReviews),
+    },
+    {
+      stars: 4,
+      percentage: calculatePercentage(reviews?.metadata.ratingCounts.fourStar || 0, totalReviews),
+    },
+    {
+      stars: 3,
+      percentage: calculatePercentage(reviews?.metadata.ratingCounts.threeStar || 0, totalReviews),
+    },
+    {
+      stars: 2,
+      percentage: calculatePercentage(reviews?.metadata.ratingCounts.twoStar || 0, totalReviews),
+    },
+    {
+      stars: 1,
+      percentage: calculatePercentage(reviews?.metadata.ratingCounts.oneStar || 0, totalReviews),
+    },
   ];
+
+  function calculatePercentage(count: number, total: number): number {
+    if (total === 0) return 0;
+    return Math.round((count / total) * 100);
+  }
+
+  if (isLoading) {
+    return <div>Loading reviews...</div>;
+  }
 
   return (
     <div>
