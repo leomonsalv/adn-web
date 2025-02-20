@@ -50,7 +50,8 @@ export function useReviews() {
 
   const useMarkHelpful = () => {
     return useMutation({
-      mutationFn: (reviewId: string) => markReviewAsHelpful(reviewId),
+      mutationFn: ({ reviewId, isHelpful }: { reviewId: string; isHelpful: boolean }) =>
+        markReviewAsHelpful(reviewId),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['reviews'] });
       },

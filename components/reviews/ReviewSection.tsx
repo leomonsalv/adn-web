@@ -3,6 +3,8 @@ import { StarIcon } from '@heroicons/react/24/solid';
 import { Button } from '../ui/button';
 import Reviews from './Reviews';
 import { ReviewsResponse } from '@/types/review';
+import TopReviews from './TopReviews';
+import useReviews from '@/hooks/use-reviews';
 
 type Props = {
   productData: Product;
@@ -13,6 +15,8 @@ type Props = {
 function ReviewsSection({ productData, reviews, isLoading }: Props) {
   const totalReviews = reviews?.totalItems || 0;
   const averageRating = reviews?.metadata.averageRating || 0;
+  const { useMarkHelpful } = useReviews();
+  const { mutate: markHelpful } = useMarkHelpful();
 
   // Convert rating counts to percentage
   const ratings = [
@@ -117,6 +121,13 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
           </div>
         </section>
       </section>
+
+      {/* Reviews list */}
+      {reviews?.data && reviews.data.length > 0 ? (
+        <TopReviews reviews={reviews?.data || []} />
+      ) : (
+        <p className="text-center text-gray-500">No hay reseñas todavía.</p>
+      )}
     </div>
   );
 }

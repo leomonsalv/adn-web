@@ -672,3 +672,63 @@ export const categoriesBox = [
     link: '#',
   },
 ];
+
+export const dummyReviews = {
+  data: [
+    {
+      id: '1',
+      title: 'Excelente producto',
+      comment:
+        'Me encantó este producto, cumple perfectamente con lo que promete. La calidad es excepcional y el envío fue muy rápido.',
+      rating: 5,
+      helpful: 12,
+      images: ['https://picsum.photos/200/200?random=1', 'https://picsum.photos/200/200?random=2'],
+      productID: '123',
+      userID: 'user123',
+      verified: true,
+      created_at: '2024-03-10T15:00:00Z',
+      updated_at: '2024-03-10T15:00:00Z',
+    },
+    {
+      id: '2',
+      title: 'Bueno pero mejorable',
+      comment:
+        'El producto es bueno en general, pero hay algunos detalles que podrían mejorar. La entrega fue rápida.',
+      rating: 4,
+      helpful: 8,
+      images: [],
+      productID: '123',
+      userID: 'user456',
+      verified: true,
+      created_at: '2024-03-08T10:30:00Z',
+      updated_at: '2024-03-08T10:30:00Z',
+    },
+    {
+      id: '3',
+      title: 'No cumple expectativas',
+      comment:
+        'Esperaba más del producto. La calidad no es la mejor y el precio es algo elevado para lo que ofrece.',
+      rating: 2,
+      helpful: 15,
+      images: ['https://picsum.photos/200/200?random=3'],
+      productID: '123',
+      userID: 'user789',
+      verified: false,
+      created_at: '2024-03-05T08:15:00Z',
+      updated_at: '2024-03-05T08:15:00Z',
+    },
+  ],
+  metadata: {
+    averageRating: 3.7,
+    ratingCounts: {
+      fiveStar: 10,
+      fourStar: 15,
+      threeStar: 8,
+      twoStar: 5,
+      oneStar: 2,
+    },
+  },
+  page: 1,
+  pageSize: 10,
+  totalItems: 40,
+};

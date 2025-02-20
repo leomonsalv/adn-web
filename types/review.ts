@@ -17,7 +17,14 @@ export interface ReviewsResponse {
 
 export interface Review {
   id: string;
-  rating: number;
   title: string;
   comment: string;
+  rating: number;
+  helpful: number;
+  images?: string[];
+  productID: string;
+  userID: string;
+  verified: boolean;
+  created_at: string;
+  updated_at: string;
 }

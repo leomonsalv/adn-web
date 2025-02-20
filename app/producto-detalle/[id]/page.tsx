@@ -18,7 +18,7 @@ import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
 import { TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
-import { product } from '@/lib/dummyData';
+import { dummyReviews, product } from '@/lib/dummyData';
 import {
   Accordion,
   AccordionContent,
@@ -466,7 +466,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           <section className="py-2">
             <ReviewsSection
               productData={productData}
-              reviews={reviewsData}
+              // reviews={reviewsData}
+              reviews={dummyReviews}
               isLoading={isReviewsLoading}
             />
           </section>
