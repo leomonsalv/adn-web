@@ -74,8 +74,15 @@ export const fetchProductReviews = async ({
  */
 export const createProductReview = async (review: ReviewPayload) => {
   try {
-    const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
+    //FIXME: I NEED TO GET THE USER ID FROM THE SESSION STORAGE
+    const userSession = JSON.parse(
+      sessionStorage.getItem(
+        'firebase:authUser:AIzaSyBXwDlKLqr2jGk_kAgUXp3ozxDz0XxlkMY:[DEFAULT]',
+      ) || '{}',
+    );
+    console.log('🚀 ~ createProductReview ~ accessToken:', userSession);
     const accessToken = userSession?.stsTokenManager?.accessToken;
+    console.log('🚀 ~ createProductReview ~ accessToken:', accessToken);
 
     if (!accessToken) {
       throw new Error('No authentication token found');

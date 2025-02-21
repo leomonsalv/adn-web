@@ -2,9 +2,11 @@ import { Product } from '@/types/product';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { Button } from '../ui/button';
 import Reviews from './Reviews';
-import { ReviewsResponse } from '@/types/review';
+import { ReviewFormData, ReviewsResponse } from '@/types/review';
 import TopReviews from './TopReviews';
 import useReviews from '@/hooks/use-reviews';
+import { useState } from 'react';
+import { CreateReviewDialog } from './CreateReviewDialog';
 
 type Props = {
   productData: Product;
@@ -13,10 +15,22 @@ type Props = {
 };
 
 function ReviewsSection({ productData, reviews, isLoading }: Props) {
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const totalReviews = reviews?.totalItems || 0;
   const averageRating = reviews?.metadata.averageRating || 0;
-  const { useMarkHelpful } = useReviews();
+  const { useCreateReview, useMarkHelpful } = useReviews();
   const { mutate: markHelpful } = useMarkHelpful();
+  const { mutate: createReview } = useCreateReview();
+
+  const handleCreateReview = (data: ReviewFormData) => {
+    createReview({
+      ProductID: data.productId,
+      Rating: data.rating,
+      Title: data.title,
+      Comment: data.comment,
+    });
+    setIsReviewDialogOpen(false);
+  };
 
   // Convert rating counts to percentage
   const ratings = [
@@ -115,9 +129,20 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
             <p className="text-gray-600 mb-4 font-normal leading-5">
               Si ha utilizado este producto, comparta su opinión con otros clientes.
             </p>
-            <Button color="white" className="w-full  bg-black text-white hover:bg-gray-800">
+            <Button
+              color="white"
+              className="w-full bg-black text-white hover:bg-gray-800"
+              onClick={() => setIsReviewDialogOpen(true)}
+            >
               Escribir una reseña
             </Button>
+
+            <CreateReviewDialog
+              isOpen={isReviewDialogOpen}
+              onClose={() => setIsReviewDialogOpen(false)}
+              onSubmit={handleCreateReview}
+              productId={productData.productId}
+            />
           </div>
         </section>
       </section>
