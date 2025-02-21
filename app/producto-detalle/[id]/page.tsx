@@ -48,12 +48,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
   const { useGetProductReviews } = useReviews();
-  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
-    productId: productId,
-    page: 1,
-    pageSize: 10,
-    sort: 'newest',
-  });
 
   const payload: RecommendedProductsPayload = {
     type: 'Details',
@@ -93,6 +87,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     isLoading: isProductLoading,
     error: productError,
   } = useGetProductById(productId);
+
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
+    productId: productData?.productId.toString() ?? '',
+    page: 1,
+    pageSize: 10,
+    sort: 'newest',
+  });
 
   console.log(productData);
 
@@ -466,8 +467,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           <section className="py-2">
             <ReviewsSection
               productData={productData}
-              // reviews={reviewsData}
-              reviews={dummyReviews}
+              reviews={reviewsData}
               isLoading={isReviewsLoading}
             />
           </section>

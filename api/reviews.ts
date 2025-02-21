@@ -1,4 +1,5 @@
 import { API_URL } from '@/lib/urls';
+import { ReviewsResponse, Review } from '@/types/review';
 
 export interface ReviewsParams {
   productId: string;
@@ -8,40 +9,32 @@ export interface ReviewsParams {
 }
 
 export interface ReviewPayload {
-  productID: string;
-  rating: number;
-  title: string;
-  comment: string;
-  images?: string[];
-  helpful?: number;
-  userID?: string;
-  verified?: boolean;
+  ProductID: number;
+  Rating: number;
+  Title: string;
+  Comment: string;
+  Images?: string[] | null;
+  Helpful?: number;
+  NotHelpful?: number;
+  UserID?: string;
+  Verified?: boolean;
 }
 
 export interface ReviewUpdatePayload {
-  rating?: number;
-  title?: string;
-  comment?: string;
-  images?: string[];
-  helpful?: number;
+  Rating?: number;
+  Title?: string;
+  Comment?: string;
+  Images?: string[] | null;
+  Helpful?: number;
+  NotHelpful?: number;
 }
 
-/**
- * Fetches product reviews with pagination and sorting options
- * @param {Object} params - The parameters for fetching reviews
- * @param {string} params.productId - The ID of the product to fetch reviews for
- * @param {number} [params.page=1] - The page number for pagination
- * @param {number} [params.pageSize=10] - Number of reviews per page
- * @param {'newest'|'oldest'|'rating'} [params.sort='newest'] - Sort order for reviews
- * @returns {Promise<any>} The paginated reviews data
- * @throws {Error} When the API request fails
- */
 export const fetchProductReviews = async ({
   productId,
   page = 1,
   pageSize = 10,
   sort = 'newest',
-}: ReviewsParams) => {
+}: ReviewsParams): Promise<ReviewsResponse> => {
   try {
     const queryParams = new URLSearchParams({
       page: page.toString(),

@@ -1,30 +1,8 @@
-export interface ReviewsResponse {
-  data: Review[];
-  page: number;
-  pageSize: number;
-  totalItems: number;
-  metadata: {
-    averageRating: number;
-    ratingCounts: {
-      oneStar: number;
-      twoStar: number;
-      threeStar: number;
-      fourStar: number;
-      fiveStar: number;
-    };
-  };
-}
+import { MetadataSchema } from '@/schemas/orders';
+import { ReviewSchema, RatingCountsSchema, ReviewsResponseSchema } from '@/schemas/review-schema';
+import { z } from 'zod';
 
-export interface Review {
-  id: string;
-  title: string;
-  comment: string;
-  rating: number;
-  helpful: number;
-  images?: string[];
-  productID: string;
-  userID: string;
-  verified: boolean;
-  created_at: string;
-  updated_at: string;
-}
+export type Review = z.infer<typeof ReviewSchema>;
+export type RatingCounts = z.infer<typeof RatingCountsSchema>;
+export type Metadata = z.infer<typeof MetadataSchema>;
+export type ReviewsResponse = z.infer<typeof ReviewsResponseSchema>;
