@@ -72,10 +72,10 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
         </div>
       </div>
 
-      <section className="py-2 flex flex-row justify-between items-center mb-8">
-        <div className="flex gap-8  border-r border-gray-200 w-1/2 px-8 items-center">
+      <section className="py-2 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-8">
+        <div className="flex flex-col md:flex-row gap-8 border-b lg:border-b-0 lg:border-r border-gray-200 w-full lg:w-1/2 px-4 lg:px-8 pb-8 lg:pb-0">
           {/* Left side - Average rating */}
-          <div className="w-64 p-6 bg-gray-50 rounded-lg text-center">
+          <div className="w-full md:w-64 p-6 bg-gray-50 rounded-lg text-center">
             <div className="text-4xl font-bold mb-1">{averageRating}</div>
             <div className="flex justify-center mb-2">
               {[...Array(5)].map((_, i) => (
@@ -109,13 +109,13 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
         </div>
 
         {/* Comments Section */}
-        <section className="items-center">
-          <div className="max-w-2xl mx-auto">
+        <section className="w-full lg:w-auto px-4 lg:px-0">
+          <div className="max-w-2xl lg:max-w-none mx-auto">
             <h3 className="text-lg font-medium leading-7 mb-2">Comparte tu opinión</h3>
             <p className="text-gray-600 mb-4 font-normal leading-5">
               Si ha utilizado este producto, comparta su opinión con otros clientes.
             </p>
-            <Button color="white" className="w-full bg-black text-white hover:bg-gray-800">
+            <Button color="white" className="w-full  bg-black text-white hover:bg-gray-800">
               Escribir una reseña
             </Button>
           </div>

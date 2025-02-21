@@ -33,11 +33,15 @@ export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) 
       <h3 className="text-lg leading-6 font-semibold mb-4">Top reviews</h3>
       <div className="space-y-6">
         {reviews.map((review) => (
-          <div key={review.ID} className="border-b border-gray-200 pb-6 flex justify-between">
-            <div>
+          <div
+            key={review.ID}
+            className="border-b border-gray-200 pb-6 flex flex-col lg:flex-row lg:justify-between gap-4"
+          >
+            {/* Review Content */}
+            <div className="flex-1">
               <h4 className="font-semibold text-base leading-6 mt-2">{review.Title}</h4>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <StarIcon
@@ -50,7 +54,8 @@ export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) 
                   {getTimeAgo(review.created_at.toString())}
                 </span>
               </div>
-              <div className="flex items-center gap-2 mt-2">
+
+              <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span className="text-xs leading-4 font-normal">{review.UserName}</span>
                 {review.VerifiedUser && (
                   <div className="flex items-center gap-1 text-green-600">
@@ -59,8 +64,6 @@ export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) 
                   </div>
                 )}
               </div>
-              <p className="text-gray-600 text-sm leading-5  mt-1">{review.Comment}</p>
-
               {/* {review.Images && Array.isArray(review.Images) && (review.Images as string[]).length > 0 && (
               <div className="flex gap-2 mt-3">
                 {review.Images.map((image, index) => (
@@ -73,23 +76,25 @@ export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) 
                 ))}
               </div>
             )} */}
+              <p className="text-gray-600 text-sm leading-5 mt-1">{review.Comment}</p>
             </div>
 
-            <div className="mt-4 flex flex-col items-center gap-2 justify-end">
-              <span className="text-sm text-gray-600">
+            {/* Helpful Section */}
+            <div className="flex flex-col items-start justify-end lg:items-end gap-2 w-full lg:w-auto">
+              <span className="text-sm text-gray-600 text-left lg:text-right w-full">
                 {review.Helpful} personas encontraron útil esta reseña. ¿Te ayudó?
               </span>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full lg:w-auto">
                 <Button
                   color="white"
-                  className="border rounded-md px-4 py-2 hover:bg-gray-50"
+                  className="border rounded-md px-4 py-2 hover:bg-gray-50 flex-1 lg:flex-none"
                   onClick={() => onMarkHelpful?.(review.ID, true)}
                 >
                   Es de utilidad
                 </Button>
                 <Button
                   color="white"
-                  className="border rounded-md px-4 py-2 hover:bg-gray-50"
+                  className="border rounded-md px-4 py-2 hover:bg-gray-50 flex-1 lg:flex-none"
                   onClick={() => onMarkHelpful?.(review.ID, false)}
                 >
                   No es de utilidad
