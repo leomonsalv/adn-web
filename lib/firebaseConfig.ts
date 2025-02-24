@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { getApps, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getFunctions } from "firebase/functions";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
-import { GoogleAuthProvider } from "firebase/auth";
+import { getApps, initializeApp, getApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getFunctions } from 'firebase/functions';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,8 +17,19 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp =
-  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+
+// Función para obtener el usuario autenticado desde sessionStorage
+export const getFirebaseAuthUser = () => {
+  if (typeof window === 'undefined') return null;
+
+  const apiKey = firebaseApp.options.apiKey;
+  const appName = firebaseApp.name;
+  const sessionKey = `firebase:authUser:${apiKey}:${appName}`;
+
+  const userData = sessionStorage.getItem(sessionKey);
+  return userData ? JSON.parse(userData) : null;
+};
 
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);

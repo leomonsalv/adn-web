@@ -1,3 +1,4 @@
+import { getFirebaseAuthUser } from '@/lib/firebaseConfig';
 import { API_URL } from '@/lib/urls';
 import { ReviewsResponse, Review } from '@/types/review';
 
@@ -74,15 +75,8 @@ export const fetchProductReviews = async ({
  */
 export const createProductReview = async (review: ReviewPayload) => {
   try {
-    //FIXME: I NEED TO GET THE USER ID FROM THE SESSION STORAGE
-    const userSession = JSON.parse(
-      sessionStorage.getItem(
-        'firebase:authUser:AIzaSyBXwDlKLqr2jGk_kAgUXp3ozxDz0XxlkMY:[DEFAULT]',
-      ) || '{}',
-    );
-    console.log('🚀 ~ createProductReview ~ accessToken:', userSession);
-    const accessToken = userSession?.stsTokenManager?.accessToken;
-    console.log('🚀 ~ createProductReview ~ accessToken:', accessToken);
+    const userSession = getFirebaseAuthUser();
+    const accessToken = userSession?.accessToken;
 
     if (!accessToken) {
       throw new Error('No authentication token found');
@@ -94,6 +88,7 @@ export const createProductReview = async (review: ReviewPayload) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
+      // mode: 'no-cors',
       body: JSON.stringify(review),
     });
 
@@ -194,22 +189,22 @@ export const deleteProductReview = async (reviewId: string) => {
 };
 
 /**
- * Marks a review as helpful by incrementing its helpful count
+ * Marks a review as helpful
  * @param {string} reviewId - The ID of the review to mark as helpful
  * @returns {Promise<any>} The updated review data
  * @throws {Error} When authentication fails or API request fails
  */
 export const markReviewAsHelpful = async (reviewId: string) => {
   try {
-    const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const accessToken = userSession?.stsTokenManager?.accessToken;
+    const userSession = getFirebaseAuthUser();
+    const accessToken = userSession?.accessToken;
 
     if (!accessToken) {
       throw new Error('No authentication token found');
     }
 
-    const response = await fetch(`${API_URL}/api/reviews/${reviewId}`, {
-      method: 'DELETE',
+    const response = await fetch(`${API_URL}/api/reviews/${reviewId}/helpful`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -220,12 +215,51 @@ export const markReviewAsHelpful = async (reviewId: string) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return true;
+    const data = await response.json();
+    return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error('Error deleting product review:', error.message);
+      console.error('Error marking review as helpful:', error.message);
       throw error;
     }
-    throw new Error('An unknown error occurred while deleting the review');
+    throw new Error('An unknown error occurred while marking the review as helpful');
+  }
+};
+
+/**
+ * Marks a review as not helpful
+ * @param {string} reviewId - The ID of the review to mark as not helpful
+ * @returns {Promise<any>} The updated review data
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const markReviewAsNotHelpful = async (reviewId: string) => {
+  try {
+    const userSession = getFirebaseAuthUser();
+    const accessToken = userSession?.accessToken;
+
+    if (!accessToken) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await fetch(`${API_URL}/api/reviews/${reviewId}/not-helpful`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error marking review as not helpful:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while marking the review as not helpful');
   }
 };

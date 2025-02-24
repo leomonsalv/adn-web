@@ -95,8 +95,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     sort: 'newest',
   });
 
-  console.log(productData);
-
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
   const { mutateAsync: updateCart } = useMutateCart();

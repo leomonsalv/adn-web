@@ -1,12 +1,12 @@
 import { Product } from '@/types/product';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { Button } from '../ui/button';
-import Reviews from './Reviews';
 import { ReviewFormData, ReviewsResponse } from '@/types/review';
 import TopReviews from './TopReviews';
 import useReviews from '@/hooks/use-reviews';
 import { useState } from 'react';
 import { CreateReviewDialog } from './CreateReviewDialog';
+import { useToast } from '@/hooks/use-toast';
 
 type Props = {
   productData: Product;
@@ -21,6 +21,29 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
   const { useCreateReview, useMarkHelpful } = useReviews();
   const { mutate: markHelpful } = useMarkHelpful();
   const { mutate: createReview } = useCreateReview();
+  const { toast } = useToast();
+
+  const handleMarkHelpful = (reviewId: string, isHelpful: boolean) => {
+    markHelpful(
+      { reviewId, isHelpful },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Review registrada',
+            description: 'Gracias por tu review!',
+          });
+        },
+        onError: (error) => {
+          console.error('Error marking review:', error);
+          toast({
+            title: 'Error',
+            description: 'No se pudo registrar tu review, intente mas tarde.',
+            variant: 'destructive',
+          });
+        },
+      },
+    );
+  };
 
   const handleCreateReview = (data: ReviewFormData) => {
     createReview({
@@ -149,7 +172,7 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
 
       {/* Reviews list */}
       {reviews?.data && reviews.data.length > 0 ? (
-        <TopReviews reviews={reviews?.data || []} />
+        <TopReviews reviews={reviews?.data || []} onMarkHelpful={handleMarkHelpful} />
       ) : (
         <p className="text-center text-gray-500">No hay reseñas todavía.</p>
       )}

@@ -8,6 +8,7 @@ import {
   type ReviewPayload,
   type ReviewUpdatePayload,
   type ReviewsParams,
+  markReviewAsNotHelpful,
 } from '@/api/reviews';
 
 export function useReviews() {
@@ -51,7 +52,7 @@ export function useReviews() {
   const useMarkHelpful = () => {
     return useMutation({
       mutationFn: ({ reviewId, isHelpful }: { reviewId: string; isHelpful: boolean }) =>
-        markReviewAsHelpful(reviewId),
+        isHelpful ? markReviewAsHelpful(reviewId) : markReviewAsNotHelpful(reviewId),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['reviews'] });
       },
