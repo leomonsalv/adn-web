@@ -7,7 +7,6 @@ import useReviews from '@/hooks/use-reviews';
 import { useState } from 'react';
 import { CreateReviewDialog } from './CreateReviewDialog';
 import { useToast } from '@/hooks/use-toast';
-
 type Props = {
   productData: Product;
   reviews?: ReviewsResponse;
@@ -22,10 +21,14 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
   const { mutate: markHelpful } = useMarkHelpful();
   const { mutate: createReview } = useCreateReview();
   const { toast } = useToast();
-
   const handleMarkHelpful = (reviewId: string, isHelpful: boolean) => {
     markHelpful(
-      { reviewId, isHelpful },
+      {
+        reviewId,
+        isHelpful,
+        token:
+          'eyJhbGciOiJSUzI1NiIsImtpZCI6ImRjNjI2MmYzZTk3NzIzOWMwMDUzY2ViODY0Yjc3NDBmZjMxZmNkY2MiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWd1c3TDrW4gTmVncsOtbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BRWRGVHA0bkt6cDJhQ1F2Zmp4dVVkQTlUaXVRSlJzNHNMQTgxSlhxeTZKbE9sUT1zOTYtYyIsIndpbmJhY2tTZW5kZWQiOmZhbHNlLCJ3aW5iYWNrU2VuZGVkRGF0ZSI6IjIwMjItMDUtMTZUMTk6MjQ6NDIuNjI0WiIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9hZGFuLWZhcm0iLCJhdWQiOiJhZGFuLWZhcm0iLCJhdXRoX3RpbWUiOjE3Mjk5NTM5MjIsInVzZXJfaWQiOiJiS3FsQno2cHdZTzhQMHJtVFFSQ0dhdkE4c2YxIiwic3ViIjoiYktxbEJ6NnB3WU84UDBybVRRUkNHYXZBOHNmMSIsImlhdCI6MTc0MDQzNjczOSwiZXhwIjoxNzQwNDQwMzM5LCJlbWFpbCI6ImFndXN0aW5uZzE0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTEzMTk3ODc4NjU5ODE1ODgwODU1Il0sImVtYWlsIjpbImFndXN0aW5uZzE0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.JlgbghIirm3LBKiRbhHnm4tMMgWQTaoScFr15Y9wM0I2cOD0JNYN_uWsR0Mcrgh5l8ZMqD2Ft6W59UYH5s6DiIVYUEY0F5WIq_iYZJJ1k4dWoadmFaCJitBVDfLq4b9rKi1PXHvCnN99iMhA_k2Pa92MSm4ZagM4ZcSZ6rQIW1OJ0JS7OKAS9uGrTcl9xw7d5bk2gvREfRiI0hU9LuuNiAbwsDuAeFSxzK76WHPBajM9KLIHisOWOX0biELxp_ZOo_C5LUu2xdxx-hyNo09ZXucR0eP7ty4byZldPF00Z8MrmZBS8NwAnyWZWt1x6RSePnRo-lezQrVndfsra-uoWA',
+      },
       {
         onSuccess: () => {
           toast({
@@ -45,13 +48,16 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
     );
   };
 
-  const handleCreateReview = (data: ReviewFormData) => {
-    createReview({
+  const handleCreateReview = async (data: ReviewFormData) => {
+    const reviewPayload = {
+      userToken:
+        'eyJhbGciOiJSUzI1NiIsImtpZCI6ImRjNjI2MmYzZTk3NzIzOWMwMDUzY2ViODY0Yjc3NDBmZjMxZmNkY2MiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWd1c3TDrW4gTmVncsOtbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BRWRGVHA0bkt6cDJhQ1F2Zmp4dVVkQTlUaXVRSlJzNHNMQTgxSlhxeTZKbE9sUT1zOTYtYyIsIndpbmJhY2tTZW5kZWQiOmZhbHNlLCJ3aW5iYWNrU2VuZGVkRGF0ZSI6IjIwMjItMDUtMTZUMTk6MjQ6NDIuNjI0WiIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9hZGFuLWZhcm0iLCJhdWQiOiJhZGFuLWZhcm0iLCJhdXRoX3RpbWUiOjE3Mjk5NTM5MjIsInVzZXJfaWQiOiJiS3FsQno2cHdZTzhQMHJtVFFSQ0dhdkE4c2YxIiwic3ViIjoiYktxbEJ6NnB3WU84UDBybVRRUkNHYXZBOHNmMSIsImlhdCI6MTc0MDQzNjczOSwiZXhwIjoxNzQwNDQwMzM5LCJlbWFpbCI6ImFndXN0aW5uZzE0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTEzMTk3ODc4NjU5ODE1ODgwODU1Il0sImVtYWlsIjpbImFndXN0aW5uZzE0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.JlgbghIirm3LBKiRbhHnm4tMMgWQTaoScFr15Y9wM0I2cOD0JNYN_uWsR0Mcrgh5l8ZMqD2Ft6W59UYH5s6DiIVYUEY0F5WIq_iYZJJ1k4dWoadmFaCJitBVDfLq4b9rKi1PXHvCnN99iMhA_k2Pa92MSm4ZagM4ZcSZ6rQIW1OJ0JS7OKAS9uGrTcl9xw7d5bk2gvREfRiI0hU9LuuNiAbwsDuAeFSxzK76WHPBajM9KLIHisOWOX0biELxp_ZOo_C5LUu2xdxx-hyNo09ZXucR0eP7ty4byZldPF00Z8MrmZBS8NwAnyWZWt1x6RSePnRo-lezQrVndfsra-uoWA',
       ProductID: data.productId,
       Rating: data.rating,
       Title: data.title,
       Comment: data.comment,
-    });
+    };
+    createReview(reviewPayload);
     setIsReviewDialogOpen(false);
   };
 

@@ -42,6 +42,9 @@ export const fetchProductReviews = async ({
       pageSize: pageSize.toString(),
       sort: sort,
     });
+    if (!productId) {
+      throw new Error('Product ID is required');
+    }
 
     const response = await fetch(
       `${API_URL}/api/products/${productId}/reviews?${queryParams.toString()}`,
@@ -73,20 +76,17 @@ export const fetchProductReviews = async ({
  * @returns {Promise<any>} The created review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const createProductReview = async (review: ReviewPayload) => {
+export const createProductReview = async (review: ReviewPayload, userToken: string) => {
   try {
-    const userSession = getFirebaseAuthUser();
-    const accessToken = userSession?.accessToken;
-
-    if (!accessToken) {
+    if (!userToken) {
       throw new Error('No authentication token found');
     }
 
-    const response = await fetch(`${API_URL}/api/reviews`, {
+    const response = await fetch(`${API_URL}/api/reviews/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${userToken}`,
       },
       // mode: 'no-cors',
       body: JSON.stringify(review),
@@ -194,29 +194,20 @@ export const deleteProductReview = async (reviewId: string) => {
  * @returns {Promise<any>} The updated review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const markReviewAsHelpful = async (reviewId: string) => {
+export const markReviewAsHelpful = async (reviewId: string, token: string) => {
   try {
-    const userSession = getFirebaseAuthUser();
-    const accessToken = userSession?.accessToken;
-
-    if (!accessToken) {
-      throw new Error('No authentication token found');
-    }
-
     const response = await fetch(`${API_URL}/api/reviews/${reviewId}/helpful`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const data = await response.json();
-    return data;
+    return true;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error marking review as helpful:', error.message);
@@ -232,29 +223,20 @@ export const markReviewAsHelpful = async (reviewId: string) => {
  * @returns {Promise<any>} The updated review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const markReviewAsNotHelpful = async (reviewId: string) => {
+export const markReviewAsNotHelpful = async (reviewId: string, token: string) => {
   try {
-    const userSession = getFirebaseAuthUser();
-    const accessToken = userSession?.accessToken;
-
-    if (!accessToken) {
-      throw new Error('No authentication token found');
-    }
-
     const response = await fetch(`${API_URL}/api/reviews/${reviewId}/not-helpful`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const data = await response.json();
-    return data;
+    return true;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error marking review as not helpful:', error.message);
