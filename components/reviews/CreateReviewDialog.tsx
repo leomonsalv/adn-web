@@ -65,11 +65,13 @@ export function CreateReviewDialog({
                   },
                 })}
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 whitespace-nowrap">
                 {title?.length || 0}/40
               </span>
             </div>
-            {errors.title && <p className="text-sm text-red-500 mt-2">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="text-sm text-red-500 mt-2 break-words">{errors.title.message}</p>
+            )}
           </div>
 
           <div>
@@ -86,28 +88,28 @@ export function CreateReviewDialog({
                   },
                 })}
               />
-              <span className="absolute right-4 bottom-4 text-sm text-gray-400">
+              <span className="absolute right-4 bottom-4 text-sm text-gray-400 whitespace-nowrap">
                 {comment?.length || 0}/100
               </span>
             </div>
             {errors.comment && (
-              <p className="text-sm text-red-500 mt-2">{errors.comment.message}</p>
+              <p className="text-sm text-red-500 mt-2 break-words">{errors.comment.message}</p>
             )}
           </div>
 
-          <DialogActions className="flex justify-end gap-4 mt-8">
+          <DialogActions className="flex flex-col-reverse sm:flex-row justify-end gap-4 mt-8 w-full">
             <Button
               type="button"
               color="white"
               onClick={onClose}
-              className="px-6 py-2 rounded-full"
+              className="w-full sm:w-auto px-6 py-2 rounded-full"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={rating === 0}
-              className="px-6 py-2 rounded-full bg-gray-700 text-white hover:bg-gray-800 disabled:bg-gray-400"
+              className="w-full sm:w-auto px-6 py-2 rounded-full bg-gray-700 text-white hover:bg-gray-800 disabled:bg-gray-400"
             >
               Publicar reseña
             </Button>
