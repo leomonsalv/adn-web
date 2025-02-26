@@ -1,6 +1,5 @@
-import { getFirebaseAuthUser } from '@/lib/firebaseConfig';
-import { API_URL } from '@/lib/urls';
-import { ReviewsResponse, Review } from '@/types/review';
+import { ReviewsResponse } from '@/types/review';
+import { axiosInstanceV3 } from './axios';
 
 export interface ReviewsParams {
   productId: string;
@@ -46,15 +45,15 @@ export const fetchProductReviews = async ({
       throw new Error('Product ID is required');
     }
 
-    const response = await fetch(
-      `${API_URL}/api/products/${productId}/reviews?${queryParams.toString()}`,
+    const response = await axiosInstanceV3.get(
+      `/api/products/${productId}/reviews?${queryParams.toString()}`,
     );
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -76,27 +75,15 @@ export const fetchProductReviews = async ({
  * @returns {Promise<any>} The created review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const createProductReview = async (review: ReviewPayload, userToken: string) => {
+export const createProductReview = async (review: ReviewPayload) => {
   try {
-    if (!userToken) {
-      throw new Error('No authentication token found');
-    }
+    const response = await axiosInstanceV3.post(`/api/reviews/`, review);
 
-    const response = await fetch(`${API_URL}/api/reviews/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-      // mode: 'no-cors',
-      body: JSON.stringify(review),
-    });
-
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -120,27 +107,13 @@ export const createProductReview = async (review: ReviewPayload, userToken: stri
  */
 export const updateProductReview = async (reviewId: string, updates: ReviewUpdatePayload) => {
   try {
-    const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const accessToken = userSession?.stsTokenManager?.accessToken;
+    const response = await axiosInstanceV3.put(`/api/reviews/${reviewId}`, updates);
 
-    if (!accessToken) {
-      throw new Error('No authentication token found');
-    }
-
-    const response = await fetch(`${API_URL}/api/reviews/${reviewId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(updates),
-    });
-
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -159,22 +132,9 @@ export const updateProductReview = async (reviewId: string, updates: ReviewUpdat
  */
 export const deleteProductReview = async (reviewId: string) => {
   try {
-    const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const accessToken = userSession?.stsTokenManager?.accessToken;
+    const response = await axiosInstanceV3.delete(`/api/reviews/${reviewId}`);
 
-    if (!accessToken) {
-      throw new Error('No authentication token found');
-    }
-
-    const response = await fetch(`${API_URL}/api/reviews/${reviewId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -194,17 +154,11 @@ export const deleteProductReview = async (reviewId: string) => {
  * @returns {Promise<any>} The updated review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const markReviewAsHelpful = async (reviewId: string, token: string) => {
+export const markReviewAsHelpful = async (reviewId: string) => {
   try {
-    const response = await fetch(`${API_URL}/api/reviews/${reviewId}/helpful`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstanceV3.post(`/api/reviews/${reviewId}/helpful`, {});
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     return true;
@@ -223,17 +177,11 @@ export const markReviewAsHelpful = async (reviewId: string, token: string) => {
  * @returns {Promise<any>} The updated review data
  * @throws {Error} When authentication fails or API request fails
  */
-export const markReviewAsNotHelpful = async (reviewId: string, token: string) => {
+export const markReviewAsNotHelpful = async (reviewId: string) => {
   try {
-    const response = await fetch(`${API_URL}/api/reviews/${reviewId}/not-helpful`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstanceV3.post(`/api/reviews/${reviewId}/not-helpful`, {});
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     return true;

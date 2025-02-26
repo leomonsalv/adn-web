@@ -23,8 +23,7 @@ export function useReviews() {
 
   const useCreateReview = () => {
     return useMutation({
-      mutationFn: ({ userToken, ...review }: ReviewPayload & { userToken: string }) =>
-        createProductReview(review, userToken),
+      mutationFn: (review: ReviewPayload) => createProductReview(review),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['reviews'] });
       },
@@ -52,18 +51,8 @@ export function useReviews() {
 
   const useMarkHelpful = () => {
     return useMutation({
-      mutationFn: ({
-        reviewId,
-        isHelpful,
-        token,
-      }: {
-        reviewId: string;
-        isHelpful: boolean;
-        token: string;
-      }) => {
-        return isHelpful
-          ? markReviewAsHelpful(reviewId, token)
-          : markReviewAsNotHelpful(reviewId, token);
+      mutationFn: ({ reviewId, isHelpful }: { reviewId: string; isHelpful: boolean }) => {
+        return isHelpful ? markReviewAsHelpful(reviewId) : markReviewAsNotHelpful(reviewId);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['reviews'] });

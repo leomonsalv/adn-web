@@ -29,7 +29,6 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
       {
         reviewId,
         isHelpful,
-        token: accessToken,
       },
       {
         onSuccess: () => {
@@ -52,7 +51,6 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
 
   const handleCreateReview = async (data: ReviewFormData) => {
     const reviewPayload = {
-      userToken: accessToken,
       ProductID: data.productId,
       Rating: data.rating,
       Title: data.title,
