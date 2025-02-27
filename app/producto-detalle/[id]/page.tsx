@@ -275,7 +275,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 <h2 id="reviews-heading" className="sr-only">
                   Reseñas y Calificaciones
                 </h2>
-                <Reviews rating={product.rating} reviewCount={product.reviewCount} />
+                <Reviews
+                  rating={reviewsData?.metadata.averageRating ?? 0}
+                  reviewCount={reviewsData?.totalItems ?? 0}
+                />
               </section>
 
               {/* Descripción */}

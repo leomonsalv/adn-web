@@ -4,6 +4,8 @@ import CarouselCard from './CarouselCard';
 import { RecommendedProductsResponseElement } from '@/types/product';
 import { ChevronRight } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
+import { ReviewsResponse } from '@/types/review';
+import useReviews from '@/hooks/use-reviews';
 
 export interface ProductWithRating extends RecommendedProductsResponseElement {
   rating?: number;
@@ -16,6 +18,7 @@ interface CarouselRecommenedProps {
   subtitle: string;
   products: ProductWithRating[];
   autoplay?: boolean;
+  reviews?: ReviewsResponse;
 }
 
 const CarouselRecommened = ({
@@ -25,6 +28,21 @@ const CarouselRecommened = ({
   autoplay = true,
 }: CarouselRecommenedProps) => {
   const [api, setApi] = React.useState<CarouselApi>();
+  const { useGetProductReviews } = useReviews();
+
+  const productReviews = products.map((product) => {
+    const { data: reviewData } = useGetProductReviews({
+      productId: product.id.toString(),
+      page: 1,
+      pageSize: 10,
+      sort: 'newest',
+    });
+    return {
+      productId: product.id,
+      rating: reviewData?.metadata.averageRating || 0,
+      reviewCount: reviewData?.totalItems || 0,
+    };
+  });
 
   const plugin = React.useRef(
     Autoplay({
@@ -55,24 +73,28 @@ const CarouselRecommened = ({
         setApi={setApi}
       >
         <CarouselContent className="-ml-2 md:-ml-4">
-          {products.map((product) => (
-            <CarouselItem
-              key={product.id}
-              className="pl-2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 md:pl-4"
-            >
-              <CarouselCard
-                title={product.name}
-                imageUrl={product?.imageLarge || '/delivery.jpeg'}
-                rating={product?.rating || 0}
-                reviewCount={product.reviewCount || 0}
-                originalPrice={product.price}
-                discountPercentage={product.discount_rate}
-                currentPrice={product.price}
-                offerType={product?.offerType || ''}
-                id={product.id}
-              />
-            </CarouselItem>
-          ))}
+          {products.map((product) => {
+            const productReview = productReviews.find((review) => review.productId === product.id);
+
+            return (
+              <CarouselItem
+                key={product.id}
+                className="pl-2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 md:pl-4"
+              >
+                <CarouselCard
+                  title={product.name}
+                  imageUrl={product?.imageLarge || '/delivery.jpeg'}
+                  rating={productReview?.rating || 0}
+                  reviewCount={productReview?.reviewCount || 0}
+                  originalPrice={product.price}
+                  discountPercentage={product.discount_rate}
+                  currentPrice={product.price}
+                  offerType={product?.offerType || ''}
+                  id={product.id}
+                />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <button
           onClick={scrollNext}
