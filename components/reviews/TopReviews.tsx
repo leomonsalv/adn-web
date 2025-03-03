@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/es';
-
+import useUser from '@/hooks/use-user';
 dayjs.extend(relativeTime);
 dayjs.locale('es');
 
@@ -15,6 +15,8 @@ interface TopReviewsProps {
 }
 
 export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) {
+  const { user } = useUser();
+  console.log('🚀 ~ TopReviews ~ user:', user);
   const getTimeAgo = (dateString: string) => {
     return dayjs(dateString).fromNow();
   };
@@ -66,27 +68,48 @@ export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) 
                   {review.Comment}
                 </p>
               </div>
-
               <div className="flex flex-col items-center gap-2 justify-end">
                 <span className="text-sm text-gray-600 text-left lg:text-right">
-                  {review.Helpful} personas encontraron útil esta reseña. ¿Te ayudó?
+                  {review.Helpful} personas encontraron útil esta reseña.
                 </span>
-                <div className="flex gap-2">
-                  <Button
-                    outline
-                    className="rounded-none px-6 py-2 border hover:bg-gray-50"
-                    onClick={() => onMarkHelpful?.(review.ID, true)}
-                  >
-                    Es de utilidad
-                  </Button>
-                  <Button
-                    outline
-                    className="rounded-none px-6 py-2 border hover:bg-gray-50"
-                    onClick={() => onMarkHelpful?.(review.ID, false)}
-                  >
-                    No es de utilidad
-                  </Button>
-                </div>
+
+                {review.userVoteStatus && review.UserID !== user?.id && (
+                  <span className="text-sm text-gray-600 text-left lg:text-right">
+                    {review.userVoteStatus === 'helpful' ? (
+                      <>
+                        <span role="img" aria-label="Gracias">
+                          👍
+                        </span>{' '}
+                        Te ayudó
+                      </>
+                    ) : (
+                      <>
+                        <span role="img" aria-label="No gracias">
+                          👎
+                        </span>{' '}
+                        No te ayudó
+                      </>
+                    )}
+                  </span>
+                )}
+                {!review.userVoteStatus && review.UserID !== user?.id && (
+                  <div className="flex gap-2">
+                    <Button
+                      outline
+                      className="rounded-none px-6 py-2 border hover:bg-gray-50"
+                      onClick={() => onMarkHelpful?.(review.ID, true)}
+                    >
+                      Es de utilidad
+                    </Button>
+                    <Button
+                      outline
+                      className="rounded-none px-6 py-2 border hover:bg-gray-50"
+                      onClick={() => onMarkHelpful?.(review.ID, false)}
+                    >
+                      No es de utilidad
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

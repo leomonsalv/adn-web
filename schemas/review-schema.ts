@@ -15,6 +15,7 @@ export const ReviewSchema = z.object({
   Verified: z.boolean(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
+  userVoteStatus: z.enum(['helpful', 'notHelpful', '']).optional(),
 });
 
 export const RatingCountsSchema = z.object({
@@ -36,4 +37,5 @@ export const ReviewsResponseSchema = z.object({
   pageSize: z.number(),
   totalItems: z.number(),
   metadata: MetadataSchema,
+  hasReviewed: z.boolean(),
 });

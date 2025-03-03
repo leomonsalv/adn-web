@@ -18,12 +18,11 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const totalReviews = reviews?.totalItems || 0;
   const averageRating = reviews?.metadata.averageRating || 0;
+  const canReview = !reviews?.hasReviewed || false;
   const { useCreateReview, useMarkHelpful } = useReviews();
   const { mutate: markHelpful } = useMarkHelpful();
   const { mutate: createReview } = useCreateReview();
   const { toast } = useToast();
-  const userSession = getFirebaseAuthUser();
-  const accessToken = userSession?.accessToken;
   const handleMarkHelpful = (reviewId: string, isHelpful: boolean) => {
     markHelpful(
       {
@@ -151,28 +150,40 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
         </div>
 
         {/* Comments Section */}
-        <section className="w-full lg:w-auto px-4 lg:px-0">
-          <div className="max-w-2xl lg:max-w-none mx-auto">
-            <h3 className="text-lg font-medium leading-7 mb-2">Comparte tu opinión</h3>
-            <p className="text-gray-600 mb-4 font-normal leading-5">
-              Si ha utilizado este producto, comparta su opinión con otros clientes.
-            </p>
-            <Button
-              color="white"
-              className="w-full bg-black text-white hover:bg-gray-800"
-              onClick={() => setIsReviewDialogOpen(true)}
-            >
-              Escribir una reseña
-            </Button>
+        {canReview && (
+          <section className="w-full lg:w-auto px-4 lg:px-0">
+            <div className="max-w-2xl lg:max-w-none mx-auto">
+              <h3 className="text-lg font-medium leading-7 mb-2">Comparte tu opinión</h3>
+              <p className="text-gray-600 mb-4 font-normal leading-5">
+                Si ha utilizado este producto, comparta su opinión con otros clientes.
+              </p>
+              <Button
+                color="white"
+                className="w-full bg-black text-white hover:bg-gray-800"
+                onClick={() => setIsReviewDialogOpen(true)}
+              >
+                Escribir una reseña
+              </Button>
 
-            <CreateReviewDialog
-              isOpen={isReviewDialogOpen}
-              onClose={() => setIsReviewDialogOpen(false)}
-              onSubmit={handleCreateReview}
-              productId={productData.productId}
-            />
-          </div>
-        </section>
+              <CreateReviewDialog
+                isOpen={isReviewDialogOpen}
+                onClose={() => setIsReviewDialogOpen(false)}
+                onSubmit={handleCreateReview}
+                productId={productData.productId}
+              />
+            </div>
+          </section>
+        )}
+        {!canReview && (
+          <section className="w-full lg:w-auto px-4 lg:px-0">
+            <div className="max-w-2xl lg:max-w-none mx-auto">
+              <h3 className="text-lg font-medium leading-7 mb-2">Gracias por tu opinión</h3>
+              <p className="text-gray-600 mb-4 font-normal leading-5">
+                Valoramos mucho tu opinión.
+              </p>
+            </div>
+          </section>
+        )}
       </section>
 
       {/* Reviews list */}
