@@ -32,3 +32,34 @@ export function useAuth() {
 
   return { ...context, useDeleteAccountMutation };
 }
+
+{
+  /* 
+  'use client';
+
+import { useMutation } from '@tanstack/react-query';
+import { deleteAccount } from '@/api/auth';
+import { useAuth } from '@/providers/auth-provider';
+import { auth } from '@/lib/firebaseConfig';
+
+export function useAuthExtended() {
+  const authContext = useAuth();
+  
+  const useDeleteAccountMutation = () => {
+    const mutation = useMutation({
+      mutationKey: ['delete-account'],
+      mutationFn: () => {
+        if (!authContext.user) throw new Error('User not found');
+        return deleteAccount(authContext.user);
+      },
+    });
+    return mutation;
+  };
+
+  return {
+    ...authContext,
+    useDeleteAccountMutation
+  };
+}
+  */
+}

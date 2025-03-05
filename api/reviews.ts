@@ -1,0 +1,195 @@
+import { ReviewsResponse } from '@/types/review';
+import { axiosInstanceV3 } from './axios';
+
+export interface ReviewsParams {
+  productId: string;
+  page?: number;
+  pageSize?: number;
+  sort?: 'newest' | 'oldest' | 'rating';
+}
+
+export interface ReviewPayload {
+  ProductID: number;
+  Rating: number;
+  Title: string;
+  Comment: string;
+  Images?: string[] | null;
+  Helpful?: number;
+  NotHelpful?: number;
+  UserID?: string;
+  Verified?: boolean;
+}
+
+export interface ReviewUpdatePayload {
+  Rating?: number;
+  Title?: string;
+  Comment?: string;
+  Images?: string[] | null;
+  Helpful?: number;
+  NotHelpful?: number;
+}
+
+export const fetchProductReviews = async ({
+  productId,
+  page = 1,
+  pageSize = 10,
+  sort = 'newest',
+}: ReviewsParams): Promise<ReviewsResponse> => {
+  try {
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+      sort: sort,
+    });
+    if (!productId) {
+      throw new Error('Product ID is required');
+    }
+
+    const response = await axiosInstanceV3.get(
+      `/api/products/${productId}/reviews?${queryParams.toString()}`,
+    );
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = response.data;
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching product reviews:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching product reviews');
+  }
+};
+
+/**
+ * Creates a new product review
+ * @param {ReviewPayload} review - The review data to be created
+ * @param {string} review.productID - The ID of the product being reviewed
+ * @param {number} review.rating - Rating value (1-5)
+ * @param {string} review.title - Review title
+ * @param {string} review.comment - Review content
+ * @param {string[]} [review.images] - Optional array of image URLs
+ * @returns {Promise<any>} The created review data
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const createProductReview = async (review: ReviewPayload) => {
+  try {
+    const response = await axiosInstanceV3.post(`/api/reviews/`, review);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = response.data;
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error creating product review:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while creating the review');
+  }
+};
+
+/**
+ * Updates an existing product review
+ * @param {string} reviewId - The ID of the review to update
+ * @param {ReviewUpdatePayload} updates - The fields to update
+ * @param {number} [updates.rating] - Updated rating value
+ * @param {string} [updates.title] - Updated review title
+ * @param {string} [updates.comment] - Updated review content
+ * @param {string[]} [updates.images] - Updated array of image URLs
+ * @returns {Promise<any>} The updated review data
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const updateProductReview = async (reviewId: string, updates: ReviewUpdatePayload) => {
+  try {
+    const response = await axiosInstanceV3.put(`/api/reviews/${reviewId}`, updates);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = response.data;
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error updating product review:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while updating the review');
+  }
+};
+
+/**
+ * Deletes a product review
+ * @param {string} reviewId - The ID of the review to delete
+ * @returns {Promise<boolean>} True if deletion was successful
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const deleteProductReview = async (reviewId: string) => {
+  try {
+    const response = await axiosInstanceV3.delete(`/api/reviews/${reviewId}`);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return true;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error deleting product review:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while deleting the review');
+  }
+};
+
+/**
+ * Marks a review as helpful
+ * @param {string} reviewId - The ID of the review to mark as helpful
+ * @returns {Promise<any>} The updated review data
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const markReviewAsHelpful = async (reviewId: string) => {
+  try {
+    const response = await axiosInstanceV3.post(`/api/reviews/${reviewId}/helpful`, {});
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return true;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error marking review as helpful:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while marking the review as helpful');
+  }
+};
+
+/**
+ * Marks a review as not helpful
+ * @param {string} reviewId - The ID of the review to mark as not helpful
+ * @returns {Promise<any>} The updated review data
+ * @throws {Error} When authentication fails or API request fails
+ */
+export const markReviewAsNotHelpful = async (reviewId: string) => {
+  try {
+    const response = await axiosInstanceV3.post(`/api/reviews/${reviewId}/not-helpful`, {});
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return true;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error marking review as not helpful:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while marking the review as not helpful');
+  }
+};

@@ -5,7 +5,7 @@ import { getUserById, getUserByEmail, getUserAddresses } from '@/api/users';
 import { useAuth } from './use-auth';
 
 export default function useUser() {
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
 
   const isAnonymous = user?.isAnonymous;
 
@@ -34,6 +34,7 @@ export default function useUser() {
     user: {
       ...query.data,
       id: query.data?.id,
+      accessToken,
     },
     addresses: queryAddresses.data,
     useGetUserByEmail,

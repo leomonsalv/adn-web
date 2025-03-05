@@ -35,7 +35,7 @@ export default function Reviews({ rating, reviewCount, showAllReviews = true }: 
             </div>
             <div className="ml-4 flex">
               <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                See all {reviewCount} reviews
+                {reviewCount} reseñas
               </a>
             </div>
           </>

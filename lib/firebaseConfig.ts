@@ -19,6 +19,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
+// Función para obtener el usuario autenticado desde sessionStorage
+export const getFirebaseAuthUser = () => {
+  if (typeof window === 'undefined') return null;
+
+  const apiKey = firebaseApp.options.apiKey;
+  const appName = firebaseApp.name;
+  const sessionKey = `firebase:authUser:${apiKey}:${appName}`;
+
+  const userData = sessionStorage.getItem(sessionKey);
+  return userData ? JSON.parse(userData) : null;
+};
+
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);

@@ -18,7 +18,7 @@ import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
 import { TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
-import { product } from '@/lib/dummyData';
+import { dummyReviews, product } from '@/lib/dummyData';
 import {
   Accordion,
   AccordionContent,
@@ -36,6 +36,9 @@ import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/ty
 import { anonymousSignIn } from '@/api/auth';
 import { useAuth } from '@/hooks/use-auth';
 import { getCart, getOrCreateCart } from '@/api/cart';
+import useReviews from '@/hooks/use-reviews';
+import Reviews from '@/components/reviews/Reviews';
+import ReviewsSection from '@/components/reviews/ReviewSection';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -44,6 +47,8 @@ interface ProductPageProps {
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
+  const { useGetProductReviews } = useReviews();
+
   const payload: RecommendedProductsPayload = {
     type: 'Details',
     products: [productId],
@@ -83,7 +88,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     error: productError,
   } = useGetProductById(productId);
 
-  console.log(productData);
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
+    productId: productData?.productId.toString() ?? '',
+    page: 1,
+    pageSize: 10,
+    sort: 'newest',
+  });
 
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
@@ -261,12 +271,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               )}
 
               {/* Reviews */}
-              {/* <section aria-labelledby="reviews-heading" className="my-2">
+              <section aria-labelledby="reviews-heading" className="my-2">
                 <h2 id="reviews-heading" className="sr-only">
                   Reseñas y Calificaciones
                 </h2>
-                <Reviews rating={product.rating} reviewCount={product.reviewCount} />
-              </section> */}
+                <Reviews
+                  rating={reviewsData?.metadata.averageRating ?? 0}
+                  reviewCount={reviewsData?.totalItems ?? 0}
+                />
+              </section>
 
               {/* Descripción */}
               <section aria-labelledby="description-heading" className="my-10">
@@ -450,6 +463,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 products={recommendedProducts}
               />
             )}
+          </section>
+          {/* Reviews section */}
+          <section className="py-2">
+            <ReviewsSection
+              productData={productData}
+              reviews={reviewsData}
+              isLoading={isReviewsLoading}
+            />
           </section>
           {/* Top sellers products carousel */}
           <section className="py-2">
