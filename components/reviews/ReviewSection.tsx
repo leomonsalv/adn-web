@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { ReviewFormData, ReviewsResponse } from '@/types/review';
 import TopReviews from './TopReviews';
 import useReviews from '@/hooks/use-reviews';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CreateReviewDialog } from './CreateReviewDialog';
 import { useToast } from '@/hooks/use-toast';
 import { getFirebaseAuthUser } from '@/lib/firebaseConfig';
@@ -16,13 +16,38 @@ type Props = {
 
 function ReviewsSection({ productData, reviews, isLoading }: Props) {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
+  const [userHasReviewed, setUserHasReviewed] = useState<boolean | undefined>(undefined);
   const totalReviews = reviews?.totalItems || 0;
   const averageRating = reviews?.metadata.averageRating || 0;
-  const canReview = !reviews?.hasReviewed || false;
+
+  const canReview =
+    userHasReviewed !== undefined ? !userHasReviewed : !reviews?.hasReviewed || false;
+
   const { useCreateReview, useMarkHelpful } = useReviews();
   const { mutate: markHelpful } = useMarkHelpful();
   const { mutate: createReview } = useCreateReview();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (reviews) {
+      setUserHasReviewed(reviews.hasReviewed || false);
+    }
+
+    const checkUserReviewStatus = async () => {
+      try {
+        const user = await getFirebaseAuthUser();
+        if (user && reviews?.data) {
+          const userReview = reviews.data.find((review) => review.UserID === user.uid);
+          setUserHasReviewed(!!userReview);
+        }
+      } catch (error) {
+        console.error('Error buscando si ya hizo review:', error);
+      }
+    };
+
+    checkUserReviewStatus();
+  }, [reviews]);
+
   const handleMarkHelpful = (reviewId: string, isHelpful: boolean) => {
     markHelpful(
       {
@@ -55,8 +80,20 @@ function ReviewsSection({ productData, reviews, isLoading }: Props) {
       Title: data.title,
       Comment: data.comment,
     };
-    createReview(reviewPayload);
-    setIsReviewDialogOpen(false);
+    createReview(reviewPayload, {
+      onSuccess: () => {
+        setUserHasReviewed(true);
+        setIsReviewDialogOpen(false);
+      },
+      onError: (error) => {
+        console.error('Error creando review:', error);
+        toast({
+          title: 'Error',
+          description: 'No se pudo crear tu reseña, intente más tarde.',
+          variant: 'destructive',
+        });
+      },
+    });
   };
 
   // Convert rating counts to percentage
