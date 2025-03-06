@@ -1,6 +1,6 @@
 import { getPaymentMethods, validateVippo } from '@/api/checkout';
-import { PaymentMethod, PaymentMethodType } from '@/schemas/create-order-schema';
-import { Method } from '@/schemas/payment-method-schema';
+import type { PaymentMethod, PaymentMethodType } from '@/schemas/create-order-schema';
+import type { Method } from '@/schemas/payment-method-schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
 import { useCheckoutStore } from '@/stores/checkout-store';
@@ -153,7 +153,7 @@ export default function useCheckout() {
           expirationMonth: Number(dataVippo.vencimiento.mes),
           expirationYear: Number(dataVippo.vencimiento.ano),
           holderName: dataVippo.holderName,
-          holderIdDoc: dniType(checkoutData.contactInformation.dniType),
+          holderIdDoc: checkoutData.contactInformation.dniType,
           holderId: checkoutData.contactInformation.dni,
           cvc: dataVippo.codigoSeguridad,
           currency: 'VES',
@@ -184,7 +184,12 @@ export const getInitialPaymentState = ({
   if (isCashType(paymentType)) {
     return {
       type: paymentType,
-      details: getCashTypeState({ currency, totalBs, totalUsd, requiresAmount }),
+      details: getCashTypeState({
+        currency,
+        totalBs,
+        totalUsd,
+        requiresAmount,
+      }),
     };
   }
 
