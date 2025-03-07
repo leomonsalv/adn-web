@@ -17,7 +17,7 @@ const safeParseFloat = (value: string | number | undefined): number => {
 // Utility function to format price
 const formatPrice = (price: string | number | undefined): string => {
   const numericPrice = safeParseFloat(price);
-  return `VEF ${numericPrice.toFixed(2)}`;
+  return `Bs. ${numericPrice.toFixed(2)}`;
 };
 
 interface ProductGridProps {

@@ -50,7 +50,7 @@ export default function CartOrderSummary() {
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="flex items-center text-sm text-gray-600">
-            <span>Estimado de envío:</span>
+            <span>Total de envío:</span>
             <a href="#" className="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
               <span className="sr-only">Lee mas de como se calcula el envío</span>
               <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
@@ -60,7 +60,7 @@ export default function CartOrderSummary() {
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="flex text-sm text-gray-600">
-            <span>Estimado de Impuestos</span>
+            <span>IVA:</span>
             <a href="#" className="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
               <span className="sr-only">Lee mas de como es calculado el impuesto</span>
               <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />

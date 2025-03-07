@@ -60,7 +60,7 @@ export default function CheckoutOrderSummary() {
           </div>
 
           <div className="flex items-center justify-between">
-            <dt className="text-gray-600">Impuestos</dt>
+            <dt className="text-gray-600">IVA:</dt>
             <dd>{formatVefCurrency(taxes)}</dd>
           </div>
 
@@ -102,7 +102,7 @@ export default function CheckoutOrderSummary() {
               </div>
 
               <div className="flex items-center justify-between">
-                <dt className="text-gray-600">Impuestos</dt>
+                <dt className="text-gray-600">IVA:</dt>
                 <dd>{formatVefCurrency(taxes)}</dd>
               </div>
 

@@ -90,7 +90,7 @@ export function CashbackModal({
                           htmlFor="dniType"
                           className="block text-sm font-medium text-gray-700 mb-1"
                         >
-                          Tipo de DNI
+                          Tipo de Cédula
                         </label>
                         <Select
                           {...field}
@@ -145,7 +145,7 @@ export function CashbackModal({
                           type: 'text',
                           autoComplete: 'dni',
                         }}
-                        label="DNI"
+                        label="Cédula"
                       />
                     )}
                   />
