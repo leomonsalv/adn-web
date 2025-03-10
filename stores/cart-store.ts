@@ -93,15 +93,16 @@ export const useCartStore = create<CartState>()(
               products: get().cart.products.filter((item) => item.id !== productId),
             },
           });
+        } else {
+          set({
+            cart: {
+              ...get().cart,
+              products: get().cart.products.map((item) =>
+                item.id === productId ? { ...item, quantity } : item,
+              ),
+            },
+          });
         }
-        set({
-          cart: {
-            ...get().cart,
-            products: get().cart.products.map((item) =>
-              item.id === productId ? { ...item, quantity } : item,
-            ),
-          },
-        });
       },
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
       // Cart getters

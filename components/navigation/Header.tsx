@@ -21,6 +21,7 @@ import useCart from '@/hooks/use-cart';
 import { useCartStore } from '@/stores/cart-store';
 import { categories } from '@/lib/categories';
 import MegaMenu from '@/components/navigation/MegaMenu';
+import { formatVefCurrency } from '@/lib/utils';
 
 export function NavLinks() {
   const router = useRouter();
@@ -213,7 +214,7 @@ export function NavLinks() {
                         Carrito
                       </span>
                       <span className="font-semibold text-white group-hover:text-gray-200 leading-md">
-                        {getCartCount() > 0 ? `Bs. ${getCartTotal()}` : '0.00'}
+                        {getCartCount() > 0 ? `${formatVefCurrency(getCartTotal())}` : '0.00'}
                       </span>
                     </div>
                   )}

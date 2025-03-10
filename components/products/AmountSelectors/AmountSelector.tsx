@@ -1,8 +1,9 @@
 interface AmountSelectorProps {
   productId: number;
   productName: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (quantity: number) => void;
   quantity: number;
+  maxQuantity?: number;
 }
 
 export default function AmountSelector({
@@ -10,23 +11,39 @@ export default function AmountSelector({
   productId,
   productName,
   quantity,
+  maxQuantity = 99,
 }: AmountSelectorProps) {
+  const handleIncrement = () => {
+    if (quantity <= maxQuantity) {
+      onChange(quantity + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      onChange(quantity - 1);
+    }
+  };
+
   return (
-    <select
-      onChange={onChange}
-      value={quantity}
-      id={`quantity-${productId}`}
-      name={`quantity-${productName}`}
-      className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base/5 font-medium text-gray-700 shadow-xs focus:border-indigo-500 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-    >
-      <option value={1}>1</option>
-      <option value={2}>2</option>
-      <option value={3}>3</option>
-      <option value={4}>4</option>
-      <option value={5}>5</option>
-      <option value={6}>6</option>
-      <option value={7}>7</option>
-      <option value={8}>8</option>
-    </select>
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        onClick={handleDecrement}
+        className="rounded-md border border-gray-300 px-3 py-1.5 text-gray-700 hover:bg-gray-50"
+        disabled={quantity <= 1}
+      >
+        -
+      </button>
+      <span className="min-w-[2rem] text-center font-medium text-gray-700">{quantity}</span>
+      <button
+        type="button"
+        onClick={handleIncrement}
+        className="rounded-md border border-gray-300 px-3 py-1.5 text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+        disabled={quantity >= maxQuantity}
+      >
+        +
+      </button>
+    </div>
   );
 }

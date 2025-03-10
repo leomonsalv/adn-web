@@ -6,7 +6,6 @@ import { Button } from '../ui/button';
 import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
-import { Product } from '@/types/product';
 
 interface CartItemProps {
   item: CartProduct;
@@ -19,13 +18,20 @@ export default function CartItem({ item, cartId }: CartItemProps) {
   const { mutateAsync: mutateCart } = useMutateCart();
   const { mutateAsync: mutateRemoveCart } = useRemoveProductFromCart();
 
-  const handleQuantityChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const quantity = Number.parseInt(e.target.value);
-    await mutateCart({
-      cartId: cartId,
-      product: item,
-    });
-    updateQuantity(item.id, quantity);
+  const handleQuantityChange = async (quantity: number) => {
+    try {
+      updateQuantity(item.id, quantity);
+      await mutateCart({
+        cartId: cartId,
+        product: {
+          ...item,
+          quantity: quantity,
+        },
+      });
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      updateQuantity(item.id, item.quantity);
+    }
   };
 
   const handleRemoveFromCart = async () => {
@@ -78,6 +84,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
               Quantity, {item.name}
             </label>
             <AmountSelector
+              maxQuantity={item.inventary?.total}
               quantity={item.quantity}
               productId={item.id}
               productName={item.name}

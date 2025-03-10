@@ -118,18 +118,22 @@ const VariantSchema = z.object({
 });
 
 const CategorySchema = z.object({
-  editable: z.string(),
   full_name: z.string(),
   name: z.string(),
+  slug: z.string(),
+  editable: z.string(),
+  id: z.number(),
 });
 
 const TaxSchema = z.object({
-  amount: z.string(),
+  amount: z.number(),
+  id: z.number(),
   name: z.string(),
 });
 
 export const ProductSchema = z.object({
   _id: z.string(),
+  active: z.boolean(),
   activeIngredients: z.string().nullable(),
   attack: z.string().nullable(),
   barcode: z.string(),
@@ -142,13 +146,14 @@ export const ProductSchema = z.object({
   images: z.array(z.string()).optional(),
   inventary: z.record(z.string(), z.number()),
   laboratory: z.string(),
+  quantity: z.number(),
   name: z.string(),
   price: z.number(),
   price_extra: z.number(),
   productId: z.number(),
   refPrice: z.number(),
   synons: z.string().nullable(),
-  taxes: TaxSchema,
+  taxes: z.array(TaxSchema),
   templateId: z.number(),
   type: z.enum(['libre', 'prescripcion', 'tienda']),
   updatedAt: z.coerce.date().optional(),

@@ -36,10 +36,21 @@ export default function Cart() {
   } = useGetRecommendedProducts(payload!);
 
   useEffect(() => {
-    if (data) {
-      setCart(data);
+    if (data && !isLoading) {
+      const serverItemCount = data.products.reduce(
+        (sum: number, item: { quantity: number }) => sum + item.quantity,
+        0,
+      );
+      const localItemCount = cart.products.reduce(
+        (sum: number, item: { quantity: number }) => sum + item.quantity,
+        0,
+      );
+
+      if (Math.abs(serverItemCount - localItemCount) > 1) {
+        setCart(data);
+      }
     }
-  }, [data]);
+  }, [data, isLoading]);
 
   if (isLoading) return <div>Loading...</div>;
 
