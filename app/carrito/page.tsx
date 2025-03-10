@@ -9,6 +9,8 @@ import { useEffect, useMemo } from 'react';
 import { RecommendedProductsPayload } from '@/types/product';
 import useProducts from '@/hooks/use-products';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Cart() {
   const { cart, setCart } = useCartStore();
@@ -52,18 +54,32 @@ export default function Cart() {
     }
   }, [data, isLoading]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Cargando...</div>;
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Carrito</h1>
-        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-          <CartList items={cart.products} cartId={cart.id} />
-          <CartOrderSummary />
-        </form>
+
+        {cart.products.length === 0 ? (
+          <div className="mt-12 text-center py-16">
+            <h2 className="text-xl font-medium text-gray-900 mb-4">Tu carrito está vacío</h2>
+            <p className="text-gray-500 mb-8">
+              Parece que aún no has agregado productos a tu carrito.
+            </p>
+            <Button color="dark/white" className="w-1/2 h-12 hover:bg-gray-800">
+              <Link href="/">Continuar comprando</Link>
+            </Button>
+          </div>
+        ) : (
+          <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+            <CartList items={cart.products} cartId={cart.id} />
+            <CartOrderSummary />
+          </form>
+        )}
       </div>
 
+      {/* Only show recommended products if there are items in the cart */}
       {productIds.length > 0 && (
         <section className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
           {isRecommendedLoading ? (
