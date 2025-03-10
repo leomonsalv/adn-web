@@ -3,17 +3,23 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import { CHECKOUT } from '@/lib/routes';
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '../ui/button';
-import { formatVefCurrency } from '@/lib/utils';
+import { formatUsdCurrency, formatVefCurrency } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import { useEffect } from 'react';
 
 export default function CartOrderSummary() {
   const { useGetDelivery } = useProducts();
-  const { getCartSubtotal, getCartTotal, getCartTax, getCartRef, setDeliveryFee, deliveryFee } =
-    useCartStore();
-  const cartRef = getCartRef();
-
+  const {
+    getCartSubtotal,
+    getCartTotal,
+    getCartTax,
+    getRefCartTax,
+    getCartRef,
+    setDeliveryFee,
+    deliveryFee,
+  } = useCartStore();
   const { data: deliveryProduct, isLoading, isError } = useGetDelivery();
+  const cartRef = getCartRef();
 
   useEffect(() => {
     if (deliveryProduct) {
@@ -22,9 +28,17 @@ export default function CartOrderSummary() {
     }
   }, [deliveryProduct, cartRef, setDeliveryFee]);
 
-  const total = getCartTotal();
   const tax = getCartTax();
+  const refTax = getRefCartTax();
   const subtotal = getCartSubtotal();
+  const total = getCartTotal();
+
+  const deliveryRefPrice = cartRef <= 7 ? (deliveryProduct?.refPrice ?? 0) : 0;
+  const totalRef = cartRef + deliveryRefPrice + refTax;
+
+  if (!deliveryProduct) {
+    return <div>Cargando costo de envío...</div>;
+  }
 
   if (isLoading) {
     return <div>Cargando costo de envío...</div>;
@@ -71,6 +85,10 @@ export default function CartOrderSummary() {
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="text-base font-medium text-gray-900">Total de la orden:</dt>
           <dd className="text-base font-medium text-gray-900">{formatVefCurrency(total)}</dd>
+        </div>
+        <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+          <dt className="text-base font-medium text-gray-900">Total REF:</dt>
+          <dd className="text-base font-medium text-gray-900">{formatUsdCurrency(totalRef)}</dd>
         </div>
       </dl>
 

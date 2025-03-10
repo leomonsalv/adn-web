@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ...currentUser,
           stsTokenManager: {
             accessToken: token,
-            // expirationTime: Date.now() + 3600 * 1000,
+            expirationTime: Date.now() + 7200 * 1000,
           },
         };
 

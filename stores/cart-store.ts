@@ -19,6 +19,7 @@ interface CartState {
   getCartTotal: () => number;
   getCartSubtotal: () => number;
   getCartTax: () => number;
+  getRefCartTax: () => number;
   getCartCount: () => number;
   getItemCount: (productId: number) => number;
   getCartRef: () => number;
@@ -131,6 +132,21 @@ export const useCartStore = create<CartState>()(
       getCartTax: () => {
         const tax = get().cart.products.reduce((total, item) => {
           const itemPrice = toSafeInteger(Number(item.bsPrice));
+          const taxRate =
+            item?.taxes &&
+            Array.isArray(item.taxes) &&
+            item.taxes.length > 0 &&
+            item.taxes[0].amount
+              ? Number(item.taxes[0].amount) / 100
+              : 0;
+          const itemTax = itemPrice * taxRate * item.quantity;
+          return total + itemTax;
+        }, 0);
+        return fromSafeInteger(tax);
+      },
+      getRefCartTax: () => {
+        const tax = get().cart.products.reduce((total, item) => {
+          const itemPrice = toSafeInteger(Number(item.refPrice));
           const taxRate =
             item?.taxes &&
             Array.isArray(item.taxes) &&

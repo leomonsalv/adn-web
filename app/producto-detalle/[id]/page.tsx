@@ -13,7 +13,7 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { BreadcrumbList } from '@/components/ui/breadcrumb';
-import { formatVefCurrency, generateSlug } from '@/lib/utils';
+import { formatUsdCurrency, formatVefCurrency, generateSlug } from '@/lib/utils';
 import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
@@ -330,10 +330,11 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <p className="text-3xl font-semibold text-red-700">
                     {formatVefCurrency(regularPrice)}
                   </p>
+                  <p className="text-base text-gray-500">{formatUsdCurrency(refPrice)}</p>
                 </div>
                 {TAX_CALC > 0 && (
                   <div className="flex flex-row gap-1">
-                    <span className="text-sm">Impuesto:</span>
+                    <span className="text-sm">IVA:</span>
                     <p className="text-sm text-gray-500">{formatVefCurrency(TAX_CALC)}</p>
                   </div>
                 )}
