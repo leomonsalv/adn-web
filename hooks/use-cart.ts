@@ -31,12 +31,13 @@ export default function useCart() {
       mutationFn: async ({ cartId, product }) => {
         let newCart = cart;
         const existingItem = cart.products.find((item) => item.id === product.id);
+
         if (existingItem) {
           newCart = {
             id: cartId,
             userId: user?.uid || '',
             products: cart.products.map((item) =>
-              item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
+              item.id === product.id ? { ...item, quantity: product.quantity } : item,
             ),
             updatedAt: new Date(),
           };
@@ -44,7 +45,7 @@ export default function useCart() {
           newCart = {
             id: cartId,
             userId: user?.uid || '',
-            products: [...cart.products, { ...product, quantity: 1 }],
+            products: [...cart.products, { ...product, quantity: product.quantity || 1 }],
             updatedAt: new Date(),
           };
         }

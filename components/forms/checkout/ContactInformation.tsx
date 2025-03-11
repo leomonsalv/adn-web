@@ -81,7 +81,7 @@ export function ContactInformation({
             render={({ field, fieldState: { error } }) => (
               <div className="w-1/4">
                 <label htmlFor="dniType" className="block text-sm font-medium text-gray-700 mb-1">
-                  Tipo de DNI
+                  Tipo de Cédula
                 </label>
                 <Select {...field} id="dniType">
                   {dniTypes.map((type) => (
@@ -114,7 +114,7 @@ export function ContactInformation({
                   type: 'text',
                   autoComplete: 'dni',
                 }}
-                label="DNI"
+                label="Cédula"
               />
             )}
           />

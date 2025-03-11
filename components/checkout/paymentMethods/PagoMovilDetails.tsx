@@ -65,7 +65,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
             render={({ field, fieldState: { error } }) => (
               <div className="w-1/4">
                 <label htmlFor="dniType" className="block text-sm font-medium text-gray-700 mb-1">
-                  Tipo de DNI
+                  Tipo de Cédula
                 </label>
                 <Select
                   {...field}
@@ -116,7 +116,7 @@ export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
                   type: 'text',
                   autoComplete: 'dni',
                 }}
-                label="DNI"
+                label="Cédula"
               />
             )}
           />

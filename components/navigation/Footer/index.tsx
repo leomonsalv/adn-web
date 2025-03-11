@@ -64,7 +64,7 @@ function Footer({}: Props) {
               ))}
             </div>
             <div className="col-span-2 text-xs lg:text-sm mt-6 space-y-2 lg:mt-0">
-              <p>Calle Vargas Edificio Rusegal Piso PB, Local PB, Boleita Norte, Petare, Sucre.</p>
+              <p>Calle Vargas Edificio Rusegal Piso PB, Local PB, Boleita Norte.</p>
               <p>Tlf: (+58) 424-1613016</p>
               <p>RIF: J-500594313</p>
             </div>

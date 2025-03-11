@@ -5,22 +5,13 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import Autoplay from 'embla-carousel-autoplay';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { CarouselApi } from '@/components/ui/carousel';
+import useBanners from '@/hooks/use-banners';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const BannerCarousel: React.FC = () => {
   const [api, setApi] = React.useState<CarouselApi>();
-
-  const slides = [
-    {
-      imageUrl: '/images/banner.jpg',
-      link: '/producto-detalle/29999',
-      name: 'Cuidados personales por menos de $10',
-    },
-    {
-      imageUrl: 'https://picsum.photos/1920/1080',
-      link: '/categorias',
-      name: 'Grandes descuentos en tecnología',
-    },
-  ];
+  const { useGetBanners } = useBanners();
+  const { data, isLoading, error } = useGetBanners({ active: true });
 
   const scrollPrev = () => {
     api?.scrollPrev();
@@ -29,6 +20,20 @@ const BannerCarousel: React.FC = () => {
   const scrollNext = () => {
     api?.scrollNext();
   };
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div className="absolute top-0 left-0 w-full">
+        <Skeleton className="w-full h-[600px]" />
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (error || !data?.banners || data.banners.length === 0) {
+    return null;
+  }
 
   return (
     <div className="absolute top-0 left-0 w-full">
@@ -46,14 +51,17 @@ const BannerCarousel: React.FC = () => {
         setApi={setApi}
       >
         <CarouselContent>
-          {slides.map((slide, index) => (
-            <CarouselItem key={index} className="relative h-[600px] overflow-hidden bg-gray-100">
-              <Link href={slide.link} className="block w-full h-full relative">
+          {data.banners.map((banner, index) => (
+            <CarouselItem
+              key={banner.id}
+              className="relative h-[600px] overflow-hidden bg-gray-100"
+            >
+              <Link href={banner.target_url} className="block w-full h-full relative">
                 <Image
-                  src={slide.imageUrl}
-                  alt={slide.name}
+                  src={banner.image_url}
+                  alt={banner.alt || banner.title}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   sizes="100vw"
                   priority={index === 0}
                 />

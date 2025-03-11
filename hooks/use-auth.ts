@@ -1,10 +1,11 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '@/providers/auth-provider';
 import { auth } from '@/lib/firebaseConfig';
 import { useMutation } from '@tanstack/react-query';
 import { deleteAccount } from '@/api/auth';
+import { updateProfile } from 'firebase/auth';
 
 /**
  * Hook para obtener el usuario autenticado desde el UserContext.
@@ -13,6 +14,17 @@ import { deleteAccount } from '@/api/auth';
  */
 export function useAuth() {
   const context = useContext(AuthContext);
+
+  // Set default displayName for users without one
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user && !user.displayName) {
+      const defaultName = `${user.email?.split('@')[0]}`;
+      updateProfile(user, { displayName: defaultName }).catch((error) => {
+        console.error('Error updating display name:', error);
+      });
+    }
+  }, [context?.user]);
 
   const useDeleteAccountMutation = () => {
     const user = auth.currentUser;
@@ -31,35 +43,4 @@ export function useAuth() {
   }
 
   return { ...context, useDeleteAccountMutation };
-}
-
-{
-  /* 
-  'use client';
-
-import { useMutation } from '@tanstack/react-query';
-import { deleteAccount } from '@/api/auth';
-import { useAuth } from '@/providers/auth-provider';
-import { auth } from '@/lib/firebaseConfig';
-
-export function useAuthExtended() {
-  const authContext = useAuth();
-  
-  const useDeleteAccountMutation = () => {
-    const mutation = useMutation({
-      mutationKey: ['delete-account'],
-      mutationFn: () => {
-        if (!authContext.user) throw new Error('User not found');
-        return deleteAccount(authContext.user);
-      },
-    });
-    return mutation;
-  };
-
-  return {
-    ...authContext,
-    useDeleteAccountMutation
-  };
-}
-  */
 }
