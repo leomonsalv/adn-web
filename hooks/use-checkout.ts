@@ -153,7 +153,7 @@ export default function useCheckout() {
           expirationMonth: Number(dataVippo.vencimiento.mes),
           expirationYear: Number(dataVippo.vencimiento.ano),
           holderName: dataVippo.holderName,
-          holderIdDoc: checkoutData.contactInformation.dniType,
+          holderIdDoc: dniType(checkoutData.contactInformation.dniType),
           holderId: checkoutData.contactInformation.dni,
           cvc: dataVippo.codigoSeguridad,
           currency: 'VES',
