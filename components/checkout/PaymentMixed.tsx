@@ -7,6 +7,7 @@ import { Method, ValuesPaymentMixedSchema } from '@/schemas/payment-method-schem
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import useUser from '@/hooks/use-user';
 
 interface PaymentMixedProps {
   paymentMethods: Method[];
@@ -20,6 +21,7 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
   isCreatingOrder,
 }) => {
   const { getCartRef, getCartTotal } = useCartStore();
+  const { user } = useUser();
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
   const usd = parseFloat((totalBs / totalUsd).toFixed(2));
@@ -39,10 +41,13 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
     zelle: 'zelle',
     vippo: 'vippo',
     // botonbanesco: 'botonbanesco',
-    // preCredit: 'preCredit',
-    // motopos: 'motopos',
     botonbanesco: 'botonbanesco',
-    // credit: 'credit'
+    // Filter out methods that require authentication if user is not logged in
+    ...(!user?.data && {
+      preCredit: 'preCredit',
+      credit: 'credit',
+      vippo: 'vippo',
+    }),
   };
 
   const paymentOptions = paymentMethods.filter(
