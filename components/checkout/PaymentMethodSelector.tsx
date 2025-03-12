@@ -111,6 +111,15 @@ export function PaymentMethodSelector({
     [totalUsd, totalBs, form],
   );
 
+  // Filter out REI, Billetera, and TDC Vippo payment methods if user is not logged in
+  const filteredPaymentMethods = paymentMethods.filter((method) => {
+    // If user is not logged in, hide these payment methods
+    if (!user?.data) {
+      return !['preCredit', 'credit', 'vippo'].includes(method.value);
+    }
+    return true;
+  });
+
   return (
     <Accordion
       type="single"
@@ -124,7 +133,7 @@ export function PaymentMethodSelector({
       }}
       className="flex flex-col w-full border rounded-lg"
     >
-      {paymentMethods.map((method, index) => (
+      {filteredPaymentMethods.map((method, index) => (
         <AccordionItem key={method.value} value={method.value} className="border-0 focus:ring-0">
           <Card
             className={cn(
