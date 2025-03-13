@@ -12,7 +12,7 @@ import TopSellingSection from '@/components/products/ProductHome/TopSellingSecti
 import { Product } from '@/types/product';
 
 export default function HomePage() {
-  const { data: topProducts, isLoading, error } = useTopSelling();
+  const { topProducts, heroData, isLoading, error } = useTopSelling();
   return (
     <div className="min-h-screen bg-[#F0F2F5]">
       <div className="relative">
@@ -31,8 +31,8 @@ export default function HomePage() {
                 products={RecentProducts}
                 viewAllLink="/ofertas"
               />
-              <CategoryBox />
-              <CategoryBox />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
               <OffersGrid
                 title="Sigue comprando ofertas"
                 products={RecentProducts}
@@ -46,10 +46,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
             </section>
             {/* </div> */}
           </section>
@@ -76,10 +76,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
             </div>
           </section>
 
@@ -105,10 +105,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
             </div>
           </section>
 
@@ -134,10 +134,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
-              <CategoryBox />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
+              <CategoryBox heroData={heroData} />
             </div>
           </section>
 

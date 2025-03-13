@@ -21,7 +21,7 @@ export const fetchBanners = async ({ active }: BannerParams = {}): Promise<Banne
     }
 
     const response = await fetch(
-      `${API_URL}/api/banners${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
+      `${API_URL}/api/banners/client${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
     );
 
     if (!response.ok) {

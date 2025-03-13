@@ -22,6 +22,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
   onViewMore,
   seeMoreText,
 }) => {
+  console.log(categories);
   return (
     <Card className="bg-white p-4 rounded-lg shadow-md h-full w-full flex flex-col justify-between">
       <h2 className="text-xl font-bold mb-4">{title}</h2>

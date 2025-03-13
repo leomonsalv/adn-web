@@ -1,5 +1,5 @@
 import { API_URL } from '@/lib/urls';
-import { GetTopSellingProductsResponse } from '@/types/home';
+import { GetTopSellingProductsResponse, GetHeroResponse } from '@/types/home';
 
 interface TopSellingParams {
   limit?: number;
@@ -33,5 +33,26 @@ export const getTopSellingProducts = async ({
       throw error;
     }
     throw new Error('An unknown error occurred while fetching top selling products');
+  }
+};
+
+export const getHero = async (): Promise<GetHeroResponse> => {
+  try {
+    const response = await fetch(`${API_URL}/api/home/hero`);
+
+    console.log('🚀 ~ getHero ~ response:', response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const heroData = await response.json();
+    console.log('🚀 ~ getHero ~ heroData:', heroData);
+    return heroData;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching hero data:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching hero data');
   }
 };
