@@ -1,6 +1,6 @@
 // api/banners.ts
 import { API_URL } from '@/lib/urls';
-import { Banner, BannerResponse } from '@/types/banner';
+import { Banner, type BannerResponse } from '@/types/banner';
 
 interface BannerParams {
   active?: boolean;
@@ -21,7 +21,7 @@ export const fetchBanners = async ({ active }: BannerParams = {}): Promise<Banne
     }
 
     const response = await fetch(
-      `${API_URL}/api/banners${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
+      `${API_URL}/api/banners/client${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
     );
 
     if (!response.ok) {
