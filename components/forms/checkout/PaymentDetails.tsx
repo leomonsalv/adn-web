@@ -52,7 +52,11 @@ export function PaymentDetails() {
 
   const onSubmit = async (data: PaymentMethod, cashbackData?: CashbackSchemaType) => {
     try {
-      if ((data.type === 'cash' || data.type === 'bolivarCash') && !cashbackData) {
+      if (
+        (data.type === 'cash' || data.type === 'bolivarCash') &&
+        !cashbackData &&
+        !cashbackModal
+      ) {
         setCashbackModal(true);
         return;
       }
@@ -274,11 +278,11 @@ export function PaymentDetails() {
           onClose={() => setCashbackModal(false)}
           amount={pagoMix ? totalAmount - totalBs : selectedMethod === 'cash' ? totalUsd : totalBs}
           currency={selectedMethod === 'cash' ? 'USD' : 'Bs'}
-          onNext={(data) => {
+          onNext={(data, cashbackData) => {
             if (pagoMix) {
               handleSubmitMixed(null, false, data);
             } else {
-              onSubmit(data);
+              onSubmit(data, cashbackData);
             }
           }}
           previousData={form.getValues()}
