@@ -38,14 +38,34 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
             </p>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          {mosaic &&
-            mosaic.length > 0 &&
-            mosaic.slice(0, 4).map((item, index) => (
-              <div key={index} className="relative w-full h-12">
-                <Image fill src={item.image} alt={item.alt} className="object-cover rounded-sm" />
+        <div className="grid grid-cols-3 gap-2 mt-4">
+          {mosaic && mosaic.length > 0 && (
+            <>
+              {/* Larger image on the left */}
+              <div className="col-span-1 row-span-2 relative h-32">
+                <Image
+                  fill
+                  src={mosaic[0]?.image || ''}
+                  alt={mosaic[0]?.alt || ''}
+                  className="object-cover rounded-sm"
+                />
               </div>
-            ))}
+
+              {/* 2x2 grid of smaller images on the right */}
+              <div className="col-span-2 grid grid-cols-2 gap-2">
+                {mosaic.slice(1, 5).map((item, index) => (
+                  <div key={index} className="relative h-[60px]">
+                    <Image
+                      fill
+                      src={item.image}
+                      alt={item.alt}
+                      className="object-cover rounded-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </Card>
     </Link>

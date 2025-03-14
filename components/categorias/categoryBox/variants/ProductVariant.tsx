@@ -44,11 +44,14 @@ const ProductVariant = ({
             </p>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-6">
           {products &&
             products.length > 0 &&
             products.slice(0, 4).map((product, index) => (
-              <div key={index} className="relative w-full h-16 group overflow-hidden rounded-md">
+              <div
+                key={index}
+                className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50"
+              >
                 <Image
                   fill
                   src={product.image}
@@ -56,7 +59,7 @@ const ProductVariant = ({
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 {product.discount && (
-                  <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 py-0.5 rounded-bl">
+                  <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
                     {product.discount}%
                   </div>
                 )}

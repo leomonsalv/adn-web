@@ -19,10 +19,10 @@ const SingleVariant = ({ title, description, image, background, link }: SingleVa
   return (
     <Link href={link} className="block h-full">
       <Card
-        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col justify-between text-left group relative`}
+        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col items-center text-center group relative`}
         style={{ backgroundColor: background || '#EBF3ED' }}
       >
-        <div className="z-10">
+        <div className="z-10 w-full mb-4">
           <h3 className="text-lg font-medium">
             <span className="text-black group-hover:text-[#7B8967] transition-colors">
               {firstWord}
@@ -38,13 +38,15 @@ const SingleVariant = ({ title, description, image, background, link }: SingleVa
           )}
         </div>
         {image && (
-          <Image
-            height={70}
-            width={70}
-            src={image}
-            alt={title}
-            className="w-16 h-16 absolute right-2 bottom-2 object-contain"
-          />
+          <div className="flex justify-center items-center w-full flex-grow">
+            <Image
+              height={150}
+              width={150}
+              src={image}
+              alt={title}
+              className="object-contain max-w-[80%] max-h-[150px]"
+            />
+          </div>
         )}
       </Card>
     </Link>

@@ -40,13 +40,11 @@ export const getHero = async (): Promise<GetHeroResponse> => {
   try {
     const response = await fetch(`${API_URL}/api/home/hero`);
 
-    console.log('🚀 ~ getHero ~ response:', response);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const heroData = await response.json();
-    console.log('🚀 ~ getHero ~ heroData:', heroData);
     return heroData;
   } catch (error: unknown) {
     if (error instanceof Error) {

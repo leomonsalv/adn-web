@@ -92,6 +92,7 @@ function CategoryBox({ heroData }: Props) {
                   description={heroItem.description}
                   products={heroItem.products || []}
                   background={heroItem.background}
+                  wide={heroItem.wide || ''}
                   link={link}
                 />
               )}
