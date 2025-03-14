@@ -26,7 +26,6 @@ const ProdwideVariant = ({
   const firstWord = words[0];
   const restWords = words.slice(1).join(' ');
 
-  console.log(wide);
   return (
     <Link href={link} className="block h-full">
       <Card
@@ -51,7 +50,7 @@ const ProdwideVariant = ({
         </div>
 
         {/* Wide Banner Image - Positioned prominently */}
-        {wide && (
+        {wide && wide.length > 0 && (
           <div className="w-full relative h-40 overflow-hidden rounded-md mb-5">
             <Image
               fill

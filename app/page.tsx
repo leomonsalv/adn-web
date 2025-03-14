@@ -1,7 +1,6 @@
 'use client';
 
 import MainIncentives from '@/components/incentives/MainIncentives';
-import CategoryBox from '@/components/categorias/categoryBox/CategoryBox';
 import BannerCarousel from '@/components/carousel/BannerCarousel';
 import OffersGrid from '@/components/products/ProductHome/OffersGrid';
 import { FlameIcon } from 'lucide-react';
@@ -10,6 +9,7 @@ import { RecentProducts } from '@/lib/dummyData';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
 import { Product } from '@/types/product';
+import HeroVariant from '@/components/categorias/HeroVariant';
 
 export default function HomePage() {
   const { topProducts, heroData, isLoading, error } = useTopSelling();
@@ -24,15 +24,14 @@ export default function HomePage() {
             aria-labelledby="category-heading"
             className="relative mt-[300px] pt-12 rounded-t-[32px] container"
           >
-            {/* <div className="container mx-auto px-4"> */}
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
               <OffersGrid
                 title="Continúa donde quedaste"
                 products={RecentProducts}
                 viewAllLink="/ofertas"
               />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
+              {heroData && heroData.length > 0 && <HeroVariant heroItem={heroData[0]} />}
+              {heroData && heroData.length > 1 && <HeroVariant heroItem={heroData[1]} />}
               <OffersGrid
                 title="Sigue comprando ofertas"
                 products={RecentProducts}
@@ -46,12 +45,11 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
+              {heroData && heroData.length > 2 && <HeroVariant heroItem={heroData[2]} />}
+              {heroData && heroData.length > 3 && <HeroVariant heroItem={heroData[3]} />}
+              {heroData && heroData.length > 4 && <HeroVariant heroItem={heroData[4]} />}
+              {heroData && heroData.length > 5 && <HeroVariant heroItem={heroData[5]} />}
             </section>
-            {/* </div> */}
           </section>
 
           <TopSellingSection
@@ -76,10 +74,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
+              {heroData && heroData.length > 6 && <HeroVariant heroItem={heroData[6]} />}
+              {heroData && heroData.length > 7 && <HeroVariant heroItem={heroData[7]} />}
+              {heroData && heroData.length > 8 && <HeroVariant heroItem={heroData[8]} />}
+              {heroData && heroData.length > 9 && <HeroVariant heroItem={heroData[9]} />}
             </div>
           </section>
 
@@ -105,10 +103,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
+              {heroData && heroData.length > 10 && <HeroVariant heroItem={heroData[10]} />}
+              {heroData && heroData.length > 11 && <HeroVariant heroItem={heroData[11]} />}
+              {heroData && heroData.length > 12 && <HeroVariant heroItem={heroData[12]} />}
+              {heroData && heroData.length > 13 && <HeroVariant heroItem={heroData[13]} />}
             </div>
           </section>
 
@@ -134,10 +132,10 @@ export default function HomePage() {
               aria-labelledby="category-heading"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12"
             >
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
-              <CategoryBox heroData={heroData} />
+              {heroData && heroData.length > 14 && <HeroVariant heroItem={heroData[14]} />}
+              {heroData && heroData.length > 15 && <HeroVariant heroItem={heroData[15]} />}
+              {heroData && heroData.length > 16 && <HeroVariant heroItem={heroData[16]} />}
+              {heroData && heroData.length > 17 && <HeroVariant heroItem={heroData[17]} />}
             </div>
           </section>
 
