@@ -3,6 +3,8 @@ import { Select } from '@/components/ui/select';
 import { BANKS } from '@/constants/banks';
 import { dniTypes } from '@/lib/utils';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import { PaymentsPM } from '@/constants/payments';
 
 interface PagoMovilDetailsProps {
   totalBs: number;
@@ -11,29 +13,44 @@ interface PagoMovilDetailsProps {
 export const PagoMovilDetails = ({ totalBs }: PagoMovilDetailsProps) => {
   const form = useFormContext();
 
+  const [activeBank, setActiveBank] = useState(PaymentsPM[0]);
+
   return (
     <div className="flex flex-col gap-y-4">
       <h6 className="text-sm font-semibold">Paga con Pago Móvil</h6>
       <p className="text-sm">
         Ingresa a la plataforma de tu banco y haz un pago por Bs. {totalBs} a los siguientes datos:
       </p>
+      <div className="flex gap-x-4 h-10 justify-center content-between">
+        {PaymentsPM.map((bank) => (
+          <div
+            key={bank.name}
+            className={`flex w-100 rounded-lg justify-center items-center cursor-pointer px-4 py-2 ${
+              activeBank.name === bank.name ? 'bg-[#232F3E] text-white' : 'bg-white text-[#232F3E]'
+            }`}
+            onClick={() => setActiveBank(bank)}
+          >
+            {bank.name}
+          </div>
+        ))}
+      </div>
       <div className="flex flex-col gap-y-1 bg-[#232F3E] p-4 rounded-lg">
         <div>
           <span className="font-semibold text-white">Información bancaria</span>
         </div>
         <div className="flex flex-row justify-between gap-y-1 py-2">
           <span className="text-white">Nombre del banco</span>
-          <span className="text-white text-sm font-semibold">Bancamiga</span>
+          <span className="text-white text-sm font-semibold">{activeBank.name}</span>
         </div>
         <div className="h-[1px] w-full bg-white" />
         <div className="flex flex-row justify-between gap-y-1 py-2">
           <span className="text-white">Teléfono</span>
-          <span className="text-white text-sm font-semibold">0424-1611374</span>
+          <span className="text-white text-sm font-semibold">{activeBank.phone}</span>
         </div>
         <div className="h-[1px] w-full bg-white" />
         <div className="flex flex-row justify-between gap-y-1 py-2">
           <span className="text-white">RIF</span>
-          <span className="text-white text-sm font-semibold">J-500594313</span>
+          <span className="text-white text-sm font-semibold">{activeBank.rif}</span>
         </div>
       </div>
       <div className="flex flex-col gap-2">

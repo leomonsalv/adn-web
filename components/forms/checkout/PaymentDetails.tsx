@@ -75,6 +75,10 @@ export function PaymentDetails() {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     let newData: any = data;
+
+    const phonePM = form.getValues('details.phone');
+    const dniType = form.getValues('details.dniType');
+
     if (data.type === 'vippo') {
       try {
         const splitVencimiento = newData?.details?.expiration?.split('/');
@@ -108,6 +112,17 @@ export function PaymentDetails() {
         }
         return;
       }
+    } else if (data.type === 'pagomovil') {
+      const preNewData = {
+        ...newData,
+        details: {
+          ...newData.details,
+          prefix: phonePM.slice(0, 4),
+          dniType: dniType ? dniType : 'V',
+        },
+      };
+
+      newData = preNewData;
     }
     onSubmit(newData);
   });

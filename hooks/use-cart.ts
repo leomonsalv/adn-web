@@ -72,9 +72,24 @@ export default function useCart() {
     });
   };
 
+  const useClearCart = () => {
+    const { user } = useAuth();
+    return useMutation<void, Error, string>({
+      mutationFn: async (cartId) => {
+        await updateCart(user?.uid || '', cartId, {
+          id: cartId,
+          userId: user?.uid || '',
+          products: [],
+          updatedAt: new Date(),
+        });
+      },
+    });
+  };
+
   return {
     useGetCart,
     useMutateCart,
     useRemoveProductFromCart,
+    useClearCart,
   };
 }
