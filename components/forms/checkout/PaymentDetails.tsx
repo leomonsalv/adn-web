@@ -78,6 +78,7 @@ export function PaymentDetails() {
 
     const phonePM = form.getValues('details.phone');
     const dniType = form.getValues('details.dniType');
+    const amountPM = form.getValues('details.amount');
 
     if (data.type === 'vippo') {
       try {
@@ -116,6 +117,7 @@ export function PaymentDetails() {
       const preNewData = {
         ...newData,
         details: {
+          amount: amountPM.toString(),
           ...newData.details,
           prefix: phonePM.slice(0, 4),
           dniType: dniType ? dniType : 'V',
