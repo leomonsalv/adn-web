@@ -18,11 +18,6 @@ const ProductVariant = ({
   background,
   link,
 }: ProductVariantProps) => {
-  // Split title into first word and rest for styling
-  const words = title.split(' ');
-  const firstWord = words[0];
-  const restWords = words.slice(1).join(' ');
-
   return (
     <Link href={link} className="block h-full">
       <Card
@@ -31,15 +26,10 @@ const ProductVariant = ({
       >
         <div className="z-10">
           <h3 className="text-lg font-medium">
-            <span className="text-black group-hover:text-[#7B8967] transition-colors">
-              {firstWord}
-            </span>{' '}
-            <span className="text-[#7B8967] group-hover:text-white transition-colors">
-              {restWords}
-            </span>
+            <span className="text-black transition-colors">{title}</span>{' '}
           </h3>
           {description && (
-            <p className="mt-1 text-sm text-gray-600 group-hover:text-gray-200 transition-colors">
+            <p className="mt-1 text-sm text-gray-600 group-hover:text-gray-700 transition-colors">
               {description}
             </p>
           )}
@@ -52,16 +42,34 @@ const ProductVariant = ({
                 key={index}
                 className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50"
               >
-                <Image
-                  fill
-                  src={product.image}
-                  alt={product.alt}
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                {product.discount && (
-                  <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
-                    {product.discount}%
-                  </div>
+                {product.url ? (
+                  <Link href={product.url} className="block w-full h-full">
+                    <Image
+                      fill
+                      src={product.image}
+                      alt={product.alt}
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    {product.discount && (
+                      <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
+                        {product.discount}%
+                      </div>
+                    )}
+                  </Link>
+                ) : (
+                  <>
+                    <Image
+                      fill
+                      src={product.image}
+                      alt={product.alt}
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    {product.discount && (
+                      <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
+                        {product.discount}%
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             ))}

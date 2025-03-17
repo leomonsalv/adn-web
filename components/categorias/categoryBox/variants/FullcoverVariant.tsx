@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 interface FullcoverVariantProps {
   title: string;
@@ -17,34 +17,32 @@ const FullcoverVariant = ({
   background,
   link,
 }: FullcoverVariantProps) => {
-  // Split title into first word and rest for styling
-  const words = title.split(' ');
-  const firstWord = words[0];
-  const restWords = words.slice(1).join(' ');
-
   return (
     <Link href={link} className="block h-full">
-      <Card className="overflow-hidden w-full h-full rounded-md shadow-xs relative group">
+      <Card
+        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col"
+        style={{ backgroundColor: background || '#f5f5f5' }}
+      >
+        <div className="p-6 flex flex-col">
+          <div>
+            <h3 className="text-lg font-medium text-gray-800 px-4 rounded-md ">{title}</h3>
+            {description && <p className="text-sm px-4 rounded-md text-gray-800">{description}</p>}
+          </div>
+        </div>
+
+        <div className="flex-grow"></div>
+
         {fullimage && (
-          <div className="absolute inset-0 w-full h-full">
+          <div className="w-full h-full relative mt-auto">
             <Image
               fill
               src={fullimage}
               alt={title}
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
           </div>
         )}
-        <div className="relative z-10 p-6 flex flex-col h-full justify-end">
-          <h3 className="text-lg font-medium text-white">
-            <span className="group-hover:text-[#7B8967] transition-colors">{firstWord}</span>{' '}
-            <span className="text-[#7B8967] group-hover:text-white transition-colors">
-              {restWords}
-            </span>
-          </h3>
-          {description && <p className="mt-1 text-sm text-gray-200">{description}</p>}
-        </div>
       </Card>
     </Link>
   );

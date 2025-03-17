@@ -13,6 +13,7 @@ type Props = {
 };
 
 function HeroVariant({ heroItem }: Props) {
+  console.log('🚀 ~ HeroVariant ~ heroItem:', heroItem);
   const link = `/${heroItem.title.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (

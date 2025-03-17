@@ -12,59 +12,193 @@ interface MosaicVariantProps {
 }
 
 const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicVariantProps) => {
-  // Split title into first word and rest for styling
-  const words = title.split(' ');
-  const firstWord = words[0];
-  const restWords = words.slice(1).join(' ');
-
   return (
     <Link href={link} className="block h-full">
       <Card
-        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col justify-between text-left group relative`}
+        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-lg shadow-xs flex flex-col justify-between text-left group relative`}
         style={{ backgroundColor: background || '#EBF3ED' }}
       >
-        <div className="z-10">
+        <div className="z-10 mb-4">
           <h3 className="text-lg font-medium">
-            <span className="text-black group-hover:text-[#7B8967] transition-colors">
-              {firstWord}
-            </span>{' '}
-            <span className="text-[#7B8967] group-hover:text-white transition-colors">
-              {restWords}
-            </span>
+            <span className="text-black">{title}</span>{' '}
           </h3>
-          {description && (
-            <p className="mt-1 text-sm text-gray-600 group-hover:text-gray-200 transition-colors">
-              {description}
-            </p>
-          )}
+          {description && <p className="mt-1 text-sm text-gray-600">{description}</p>}
         </div>
-        <div className="grid grid-cols-3 gap-2 mt-4">
-          {mosaic && mosaic.length > 0 && (
-            <>
-              {/* Larger image on the left */}
-              <div className="col-span-1 row-span-2 relative h-32">
-                <Image
-                  fill
-                  src={mosaic[0]?.image || ''}
-                  alt={mosaic[0]?.alt || ''}
-                  className="object-cover rounded-sm"
-                />
-              </div>
 
-              {/* 2x2 grid of smaller images on the right */}
-              <div className="col-span-2 grid grid-cols-2 gap-2">
-                {mosaic.slice(1, 5).map((item, index) => (
-                  <div key={index} className="relative h-[60px]">
+        {/* Photo Collage Layout */}
+        <div className="relative overflow-hidden rounded-md flex-grow">
+          {mosaic && mosaic.length > 0 && (
+            <div className="grid gap-1.5 h-full w-full">
+              {/* Dynamic grid layout based on number of images */}
+              {mosaic.length === 1 && (
+                <div className="relative h-full w-full overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <Image
+                    fill
+                    src={mosaic[0]?.image || ''}
+                    alt={mosaic[0]?.alt || ''}
+                    className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              )}
+
+              {mosaic.length === 2 && (
+                <div className="grid grid-cols-2 gap-1.5 h-full w-full">
+                  {mosaic.map((item, index) => (
+                    <div
+                      key={index}
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                    >
+                      <Image
+                        fill
+                        src={item?.image || ''}
+                        alt={item?.alt || ''}
+                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {mosaic.length === 3 && (
+                <div className="grid grid-cols-2 grid-rows-2 gap-1.5 h-full w-full">
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={item.image}
-                      alt={item.alt}
-                      className="object-cover rounded-sm"
+                      src={mosaic[0]?.image || ''}
+                      alt={mosaic[0]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                ))}
-              </div>
-            </>
+                  {mosaic.slice(1).map((item, index) => (
+                    <div
+                      key={index}
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                    >
+                      <Image
+                        fill
+                        src={item?.image || ''}
+                        alt={item?.alt || ''}
+                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {mosaic.length === 4 && (
+                <div className="grid grid-cols-2 grid-rows-2 gap-1.5 h-full w-full">
+                  {mosaic.map((item, index) => (
+                    <div
+                      key={index}
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                    >
+                      <Image
+                        fill
+                        src={item?.image || ''}
+                        alt={item?.alt || ''}
+                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {mosaic.length === 5 && (
+                <div className="grid grid-cols-4 grid-rows-3 gap-1.5 h-full w-full">
+                  {/* Main large image */}
+                  <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[0]?.image || ''}
+                      alt={mosaic[0]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Top right image */}
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[1]?.image || ''}
+                      alt={mosaic[1]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Middle right images */}
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[2]?.image || ''}
+                      alt={mosaic[2]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[3]?.image || ''}
+                      alt={mosaic[3]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Bottom right image */}
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[4]?.image || ''}
+                      alt={mosaic[4]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {mosaic.length > 5 && (
+                <div className="grid grid-cols-3 auto-rows-fr gap-1.5 h-full w-full">
+                  {/* First image is larger */}
+                  <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      fill
+                      src={mosaic[0]?.image || ''}
+                      alt={mosaic[0]?.alt || ''}
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Remaining images in a grid */}
+                  {mosaic.slice(1, 7).map((item, index) => (
+                    <div
+                      key={index}
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                    >
+                      <Image
+                        fill
+                        src={item?.image || ''}
+                        alt={item?.alt || ''}
+                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+
+                  {/* If there are more than 7 images, show a count of remaining images on the last visible slot */}
+                  {mosaic.length > 7 && (
+                    <div className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                      <Image
+                        fill
+                        src={mosaic[6]?.image || ''}
+                        alt={mosaic[6]?.alt || ''}
+                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105 opacity-60"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white font-bold text-xl">
+                        +{mosaic.length - 6}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </Card>

@@ -19,7 +19,7 @@ export const getTopSellingProducts = async ({
       pageSize: pageSize.toString(),
     });
 
-    const response = await fetch(`${API_URL}/api/home?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/home?${queryParams.toString()}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -38,7 +38,7 @@ export const getTopSellingProducts = async ({
 
 export const getHero = async (): Promise<GetHeroResponse> => {
   try {
-    const response = await fetch(`${API_URL}/api/home/hero`);
+    const response = await fetch(`${API_URL}/home/hero`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
