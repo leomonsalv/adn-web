@@ -8,6 +8,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dniTypes } from '@/lib/utils';
 import { Select } from '@/components/ui/select';
+import { useEffect } from 'react';
+import useCheckoutPreferences from '@/hooks/use-checkout-preferences';
+import { useAuth } from '@/hooks/use-auth';
 
 interface ContactInformationProps extends Partial<ContactInformationSchema> {
   onSubmit: (data: ContactInformationSchema) => void;
@@ -20,7 +23,11 @@ export function ContactInformation({
   dniType,
   onSubmit,
 }: ContactInformationProps) {
-  const { control, handleSubmit } = useForm({
+  const { user } = useAuth();
+  const { useGetCheckoutPreferences } = useCheckoutPreferences();
+  const { data: savedPreferences, isLoading } = useGetCheckoutPreferences();
+
+  const { control, handleSubmit, reset } = useForm({
     resolver: zodResolver(contactInformationSchema),
     defaultValues: {
       name: name || '',
@@ -29,6 +36,19 @@ export function ContactInformation({
       dniType: dniType || 'V',
     },
   });
+
+  // Load saved preferences when available
+  useEffect(() => {
+    if (!isLoading && savedPreferences?.contactInformation && user && !user.isAnonymous) {
+      // Prioritize props values over saved preferences
+      reset({
+        name: name || savedPreferences.contactInformation.name,
+        email: email || savedPreferences.contactInformation.email,
+        dni: dni || savedPreferences.contactInformation.dni,
+        dniType: dniType || savedPreferences.contactInformation.dniType,
+      });
+    }
+  }, [isLoading, savedPreferences, reset, name, email, dni, dniType, user]);
 
   return (
     <section className="flex flex-col gap-4">

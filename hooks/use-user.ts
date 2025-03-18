@@ -35,6 +35,7 @@ export default function useUser() {
       ...query.data,
       id: query.data?.id,
       accessToken,
+      isAnonymous: user?.isAnonymous,
     },
     addresses: queryAddresses.data,
     useGetUserByEmail,

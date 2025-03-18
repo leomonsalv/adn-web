@@ -1,15 +1,7 @@
 import { PaymentMethodSelector } from '@/components/checkout/PaymentMethodSelector';
 import { PaymentToggle } from '@/components/checkout/PaymentToggle';
 import useCheckout, { getInitialPaymentState } from '@/hooks/use-checkout';
-import {
-  type CashbackSchemaType,
-  type PaymentMethod,
-  PaymentMethodSchema,
-  type PaymentMethodType,
-} from '@/schemas/create-order-schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+
 import { useCartStore } from '@/stores/cart-store';
 import { LockClosedIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/components/ui/button';
@@ -23,6 +15,16 @@ import { useToast } from '@/hooks/use-toast';
 import PaymentMixed from '@/components/checkout/PaymentMixed';
 import { useRouter } from 'next/navigation';
 import { PaymentsModal } from '@/components/checkout/PaymentsModal';
+import useCheckoutPreferences from '@/hooks/use-checkout-preferences';
+import { useState, useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  PaymentMethodType,
+  PaymentMethod,
+  PaymentMethodSchema,
+  CashbackSchemaType,
+} from '@/schemas/create-order-schema';
 
 export function PaymentDetails() {
   const router = useRouter();
@@ -41,6 +43,9 @@ export function PaymentDetails() {
   const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
   const { getCartRef, getCartTotal } = useCartStore();
   const { toast } = useToast();
+  const { useSaveCheckoutPreferences, useGetCheckoutPreferences } = useCheckoutPreferences();
+  const { mutateAsync: saveCheckoutPreferences } = useSaveCheckoutPreferences();
+  const { data: savedPreferences, isLoading: isLoadingPreferences } = useGetCheckoutPreferences();
 
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
@@ -67,6 +72,19 @@ export function PaymentDetails() {
       };
 
       const response: any = await createOrder(newOrder);
+
+      // Save payment method preference if user is logged in
+      if (user && !user.isAnonymous) {
+        try {
+          await saveCheckoutPreferences({
+            preferredPaymentMethod: data.type,
+          });
+        } catch (prefError) {
+          console.error('Error saving payment preferences:', prefError);
+          // Don't block the order completion if saving preferences fails
+        }
+      }
+
       router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } catch (error) {
       throw new Error('Error creating order');
@@ -154,6 +172,21 @@ export function PaymentDetails() {
         cashbackData: data,
       };
       const response: any = await createOrder(newOrder);
+
+      // Save first payment method preference if user is logged in
+      if (user && !user.isAnonymous) {
+        try {
+          const method1Type = mapPayments(pagoMix.method1, pagoMix.amount1)?.type;
+          if (method1Type) {
+            await saveCheckoutPreferences({
+              preferredPaymentMethod: method1Type as PaymentMethodType,
+            });
+          }
+        } catch (prefError) {
+          console.error('Error saving payment preferences:', prefError);
+        }
+      }
+
       router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } else {
       if (!setPagoMovil) {
@@ -171,6 +204,21 @@ export function PaymentDetails() {
               ],
             };
             const response: any = await createOrder(newOrder);
+
+            // Save first payment method preference if user is logged in
+            if (user && !user.isAnonymous) {
+              try {
+                const method1Type = mapPayments(data.method1, data.amount1)?.type;
+                if (method1Type) {
+                  await saveCheckoutPreferences({
+                    preferredPaymentMethod: method1Type as PaymentMethodType,
+                  });
+                }
+              } catch (prefError) {
+                console.error('Error saving payment preferences:', prefError);
+              }
+            }
+
             router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
           }
         }
@@ -182,35 +230,71 @@ export function PaymentDetails() {
           methods: [data, mapPayments(item, amount)],
         };
         const response: any = await createOrder(newOrder);
+
+        // Save pagomovil payment method preference if user is logged in
+        if (user && !user.isAnonymous) {
+          try {
+            await saveCheckoutPreferences({
+              preferredPaymentMethod: 'pagomovil',
+            });
+          } catch (prefError) {
+            console.error('Error saving payment preferences:', prefError);
+          }
+        }
+
         router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
       }
     }
   };
 
-  const handleSetPagoMovil = useEffect(() => {
-    if (!isLoadingPaymentMethods && paymentMethods) {
-      // Get the initial state for the payment method
-      const newMethod = paymentMethods.find((method) => method.value === 'cash')?.value!;
-      const newCurrency = paymentMethods.find((method) => method.value === 'cash')?.currency!;
-      const newRequiresAmount = newMethod === 'cash' || newMethod === 'bolivarCash';
+  // Load initial payment method and saved preferences
+  useEffect(() => {
+    if (!isLoadingPaymentMethods && paymentMethods && !isLoadingPreferences) {
+      // Check if there's a saved preferred payment method
+      let preferredMethod = savedPreferences?.preferredPaymentMethod;
 
-      // Set the selected method
-      setSelectedMethod(newMethod);
+      // If there's a preferred method and it's available in current payment methods
+      if (preferredMethod) {
+        // Find the payment method in the available methods
+        const methodExists = paymentMethods.some((method) => method.value === preferredMethod);
 
-      // Reset the form with the initial state
-      form.reset({
-        isConfirmed: true,
-        ...getInitialPaymentState({
-          paymentType: newMethod,
-          requiresAmount: newRequiresAmount,
-          currency: newCurrency,
-          totalUsd,
-          totalBs,
-          userEmail: user?.data?.email!,
-        }),
-      } as PaymentMethod);
+        if (methodExists) {
+          // Set the selected method
+          setSelectedMethod(preferredMethod);
+
+          // Get the method details
+          const method = paymentMethods.find((m) => m.value === preferredMethod);
+          const requiresAmount = ['cash', 'bolivarCash'].includes(preferredMethod);
+          const currency = method?.currency ?? 'Bs';
+
+          // Initialize the form with the preferred payment method
+          const initialState = getInitialPaymentState({
+            paymentType: preferredMethod,
+            requiresAmount,
+            currency,
+            totalUsd,
+            totalBs,
+            userEmail: user?.data?.email || '',
+          });
+
+          // Reset the form with the initial state
+          form.reset({
+            isConfirmed: true,
+            ...initialState,
+          } as PaymentMethod);
+        }
+      }
     }
-  }, [paymentMethods, user?.data?.email]);
+  }, [
+    isLoadingPaymentMethods,
+    paymentMethods,
+    isLoadingPreferences,
+    savedPreferences,
+    totalUsd,
+    totalBs,
+    user?.data?.email,
+    form,
+  ]);
 
   const handleActiveCashback = (data: any) => {
     let totalAmount = 0;
