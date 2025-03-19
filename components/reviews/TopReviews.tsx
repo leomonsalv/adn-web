@@ -16,7 +16,6 @@ interface TopReviewsProps {
 
 export default function TopReviews({ reviews, onMarkHelpful }: TopReviewsProps) {
   const { user } = useUser();
-  console.log('🚀 ~ TopReviews ~ user:', user);
   const getTimeAgo = (dateString: string) => {
     return dayjs(dateString).fromNow();
   };

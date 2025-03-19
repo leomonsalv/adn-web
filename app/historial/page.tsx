@@ -29,7 +29,6 @@ export default function Historial() {
   } = useGetOrders();
 
   const orders = rawData?.pages.flatMap((page) => page.orders) || [];
-  console.log('🚀 ~ Historial ~ orders:', orders);
 
   if (isError) return <p>Error cargando el historial</p>;
 

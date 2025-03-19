@@ -41,7 +41,7 @@ export function PaymentDetails() {
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
   const { mutateAsync: createOrder, isPending: isCreatingOrder } = useCreateOrder();
   const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
-  const { getCartRef, getCartTotal } = useCartStore();
+  const { getCartRef, getCartTotal, clearCart } = useCartStore();
   const { toast } = useToast();
   const { useSaveCheckoutPreferences, useGetCheckoutPreferences } = useCheckoutPreferences();
   const { mutateAsync: saveCheckoutPreferences } = useSaveCheckoutPreferences();
@@ -85,6 +85,7 @@ export function PaymentDetails() {
         }
       }
 
+      clearCart();
       router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } catch (error) {
       throw new Error('Error creating order');
@@ -187,6 +188,7 @@ export function PaymentDetails() {
         }
       }
 
+      clearCart();
       router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
     } else {
       if (!setPagoMovil) {
@@ -219,6 +221,7 @@ export function PaymentDetails() {
               }
             }
 
+            clearCart();
             router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
           }
         }
@@ -242,6 +245,7 @@ export function PaymentDetails() {
           }
         }
 
+        clearCart();
         router.push(`/gracias?data=${encodeURIComponent(JSON.stringify(response.data))}`);
       }
     }
