@@ -5,6 +5,7 @@ import { useCheckoutStore } from '@/stores/checkout-store';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
 import { useCartStore } from '@/stores/cart-store';
+import useCheckoutPreferences from './use-checkout-preferences';
 
 export default function useOrders() {
   const useGetOrders = (pageSize = 5) => {
@@ -23,9 +24,11 @@ export default function useOrders() {
     const { user } = useAuth();
     const { getCheckoutData } = useCheckoutStore();
     const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
+    const { useSaveCheckoutPreferences } = useCheckoutPreferences();
+    const { mutateAsync: savePreferences } = useSaveCheckoutPreferences();
     const checkoutData = getCheckoutData();
     return useMutation({
-      mutationFn: (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
+      mutationFn: async (data: { methods: PaymentMethod[]; cashbackData?: CashbackSchemaType }) => {
         const newOrder: Order = {
           webOrApp: 'web',
           addressId: checkoutData.shippingAddress.id,
@@ -64,7 +67,33 @@ export default function useOrders() {
             })),
           },
         };
-        return createOrder(newOrder);
+        const response = await createOrder(newOrder);
+
+        // Save user preferences after successful order creation
+        if (user?.uid && !user.isAnonymous) {
+          try {
+            await savePreferences({
+              contactInformation: checkoutData.contactInformation,
+              shippingAddress: {
+                phone: checkoutData.shippingAddress.phone,
+                street: checkoutData.shippingAddress.street,
+                city: checkoutData.shippingAddress.city,
+                state: checkoutData.shippingAddress.state,
+                isDefault: checkoutData.shippingAddress.isDefault,
+                lat: checkoutData.shippingAddress.lat,
+                lng: checkoutData.shippingAddress.lng,
+                alias: checkoutData.shippingAddress.alias,
+                type: checkoutData.shippingAddress.type ?? 'delivery',
+              },
+              preferredPaymentMethod: data.methods[0].type,
+            });
+          } catch (error) {
+            console.error('Error saving checkout preferences:', error);
+            // Don't throw error here, as the order was already created successfully
+          }
+        }
+
+        return response;
       },
     });
   };

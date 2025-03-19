@@ -13,6 +13,7 @@ export const shippingAddressSchema = z.object({
   lng: z.number().optional(),
   alias: z.string().min(1, 'El alias es requerido'),
   id: z.string().optional(),
+  type: z.enum(['delivery', 'pickup', 'zoom']).default('delivery'),
 });
 
 export type ShippingAddressSchema = z.infer<typeof shippingAddressSchema>;

@@ -9,7 +9,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ShippingAddressSchema, shippingAddressSchema } from '@/schemas/shipping-address-schema';
 import { useStates } from '@/hooks/use-states';
 import { Loader2, MapPin } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import useCheckoutPreferences from '@/hooks/use-checkout-preferences';
+import { useAuth } from '@/hooks/use-auth';
 import MapDialog from '@/components/address/MapDialog';
 import AddressAutocomplete from '@/components/address/Autocomplete';
 import { Radio, RadioGroup } from '@/components/ui/radio';
@@ -72,6 +74,9 @@ export function ShippingAddress({
   const { useCreateAddress } = useAddress();
   const { mutateAsync: createAddress, isPending: isCreatingAddress } = useCreateAddress();
   const { states } = useStates();
+  const { user } = useAuth();
+  const { useGetCheckoutPreferences } = useCheckoutPreferences();
+  const { data: savedPreferences, isLoading: isLoadingPreferences } = useGetCheckoutPreferences();
 
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [showNewAddress, setShowNewAddress] = useState(savedAddresses.length > 0);
@@ -83,6 +88,54 @@ export function ShippingAddress({
       return savedAddresses[0]?.id;
     }
   });
+
+  const { control, handleSubmit, setValue, watch, reset } = useForm<ShippingAddressSchema>({
+    resolver: zodResolver(shippingAddressSchema),
+    defaultValues: {
+      phone: data.phone || '',
+      street: data.street || '',
+      city: data.city || '',
+      state: data.state || '',
+      isDefault: data.isDefault || false,
+      lat: data.lat,
+      lng: data.lng,
+      alias: data.alias || '',
+    },
+  });
+
+  // Load saved preferences when available
+  useEffect(() => {
+    if (
+      !isLoadingPreferences &&
+      savedPreferences?.shippingAddress &&
+      user &&
+      !user.isAnonymous &&
+      type === savedPreferences.shippingAddress.type
+    ) {
+      // Only load saved address if it matches the current delivery type
+      if (savedAddresses.length === 0 || !showNewAddress) {
+        reset({
+          phone: data.phone || savedPreferences.shippingAddress.phone,
+          street: data.street || savedPreferences.shippingAddress.street,
+          city: data.city || savedPreferences.shippingAddress.city,
+          state: data.state || savedPreferences.shippingAddress.state,
+          isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
+          lat: data.lat || savedPreferences.shippingAddress.lat,
+          lng: data.lng || savedPreferences.shippingAddress.lng,
+          alias: data.alias || savedPreferences.shippingAddress.alias,
+        });
+      }
+    }
+  }, [
+    isLoadingPreferences,
+    savedPreferences,
+    reset,
+    data,
+    user,
+    type,
+    savedAddresses.length,
+    showNewAddress,
+  ]);
 
   const filteredAddresses = useMemo(() => {
     return savedAddresses.filter((address) => address.type === type);
@@ -96,19 +149,39 @@ export function ShippingAddress({
     );
   };
 
-  const { control, handleSubmit, setValue, watch } = useForm<ShippingAddressSchema>({
-    resolver: zodResolver(shippingAddressSchema),
-    defaultValues: {
-      phone: data.phone || '',
-      street: data.street || '',
-      city: data.city || '',
-      state: data.state || '',
-      isDefault: data.isDefault || false,
-      lat: data.lat,
-      lng: data.lng,
-      alias: data.alias || '',
-    },
-  });
+  // Load saved preferences when available
+  useEffect(() => {
+    if (
+      !isLoadingPreferences &&
+      savedPreferences?.shippingAddress &&
+      user &&
+      !user.isAnonymous &&
+      type === savedPreferences.shippingAddress.type
+    ) {
+      // Only load saved address if it matches the current delivery type
+      if (savedAddresses.length === 0 || !showNewAddress) {
+        reset({
+          phone: data.phone || savedPreferences.shippingAddress.phone,
+          street: data.street || savedPreferences.shippingAddress.street,
+          city: data.city || savedPreferences.shippingAddress.city,
+          state: data.state || savedPreferences.shippingAddress.state,
+          isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
+          lat: data.lat || savedPreferences.shippingAddress.lat,
+          lng: data.lng || savedPreferences.shippingAddress.lng,
+          alias: data.alias || savedPreferences.shippingAddress.alias,
+        });
+      }
+    }
+  }, [
+    isLoadingPreferences,
+    savedPreferences,
+    reset,
+    data,
+    user,
+    type,
+    savedAddresses.length,
+    showNewAddress,
+  ]);
 
   const onSubmit = async (formData: ShippingAddressSchema) => {
     const { lat, lng, ...rest } = formData;
@@ -187,6 +260,40 @@ export function ShippingAddress({
                     isDefault: false,
                     type: location.type as 'pickup' | 'zoom',
                   });
+
+                // Load saved preferences when available
+                useEffect(() => {
+                  if (
+                    !isLoadingPreferences &&
+                    savedPreferences?.shippingAddress &&
+                    user &&
+                    !user.isAnonymous &&
+                    type === savedPreferences.shippingAddress.type
+                  ) {
+                    // Only load saved address if it matches the current delivery type
+                    if (savedAddresses.length === 0 || !showNewAddress) {
+                      reset({
+                        phone: data.phone || savedPreferences.shippingAddress.phone,
+                        street: data.street || savedPreferences.shippingAddress.street,
+                        city: data.city || savedPreferences.shippingAddress.city,
+                        state: data.state || savedPreferences.shippingAddress.state,
+                        isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
+                        lat: data.lat || savedPreferences.shippingAddress.lat,
+                        lng: data.lng || savedPreferences.shippingAddress.lng,
+                        alias: data.alias || savedPreferences.shippingAddress.alias,
+                      });
+                    }
+                  }
+                }, [
+                  isLoadingPreferences,
+                  savedPreferences,
+                  reset,
+                  data,
+                  user,
+                  type,
+                  savedAddresses.length,
+                  showNewAddress,
+                ]);
               }
             }}
             className="cursor-pointer"
