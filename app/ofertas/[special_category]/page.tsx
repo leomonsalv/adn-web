@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
-import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
+import { SearchFormType } from '@/hooks/use-search-products';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
 import { Facets } from '@/types/categories';
 import useSpecialCategories from '@/hooks/use-special-categories';
 import { NextSeo } from 'next-seo';
+import { Product } from '@/types/product';
 
 interface SpecialCategoryPageProps {
   params: {
@@ -15,11 +16,36 @@ interface SpecialCategoryPageProps {
   };
 }
 
+interface UnwrappedParams {
+  special_category: string;
+}
+
+interface ApiProduct {
+  ID: string;
+  Visible: boolean;
+  ActiveIngredients?: string;
+  Attack?: string;
+  Barcode?: string;
+  BsPrice?: number;
+  Description?: string;
+  ProductID: number;
+  Images?: string[];
+  Inventary?: Record<string, number>;
+  Laboratory?: string;
+  Name: string;
+  RefPrice?: number;
+  Synons?: string;
+  TemplateID: number;
+  Type: 'libre' | 'prescripcion' | 'tienda';
+}
+
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
 
 export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps) {
-  const { special_category } = params;
+  // Desempaquetar correctamente con React.use()
+  const unwrappedParams = React.use<UnwrappedParams>(params);
+  const { special_category } = unwrappedParams;
   const [selectedFilters, setSelectedFilters] = useState<Partial<Record<keyof Facets, string[]>>>(
     {},
   );
@@ -28,72 +54,128 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const { useGetSpecialCategories } = useSpecialCategories();
-  const { data: specialCategoriesData, isLoading: loadingSpecialCategories } =
-    useGetSpecialCategories({ active: true });
-
-  const specialCategory = useMemo(() => {
-    if (!specialCategoriesData?.special_categories) return null;
-    return specialCategoriesData.special_categories.find(
-      (category) => category.title.toLowerCase().replace(/\s+/g, '-') === special_category,
-    );
-  }, [specialCategoriesData, special_category]);
-
-  const { searchProducts, updateSort, updatePriceRange, updateFilters, updateQuery } =
-    useSearchProduct();
+  const { useGetSpecialCategoryBySlug } = useSpecialCategories();
+  // Fetch the special category directly by slug
+  const {
+    data: specialCategoryDetail,
+    isLoading: loadingSpecialCategories,
+    error: categoryError,
+  } = useGetSpecialCategoryBySlug(special_category); // Now passing string
 
   const debouncedSearch = useDebounce(searchQuery, 600);
 
-  const seoTitle = specialCategory
-    ? `${specialCategory.title} | Adan Farmacia`
-    : `Ofertas | Adan Farmacia`;
+  const categoryName = specialCategoryDetail?.name || specialCategoryDetail?.slug;
 
-  const seoDescription = specialCategory
-    ? specialCategory.description ||
-      `Explora nuestras ofertas especiales en ${specialCategory.title}`
+  const seoTitle = categoryName ? `${categoryName} | Adan Farmacia` : `Ofertas | Adan Farmacia`;
+
+  const seoDescription = specialCategoryDetail?.is_active
+    ? specialCategoryDetail.description || `Explora nuestras ofertas especiales en ${categoryName}`
     : `Descubre todas nuestras ofertas especiales en Adan Farmacia`;
 
   useEffect(() => {
     setSearchQuery('');
   }, [special_category]);
 
-  useEffect(() => {
-    updateQuery(debouncedSearch.trim());
-  }, [debouncedSearch, updateQuery]);
+  const mapApiProductToUiProduct = (apiProduct: ApiProduct): Product => ({
+    _id: apiProduct.ID,
+    active: apiProduct.Visible,
+    activeIngredients: apiProduct.ActiveIngredients || null,
+    attack: apiProduct.Attack || null,
+    barcode: apiProduct.Barcode || '',
+    betterAttack: [],
+    betterIngredients: [],
+    bsPrice: apiProduct.BsPrice?.toString() || '0',
+    category: {
+      full_name: '',
+      name: '',
+      slug: '',
+      editable: '',
+      id: 0,
+    },
+    description: apiProduct.Description || '',
+    id: apiProduct.ProductID,
+    images: apiProduct.Images || [],
+    inventary: apiProduct.Inventary || {},
+    laboratory: apiProduct.Laboratory || '',
+    quantity: 1,
+    name: apiProduct.Name,
+    price: apiProduct.BsPrice || 0,
+    price_extra: 0,
+    productId: apiProduct.ProductID,
+    refPrice: apiProduct.RefPrice || 0,
+    synons: apiProduct.Synons || null,
+    taxes: [],
+    templateId: apiProduct.TemplateID,
+    type: apiProduct.Type,
+    visible: apiProduct.Visible,
+  });
 
-  const searchParamsObj = useMemo(() => {
-    return {
-      category: specialCategory?.category_id,
-      query: debouncedSearch.trim(),
-      pageSize: 10,
-      facets: selectedFilters,
-      sort: sortOption,
-      priceRange: priceRange,
+  // Transformar los productos de specialCategoryDetail al formato esperado por ProductGrid
+  const transformedProducts = useMemo(() => {
+    if (!specialCategoryDetail?.products || !Array.isArray(specialCategoryDetail.products)) {
+      return [];
+    }
+    return (specialCategoryDetail.products as unknown as ApiProduct[]).map(
+      mapApiProductToUiProduct,
+    );
+  }, [specialCategoryDetail]);
+
+  // Funciones auxiliares para filtrado y ordenamiento
+  const filterBySearchTerm = (products: Product[], searchTerm: string): Product[] => {
+    if (!searchTerm.trim()) return products;
+
+    const searchLower = searchTerm.trim().toLowerCase();
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchLower) ||
+        (product.description && product.description.toLowerCase().includes(searchLower)) ||
+        (product.activeIngredients &&
+          product.activeIngredients.toLowerCase().includes(searchLower)),
+    );
+  };
+
+  const sortProducts = (products: Product[], option?: SortOption): Product[] => {
+    if (!option) return products;
+
+    const sortedProducts = [...products];
+
+    const sortFunctions = {
+      'price-asc': (a: Product, b: Product) => a.price - b.price,
+      'price-desc': (a: Product, b: Product) => b.price - a.price,
+      'name-asc': (a: Product, b: Product) => a.name.localeCompare(b.name),
+      'name-desc': (a: Product, b: Product) => b.name.localeCompare(a.name),
     };
-  }, [debouncedSearch, selectedFilters, sortOption, priceRange, specialCategory]);
 
-  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, isError, error } =
-    searchProducts(searchParamsObj);
+    return sortedProducts.sort(sortFunctions[option as keyof typeof sortFunctions] || (() => 0));
+  };
+
+  // Filtrar y ordenar productos
+  const filteredProducts = useMemo(() => {
+    if (!transformedProducts.length) return [];
+
+    // Aplicar filtros en cadena (pipeline)
+    return sortProducts(filterBySearchTerm(transformedProducts, debouncedSearch), sortOption);
+  }, [transformedProducts, debouncedSearch, sortOption]);
+
+  // Estado de carga y errores
+  const isLoading = loadingSpecialCategories;
+  const isError = false;
+  const error = null;
 
   const handleFilterChange = (newFilters: Partial<Record<keyof Facets, string[]>>) => {
     setSelectedFilters(newFilters);
-    updateFilters(newFilters);
   };
 
   const handleSortChange = (newSort: SortOption) => {
     setSortOption(newSort);
-    updateSort(newSort);
   };
 
   const handlePriceRangeChange = (newRange: PriceRange) => {
     setPriceRange(newRange);
-    updatePriceRange(newRange);
   };
 
-  const products = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.items);
-  }, [data?.pages]);
+  // Usar los productos filtrados directamente
+  const products = filteredProducts;
 
   if (isLoading || loadingSpecialCategories) {
     return (
@@ -106,14 +188,12 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
   if (isError) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500">
-          Error: {error?.message || 'Ocurrió un error al cargar los productos'}
-        </div>
+        <div className="text-red-500">Error: {'Ocurrió un error al cargar los productos'}</div>
       </div>
     );
   }
 
-  if (!specialCategory) {
+  if (categoryError || !specialCategoryDetail) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-gray-500">Categoría especial no encontrada</div>
@@ -127,10 +207,10 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
 
       <div className="pt-6 pb-24">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-6">
-          {specialCategory.title}
+          {specialCategoryDetail?.name || specialCategoryDetail?.title}
         </h1>
-        {specialCategory.description && (
-          <p className="text-gray-500 mb-8">{specialCategory.description}</p>
+        {specialCategoryDetail?.description && (
+          <p className="text-gray-500 mb-8">{specialCategoryDetail?.description}</p>
         )}
 
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
@@ -141,29 +221,27 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
               onFilterChange={handleFilterChange}
               onSortChange={handleSortChange}
               onPriceRangeChange={handlePriceRangeChange}
-              sortOption={sortOption}
-              priceRange={priceRange}
+              currentSort={sortOption}
+              currentPriceRange={priceRange}
             />
           </div>
 
           {/* Mobile filter dialog */}
           <MobileFilterDialog
-            mobileFiltersOpen={mobileFiltersOpen}
-            setMobileFiltersOpen={setMobileFiltersOpen}
+            isOpen={mobileFiltersOpen}
+            setIsOpen={setMobileFiltersOpen}
             selectedFilters={selectedFilters}
             onFilterChange={handleFilterChange}
             onSortChange={handleSortChange}
             onPriceRangeChange={handlePriceRangeChange}
-            sortOption={sortOption}
-            priceRange={priceRange}
+            currentSort={sortOption}
+            currentPriceRange={priceRange}
           />
 
           {/* Product grid */}
           <div className="lg:col-span-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-medium text-gray-900">
-                Productos ({data?.pages?.[0]?.total || 0})
-              </h2>
+              <h2 className="text-xl font-medium text-gray-900">Productos ({products.length})</h2>
               <button
                 type="button"
                 className="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 lg:hidden"
@@ -175,9 +253,9 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
 
             <ProductGrid
               products={products}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
+              hasNextPage={false}
+              isFetchingNextPage={false}
+              fetchNextPage={() => {}}
             />
           </div>
         </div>
