@@ -12,7 +12,7 @@ export default function useSearchProduct() {
       queryKey: ['search-products', params],
       queryFn: async ({ pageParam = 1 }) => {
         const searchParams = {
-          category: params.category || '',
+          categories: [params.category || ''],
           search: params.search || '',
           page: pageParam,
           pageSize: params.pageSize || 10,
