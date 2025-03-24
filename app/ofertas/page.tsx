@@ -7,13 +7,13 @@ import useSpecialCategories from '@/hooks/use-special-categories';
 import { NextSeo } from 'next-seo';
 
 export default function OfertasPage() {
-  const { useGetSpecialCategories } = useSpecialCategories();
+  const { useGetClientSpecialCategories } = useSpecialCategories();
   const {
     data: specialCategoriesData,
     isLoading,
     isError,
     error,
-  } = useGetSpecialCategories({ active: true });
+  } = useGetClientSpecialCategories();
 
   const specialCategories = useMemo(() => {
     return specialCategoriesData?.special_categories || [];
@@ -59,20 +59,23 @@ export default function OfertasPage() {
         ) : (
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
             {specialCategories.map((category) => {
-              const categorySlug = category.title.toLowerCase().replace(/\s+/g, '-');
+              const categorySlug =
+                category.slug || category.title?.toLowerCase().replace(/\s+/g, '-');
+              const categoryName = category.name || category.title;
+              const imageUrl = category.imageUrl || category.image_url;
               return (
                 <div
                   key={category.id}
                   className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
                 >
                   <div className="relative aspect-[3/2] bg-gray-200">
-                    {category.image_url && (
+                    {imageUrl && (
                       <Image
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         style={{ objectFit: 'cover' }}
-                        alt={category.title}
-                        src={category.image_url}
+                        alt={categoryName || ''}
+                        src={imageUrl}
                         className="group-hover:opacity-75"
                       />
                     )}
@@ -81,7 +84,7 @@ export default function OfertasPage() {
                     <h3 className="text-sm font-medium text-gray-900">
                       <Link href={`/ofertas/${categorySlug}`}>
                         <span aria-hidden="true" className="absolute inset-0" />
-                        {category.title}
+                        {categoryName}
                       </Link>
                     </h3>
                     {category.description && (

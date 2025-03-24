@@ -202,7 +202,7 @@ export function MobileFilterDialog({
   };
 
   return (
-    <Dialog open={isOpen} onClose={setIsOpen} className="relative z-40 lg:hidden">
+    <Dialog as="div" open={isOpen} onClose={setIsOpen} className="relative z-40 lg:hidden">
       <div className="fixed inset-0 bg-black/25" />
       <div className="fixed inset-0 z-40 flex">
         <DialogPanel className="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl">

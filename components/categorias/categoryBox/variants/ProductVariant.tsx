@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
+import { Card } from '@/components/ui/card';
 import { HeroProductItem } from '@/types/home';
 
 interface ProductVariantProps {
@@ -18,6 +19,7 @@ const ProductVariant = ({
   background,
   link,
 }: ProductVariantProps) => {
+  const router = useRouter();
   return (
     <Link href={link} className="block h-full">
       <Card
@@ -42,35 +44,28 @@ const ProductVariant = ({
                 key={index}
                 className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50"
               >
-                {product.url ? (
-                  <Link href={product.url} className="block w-full h-full">
-                    <Image
-                      fill
-                      src={product.image}
-                      alt={product.alt}
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    {product.discount && (
-                      <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
-                        {product.discount}%
-                      </div>
-                    )}
-                  </Link>
-                ) : (
-                  <>
-                    <Image
-                      fill
-                      src={product.image}
-                      alt={product.alt}
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    {product.discount && (
-                      <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
-                        {product.discount}%
-                      </div>
-                    )}
-                  </>
-                )}
+                <div
+                  className="w-full h-full cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (product.url) {
+                      router.push(product.url);
+                    }
+                  }}
+                >
+                  <Image
+                    fill
+                    src={product.image}
+                    alt={product.alt}
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  {product.discount && (
+                    <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
+                      {product.discount}%
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
         </div>
