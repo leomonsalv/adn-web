@@ -1,11 +1,11 @@
 import React from 'react';
-import { Hero } from '@/types/home';
+import { Hero, HeroType } from '@/types/home';
 import {
   SingleVariant,
   MosaicVariant,
   FullcoverVariant,
   ProductVariant,
-  ProdwideVariant,
+  FullcoverWithProductGridVariant,
 } from './categoryBox/variants';
 
 type Props = {
@@ -13,58 +13,89 @@ type Props = {
 };
 
 function HeroVariant({ heroItem }: Props) {
-  console.log('🚀 ~ HeroVariant ~ heroItem:', heroItem);
-  const link = `/${heroItem.title.toLowerCase().replace(/\s+/g, '-')}`;
+  const productSlug = heroItem.products?.[0]?.slug;
+  const link =
+    heroItem.type === 'full-cover-with-product-grid'
+      ? ''
+      : productSlug || `/${heroItem.title.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <div className="w-full h-full bg-white rounded-lg shadow-sm p-4">
-      {heroItem.type === 'single' && (
-        <SingleVariant
-          title={heroItem.title}
-          description={heroItem.description}
-          image={heroItem.image || ''}
-          background={heroItem.background}
-          link={link}
-        />
-      )}
-
+      {/* Mosaic type */}
       {heroItem.type === 'mosaic' && (
         <MosaicVariant
           title={heroItem.title}
-          description={heroItem.description}
-          mosaic={heroItem.mosaic || []}
-          background={heroItem.background}
+          description={heroItem.subtitle}
+          mosaic={
+            heroItem.products?.map((product) => ({
+              image: product.img,
+              alt: product.name,
+              slug: product.slug,
+            })) || []
+          }
+          background={heroItem.backgroundColor}
           link={link}
         />
       )}
 
-      {heroItem.type === 'fullcover' && (
+      {/* Full cover type */}
+      {heroItem.type === 'full-cover' && (
         <FullcoverVariant
           title={heroItem.title}
-          description={heroItem.description}
-          fullimage={heroItem.fullimage || ''}
-          background={heroItem.background}
+          description={heroItem.subtitle}
+          fullimage={heroItem.products?.[0]?.img || ''}
+          background={heroItem.backgroundColor}
           link={link}
         />
       )}
 
-      {heroItem.type === 'product' && (
+      {/* Product grid type */}
+      {heroItem.type === 'product-grid' && (
         <ProductVariant
           title={heroItem.title}
-          description={heroItem.description}
-          products={heroItem.products || []}
-          background={heroItem.background}
+          description={heroItem.subtitle}
+          products={
+            heroItem.products?.map((product) => ({
+              id: product.id || '',
+              img: product.img,
+              name: product.name,
+              price: product.price || 0,
+              discount: product.discount,
+              slug: product.slug,
+            })) || []
+          }
+          background={heroItem.backgroundColor}
           link={link}
         />
       )}
 
-      {heroItem.type === 'prodwide' && (
-        <ProdwideVariant
+      {/* Full cover with product grid type */}
+      {heroItem.type === 'full-cover-with-product-grid' && (
+        <FullcoverWithProductGridVariant
           title={heroItem.title}
-          description={heroItem.description}
-          products={heroItem.products || []}
-          background={heroItem.background}
-          wide={heroItem.wide || ''}
+          description={heroItem.subtitle}
+          products={
+            heroItem.products?.map((product) => ({
+              id: product.id || '',
+              img: product.img,
+              name: product.name,
+              price: product.price || 0,
+              discount: product.discount,
+              slug: product.slug,
+            })) || []
+          }
+          background={heroItem.backgroundColor}
+          link={link}
+        />
+      )}
+
+      {/* Single product type */}
+      {heroItem.type === 'single-product' && (
+        <SingleVariant
+          title={heroItem.title}
+          description={heroItem.subtitle}
+          image={heroItem.products?.[0]?.img || ''}
+          background={heroItem.backgroundColor}
           link={link}
         />
       )}

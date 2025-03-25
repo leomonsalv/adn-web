@@ -171,67 +171,73 @@ export const GetTopSellingProductsResponseSchema = z.object({
   Repuestos: z.array(RepuestoSchema),
 });
 
-// Hero schemas
-export const HeroMosaicItemSchema = z.object({
-  image: z.string(),
-  alt: z.string(),
+// Hero Type Enum
+export const HeroTypeEnum = z.enum([
+  'mosaic',
+  'full-cover',
+  'product-grid',
+  'full-cover-with-product-grid',
+  'single-product',
+]);
+
+export type HeroType = z.infer<typeof HeroTypeEnum>;
+
+// Hero Product Item Schema
+export const HeroProductItemSchema = z.object({
+  id: z.string(),
+  img: z.string(),
+  name: z.string(),
+  price: z.number(),
+  discount: z.number(),
+  slug: z.string(),
 });
 
-export const HeroProductItemSchema = z.object({
-  image: z.string(),
-  url: z.string(),
-  alt: z.string(),
-  discount: z.number().optional(),
+// Hero Footer Schema
+export const HeroFooterSchema = z.object({
+  description: z.string(),
+  link: z.string(),
 });
 
 // Base schema for all hero types
 const HeroBaseSchema = z.object({
   id: z.string(),
   title: z.string(),
-  description: z.string(),
-  background: z.string(),
-  available: z.boolean(),
+  subtitle: z.string(),
+  backgroundColor: z.string(),
+  type: HeroTypeEnum,
+  footer: HeroFooterSchema.optional(),
+  products: z.array(HeroProductItemSchema).optional(),
 });
 
-// Single hero type
-export const HeroSingleSchema = HeroBaseSchema.extend({
-  type: z.literal('single'),
-  image: z.string(),
-});
-
-// Mosaic hero type
-export const HeroMosaicSchema = HeroBaseSchema.extend({
+// Define specific hero schemas based on type
+export const MosaicHeroSchema = HeroBaseSchema.extend({
   type: z.literal('mosaic'),
-  mosaic: z.array(HeroMosaicItemSchema),
 });
 
-// Fullcover hero type
-export const HeroFullcoverSchema = HeroBaseSchema.extend({
-  type: z.literal('fullcover'),
-  fullimage: z.string(),
+export const FullCoverHeroSchema = HeroBaseSchema.extend({
+  type: z.literal('full-cover'),
 });
 
-// Product hero type
-export const HeroProductSchema = HeroBaseSchema.extend({
-  type: z.literal('product'),
-  products: z.array(HeroProductItemSchema),
+export const ProductGridHeroSchema = HeroBaseSchema.extend({
+  type: z.literal('product-grid'),
 });
 
-// Prodwide hero type
-export const HeroProdwideSchema = HeroBaseSchema.extend({
-  type: z.literal('prodwide'),
-  products: z.array(HeroProductItemSchema),
-  wide: z.string(),
+export const FullCoverWithProductGridHeroSchema = HeroBaseSchema.extend({
+  type: z.literal('full-cover-with-product-grid'),
 });
 
-// Union of all hero types
+export const SingleProductHeroSchema = HeroBaseSchema.extend({
+  type: z.literal('single-product'),
+});
+
+// Union of all hero types using discriminated union
 export const HeroSchema = z.discriminatedUnion('type', [
-  HeroSingleSchema,
-  HeroMosaicSchema,
-  HeroFullcoverSchema,
-  HeroProductSchema,
-  HeroProdwideSchema,
+  MosaicHeroSchema,
+  FullCoverHeroSchema,
+  ProductGridHeroSchema,
+  FullCoverWithProductGridHeroSchema,
+  SingleProductHeroSchema,
 ]);
 
-// Updated GetHeroResponseSchema to use the union type
+// Response schema for getHero API
 export const GetHeroResponseSchema = z.array(HeroSchema);

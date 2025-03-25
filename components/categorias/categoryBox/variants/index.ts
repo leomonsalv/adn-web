@@ -4,3 +4,4 @@ export { default as MosaicVariant } from './MosaicVariant';
 export { default as FullcoverVariant } from './FullcoverVariant';
 export { default as ProductVariant } from './ProductVariant';
 export { default as ProdwideVariant } from './ProdwideVariant';
+export { default as FullcoverWithProductGridVariant } from './FullcoverWithProductGridVariant';
