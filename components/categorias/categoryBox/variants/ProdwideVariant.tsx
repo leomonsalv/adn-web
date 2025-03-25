@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { HeroProductItem } from '@/types/home';
-import { formatVefCurrency } from '@/lib/utils';
 
 interface ProdwideVariantProps {
   title: string;
@@ -54,23 +53,33 @@ const ProdwideVariant = ({
         {/* Product Grid - 2x2 layout */}
         {products && products.length > 0 && (
           <div className="grid grid-cols-2 gap-3 mt-auto" onClick={(e) => e.stopPropagation()}>
-            {products.slice(0, 4).map((product, index) => (
-              <Link href={product.url} key={index} className="block">
-                <div className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50">
-                  <Image
-                    fill
-                    src={product.image || '/images/placeholder.png'}
-                    alt={product.alt}
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  {product.discount && (
-                    <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
-                      {product.discount}%
-                    </div>
-                  )}
+            {products.slice(0, 4).map((product, index) => {
+              console.log(product);
+              return (
+                <div
+                  key={index}
+                  className="block"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <div className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50 cursor-pointer">
+                    <Image
+                      fill
+                      src={product.img ? product.img.replace(/"/g, '') : '/delivery.png'}
+                      alt={product.name || ''}
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    {product.discount && (
+                      <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
+                        {product.discount}%
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </Card>

@@ -1,7 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
-import { HeroMosaicItem } from '@/types/home';
+interface HeroMosaicItem {
+  image: string;
+  alt: string;
+  slug?: string;
+}
 
 interface MosaicVariantProps {
   title: string;
@@ -12,6 +17,7 @@ interface MosaicVariantProps {
 }
 
 const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicVariantProps) => {
+  const router = useRouter();
   return (
     <Link href={link} className="block h-full">
       <Card
@@ -34,7 +40,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                 <div className="relative h-full w-full overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                   <Image
                     fill
-                    src={mosaic[0]?.image || ''}
+                    src={mosaic[0]?.image || '/images/placeholder.png'}
                     alt={mosaic[0]?.alt || ''}
                     className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                   />
@@ -46,14 +52,25 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   {mosaic.map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer"
                     >
-                      <Image
-                        fill
-                        src={item?.image || ''}
-                        alt={item?.alt || ''}
-                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <div
+                        className="w-full h-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (item?.slug) {
+                            router.push(item.slug);
+                          }
+                        }}
+                      >
+                        <Image
+                          fill
+                          src={item?.image || '/images/placeholder.png'}
+                          alt={item?.alt || ''}
+                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -64,7 +81,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[0]?.image || ''}
+                      src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -72,14 +89,25 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   {mosaic.slice(1).map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer"
                     >
-                      <Image
-                        fill
-                        src={item?.image || ''}
-                        alt={item?.alt || ''}
-                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <div
+                        className="w-full h-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (item?.slug) {
+                            router.push(item.slug);
+                          }
+                        }}
+                      >
+                        <Image
+                          fill
+                          src={item?.image || '/images/placeholder.png'}
+                          alt={item?.alt || ''}
+                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -90,14 +118,25 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   {mosaic.map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer"
                     >
-                      <Image
-                        fill
-                        src={item?.image || ''}
-                        alt={item?.alt || ''}
-                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <div
+                        className="w-full h-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (item?.slug) {
+                            router.push(item.slug);
+                          }
+                        }}
+                      >
+                        <Image
+                          fill
+                          src={item?.image || '/images/placeholder.png'}
+                          alt={item?.alt || ''}
+                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -109,7 +148,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[0]?.image || ''}
+                      src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -119,7 +158,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[1]?.image || ''}
+                      src={mosaic[1]?.image || '/images/placeholder.png'}
                       alt={mosaic[1]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -129,7 +168,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[2]?.image || ''}
+                      src={mosaic[2]?.image || '/images/placeholder.png'}
                       alt={mosaic[2]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -137,7 +176,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[3]?.image || ''}
+                      src={mosaic[3]?.image || '/images/placeholder.png'}
                       alt={mosaic[3]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -147,7 +186,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[4]?.image || ''}
+                      src={mosaic[4]?.image || '/images/placeholder.png'}
                       alt={mosaic[4]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -161,7 +200,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                     <Image
                       fill
-                      src={mosaic[0]?.image || ''}
+                      src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
@@ -171,14 +210,25 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                   {mosaic.slice(1, 7).map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer"
                     >
-                      <Image
-                        fill
-                        src={item?.image || ''}
-                        alt={item?.alt || ''}
-                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <div
+                        className="w-full h-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (item?.slug) {
+                            router.push(item.slug);
+                          }
+                        }}
+                      >
+                        <Image
+                          fill
+                          src={item?.image || '/images/placeholder.png'}
+                          alt={item?.alt || ''}
+                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     </div>
                   ))}
 
@@ -187,7 +237,7 @@ const MosaicVariant = ({ title, description, mosaic, background, link }: MosaicV
                     <div className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
                       <Image
                         fill
-                        src={mosaic[6]?.image || ''}
+                        src={mosaic[6]?.image || '/images/placeholder.png'}
                         alt={mosaic[6]?.alt || ''}
                         className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105 opacity-60"
                       />

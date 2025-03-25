@@ -49,15 +49,17 @@ const ProductVariant = ({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (product.url) {
-                      router.push(product.url);
+                    if (product.slug) {
+                      router.push(product.slug);
+                    } else {
+                      router.push(link);
                     }
                   }}
                 >
                   <Image
                     fill
-                    src={product.image}
-                    alt={product.alt}
+                    src={product.img}
+                    alt={product.name}
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   {product.discount && (

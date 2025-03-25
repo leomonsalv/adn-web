@@ -9,15 +9,16 @@ import {
   BellezaSchema,
   RepuestoSchema,
   GetTopSellingProductsResponseSchema,
-  HeroMosaicItemSchema,
   HeroProductItemSchema,
-  HeroSingleSchema,
-  HeroMosaicSchema,
-  HeroFullcoverSchema,
-  HeroProductSchema,
-  HeroProdwideSchema,
   HeroSchema,
   GetHeroResponseSchema,
+  FullCoverHeroSchema,
+  FullCoverWithProductGridHeroSchema,
+  HeroFooterSchema,
+  HeroTypeEnum,
+  MosaicHeroSchema,
+  ProductGridHeroSchema,
+  SingleProductHeroSchema,
 } from '@/schemas/top-selling-schema';
 import { z } from 'zod';
 
@@ -35,12 +36,19 @@ export type Repuesto = z.infer<typeof RepuestoSchema>;
 export type GetTopSellingProductsResponse = z.infer<typeof GetTopSellingProductsResponseSchema>;
 
 // Hero types
-export type HeroMosaicItem = z.infer<typeof HeroMosaicItemSchema>;
+export type HeroType = z.infer<typeof HeroTypeEnum>;
 export type HeroProductItem = z.infer<typeof HeroProductItemSchema>;
-export type HeroSingle = z.infer<typeof HeroSingleSchema>;
-export type HeroMosaic = z.infer<typeof HeroMosaicSchema>;
-export type HeroFullcover = z.infer<typeof HeroFullcoverSchema>;
-export type HeroProduct = z.infer<typeof HeroProductSchema>;
-export type HeroProdwide = z.infer<typeof HeroProdwideSchema>;
+export type HeroFooter = z.infer<typeof HeroFooterSchema>;
+
+// Hero specific types
+export type MosaicHero = z.infer<typeof MosaicHeroSchema>;
+export type FullCoverHero = z.infer<typeof FullCoverHeroSchema>;
+export type ProductGridHero = z.infer<typeof ProductGridHeroSchema>;
+export type FullCoverWithProductGridHero = z.infer<typeof FullCoverWithProductGridHeroSchema>;
+export type SingleProductHero = z.infer<typeof SingleProductHeroSchema>;
+
+// Union type for all hero variants
 export type Hero = z.infer<typeof HeroSchema>;
+
+// Response type for getHero API
 export type GetHeroResponse = z.infer<typeof GetHeroResponseSchema>;
