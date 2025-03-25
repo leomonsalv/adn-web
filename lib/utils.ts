@@ -31,6 +31,11 @@ export const formatVefCurrency = (value: number): string => {
   return formattedValue.replace('VEF', 'Bs.');
 };
 
+export const formatText = (text: string): string => {
+  text = text.toLowerCase();
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
 /**
  * Format the credit and pre credit available to USD
  */

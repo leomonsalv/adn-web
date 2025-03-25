@@ -16,7 +16,7 @@ export const getCart = async (userId: string) => {
     // get the first cart
     const cartData = cartSnapshot.docs
       .filter((doc) => doc.id !== 'wishList')
-      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt, ...doc.data() }))
+      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt || new Date(), ...doc.data() }))
       .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
 
     return cartData;
@@ -45,7 +45,7 @@ export const getOrCreateCart = async (userId: string) => {
     // get the first cart
     const cartData = cartSnapshot.docs
       .filter((doc) => doc.id !== 'wishList')
-      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt, ...doc.data() }))
+      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt || new Date(), ...doc.data() }))
       .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
 
     if (!cartData) {
