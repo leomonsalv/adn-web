@@ -1,6 +1,6 @@
 'use client';
 
-import { formatVefCurrency } from '@/lib/utils';
+import { formatText, formatVefCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   productUrl,
 }) => {
   return (
-    <div className="max-w-60 bg-white rounded-lg shadow-lg p-4 flex flex-col items-start">
+    <div className="max-w-60 bg-white rounded-lg shadow-lg p-4 flex flex-col items-start my-1">
       <Link href={productUrl} className="w-full">
         <div className="w-full h-48 relative">
           {discount > 0 && (
@@ -41,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {/* <p className="text-sm line-through text-gray-500">{formatVefCurrency(originalPrice)}</p> */}
           </div>
 
-          <p className="mt-2 text-gray-800 font-medium">{title}</p>
+          <p className="mt-2 text-gray-800 font-medium line-clamp-2">{formatText(title)}</p>
         </div>
       </Link>
     </div>
