@@ -18,7 +18,7 @@ const SortSection = ({
 
   const getCurrentSortValue = (): string => {
     if (!currentSort) return '';
-    return `${currentSort.field}-${currentSort.order}`;
+    return currentSort;
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,14 +28,7 @@ const SortSection = ({
       return;
     }
 
-    // Encontrar la opción seleccionada en la configuración
-    const selectedSort = SORT_CONFIG.flatMap((group) => group.options).find(
-      (option) => option.value === selectedValue,
-    );
-
-    if (selectedSort) {
-      onSortChange(selectedSort.sort);
-    }
+    onSortChange(selectedValue);
   };
 
   return (
@@ -44,7 +37,7 @@ const SortSection = ({
         title="Ordenar por..."
         value={getCurrentSortValue()}
         onChange={handleSortChange}
-        className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base 
+        className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base
                   focus:border-indigo-500 focus:outline-hidden focus:ring-indigo-500 sm:text-sm"
       >
         <option value="">Ordenar por...</option>

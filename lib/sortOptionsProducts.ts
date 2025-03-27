@@ -1,4 +1,4 @@
-type SortField = 'price' | 'price_extra' | 'name' | 'qty_available' | 'x_studio_laboratory';
+type SortField = 'price' | 'price_extra' | 'name' | 'availability';
 type SortOrder = 'asc' | 'desc';
 
 type SortConfig = Array<{
@@ -15,12 +15,12 @@ export const SORT_CONFIG: SortConfig = [
     label: 'Precio',
     options: [
       {
-        value: 'price-asc',
+        value: 'price_asc',
         label: 'Menor a Mayor',
         sort: { field: 'price', order: 'asc' },
       },
       {
-        value: 'price-desc',
+        value: 'price_desc',
         label: 'Mayor a Menor',
         sort: { field: 'price', order: 'desc' },
       },
@@ -30,39 +30,29 @@ export const SORT_CONFIG: SortConfig = [
     label: 'Nombre',
     options: [
       {
-        value: 'name-asc',
+        value: 'name_asc',
         label: 'A - Z',
         sort: { field: 'name', order: 'asc' },
       },
       {
-        value: 'name-desc',
+        value: 'name_desc',
         label: 'Z - A',
         sort: { field: 'name', order: 'desc' },
       },
     ],
   },
   {
-    label: 'Laboratorio',
+    label: 'Disponibilidad',
     options: [
       {
-        value: 'x_studio_laboratory-asc',
-        label: 'A - Z',
-        sort: { field: 'x_studio_laboratory', order: 'asc' },
+        value: 'availability_desc',
+        label: 'Mayor a Menor',
+        sort: { field: 'availability', order: 'desc' },
       },
       {
-        value: 'x_studio_laboratory-desc',
-        label: 'Z - A',
-        sort: { field: 'x_studio_laboratory', order: 'desc' },
-      },
-    ],
-  },
-  {
-    label: 'Otros',
-    options: [
-      {
-        value: 'qty_available-desc',
-        label: 'Disponibilidad',
-        sort: { field: 'qty_available', order: 'desc' },
+        value: 'availability_asc',
+        label: 'Menor a Mayor',
+        sort: { field: 'availability', order: 'asc' },
       },
     ],
   },
