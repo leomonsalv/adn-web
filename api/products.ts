@@ -199,3 +199,16 @@ export const fetchSuggestions = async (payload: any): Promise<any> => {
     throw new Error('An unknown error occurred while fetching product suggestions');
   }
 };
+
+export const fetchProductsSuggestions = async (
+  query: string,
+): Promise<{ results: { documents: { suggestion: string }[] } }> => {
+  const response = await httpsCallable<
+    SearchFormType,
+    { results: { documents: { suggestion: string }[] } }
+  >(
+    functions,
+    'es-search',
+  )({ query, pageSize: 5, suggest: true });
+  return response.data;
+};
