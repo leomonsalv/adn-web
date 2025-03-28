@@ -199,51 +199,49 @@ export const PageSizeSchema = z.object({
   size: z.number(),
 });
 
-export const TopSellingProductsPayloadSchema = z.object({
+export const RecommendedForUserPayloadSchema = z.object({
   active: z.boolean(),
   offers: z.boolean().optional(),
   pageSize: PageSizeSchema.optional(),
   actualPage: z.number().optional(),
   priceRange: z.array(z.number()),
   facets: FacetsSchema.optional(),
+  productId: z.string().optional(),
+  products: z.array(z.union([z.number(), z.string()])).optional(),
 });
 
-export const RecommendedProductsPayloadSchema = z.object({
+export const SuggestionsProductsPayloadSchema = z.object({
   type: z.string(),
   products: z.array(z.union([z.number(), z.string()])).optional(),
   todos: z.boolean().optional(),
   productBased: z.boolean().optional(),
+  userId: z.string().optional(),
 });
 
+export const ReviewSummarySchema = z.object({
+  averageRating: z.number(),
+  totalReviews: z.number(),
+});
 export const RecommendedProductsResponseElementSchema = z.object({
-  id: z.number(),
+  _id: z.string(),
+  active: z.boolean(),
+  activeIngredients: z.string().nullable(),
+  attack: z.union([z.null(), z.string()]),
   barcode: z.string(),
-  name: z.string(),
-  price: z.number(),
-  price_extra: z.number(),
+  bsPrice: z.number(),
+  category: CategorySchema,
   description: z.string(),
-  imageLarge: z.string(),
-  image: z.string(),
-  imageSmall: z.string(),
-  imageXtraSmall: z.string(),
-  imageUltraSmall: z.string(),
-  qty_available: z.number(),
-  currency: CurrencySchema,
-  taxes_ids: z.array(z.string()),
-  required_recipe: z.boolean(),
-  laboratory: LaboratorySchema,
-  product_type: ProductTypeSchema,
-  recommended: z.string(),
-  offers: z.string(),
-  x_studio_previous_price: z.number(),
-  price_ref: z.number(),
-  categ_route: z.string(),
-  saleslast7days: z.number(),
-  discount_rate: z.number(),
-  move_location_id: z.string(),
-  moves_location_id: z.string(),
-  x_studio_libre_de_gluten: z.string(),
-  x_studio_2x1: z.string(),
-  x_studio_fecha_de_vencimiento: z.string(),
+  images: z.array(z.string()),
+  inventary: z.record(z.string(), z.number()),
+  laboratory: z.null(),
+  name: z.string(),
+  productId: z.number(),
+  refPrice: z.number(),
+  reviewSummary: ReviewSummarySchema,
+  synons: z.string(),
   taxes: z.array(TaxSchema),
+  templateId: z.number(),
+  type: z.enum(['libre', 'prescripcion', 'tienda']),
+  updatedAt: z.coerce.date(),
+  visible: z.boolean(),
 });

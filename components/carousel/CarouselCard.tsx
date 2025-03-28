@@ -8,7 +8,7 @@ import { PRODUCT_DETAIL } from '@/lib/routes';
 import { formatVefCurrency } from '@/lib/utils';
 
 interface CarouselCardProps {
-  id: number;
+  id: string;
   title: string;
   imageUrl: string;
   rating: number;

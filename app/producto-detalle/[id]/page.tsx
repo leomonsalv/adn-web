@@ -32,7 +32,7 @@ import { CARRITO } from '@/lib/routes';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 import { PrescriptionUpload } from '@/components/products/ProductDetail/PrescriptionUpload';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
-import type { RecommendedProductsPayload, TopSellingProductsPayload } from '@/types/product';
+import type { SuggestionsProductsPayload, RecommendedForUserPayload } from '@/types/product';
 import { anonymousSignIn } from '@/api/auth';
 import { useAuth } from '@/hooks/use-auth';
 import { getCart, getOrCreateCart } from '@/api/cart';
@@ -49,44 +49,48 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const productId = use(params).id;
   const { useGetProductReviews } = useReviews();
 
-  const payload: RecommendedProductsPayload = {
+  //SUGGESTIONS PRODUCTS
+  const suggestionPayload: SuggestionsProductsPayload = {
     type: 'Details',
-    products: [productId],
+    products: user?.uid ? [user.uid] : [],
     productBased: true,
   };
 
-  const topSellersPayload: TopSellingProductsPayload = {
-    active: true,
-    priceRange: [0, 3000],
-  };
-  const { isPrescriptionUploaded } = usePrescriptionUpload();
-  const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
-
   const router = useRouter();
   const { useMutateCart, useGetCart } = useCart();
-  const { useGetProductById, useGetRecommendedProducts, useGetTopSellingProducts } = useProducts();
-
-  const {
-    data: recommendedData,
-    isLoading: isRecommendedLoading,
-    error: recommendedError,
-  } = useGetRecommendedProducts(payload);
-
-  const recommendedProducts = recommendedData ? [recommendedData].flat() : [];
-
-  const {
-    data: topSellersData,
-    isLoading: isTopSellersLoading,
-    error: isTopSellersError,
-  } = useGetTopSellingProducts(topSellersPayload);
-
-  const topSellersProducts = topSellersData ? [topSellersData].flat() : [];
+  const { useGetProductById, useGetRecommendations, useGetSuggestions } = useProducts();
 
   const {
     data: productData,
     isLoading: isProductLoading,
     error: productError,
   } = useGetProductById(productId);
+
+  // RECOMMENDED FOR USERS
+  const recommendedForUserPayload: RecommendedForUserPayload = {
+    active: true,
+    priceRange: [0, 3000],
+    productId: productData?.productId?.toString(),
+  };
+
+  const { isPrescriptionUploaded } = usePrescriptionUpload();
+  const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
+
+  const {
+    data: suggestionsData,
+    isLoading: isSuggestionsLoading,
+    error: suggestionsError,
+  } = useGetRecommendations(suggestionPayload);
+
+  const suggestedProducts = suggestionsData ? [suggestionsData].flat() : [];
+
+  const {
+    data: recommendedForUserData,
+    isLoading: isRecommendedForUserLoading,
+    error: isRecommendedForUserError,
+  } = useGetSuggestions(recommendedForUserPayload);
+
+  const recommendedForUserProducts = recommendedForUserData ? [recommendedForUserData].flat() : [];
 
   const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
     productId: productData?.productId.toString() ?? '',
@@ -315,7 +319,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 product={product}
               /> */}
               <DisponibilityCounter productQuantity={productData.inventary.total} />
-              {/* <DisponibilityCounter productQuantity={productData.qty_available} /> */}
 
               {/* Price tags */}
               <div className="mt-4">
@@ -453,7 +456,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           </div>
           {/* Recommended products carousel */}
           <section className="py-2">
-            {isRecommendedLoading || recommendedError ? (
+            {isRecommendedForUserLoading || isRecommendedForUserError ? (
               <div className="flex justify-center items-center min-h-screen">
                 <p>Cargando productos recomendados...</p>
               </div>
@@ -461,7 +464,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               <CarouselRecommened
                 title="Productos similares a"
                 subtitle={productData.name}
-                products={recommendedProducts}
+                products={recommendedForUserProducts}
               />
             )}
           </section>
@@ -475,15 +478,15 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           </section>
           {/* Top sellers products carousel */}
           <section className="py-2">
-            {isTopSellersLoading || isTopSellersError ? (
+            {isSuggestionsLoading || suggestionsError ? (
               <div className="flex justify-center items-center min-h-screen">
                 <p>Cargando productos recomendados...</p>
               </div>
             ) : (
               <CarouselRecommened
-                title="Otras clientes también compraron"
-                subtitle="Estos productos te podrían interesar"
-                products={topSellersProducts as any}
+                title="Usuarios como tú también compraron"
+                subtitle={''}
+                products={suggestedProducts}
               />
             )}
           </section>
