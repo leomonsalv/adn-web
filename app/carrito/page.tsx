@@ -6,8 +6,9 @@ import { useCartStore } from '@/stores/cart-store';
 import CartOrderSummary from '@/components/cart/CartOrderSummary';
 import useCart from '@/hooks/use-cart';
 import { useEffect, useMemo } from 'react';
-import { RecommendedProductsPayload } from '@/types/product';
+import { SuggestionsProductsPayload } from '@/types/product';
 import useProducts from '@/hooks/use-products';
+import { useAuth } from '@/hooks/use-auth';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -16,26 +17,26 @@ export default function Cart() {
   const { cart, setCart } = useCartStore();
   const { useGetCart } = useCart();
   const { data, isLoading } = useGetCart();
-  const { useGetRecommendedProducts } = useProducts();
+  const { useGetRecommendations } = useProducts();
+  const { user } = useAuth();
 
   const productIds = useMemo(() => {
     return cart?.products?.map((product) => product.productId) || [];
   }, [cart]);
 
-  const payload: RecommendedProductsPayload | null = useMemo(() => {
-    if (productIds.length === 0) return null;
+  const payload: SuggestionsProductsPayload | null = useMemo(() => {
     return {
-      type: 'Cart',
-      products: productIds,
+      type: 'Details',
+      products: user?.uid ? [user.uid] : [],
       productBased: true,
     };
-  }, [productIds]);
+  }, [user?.uid]);
 
   const {
-    data: recommendedData,
+    data: recommendationsData,
     isLoading: isRecommendedLoading,
     error: recommendedError,
-  } = useGetRecommendedProducts(payload!);
+  } = useGetRecommendations(payload!);
 
   useEffect(() => {
     if (data && !isLoading) {
@@ -92,9 +93,9 @@ export default function Cart() {
             </div>
           ) : (
             <CarouselRecommened
-              title="Productos similares a"
-              subtitle={cart.products[0]?.name || 'tus productos'}
-              products={recommendedData || []}
+              title="Usuarios como tú también compraron"
+              subtitle={''}
+              products={recommendationsData || []}
             />
           )}
         </section>

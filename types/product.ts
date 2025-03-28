@@ -25,8 +25,8 @@ import {
   XlSchema,
   ProductTypeSchema,
   PageSizeSchema,
-  TopSellingProductsPayloadSchema,
-  RecommendedProductsPayloadSchema,
+  RecommendedForUserPayloadSchema,
+  SuggestionsProductsPayloadSchema,
   RecommendedProductsResponseElementSchema,
 } from '@/schemas/product-schema';
 import { z } from 'zod';
@@ -55,8 +55,8 @@ export type Product = z.infer<typeof ProductSchema>;
 export type ProductResponse = z.infer<typeof ProductResponseSchema>;
 export type ProductType = z.infer<typeof ProductTypeSchema>;
 export type PageSize = z.infer<typeof PageSizeSchema>;
-export type TopSellingProductsPayload = z.infer<typeof TopSellingProductsPayloadSchema>;
-export type RecommendedProductsPayload = z.infer<typeof RecommendedProductsPayloadSchema>;
+export type RecommendedForUserPayload = z.infer<typeof RecommendedForUserPayloadSchema>;
+export type SuggestionsProductsPayload = z.infer<typeof SuggestionsProductsPayloadSchema>;
 export type RecommendedProductsResponseElement = z.infer<
   typeof RecommendedProductsResponseElementSchema
 >;

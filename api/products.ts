@@ -148,27 +148,54 @@ export const getDeliveryPrice = async (): Promise<Product> => {
   }
 };
 
-export const fetchProductsSuggestions = async (
-  query: string,
-): Promise<{ results: { documents: { suggestion: string }[] } }> => {
-  const response = await httpsCallable<
-    SearchFormType,
-    { results: { documents: { suggestion: string }[] } }
-  >(
-    functions,
-    'es-search',
-  )({ query, pageSize: 5, suggest: true });
-  return response.data;
+export const fetchRecommendations = async (payload: any): Promise<any> => {
+  try {
+    const userId = payload.productId;
+    if (!userId) {
+      throw new Error('User ID is required for fetching recommended products');
+    }
+
+    const response = await fetch(`${API_URL}/api/users/recommendations/${userId}`);
+    // UNCOMMENT THIS LINE FOR TESTING PURPOSES
+    // const response = await fetch(
+    //   `${API_URL}/api/users/recommendations/0Efs5MaRi1QgFht1CRWkf4ZHrKu2`,
+    // );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching recommended products:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching recommended products');
+  }
 };
 
-//THIS CALL WILL CHANGE IN THE FUTURE WHEN MOVED TO MONGO
-export const fetchRecommendedProducts = async (payload: any): Promise<any> => {
-  const response = await httpsCallable<any, any>(functions, GET_RECOMMENDED_PRODUCTS)(payload);
-  return response.data;
-};
+export const fetchSuggestions = async (payload: any): Promise<any> => {
+  try {
+    const productId = payload.productId;
+    if (!productId) {
+      throw new Error('Product ID is required for fetching suggestions');
+    }
 
-//THIS CALL WILL CHANGE IN THE FUTURE WHEN MOVED TO MONGO
-export const fetchTopSellingProducts = async (payload: any): Promise<any> => {
-  const response = await httpsCallable<any, any>(functions, GET_TOP_SELLERS_PRODUCTS)(payload);
-  return response.data;
+    const response = await fetch(`${API_URL}/api/suggestions/${productId}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching product suggestions:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching product suggestions');
+  }
 };
