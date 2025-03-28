@@ -21,22 +21,21 @@ interface UnwrappedParams {
 }
 
 interface ApiProduct {
-  ID: string;
-  Visible: boolean;
-  ActiveIngredients?: string;
-  Attack?: string;
-  Barcode?: string;
-  BsPrice?: number;
-  Description?: string;
-  ProductID: number;
-  Images?: string[];
-  Inventary?: Record<string, number>;
-  Laboratory?: string;
-  Name: string;
-  RefPrice?: number;
-  Synons?: string;
-  TemplateID: number;
-  Type: 'libre' | 'prescripcion' | 'tienda';
+  id: string;
+  product_id: number;
+  visible?: boolean;
+  active_ingredients?: string;
+  attack?: string;
+  barcode?: string;
+  bs_price?: number;
+  description?: string;
+  images?: string[];
+  inventary?: Record<string, number>;
+  name: string;
+  ref_price?: number;
+  synons?: string;
+  template_id: number;
+  type: 'libre' | 'prescripcion' | 'tienda';
 }
 
 type SortOption = NonNullable<SearchFormType['sort']>;
@@ -77,14 +76,14 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
   }, [special_category]);
 
   const mapApiProductToUiProduct = (apiProduct: ApiProduct): Product => ({
-    _id: apiProduct.ID,
-    active: apiProduct.Visible,
-    activeIngredients: apiProduct.ActiveIngredients || null,
-    attack: apiProduct.Attack || null,
-    barcode: apiProduct.Barcode || '',
+    _id: apiProduct.id,
+    active: apiProduct.visible ?? true,
+    activeIngredients: apiProduct.active_ingredients || null,
+    attack: apiProduct.attack || null,
+    barcode: apiProduct.barcode || '',
     betterAttack: [],
     betterIngredients: [],
-    bsPrice: apiProduct.BsPrice?.toString() || '0',
+    bsPrice: apiProduct.bs_price?.toString() || '0',
     category: {
       full_name: '',
       name: '',
@@ -92,22 +91,22 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
       editable: '',
       id: 0,
     },
-    description: apiProduct.Description || '',
-    id: apiProduct.ProductID,
-    images: apiProduct.Images || [],
-    inventary: apiProduct.Inventary || {},
-    laboratory: apiProduct.Laboratory || '',
+    description: apiProduct.description || '',
+    id: apiProduct.product_id,
+    images: apiProduct.images || [],
+    inventary: apiProduct.inventary || {},
+    laboratory: '',
     quantity: 1,
-    name: apiProduct.Name,
-    price: apiProduct.BsPrice || 0,
+    name: apiProduct.name,
+    price: apiProduct.bs_price || 0,
     price_extra: 0,
-    productId: apiProduct.ProductID,
-    refPrice: apiProduct.RefPrice || 0,
-    synons: apiProduct.Synons || null,
+    productId: apiProduct.product_id,
+    refPrice: apiProduct.ref_price || 0,
+    synons: apiProduct.synons || null,
     taxes: [],
-    templateId: apiProduct.TemplateID,
-    type: apiProduct.Type,
-    visible: apiProduct.Visible,
+    templateId: apiProduct.template_id,
+    type: apiProduct.type,
+    visible: apiProduct.visible ?? true,
   });
 
   // Transformar los productos de specialCategoryDetail al formato esperado por ProductGrid
@@ -115,8 +114,8 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     if (!specialCategoryDetail?.products || !Array.isArray(specialCategoryDetail.products)) {
       return [];
     }
-    return (specialCategoryDetail.products as unknown as ApiProduct[]).map(
-      mapApiProductToUiProduct,
+    return (specialCategoryDetail.products as unknown as ApiProduct[]).map((product: ApiProduct) =>
+      mapApiProductToUiProduct(product),
     );
   }, [specialCategoryDetail]);
 
