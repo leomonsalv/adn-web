@@ -39,6 +39,7 @@ import { getCart, getOrCreateCart } from '@/api/cart';
 import useReviews from '@/hooks/use-reviews';
 import Reviews from '@/components/reviews/Reviews';
 import ReviewsSection from '@/components/reviews/ReviewSection';
+import Link from 'next/link';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -426,9 +427,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       Acerca de este artículo
                     </AccordionTrigger>
                     <AccordionContent className="prose prose-sm mt-4 text-gray-500">
-                      {product.details && product.details.length > 0 ? (
-                        <ul role="list">
-                          {product.details.map((item) => (
+                      {productData.details && productData.details.length > 0 ? (
+                        <ul className="list-disc list-inside">
+                          {productData.details.map((item) => (
                             <li key={item}>{item}</li>
                           ))}
                         </ul>
@@ -442,7 +443,18 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       Envío
                     </AccordionTrigger>
                     <AccordionContent>
-                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                      <ul className="list-disc list-inside">
+                        <li>
+                          <strong>Caracas y Guarenas:</strong> Envío gratis en compras superiores a
+                          $10, con un plazo de entrega no mayor a 1 hora para Caracas y 2 horas para
+                          Guarenas.
+                        </li>
+                        <li>
+                          <strong>Interior del país:</strong> Envío gratis a través de Zoom en
+                          compras que no superen los 2 kg y monto superior a $20, con un plazo de
+                          entrega no mayor a 24 horas.
+                        </li>
+                      </ul>
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-3">
@@ -450,7 +462,11 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                       Devoluciones
                     </AccordionTrigger>
                     <AccordionContent>
-                      Sí, cumple con el patrón de diseño WAI-ARIA.
+                      Para obtener información sobre las políticas de devolución de algún producto,
+                      haz clic aquí{' '}
+                      <Link className="text-blue-500" href="/terminoscondiciones">
+                        Políticas de devolución
+                      </Link>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
