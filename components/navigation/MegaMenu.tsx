@@ -165,6 +165,14 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ categories }) => {
                   40% OFF
                 </span>
               </Link>
+              <Link
+                href="/servicios"
+                className="flex items-center h-full text-white hover:opacity-75 shrink-0"
+              >
+                <span className="text-sm font-medium whitespace-nowrap hidden sm:inline">
+                  Servicios
+                </span>
+              </Link>
             </div>
           </div>
         </div>
