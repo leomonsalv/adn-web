@@ -1,6 +1,6 @@
 // api/products.ts
 import { SearchFormType } from '@/types/search';
-import { API_URL, GET_RECOMMENDED_PRODUCTS, GET_TOP_SELLERS_PRODUCTS } from '@/lib/urls';
+import { API_URL } from '@/lib/urls';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/lib/firebaseConfig';
 import { Product, ProductResponse } from '@/types/product';
@@ -19,6 +19,7 @@ interface SearchParams {
     max: number;
   };
   saveExcel?: string;
+  service?: string;
 }
 
 export const fetchProducts = async ({
@@ -32,6 +33,7 @@ export const fetchProducts = async ({
   priceRange,
   saveExcel = 'false',
   categories = [],
+  service = 'products',
 }: SearchParams): Promise<ProductResponse> => {
   try {
     const queryParams = new URLSearchParams({
@@ -51,6 +53,7 @@ export const fetchProducts = async ({
       queryParams.append('minPrice', priceRange.min.toString());
       queryParams.append('maxPrice', priceRange.max.toString());
     }
+    if (service) queryParams.append('services', service);
 
     const response = await fetch(`${API_URL}/products?${queryParams.toString()}`);
 

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { SearchFormType, SearchResponse } from '@/types/search';
 
-export default function useSearchProduct() {
+export default function useSearchProduct(service: boolean = false) {
   const queryClient = useQueryClient();
 
   const searchProducts = (params: SearchFormType) => {
@@ -21,6 +21,7 @@ export default function useSearchProduct() {
           ingredients: params.ingredients || '',
           laboratories: params.laboratories || '',
           saveExcel: 'false', //FIXME: ADD saveExcel to SearchFormType
+          service: service ? 'services' : 'products',
         };
 
         try {

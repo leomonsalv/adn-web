@@ -1,18 +1,17 @@
 'use client';
-
 import { useState } from 'react';
-import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
 import useSearchProduct, { SearchFormType } from '@/hooks/use-search-products';
 import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
 import { NextSeo } from 'next-seo';
+import Filters, { MobileFilterDialog } from '@/components/categorias/filters';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
 
-export default function SearchPage({ params }: { params: { q: string } }) {
+export default function ServicesPage() {
   const searchParams = useSearchParams();
   const urlSearch = searchParams.get('q') ?? '';
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -22,15 +21,13 @@ export default function SearchPage({ params }: { params: { q: string } }) {
   const [sortOption, setSortOption] = useState<SortOption>();
   const [priceRange, setPriceRange] = useState<PriceRange>();
 
-  const { searchProducts, updateSort, updatePriceRange, updateFilters } = useSearchProduct();
+  const { searchProducts, updateSort, updatePriceRange, updateFilters } = useSearchProduct(true);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
     searchProducts({
       search: urlSearch,
       pageSize: 10,
-      attack: selectedFilters?.attack?.[0],
-      ingredients: selectedFilters?.ingredients?.[0],
-      laboratories: selectedFilters?.laboratories?.[0],
+      service: '3', // This indicates we only want services
       sort: sortOption,
       priceRange: priceRange,
     });
@@ -50,7 +47,7 @@ export default function SearchPage({ params }: { params: { q: string } }) {
     updatePriceRange(newRange);
   };
 
-  const products = data?.pages.flatMap((page) => page.items) || [];
+  const services = data?.pages.flatMap((page) => page.items) || [];
 
   if (isLoading) return <SearchPageSkeleton />;
 
@@ -65,11 +62,11 @@ export default function SearchPage({ params }: { params: { q: string } }) {
   return (
     <main className="bg-white">
       <NextSeo
-        title={'Búsqueda'}
-        description={'Tus productos favoritos en Adan Farmacia'}
+        title={'Servicios'}
+        description={'Servicios disponibles en Adan Farmacia'}
         openGraph={{
-          title: 'Búsqueda',
-          description: 'Tus productos favoritos en Adan Farmacia',
+          title: 'Servicios',
+          description: 'Servicios disponibles en Adan Farmacia',
           siteName: 'Adan Farmacia',
         }}
       />
@@ -77,11 +74,10 @@ export default function SearchPage({ params }: { params: { q: string } }) {
         isOpen={mobileFiltersOpen}
         setIsOpen={setMobileFiltersOpen}
         facets={{
-          attack: data?.pages[0]?.metadata?.attack,
-          ingredients: data?.pages[0]?.metadata?.ingredients,
-          laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
-            (lab): lab is string => lab !== null,
-          ),
+          // We'll only show price filters for services
+          laboratories: [],
+          attack: [],
+          ingredients: [],
         }}
         selectedFilters={selectedFilters}
         onFilterChange={handleFilterChange}
@@ -92,10 +88,10 @@ export default function SearchPage({ params }: { params: { q: string } }) {
       />
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        {/* Título */}
+        {/* Title */}
         <div className="border-b border-gray-200 pb-10">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-            {urlSearch || 'Productos'}
+            {urlSearch ? `Búsqueda: ${urlSearch}` : 'Servicios'}
           </h1>
         </div>
 
@@ -113,11 +109,10 @@ export default function SearchPage({ params }: { params: { q: string } }) {
               <div className="mt-6">
                 <Filters
                   facets={{
-                    attack: data?.pages[0]?.metadata?.attack,
-                    ingredients: data?.pages[0]?.metadata?.ingredients,
-                    laboratories: data?.pages[0]?.metadata?.laboratories?.filter(
-                      (lab): lab is string => lab !== null,
-                    ),
+                    // We'll only show price filters for services
+                    laboratories: [],
+                    attack: [],
+                    ingredients: [],
                   }}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
@@ -131,13 +126,13 @@ export default function SearchPage({ params }: { params: { q: string } }) {
           </aside>
 
           <section className="lg:col-span-2 xl:col-span-3">
-            {products.length === 0 ? (
+            {services.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">No se encontraron productos</p>
+                <p className="text-gray-500">No se encontraron servicios</p>
               </div>
             ) : (
               <ProductGrid
-                products={products}
+                products={services}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
                 fetchNextPage={fetchNextPage}
