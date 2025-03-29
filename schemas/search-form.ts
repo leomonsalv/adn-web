@@ -25,6 +25,7 @@ export const searchFormSchema = z.object({
   facets: z.record(z.string(), z.array(z.string())).optional(),
   priceRange: PriceRangeSchema.optional(),
   suggest: z.boolean().optional(),
+  service: z.string().optional(),
 });
 
 // Schema para las sugerencias
