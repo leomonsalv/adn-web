@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
 import { NextSeo } from 'next-seo';
-import Filters, { MobileFilterDialog } from '@/components/categorias/filters';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -70,22 +69,6 @@ export default function ServicesPage() {
           siteName: 'Adan Farmacia',
         }}
       />
-      <MobileFilterDialog
-        isOpen={mobileFiltersOpen}
-        setIsOpen={setMobileFiltersOpen}
-        facets={{
-          // We'll only show price filters for services
-          laboratories: [],
-          attack: [],
-          ingredients: [],
-        }}
-        selectedFilters={selectedFilters}
-        onFilterChange={handleFilterChange}
-        onSortChange={handleSortChange}
-        onPriceRangeChange={handlePriceRangeChange}
-        currentSort={sortOption}
-        currentPriceRange={priceRange}
-      />
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         {/* Title */}
@@ -96,35 +79,6 @@ export default function ServicesPage() {
         </div>
 
         <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-          <aside>
-            <h2 className="sr-only">Filtros</h2>
-            <button
-              title="Filtros"
-              type="button"
-              onClick={() => setMobileFiltersOpen(true)}
-              className="inline-flex items-center lg:hidden"
-            />
-
-            <div className="hidden lg:block">
-              <div className="mt-6">
-                <Filters
-                  facets={{
-                    // We'll only show price filters for services
-                    laboratories: [],
-                    attack: [],
-                    ingredients: [],
-                  }}
-                  selectedFilters={selectedFilters}
-                  onFilterChange={handleFilterChange}
-                  onSortChange={handleSortChange}
-                  onPriceRangeChange={handlePriceRangeChange}
-                  currentSort={sortOption}
-                  currentPriceRange={priceRange}
-                />
-              </div>
-            </div>
-          </aside>
-
           <section className="lg:col-span-2 xl:col-span-3">
             {services.length === 0 ? (
               <div className="text-center py-12">
@@ -136,6 +90,7 @@ export default function ServicesPage() {
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
                 fetchNextPage={fetchNextPage}
+                service={true}
               />
             )}
           </section>
