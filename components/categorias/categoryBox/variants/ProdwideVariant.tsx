@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
-import { HeroProductItem } from '@/types/home';
+import type { HeroProductItem } from '@/types/home';
 
 interface ProdwideVariantProps {
   title: string;
@@ -23,7 +23,7 @@ const ProdwideVariant = ({
   return (
     <Link href={link} className="block h-full">
       <Card
-        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col text-left group relative`}
+        className="overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col text-left group relative"
         style={{ backgroundColor: background || '#EBF3ED' }}
       >
         {/* Title and Description */}
@@ -44,6 +44,7 @@ const ProdwideVariant = ({
             <Image
               fill
               src={wide}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={title}
               className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
             />
@@ -69,6 +70,7 @@ const ProdwideVariant = ({
                       fill
                       src={product.img ? product.img.replace(/"/g, '') : '/delivery.png'}
                       alt={product.name || ''}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                     {product.discount && (

@@ -2,13 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
-import { HeroProductItem } from '@/types/home';
+import type { HeroProductItem } from '@/types/home';
 
 interface ProductVariantProps {
   title: string;
   description: string;
   products: HeroProductItem[];
   background: string;
+  textColor?: string;
   link: string;
 }
 
@@ -17,31 +18,33 @@ const ProductVariant = ({
   description,
   products,
   background,
+  textColor = 'text-white',
   link,
 }: ProductVariantProps) => {
   const router = useRouter();
   return (
     <Link href={link} className="block h-full">
       <Card
-        className={`overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col justify-between text-left group relative`}
+        className="overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col text-left group relative"
         style={{ backgroundColor: background || '#EBF3ED' }}
       >
-        <div className="z-10">
-          <h3 className="text-lg font-medium">
-            <span className="text-black transition-colors">{title}</span>{' '}
-          </h3>
-          {description && (
-            <p className="mt-1 text-sm text-gray-600 group-hover:text-gray-700 transition-colors">
-              {description}
-            </p>
-          )}
+        <div className="p-4 md:p-6 flex flex-col justify-center min-h-[90px] md:min-h-[110px] z-10 relative mb-4">
+          {' '}
+          <div>
+            <h3
+              className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
+            >
+              {title}
+            </h3>
+            {description && <p className={`text-sm md:text-base ${textColor}`}>{description}</p>}
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 mt-6">
+        <div className="grid grid-cols-2 gap-4 mt-16">
           {products &&
             products.length > 0 &&
-            products.slice(0, 4).map((product, index) => (
+            products.slice(0, 4).map((product) => (
               <div
-                key={index}
+                key={product.id}
                 className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50"
               >
                 <div
@@ -60,6 +63,7 @@ const ProductVariant = ({
                     fill
                     src={product.img}
                     alt={product.name}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   {product.discount && (

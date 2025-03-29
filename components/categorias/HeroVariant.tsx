@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hero, HeroType } from '@/types/home';
+import { type Hero, HeroType } from '@/types/home';
 import {
   SingleVariant,
   MosaicVariant,
@@ -20,7 +20,7 @@ function HeroVariant({ heroItem }: Props) {
       : productSlug || `/${heroItem.title.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
-    <div className="w-full h-full bg-white rounded-lg shadow-sm p-4">
+    <>
       {/* Mosaic type */}
       {heroItem.type === 'mosaic' && (
         <MosaicVariant
@@ -28,6 +28,7 @@ function HeroVariant({ heroItem }: Props) {
           description={heroItem.subtitle}
           mosaic={
             heroItem.products?.map((product) => ({
+              id: product.id || '',
               image: product.img,
               alt: product.name,
               slug: product.slug,
@@ -99,7 +100,7 @@ function HeroVariant({ heroItem }: Props) {
           link={link}
         />
       )}
-    </div>
+    </>
   );
 }
 

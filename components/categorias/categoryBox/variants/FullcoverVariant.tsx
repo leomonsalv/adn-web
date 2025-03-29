@@ -7,6 +7,7 @@ interface FullcoverVariantProps {
   description: string;
   fullimage: string;
   background: string;
+  textColor?: string;
   link: string;
 }
 
@@ -14,6 +15,7 @@ const FullcoverVariant = ({
   title,
   description,
   fullimage,
+  textColor = 'text-white',
   background,
   link,
 }: FullcoverVariantProps) => {
@@ -23,14 +25,17 @@ const FullcoverVariant = ({
         className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col"
         style={{ backgroundColor: background || '#f5f5f5' }}
       >
-        <div className="p-6 flex flex-col">
+        <div className="p-4 md:p-6 flex flex-col justify-center min-h-[90px] md:min-h-[110px] z-10 relative mb-4">
+          {' '}
           <div>
-            <h3 className="text-lg font-medium text-gray-800 px-4 rounded-md ">{title}</h3>
-            {description && <p className="text-sm px-4 rounded-md text-gray-800">{description}</p>}
+            <h3
+              className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
+            >
+              {title}
+            </h3>
+            {description && <p className={`text-sm md:text-base ${textColor}`}>{description}</p>}
           </div>
         </div>
-
-        <div className="flex-grow"></div>
 
         {fullimage && (
           <div className="w-full h-full relative mt-auto">
@@ -38,6 +43,7 @@ const FullcoverVariant = ({
               fill
               src={fullimage}
               alt={title}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
