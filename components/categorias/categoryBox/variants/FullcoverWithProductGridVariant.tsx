@@ -1,35 +1,41 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
+import type { HeroProductItem } from '@/types/home';
 
-interface FullcoverVariantProps {
+interface FullcoverWithProductGridVariantProps {
   title: string;
   description: string;
-  fullimage: string;
+  products: HeroProductItem[];
   background: string;
   textColor?: string;
   link: string;
 }
 
-const FullcoverVariant = ({
+const FullcoverWithProductGridVariant = ({
   title,
   description,
-  fullimage,
-  textColor = 'text-black', // Ajustado a negro como en la imagen de ejemplo
+  products,
   background,
+  textColor = 'text-white',
   link,
-}: FullcoverVariantProps) => {
+}: FullcoverWithProductGridVariantProps) => {
+  const router = useRouter();
+  const mainImage = products?.[0]?.img || '';
+
+  // Use the first product's slug as the main link, or fallback to the provided link
+  const mainLink = products?.[0]?.slug || link || '/';
+
   return (
-    // 5. Considera quitar h-full si tu layout lo permite
-    <Link href={link} className="block h-full">
+    <Link href={mainLink} className="block h-full">
       <Card
-        // 5. Considera quitar h-full de aquí también
-        className="overflow-hidden w-full h-full rounded-md shadow-xs relative flex flex-col"
-        style={{ backgroundColor: background || '#f5f5f5' }}
+        className="overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-md shadow-xs flex flex-col text-left relative"
+        style={{ backgroundColor: background || '#EBF3ED' }}
       >
-        {/* Área de Texto */}
-        {/* 4. Margen inferior para separar del área de imagen */}
+        {/* Title and Description */}
         <div className="p-4 md:p-6 flex flex-col justify-center min-h-[90px] md:min-h-[110px] z-10 relative mb-4">
+          {' '}
           <div>
             <h3
               className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
@@ -40,26 +46,53 @@ const FullcoverVariant = ({
           </div>
         </div>
 
-        {/* 1. ELIMINADO el div con flex-grow */}
-        {/* <div className="flex-grow" /> */}
-
-        {/* Área de Imagen */}
-        {fullimage && (
-          // 2. ELIMINADO h-full y mt-auto
-          // 3. AÑADIDO aspect-* (¡AJUSTA ESTOS VALORES!)
-          <div className="w-full relative aspect-square sm:aspect-video md:aspect-[4/3]">
-            {' '}
-            {/* EJEMPLO: Cuadrado en móvil, video en tablet, 4:3 en desktop */}
+        {/* Main Banner Image - Positioned prominently */}
+        {mainImage && (
+          <div className="w-full relative h-40 overflow-hidden rounded-md mb-5">
             <Image
               fill
-              src={fullimage}
+              src={mainImage.replace(/\"/g, '')}
               alt={title}
-              // Asegúrate que 'sizes' esté presente y ajustado
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw" // ¡AJUSTA ESTOS VALORES!
-              className="object-cover" // Manten object-cover si quieres llenar el área (o prueba object-contain si el recorte es inaceptable)
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
             />
-            {/* Gradiente opcional */}
-            {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" /> */}
+          </div>
+        )}
+
+        {/* Product Grid - 2x2 layout */}
+        {products && products.length > 1 && (
+          <div className="grid grid-cols-2 gap-3 mt-auto">
+            {products.slice(1, 5).map((product) => (
+              <div
+                key={product.id}
+                className="block"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // Always prioritize the product's own slug if available
+                  if (product.slug) {
+                    router.push(product.slug);
+                  } else {
+                    router.push(mainLink);
+                  }
+                }}
+              >
+                <div className="relative w-full aspect-square group overflow-hidden rounded-md bg-white/50 cursor-pointer">
+                  <Image
+                    fill
+                    src={product.img ? product.img.replace(/\"/g, '') : '/delivery.png'}
+                    alt={product.name || ''}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  {product.discount && (
+                    <div className="absolute bottom-2 left-2 bg-pink-200 text-pink-700 text-xs px-2 py-1 rounded-md font-medium">
+                      {product.discount}%
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </Card>
@@ -67,4 +100,4 @@ const FullcoverVariant = ({
   );
 };
 
-export default FullcoverVariant;
+export default FullcoverWithProductGridVariant;
