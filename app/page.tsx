@@ -8,7 +8,7 @@ import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
 import { RecentProducts } from '@/lib/dummyData';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 import HeroVariant from '@/components/categorias/HeroVariant';
 
 export default function HomePage() {
@@ -19,10 +19,10 @@ export default function HomePage() {
         <div className="h-[300px] relative">
           <BannerCarousel />
         </div>
-        <main className="relative -mt-72 flex flex-col items-center">
+        <main className="relative flex flex-col items-center">
           <section
             aria-labelledby="category-heading"
-            className="relative mt-[300px] pt-12 rounded-t-[32px] container"
+            className="relative rounded-t-[32px] container"
           >
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
               <OffersGrid

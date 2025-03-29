@@ -2,13 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
-import { SearchFormType } from '@/hooks/use-search-products';
+import type { SearchFormType } from '@/hooks/use-search-products';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
-import { Facets } from '@/types/categories';
+import type { Facets } from '@/types/categories';
 import useSpecialCategories from '@/hooks/use-special-categories';
 import { NextSeo } from 'next-seo';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 interface SpecialCategoryPageProps {
   params: {
@@ -22,19 +22,20 @@ interface UnwrappedParams {
 
 interface ApiProduct {
   id: string;
-  product_id: number;
-  visible?: boolean;
+  visible: boolean;
   active_ingredients?: string;
   attack?: string;
   barcode?: string;
   bs_price?: number;
   description?: string;
+  product_id: number;
   images?: string[];
   inventary?: Record<string, number>;
+  laboratory?: string;
   name: string;
-  ref_price?: number;
+  refPrice?: number;
   synons?: string;
-  template_id: number;
+  templateId?: number;
   type: 'libre' | 'prescripcion' | 'tienda';
 }
 
@@ -95,17 +96,17 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     id: apiProduct.product_id,
     images: apiProduct.images || [],
     inventary: apiProduct.inventary || {},
-    laboratory: '',
+    laboratory: apiProduct.laboratory || '',
     quantity: 1,
     name: apiProduct.name,
     price: apiProduct.bs_price || 0,
     price_extra: 0,
     productId: apiProduct.product_id,
-    refPrice: apiProduct.ref_price || 0,
+    refPrice: apiProduct.refPrice || 0,
     synons: apiProduct.synons || null,
     taxes: [],
-    templateId: apiProduct.template_id,
     type: apiProduct.type,
+    templateId: Number(apiProduct.templateId),
     visible: apiProduct.visible ?? true,
   });
 
@@ -251,7 +252,7 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
             </div>
 
             <ProductGrid
-              products={products}
+              products={filteredProducts}
               hasNextPage={false}
               isFetchingNextPage={false}
               fetchNextPage={() => {}}

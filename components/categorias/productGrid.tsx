@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 // Utility function to safely parse numeric values
 const safeParseFloat = (value: string | number | undefined): number => {
-  if (typeof value === 'number' && !isNaN(value)) return value;
+  if (typeof value === 'number' && !Number.isNaN(value)) return value;
   if (typeof value === 'string') {
-    const parsed = parseFloat(value);
-    return isNaN(parsed) ? 0 : parsed;
+    const parsed = Number.parseFloat(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
   }
   return 0;
 };
