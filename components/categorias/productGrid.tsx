@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
@@ -25,6 +25,7 @@ interface ProductGridProps {
   hasNextPage?: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
+  service?: boolean;
 }
 
 function ProductGrid({
@@ -32,6 +33,7 @@ function ProductGrid({
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
+  service = false,
 }: ProductGridProps) {
   const { ref, inView } = useInView({
     threshold: 0,
@@ -83,7 +85,7 @@ function ProductGrid({
             </div>
             <div className="flex flex-1 flex-col space-y-2 p-4">
               <h3 className="text-sm font-medium text-gray-900">
-                <Link href={`/producto-detalle/${product._id}`}>
+                <Link href={`/${service ? 'servicio-detalle' : 'producto-detalle'}/${product._id}`}>
                   <span aria-hidden="true" className="absolute inset-0" />
                   {product.name}
                 </Link>
