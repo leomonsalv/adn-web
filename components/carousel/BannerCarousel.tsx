@@ -25,7 +25,7 @@ const BannerCarousel: React.FC = () => {
   if (isLoading) {
     return (
       <div className="absolute top-0 left-0 w-full">
-        <Skeleton className="w-full h-[600px]" />
+        <Skeleton className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]" />
       </div>
     );
   }
@@ -36,9 +36,9 @@ const BannerCarousel: React.FC = () => {
   }
 
   return (
-    <div className="absolute top-0 left-0 w-full">
+    <div className="relative w-full">
       <Carousel
-        className="relative w-full"
+        className="w-full"
         opts={{
           align: 'start',
           loop: true,
@@ -54,14 +54,14 @@ const BannerCarousel: React.FC = () => {
           {data.banners.map((banner, index) => (
             <CarouselItem
               key={banner.id}
-              className="relative h-[600px] overflow-hidden bg-gray-100"
+              className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden"
             >
               <Link href={banner.target_url} className="block w-full h-full relative">
                 <Image
                   src={banner.image_url}
-                  alt={banner.alt || banner.title}
+                  alt={banner.alt || banner.title || 'Banner Image'}
                   fill
-                  className="object-cover object-top"
+                  className="object-cover object-center"
                   sizes="100vw"
                   priority={index === 0}
                 />

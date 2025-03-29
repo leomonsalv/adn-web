@@ -2,13 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
-import { SearchFormType } from '@/hooks/use-search-products';
+import type { SearchFormType } from '@/hooks/use-search-products';
 import { Filters, MobileFilterDialog } from '@/components/categorias/filters';
 import ProductGrid from '@/components/categorias/productGrid';
-import { Facets } from '@/types/categories';
+import type { Facets } from '@/types/categories';
 import useSpecialCategories from '@/hooks/use-special-categories';
 import { NextSeo } from 'next-seo';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 interface SpecialCategoryPageProps {
   params: {
@@ -21,22 +21,22 @@ interface UnwrappedParams {
 }
 
 interface ApiProduct {
-  ID: string;
-  Visible: boolean;
-  ActiveIngredients?: string;
-  Attack?: string;
-  Barcode?: string;
-  BsPrice?: number;
-  Description?: string;
-  ProductID: number;
-  Images?: string[];
-  Inventary?: Record<string, number>;
-  Laboratory?: string;
-  Name: string;
-  RefPrice?: number;
-  Synons?: string;
-  TemplateID: number;
-  Type: 'libre' | 'prescripcion' | 'tienda';
+  id: string;
+  visible: boolean;
+  activeIngredients?: string;
+  attack?: string;
+  barcode?: string;
+  bs_price?: number;
+  description?: string;
+  product_id: number;
+  images?: string[];
+  inventary?: Record<string, number>;
+  laboratory?: string;
+  name: string;
+  refPrice?: number;
+  synons?: string;
+  templateId?: number;
+  type: 'libre' | 'prescripcion' | 'tienda';
 }
 
 type SortOption = NonNullable<SearchFormType['sort']>;
@@ -77,14 +77,14 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
   }, [special_category]);
 
   const mapApiProductToUiProduct = (apiProduct: ApiProduct): Product => ({
-    _id: apiProduct.ID,
-    active: apiProduct.Visible,
-    activeIngredients: apiProduct.ActiveIngredients || null,
-    attack: apiProduct.Attack || null,
-    barcode: apiProduct.Barcode || '',
+    _id: apiProduct.id,
+    active: apiProduct.visible,
+    activeIngredients: apiProduct.activeIngredients || null,
+    attack: apiProduct.attack || null,
+    barcode: apiProduct.barcode || '',
     betterAttack: [],
     betterIngredients: [],
-    bsPrice: apiProduct.BsPrice?.toString() || '0',
+    bsPrice: apiProduct.bs_price?.toString() || '0',
     category: {
       full_name: '',
       name: '',
@@ -92,22 +92,22 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
       editable: '',
       id: 0,
     },
-    description: apiProduct.Description || '',
-    id: apiProduct.ProductID,
-    images: apiProduct.Images || [],
-    inventary: apiProduct.Inventary || {},
-    laboratory: apiProduct.Laboratory || '',
+    description: apiProduct.description || '',
+    id: apiProduct.product_id,
+    images: apiProduct.images || [],
+    inventary: apiProduct.inventary || {},
+    laboratory: apiProduct.laboratory || '',
     quantity: 1,
-    name: apiProduct.Name,
-    price: apiProduct.BsPrice || 0,
+    name: apiProduct.name,
+    price: apiProduct.bs_price || 0,
     price_extra: 0,
-    productId: apiProduct.ProductID,
-    refPrice: apiProduct.RefPrice || 0,
-    synons: apiProduct.Synons || null,
+    productId: apiProduct.product_id,
+    refPrice: apiProduct.refPrice || 0,
+    synons: apiProduct.synons || null,
     taxes: [],
-    templateId: apiProduct.TemplateID,
-    type: apiProduct.Type,
-    visible: apiProduct.Visible,
+    type: apiProduct.type,
+    visible: apiProduct.visible,
+    templateId: apiProduct.templateId,
   });
 
   // Transformar los productos de specialCategoryDetail al formato esperado por ProductGrid
@@ -115,6 +115,7 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     if (!specialCategoryDetail?.products || !Array.isArray(specialCategoryDetail.products)) {
       return [];
     }
+    console.log('specialCategoryDetail.products', specialCategoryDetail.products);
     return (specialCategoryDetail.products as unknown as ApiProduct[]).map(
       mapApiProductToUiProduct,
     );
@@ -252,7 +253,7 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
             </div>
 
             <ProductGrid
-              products={products}
+              products={filteredProducts}
               hasNextPage={false}
               isFetchingNextPage={false}
               fetchNextPage={() => {}}
