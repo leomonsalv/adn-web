@@ -235,6 +235,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                         alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
                         src={productData.images?.[0] || '/delivery.jpeg'}
                         height={500}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         width={500}
                         className="rounded-lg object-contain"
                       />
@@ -245,6 +246,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                           alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
                           src={productData.images?.[0] || '/delivery.jpeg'}
                           height={500}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           width={500}
                           className="size-full object-cover object-center"
                         />
@@ -389,6 +391,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     alt="Métodos de pago aceptados: efectivo, pago móvil, MasterCard, Visa, Zelle."
                     width={600}
                     height={100}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 <div className="flex items-center">
