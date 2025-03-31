@@ -1,4 +1,4 @@
-import { getCart, updateCart } from '@/api/cart';
+import { checkCoupon, getCart, updateCart } from '@/api/cart';
 import { auth } from '@/lib/firebaseConfig';
 import { useCartStore } from '@/stores/cart-store';
 import { Product } from '@/types/product';
@@ -86,10 +86,29 @@ export default function useCart() {
     });
   };
 
+  const useValidateCoupon = () => {
+    const { cart } = useCartStore();
+
+    return useMutation({
+      mutationFn: (data: any) => {
+        const payload = {
+          coupon: data,
+          products: cart.products.map((item) => ({
+            product_id: item.id,
+            product_uom_qty: item.quantity,
+          })),
+          deviceId: null,
+        };
+        return checkCoupon(payload);
+      },
+    });
+  };
+
   return {
     useGetCart,
     useMutateCart,
     useRemoveProductFromCart,
     useClearCart,
+    useValidateCoupon,
   };
 }

@@ -4,6 +4,7 @@ import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headless
 import { ChevronUpIcon } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
+import { Coupon } from './Coupon';
 
 export default function CheckoutOrderSummary() {
   const { cart, getCartSubtotal, getCartTax, getCartTotal, deliveryFee } = useCartStore();
@@ -47,7 +48,7 @@ export default function CheckoutOrderSummary() {
             </li>
           ))}
         </ul>
-
+        <Coupon />
         <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Subtotal</dt>
