@@ -50,7 +50,7 @@ export const Coupon = () => {
   };
   return (
     <>
-      <dl className="hidden space-y-6 border-t border-gray-200 py-6 text-sm font-medium text-gray-900 lg:block">
+      <dl className="space-y-6 border-t border-gray-200 py-6 text-sm font-medium text-gray-900 lg:block">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2">
             <LabeledInput
