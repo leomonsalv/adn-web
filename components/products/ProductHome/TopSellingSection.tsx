@@ -24,6 +24,8 @@ export default function TopSellingSection({
     gradient: 'bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900]',
   };
 
+  console.log(products);
+
   const renderProducts = () => {
     if (!products || products.length === 0) {
       return (
@@ -40,9 +42,11 @@ export default function TopSellingSection({
             key={product._id}
             image={product.images?.[0] || ''}
             price={Number(product.bsPrice) || 0}
+            refPrice={Number(product.refPrice) || 0}
             originalPrice={Number(product.bsPrice) || 0}
             productUrl={`/producto-detalle/${product._id}`}
             title={product.name || product.description || 'Producto sin nombre'}
+            inventory={product.inventary.total || 0}
             discount={
               product.refPrice && product.bsPrice
                 ? Math.round(
@@ -50,6 +54,7 @@ export default function TopSellingSection({
                   )
                 : 0
             }
+            taxes={product.taxes.find((tax) => tax.amount)?.amount || 0}
           />
         ))}
       </GenericCarousel>

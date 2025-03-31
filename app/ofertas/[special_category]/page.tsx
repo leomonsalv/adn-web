@@ -23,7 +23,7 @@ interface UnwrappedParams {
 interface ApiProduct {
   id: string;
   visible: boolean;
-  activeIngredients?: string;
+  active_ingredients?: string;
   attack?: string;
   barcode?: string;
   bs_price?: number;
@@ -78,8 +78,8 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
 
   const mapApiProductToUiProduct = (apiProduct: ApiProduct): Product => ({
     _id: apiProduct.id,
-    active: apiProduct.visible,
-    activeIngredients: apiProduct.activeIngredients || null,
+    active: apiProduct.visible ?? true,
+    activeIngredients: apiProduct.active_ingredients || null,
     attack: apiProduct.attack || null,
     barcode: apiProduct.barcode || '',
     betterAttack: [],
@@ -106,8 +106,8 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     synons: apiProduct.synons || null,
     taxes: [],
     type: apiProduct.type,
-    visible: apiProduct.visible,
-    templateId: apiProduct.templateId,
+    templateId: Number(apiProduct.templateId),
+    visible: apiProduct.visible ?? true,
   });
 
   // Transformar los productos de specialCategoryDetail al formato esperado por ProductGrid
@@ -115,9 +115,8 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     if (!specialCategoryDetail?.products || !Array.isArray(specialCategoryDetail.products)) {
       return [];
     }
-    console.log('specialCategoryDetail.products', specialCategoryDetail.products);
-    return (specialCategoryDetail.products as unknown as ApiProduct[]).map(
-      mapApiProductToUiProduct,
+    return (specialCategoryDetail.products as unknown as ApiProduct[]).map((product: ApiProduct) =>
+      mapApiProductToUiProduct(product),
     );
   }, [specialCategoryDetail]);
 
