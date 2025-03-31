@@ -15,7 +15,7 @@ import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import NavLogo from '@/public/navigation-logo';
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import SearchInput from '../search/SearchInput';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { navbarMenuHover } from '@/lib/dummyData';
 import useCart from '@/hooks/use-cart';
 import { useCartStore } from '@/stores/cart-store';
@@ -25,11 +25,14 @@ import { formatVefCurrency } from '@/lib/utils';
 
 export function NavLinks() {
   const router = useRouter();
+  const pathname = usePathname();
+
   const { user, loading } = useAuth();
   const { toast } = useToast();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });
-  const { cart, setCart, getCartTotal, getCartCount, clearCart } = useCartStore();
+  const { cart, couponData, setCart, getCartTotal, getCartCount, clearCart, setCouponData } =
+    useCartStore();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
   const queryClient = useQueryClient();
@@ -69,6 +72,14 @@ export function NavLinks() {
       setCart(cartData);
     }
   }, [cartData, isSuccess, user]);
+
+  useEffect(() => {
+    if (pathname !== '/checkout') {
+      if (couponData && user) {
+        setCouponData(null);
+      }
+    }
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
