@@ -10,6 +10,10 @@ const emptyCart: any = { products: [], userId: '', updatedAt: '' };
 
 export const getCart = async (userId: string) => {
   // get the cart store
+  if (!userId) {
+    console.warn('getCart called with empty userId');
+    return emptyCart;
+  }
 
   try {
     // get cart from firestore
@@ -20,6 +24,11 @@ export const getCart = async (userId: string) => {
       .filter((doc) => doc.id !== 'wishList')
       .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt || new Date(), ...doc.data() }))
       .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
+
+    // If no cart found, return empty cart instead of undefined
+    if (!cartData) {
+      return { ...emptyCart, userId };
+    }
 
     return cartData;
   } catch (error) {
@@ -33,7 +42,7 @@ export const getCart = async (userId: string) => {
     }
 
     // return empty cart
-    return emptyCart;
+    return { ...emptyCart, userId };
   }
 };
 
