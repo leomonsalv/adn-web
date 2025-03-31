@@ -22,21 +22,10 @@ const FullcoverVariant = ({
   return (
     <Link href={link} className="block h-full">
       <Card
-        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col"
+        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col justify-end"
         style={{ backgroundColor: background || '#f5f5f5' }}
       >
-        <div className="p-4 md:p-6 flex flex-col justify-center min-h-[90px] md:min-h-[110px] z-10 relative mb-4">
-          {' '}
-          <div>
-            <h3
-              className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
-            >
-              {title}
-            </h3>
-            {description && <p className={`text-sm md:text-base ${textColor}`}>{description}</p>}
-          </div>
-        </div>
-
+        {/* Imagen de fondo cubriendo todo el Card */}
         {fullimage && (
           <div className="w-full relative mt-auto flex-grow min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
             <Image
@@ -50,6 +39,19 @@ const FullcoverVariant = ({
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
           </div>
         )}
+
+        {/* Sombra para mejorar la legibilidad del texto */}
+        <div className="absolute inset-0 " />
+
+        {/* Contenido (título + descripción) */}
+        <div className="relative p-4 md:p-6 z-10">
+          <h3
+            className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
+          >
+            {title}
+          </h3>
+          {description && <p className={`text-sm md:text-base ${textColor}`}>{description}</p>}
+        </div>
       </Card>
     </Link>
   );
