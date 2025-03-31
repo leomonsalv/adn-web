@@ -23,7 +23,7 @@ export default function useOrders() {
   const useCreateOrder = () => {
     const { user } = useAuth();
     const { getCheckoutData } = useCheckoutStore();
-    const { cart, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
+    const { cart, couponData, getCartTax, getCartSubtotal, getCartRef } = useCartStore();
     const { useSaveCheckoutPreferences } = useCheckoutPreferences();
     const { mutateAsync: savePreferences } = useSaveCheckoutPreferences();
     const checkoutData = getCheckoutData();
@@ -41,7 +41,7 @@ export default function useOrders() {
           ref: getCartRef(),
           deviceId: window.navigator.userAgent,
           iosOrAnd: 'android',
-          coupon: '',
+          coupon: couponData ? couponData.code : '',
           customizedInvoice: {
             ...checkoutData.contactInformation,
             phone: checkoutData.shippingAddress.phone,

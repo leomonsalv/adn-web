@@ -1,7 +1,9 @@
 import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebaseConfig';
+import { db, functions } from '@/lib/firebaseConfig';
 import { Cart } from '@/types/cart';
 import { z } from 'zod';
+import { httpsCallable } from 'firebase/functions';
+import { CART_CALCULATION } from '@/lib/urls';
 
 // define empty cart
 const emptyCart: any = { products: [], userId: '', updatedAt: '' };
@@ -80,6 +82,14 @@ export const updateCart = async (userId: string, cartId: string, newCartData: Ca
     return await updateDoc(cartRef, newCartData);
   } catch (error) {
     console.error('Error updating cart:', error);
+    throw error;
+  }
+};
+
+export const checkCoupon = async (couponData: any) => {
+  try {
+    return await httpsCallable(functions, CART_CALCULATION)(couponData);
+  } catch (error) {
     throw error;
   }
 };
