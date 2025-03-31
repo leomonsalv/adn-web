@@ -47,7 +47,7 @@ const MosaicVariant = ({
         </div>
 
         {/* Photo Collage Layout */}
-        <div className="relative overflow-hidden rounded-md flex-grow">
+        <div className="relative overflow-hidden rounded-md flex-grow min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
           {mosaic && mosaic.length > 0 && (
             <div className="grid gap-1.5 h-full w-full">
               {/* Dynamic grid layout based on number of images */}
@@ -59,6 +59,7 @@ const MosaicVariant = ({
                     alt={mosaic[0]?.alt || ''}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                    priority
                   />
                 </div>
               )}
@@ -68,7 +69,7 @@ const MosaicVariant = ({
                   {mosaic.map((item) => (
                     <div
                       key={item.id}
-                      className="relative aspect-square overflow-hidden rounded-md group transform transition-transform duration-300"
+                      className="relative aspect-square overflow-hidden rounded-md group transform transition-transform duration-300 min-h-[120px] sm:min-h-[150px]"
                     >
                       <div
                         className="w-full h-full"
@@ -95,19 +96,20 @@ const MosaicVariant = ({
 
               {mosaic.length === 3 && (
                 <div className="grid grid-cols-2 grid-rows-2 gap-1.5 h-full w-full">
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
                     <Image
                       fill
                       src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      priority
                     />
                   </div>
                   {mosaic.slice(1).map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer min-h-[120px] sm:min-h-[150px]"
                     >
                       <div
                         className="w-full h-full"
@@ -137,7 +139,7 @@ const MosaicVariant = ({
                   {mosaic.map((item) => (
                     <div
                       key={item.id}
-                      className="relative aspect-square overflow-hidden rounded-md group transform transition-transform duration-300"
+                      className="relative aspect-square overflow-hidden rounded-md group transform transition-transform duration-300 min-h-[120px] sm:min-h-[150px]"
                     >
                       <div
                         className="w-full h-full"
@@ -165,18 +167,19 @@ const MosaicVariant = ({
               {mosaic.length === 5 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-3 gap-2 h-full w-full">
                   {/* Main large image */}
-                  <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 group">
+                  <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 group min-h-[180px] sm:min-h-[220px] md:min-h-[280px]">
                     <Image
                       fill
                       src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      priority
                     />
                   </div>
 
                   {/* Top right image */}
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
                     <Image
                       fill
                       src={mosaic[1]?.image || '/images/placeholder.png'}
@@ -187,7 +190,7 @@ const MosaicVariant = ({
                   </div>
 
                   {/* Middle right images */}
-                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[80px] sm:min-h-[100px]">
                     <Image
                       fill
                       src={mosaic[2]?.image || '/images/placeholder.png'}
@@ -196,7 +199,7 @@ const MosaicVariant = ({
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[80px] sm:min-h-[100px]">
                     <Image
                       fill
                       src={mosaic[3]?.image || '/images/placeholder.png'}
@@ -207,7 +210,7 @@ const MosaicVariant = ({
                   </div>
 
                   {/* Bottom right image */}
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
                     <Image
                       fill
                       src={mosaic[4]?.image || '/images/placeholder.png'}
@@ -222,13 +225,14 @@ const MosaicVariant = ({
               {mosaic.length > 5 && (
                 <div className="grid grid-cols-3 auto-rows-fr gap-1.5 h-full w-full">
                   {/* First image is larger */}
-                  <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
+                  <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[180px] sm:min-h-[220px] md:min-h-[280px]">
                     <Image
                       fill
                       src={mosaic[0]?.image || '/images/placeholder.png'}
                       alt={mosaic[0]?.alt || ''}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      priority
                     />
                   </div>
 
@@ -236,7 +240,7 @@ const MosaicVariant = ({
                   {mosaic.slice(1, 7).map((item) => (
                     <div
                       key={item.id}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group cursor-pointer"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group cursor-pointer min-h-[100px] sm:min-h-[120px]"
                     >
                       <div
                         className="w-full h-full"
