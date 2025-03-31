@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Cart, CartProduct } from '@/types/cart';
+import { Cart, CouponCalculationResponse } from '@/types/cart';
 import { Product } from '@/types/product';
 
 interface CartState {
@@ -11,6 +11,7 @@ interface CartState {
   isOpen: boolean;
   loading: boolean;
   deliveryFee: number;
+  couponData: CouponCalculationResponse | null;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
@@ -28,6 +29,7 @@ interface CartState {
   decrementQuantity: (productId: number) => void;
   setCart: (cart: Cart) => void;
   setDeliveryFee: (fee: number) => void;
+  setCouponData: (data: CouponCalculationResponse | null) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -42,6 +44,7 @@ export const useCartStore = create<CartState>()(
       isOpen: false,
       loading: false,
       deliveryFee: 0,
+      couponData: null,
       // Cart actions
       addToCart: (product) => {
         const cartProduct = {
@@ -108,6 +111,7 @@ export const useCartStore = create<CartState>()(
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
       // Cart getters
       getCartSubtotal: () => {
+        if (get().couponData) return Number(get().couponData?.subtotal);
         const subtotal = get().cart.products.reduce((total, item) => {
           const itemTotal = toSafeInteger(Number(item.bsPrice)) * item.quantity;
           return total + itemTotal;
@@ -115,6 +119,7 @@ export const useCartStore = create<CartState>()(
         return fromSafeInteger(subtotal);
       },
       getCartTotal: () => {
+        if (get().couponData) return Number(get().couponData?.total);
         const subtotal = get().cart.products.reduce((total, item) => {
           const itemTotal = toSafeInteger(Number(item.bsPrice)) * item.quantity;
           return total + itemTotal;
@@ -124,12 +129,14 @@ export const useCartStore = create<CartState>()(
         return fromSafeInteger(subtotal + tax + deliveryFee);
       },
       getCartRef: () => {
+        if (get().couponData) return Number(get().couponData?.ref);
         return get().cart.products.reduce(
           (total, item) => total + Number(item.refPrice) * item.quantity,
           0,
         );
       },
       getCartTax: () => {
+        if (get().couponData) return Number(get().couponData?.taxes);
         const tax = get().cart.products.reduce((total, item) => {
           const itemPrice = toSafeInteger(Number(item.bsPrice));
           const taxRate =
@@ -188,6 +195,7 @@ export const useCartStore = create<CartState>()(
       },
       setCart: (cart) => set({ cart }),
       setDeliveryFee: (fee) => set({ deliveryFee: fee }),
+      setCouponData: (data) => set({ couponData: data }),
     }),
     {
       name: 'cart-storage',
