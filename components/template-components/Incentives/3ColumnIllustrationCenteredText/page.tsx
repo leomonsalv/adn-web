@@ -1,24 +1,21 @@
 const incentives = [
   {
-    name: "Free Shipping",
+    name: 'Compras 24/7',
     description:
-      "It's not actually free we just price it into the products. Someone's paying for it, and it's not us.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg",
+      'Nuestra tienda está abierta 24/7. Puedes comprar en cualquier momento y desde cualquier lugar.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
   },
   {
-    name: "24/7 Customer Support",
+    name: 'Compra rápida',
     description:
-      "Our AI chat widget is powered by a naive series of if/else statements. Guaranteed to irritate.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg",
+      'Puedes comprar de forma rápida y sencilla. Solo tienes que añadir tus productos al carrito y proceder al pago.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-fast-checkout-light.svg',
   },
   {
-    name: "Fast Shopping Cart",
+    name: 'Gift Cards',
     description:
-      "Look how fast that cart is going. What does this mean for the actual experience? I don't know.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-fast-checkout-light.svg",
+      'Compra gift cards para tus amigos y familiares. No hay mejor regalo que el de la compra.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-gift-card-light.svg',
   },
 ];
 
@@ -34,20 +31,12 @@ export default function Example() {
             >
               <div className="sm:shrink-0">
                 <div className="flow-root">
-                  <img
-                    alt=""
-                    src={incentive.imageSrc}
-                    className="mx-auto h-24 w-28"
-                  />
+                  <img alt="" src={incentive.imageSrc} className="mx-auto h-24 w-28" />
                 </div>
               </div>
               <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
-                <h3 className="text-sm font-medium text-gray-900">
-                  {incentive.name}
-                </h3>
-                <p className="mt-2 text-sm text-gray-500">
-                  {incentive.description}
-                </p>
+                <h3 className="text-sm font-medium text-gray-900">{incentive.name}</h3>
+                <p className="mt-2 text-sm text-gray-500">{incentive.description}</p>
               </div>
             </div>
           ))}

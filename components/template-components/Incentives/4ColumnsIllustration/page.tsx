@@ -1,31 +1,27 @@
 const incentives = [
   {
-    name: "Free Shipping",
+    name: 'Envío gratuito',
     description:
-      "It's not actually free we just price it into the products. Someone's paying for it, and it's not us.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg",
+      'Envío gratuito en compras superiores a $10. Aprovecha esta oferta y ahorra en tus envíos.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
   },
   {
-    name: "24/7 Customer Support",
+    name: 'Compras 24/7',
     description:
-      "Our AI chat widget is powered by a naive series of if/else statements. Guaranteed to irritate.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg",
+      'Nuestra tienda está abierta 24/7. Puedes comprar en cualquier momento y desde cualquier lugar.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
   },
   {
-    name: "Fast Shopping Cart",
+    name: 'Compra rápida',
     description:
-      "Look how fast that cart is going. What does this mean for the actual experience? I don't know.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-fast-checkout-light.svg",
+      'Puedes comprar de forma rápida y sencilla. Solo tienes que añadir tus productos al carrito y proceder al pago.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-fast-checkout-light.svg',
   },
   {
-    name: "Gift Cards",
+    name: 'Gift Cards',
     description:
-      "Buy them for your friends, especially if they don't like our store. Free money for us, it's great.",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce/icons/icon-gift-card-light.svg",
+      'Compra gift cards para tus amigos y familiares. No hay mejor regalo que el de la compra.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-gift-card-light.svg',
   },
 ];
 
@@ -37,12 +33,8 @@ export default function Example() {
           {incentives.map((incentive) => (
             <div key={incentive.name}>
               <img alt="" src={incentive.imageSrc} className="h-24 w-auto" />
-              <h3 className="mt-6 text-sm font-medium text-gray-900">
-                {incentive.name}
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                {incentive.description}
-              </p>
+              <h3 className="mt-6 text-sm font-medium text-gray-900">{incentive.name}</h3>
+              <p className="mt-2 text-sm text-gray-500">{incentive.description}</p>
             </div>
           ))}
         </div>

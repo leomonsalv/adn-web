@@ -3,7 +3,6 @@
 import { formatText, formatUsdCurrency, formatVefCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import { Badge } from '@/components/ui/badge';
 
 interface ProductCardProps {
@@ -60,7 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div className="flex items-center">
               <div
                 className={`w-3 h-3 rounded-full mr-2 ${inventory > 0 ? 'bg-green-500' : 'bg-red-500'}`}
-              ></div>
+              />
               <p className="text-sm text-gray-700">
                 {inventory > 0 ? 'Disponible' : 'No disponible'}
               </p>

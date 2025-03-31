@@ -20,31 +20,32 @@ const FullcoverVariant = ({
   link,
 }: FullcoverVariantProps) => {
   return (
-    <Link href={link} className="block h-full">
+    <Link href={link} className="block h-full ">
       <Card
-        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col justify-end"
+        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col"
         style={{ backgroundColor: background || '#f5f5f5' }}
       >
         {/* Imagen de fondo cubriendo todo el Card */}
         {fullimage && (
           <div className="w-full relative mt-auto flex-grow min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
             <Image
-              fill
               src={fullimage}
               alt={title}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
               priority
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
+              className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
           </div>
         )}
 
-        {/* Sombra para mejorar la legibilidad del texto */}
-        <div className="absolute inset-0 " />
+        {/* Degradado solo en la parte superior para mejorar legibilidad */}
+        <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/60 to-transparent" />
 
-        {/* Contenido (título + descripción) */}
-        <div className="relative p-4 md:p-6 z-10">
+        {/* Contenido (título + descripción) en la parte superior */}
+        <div className="absolute top-0 left-0 w-full p-4 md:p-6 z-10">
           <h3
             className={`text-xl md:text-2xl lg:text-3xl ${textColor} font-extrabold uppercase tracking-tight mb-1`}
           >

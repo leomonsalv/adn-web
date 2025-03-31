@@ -40,6 +40,7 @@ import useReviews from '@/hooks/use-reviews';
 import Reviews from '@/components/reviews/Reviews';
 import ReviewsSection from '@/components/reviews/ReviewSection';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -336,7 +337,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <p className="text-3xl font-semibold text-red-700">
                     {formatVefCurrency(regularPrice)}
                   </p>
-                  <p className="text-base text-gray-500">{formatUsdCurrency(refPrice)}</p>
+                  <Badge color="green" className="mt-1">
+                    {formatUsdCurrency(refPrice)}
+                  </Badge>
                 </div>
                 {TAX_CALC > 0 && (
                   <div className="flex flex-row gap-1">
