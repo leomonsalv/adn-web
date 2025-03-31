@@ -19,7 +19,12 @@ export default function useCart() {
     return useQuery({
       enabled: !!user?.uid,
       queryKey: ['cart', user?.uid],
-      queryFn: () => getCart(user?.uid || ''),
+      queryFn: async () => {
+        if (!user?.uid) {
+          return { id: '', products: [], userId: '', updatedAt: new Date() };
+        }
+        return getCart(user.uid);
+      },
     });
   };
 
