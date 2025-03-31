@@ -20,10 +20,10 @@ import { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  PaymentMethodType,
-  PaymentMethod,
+  type PaymentMethodType,
+  type PaymentMethod,
   PaymentMethodSchema,
-  CashbackSchemaType,
+  type CashbackSchemaType,
 } from '@/schemas/create-order-schema';
 
 export function PaymentDetails() {
@@ -49,7 +49,7 @@ export function PaymentDetails() {
 
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
-  const usd = parseFloat((totalBs / totalUsd).toFixed(2));
+  const usd = Number.parseFloat((totalBs / totalUsd).toFixed(2));
 
   const form = useForm<PaymentMethod>({
     resolver: zodResolver(PaymentMethodSchema),
@@ -119,7 +119,6 @@ export function PaymentDetails() {
         await validateVippo(preNewData);
         newData = preNewData;
       } catch (error) {
-        console.log(error);
         const errorObject = JSON.parse((error as Error)?.message || '{}');
         if (errorObject.error?.details?.resultCredicardServices?.cardInfo?.pinRequired) {
           setVippoModal(true);
@@ -215,7 +214,6 @@ export function PaymentDetails() {
           if (handleActiveCashback(data)) {
             setCashbackModal(true);
           } else {
-            console.log('Aqui va el create');
             const newOrder: any = {
               methods: [
                 mapPayments(data.method1, data.amount1),
@@ -272,7 +270,7 @@ export function PaymentDetails() {
   useEffect(() => {
     if (!isLoadingPaymentMethods && paymentMethods && !isLoadingPreferences) {
       // Check if there's a saved preferred payment method
-      let preferredMethod = savedPreferences?.preferredPaymentMethod;
+      const preferredMethod = savedPreferences?.preferredPaymentMethod;
 
       // If there's a preferred method and it's available in current payment methods
       if (preferredMethod) {
