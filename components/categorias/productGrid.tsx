@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import ProductCard from '@/components/products/ProductHome/ProductCard';
 import { useInView } from 'react-intersection-observer';
 import type { Product } from '@/types/product';
 
@@ -68,41 +67,24 @@ function ProductGrid({
 
       <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
         {validProducts.map((product, idx) => (
-          <div
-            key={`${product._id}-${idx}`}
-            className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
-          >
-            <div className="relative aspect-[3/4] bg-gray-200 sm:h-96">
-              <Image
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                style={{ objectFit: 'contain' }}
-                alt={product.name || 'Product image'}
-                priority
-                src={getDefaultImage(product)}
-                className="group-hover:opacity-75"
-              />
-            </div>
-            <div className="flex flex-1 flex-col space-y-2 p-4">
-              <h3 className="text-sm font-medium text-gray-900">
-                <Link href={`/${service ? 'servicio-detalle' : 'producto-detalle'}/${product._id}`}>
-                  <span aria-hidden="true" className="absolute inset-0" />
-                  {product.name}
-                </Link>
-              </h3>
-              {product.activeIngredients && (
-                <p className="text-sm text-gray-500">{product.activeIngredients}</p>
-              )}
-              <div className="flex flex-1 flex-col justify-end">
-                {product.laboratory && (
-                  <p className="text-sm italic text-gray-500">{product.laboratory}</p>
-                )}
-                <p className="text-base font-medium text-gray-900">
-                  {formatPrice(product.bsPrice)}
-                </p>
-              </div>
-            </div>
-          </div>
+          <ProductCard
+            key={product._id}
+            image={product.images?.[0] || ''}
+            price={Number(product.bsPrice) || 0}
+            refPrice={Number(product.refPrice) || 0}
+            originalPrice={Number(product.bsPrice) || 0}
+            productUrl={`/producto-detalle/${product._id}`}
+            title={product.name || product.description || 'Producto sin nombre'}
+            inventory={product.inventary.total || 0}
+            discount={
+              product.refPrice && product.bsPrice
+                ? Math.round(
+                    ((product.refPrice - Number(product.bsPrice)) / product.refPrice) * 100,
+                  )
+                : 0
+            }
+            taxes={product.taxes.find((tax) => tax.amount)?.amount || 0}
+          />
         ))}
       </div>
 
