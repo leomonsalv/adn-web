@@ -29,7 +29,7 @@ const MosaicVariant = ({
 }: MosaicVariantProps) => {
   const router = useRouter();
   return (
-    <Link href={link} className="block h-full">
+    <div className="block h-full">
       <Card
         className="overflow-hidden transition-all duration-500 hover:shadow-lg p-6 w-full h-full rounded-lg shadow-xs flex flex-col justify-between text-left group relative"
         style={{ backgroundColor: background || '#EBF3ED' }}
@@ -52,15 +52,26 @@ const MosaicVariant = ({
             <div className="grid gap-1.5 h-full w-full">
               {/* Dynamic grid layout based on number of images */}
               {mosaic.length === 1 && (
-                <div className="relative h-full w-full overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
-                  <Image
-                    fill
-                    src={mosaic[0]?.image || '/images/placeholder.png'}
-                    alt={mosaic[0]?.alt || ''}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                    priority
-                  />
+                <div className="relative h-full w-full overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+                  <div
+                    className="w-full h-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (mosaic[0]?.slug) {
+                        router.push(mosaic[0].slug);
+                      }
+                    }}
+                  >
+                    <Image
+                      fill
+                      src={mosaic[0]?.image || '/images/placeholder.png'}
+                      alt={mosaic[0]?.alt || ''}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                      priority
+                    />
+                  </div>
                 </div>
               )}
 
@@ -86,7 +97,7 @@ const MosaicVariant = ({
                           src={item?.image || '/images/placeholder.png'}
                           alt={item?.alt || ''}
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
                         />
                       </div>
                     </div>
@@ -96,20 +107,31 @@ const MosaicVariant = ({
 
               {mosaic.length === 3 && (
                 <div className="grid grid-cols-2 grid-rows-2 gap-1.5 h-full w-full">
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
-                    <Image
-                      fill
-                      src={mosaic[0]?.image || '/images/placeholder.png'}
-                      alt={mosaic[0]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      priority
-                    />
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[100px] sm:min-h-[120px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[0]?.slug) {
+                          router.push(mosaic[0].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[0]?.image || '/images/placeholder.png'}
+                        alt={mosaic[0]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                        priority
+                      />
+                    </div>
                   </div>
                   {mosaic.slice(1).map((item, index) => (
                     <div
                       key={index}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer min-h-[120px] sm:min-h-[150px]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] cursor-pointer min-h-[120px] sm:min-h-[150px]"
                     >
                       <div
                         className="w-full h-full"
@@ -126,7 +148,7 @@ const MosaicVariant = ({
                           src={item?.image || '/images/placeholder.png'}
                           alt={item?.alt || ''}
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
                         />
                       </div>
                     </div>
@@ -167,57 +189,112 @@ const MosaicVariant = ({
               {mosaic.length === 5 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-3 gap-2 h-full w-full">
                   {/* Main large image */}
-                  <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 group min-h-[180px] sm:min-h-[220px] md:min-h-[280px]">
-                    <Image
-                      fill
-                      src={mosaic[0]?.image || '/images/placeholder.png'}
-                      alt={mosaic[0]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      priority
-                    />
+                  <div className="col-span-2 row-span-3 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[180px] sm:min-h-[220px] md:min-h-[280px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[0]?.slug) {
+                          router.push(mosaic[0].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[0]?.image || '/images/placeholder.png'}
+                        alt={mosaic[0]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                        priority
+                      />
+                    </div>
                   </div>
 
                   {/* Top right image */}
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
-                    <Image
-                      fill
-                      src={mosaic[1]?.image || '/images/placeholder.png'}
-                      alt={mosaic[1]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[100px] sm:min-h-[120px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[1]?.slug) {
+                          router.push(mosaic[1].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[1]?.image || '/images/placeholder.png'}
+                        alt={mosaic[1]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
                   </div>
 
                   {/* Middle right images */}
-                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[80px] sm:min-h-[100px]">
-                    <Image
-                      fill
-                      src={mosaic[2]?.image || '/images/placeholder.png'}
-                      alt={mosaic[2]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[80px] sm:min-h-[100px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[2]?.slug) {
+                          router.push(mosaic[2].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[2]?.image || '/images/placeholder.png'}
+                        alt={mosaic[2]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
                   </div>
-                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[80px] sm:min-h-[100px]">
-                    <Image
-                      fill
-                      src={mosaic[3]?.image || '/images/placeholder.png'}
-                      alt={mosaic[3]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="col-span-1 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[80px] sm:min-h-[100px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[3]?.slug) {
+                          router.push(mosaic[3].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[3]?.image || '/images/placeholder.png'}
+                        alt={mosaic[3]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
                   </div>
 
                   {/* Bottom right image */}
-                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[100px] sm:min-h-[120px]">
-                    <Image
-                      fill
-                      src={mosaic[4]?.image || '/images/placeholder.png'}
-                      alt={mosaic[4]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="col-span-2 row-span-1 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[100px] sm:min-h-[120px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[4]?.slug) {
+                          router.push(mosaic[4].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[4]?.image || '/images/placeholder.png'}
+                        alt={mosaic[4]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -225,22 +302,33 @@ const MosaicVariant = ({
               {mosaic.length > 5 && (
                 <div className="grid grid-cols-3 auto-rows-fr gap-1.5 h-full w-full">
                   {/* First image is larger */}
-                  <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02] min-h-[180px] sm:min-h-[220px] md:min-h-[280px]">
-                    <Image
-                      fill
-                      src={mosaic[0]?.image || '/images/placeholder.png'}
-                      alt={mosaic[0]?.alt || ''}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
-                      priority
-                    />
+                  <div className="col-span-2 row-span-2 relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] min-h-[180px] sm:min-h-[220px] md:min-h-[280px] cursor-pointer">
+                    <div
+                      className="w-full h-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (mosaic[0]?.slug) {
+                          router.push(mosaic[0].slug);
+                        }
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={mosaic[0]?.image || '/images/placeholder.png'}
+                        alt={mosaic[0]?.alt || ''}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
+                        priority
+                      />
+                    </div>
                   </div>
 
                   {/* Remaining images in a grid */}
                   {mosaic.slice(1, 7).map((item) => (
                     <div
                       key={item.id}
-                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 group cursor-pointer min-h-[100px] sm:min-h-[120px]"
+                      className="relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] cursor-pointer min-h-[100px] sm:min-h-[120px]"
                     >
                       <div
                         className="w-full h-full"
@@ -257,7 +345,7 @@ const MosaicVariant = ({
                           src={item?.image || '/images/placeholder.png'}
                           alt={item?.alt || ''}
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105"
+                          className="object-cover rounded-md transition-transform duration-500 hover:scale-105"
                         />
                       </div>
                     </div>
@@ -265,16 +353,27 @@ const MosaicVariant = ({
 
                   {/* If there are more than 7 images, show a count of remaining images on the last visible slot */}
                   {mosaic.length > 7 && (
-                    <div className="relative overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-[1.02]">
-                      <Image
-                        fill
-                        src={mosaic[6]?.image || '/images/placeholder.png'}
-                        alt={mosaic[6]?.alt || ''}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover rounded-md transition-transform duration-500 group-hover:scale-105 opacity-60"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white font-bold text-xl">
-                        +{mosaic.length - 6}
+                    <div className="relative overflow-hidden rounded-md transform transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+                      <div
+                        className="w-full h-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (mosaic[6]?.slug) {
+                            router.push(mosaic[6].slug);
+                          }
+                        }}
+                      >
+                        <Image
+                          fill
+                          src={mosaic[6]?.image || '/images/placeholder.png'}
+                          alt={mosaic[6]?.alt || ''}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover rounded-md transition-transform duration-500 hover:scale-105 opacity-60"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white font-bold text-xl">
+                          +{mosaic.length - 6}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -284,7 +383,7 @@ const MosaicVariant = ({
           )}
         </div>
       </Card>
-    </Link>
+    </div>
   );
 };
 

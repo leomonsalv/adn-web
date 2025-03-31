@@ -27,7 +27,7 @@ const FullcoverVariant = ({
       >
         {/* Imagen de fondo cubriendo todo el Card */}
         {fullimage && (
-          <div className="w-full relative mt-auto flex-grow min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
+          <div className="w-full relative mt-auto flex-grow min-h-[400px] sm:min-h-[400px] md:min-h-[500px]">
             <Image
               src={fullimage}
               alt={title}
