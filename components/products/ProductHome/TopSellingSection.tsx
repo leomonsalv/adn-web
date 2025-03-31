@@ -24,8 +24,6 @@ export default function TopSellingSection({
     gradient: 'bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900]',
   };
 
-  console.log(products);
-
   const renderProducts = () => {
     if (!products || products.length === 0) {
       return (

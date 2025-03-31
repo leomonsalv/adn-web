@@ -26,7 +26,6 @@ export default function useProducts() {
     });
   };
   const useGetRecommendations = (payload: SuggestionsProductsPayload) => {
-    console.log('🚀 ~ useGetRecommendations ~ payload:', payload);
     return useQuery({
       queryKey: ['product', payload],
       queryFn: () => {
