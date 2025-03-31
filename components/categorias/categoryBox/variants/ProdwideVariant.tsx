@@ -55,7 +55,6 @@ const ProdwideVariant = ({
         {products && products.length > 0 && (
           <div className="grid grid-cols-2 gap-3 mt-auto" onClick={(e) => e.stopPropagation()}>
             {products.slice(0, 4).map((product, index) => {
-              console.log(product);
               return (
                 <div
                   key={index}
