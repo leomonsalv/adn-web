@@ -27,13 +27,17 @@ const FullcoverVariant = ({
       >
         {/* Imagen de fondo cubriendo todo el Card */}
         {fullimage && (
-          <Image
-            src={fullimage}
-            alt={title}
-            layout="fill"
-            objectFit="cover"
-            className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-          />
+          <div className="w-full relative mt-auto flex-grow min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
+            <Image
+              fill
+              src={fullimage}
+              alt={title}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+          </div>
         )}
 
         {/* Sombra para mejorar la legibilidad del texto */}
