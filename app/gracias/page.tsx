@@ -6,9 +6,6 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import { useEffect } from 'react';
-import { useCartStore } from '@/stores/cart-store';
-import useCart from '@/hooks/use-cart';
 
 // TODO: Change this with a real order information
 // const ORDER_INFO = {
@@ -51,22 +48,9 @@ import useCart from '@/hooks/use-cart';
 
 export default function ThankYouPage() {
   const searchParams = useSearchParams();
-  const { clearCart, cart } = useCartStore();
-  const { useClearCart } = useCart();
-
-  const { mutateAsync: mutateClearCart } = useClearCart();
 
   const data = searchParams.get('data');
   const parsedData = data ? JSON.parse(decodeURIComponent(data)) : null;
-
-  const hanldeClearCart = async () => {
-    await mutateClearCart(cart.id);
-    clearCart();
-  };
-
-  useEffect(() => {
-    hanldeClearCart();
-  }, []);
 
   return (
     <main className="flex w-full min-h-screen flex-1 items-center bg-white">

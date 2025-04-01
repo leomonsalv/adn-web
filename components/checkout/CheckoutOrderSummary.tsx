@@ -1,5 +1,6 @@
 import { formatVefCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart-store';
+import { useCheckoutStore } from '@/stores/checkout-store';
 import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react';
 import { ChevronUpIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ import { Coupon } from './Coupon';
 
 export default function CheckoutOrderSummary() {
   const { cart, getCartSubtotal, getCartTax, getCartTotal, deliveryFee } = useCartStore();
+  const { shippingAddress } = useCheckoutStore();
 
   const subtotal = getCartSubtotal();
   const taxes = getCartTax();
@@ -57,7 +59,7 @@ export default function CheckoutOrderSummary() {
 
           <div className="flex items-center justify-between">
             <dt className="text-gray-600">Envío</dt>
-            <dd>{formatVefCurrency(deliveryFee)}</dd> {/* Mostrar deliveryFee desde el store */}
+            <dd>{formatVefCurrency(shippingAddress.type === 'pickup' ? 0 : deliveryFee)}</dd>
           </div>
 
           <div className="flex items-center justify-between">
@@ -99,7 +101,7 @@ export default function CheckoutOrderSummary() {
 
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Envío</dt>
-                <dd>{formatVefCurrency(deliveryFee)}</dd> {/* Mostrar deliveryFee desde el store */}
+                <dd>{formatVefCurrency(shippingAddress.type === 'pickup' ? 0 : deliveryFee)}</dd>
               </div>
 
               <div className="flex items-center justify-between">
