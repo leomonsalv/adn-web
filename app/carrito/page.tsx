@@ -81,25 +81,24 @@ export default function Cart() {
       </div>
 
       {/* Only show recommended products if there are items in the cart */}
-      {productIds.length > 0 && (
-        <section className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
-          {isRecommendedLoading ? (
-            <div className="flex justify-center items-center">
-              <p>Cargando productos recomendados...</p>
-            </div>
-          ) : recommendedError ? (
-            <div className="flex justify-center items-center">
-              <p>Error cargando recomendaciones</p>
-            </div>
-          ) : (
-            <CarouselRecommened
-              title="Usuarios como tú también compraron"
-              subtitle={''}
-              products={recommendationsData || []}
-            />
-          )}
-        </section>
-      )}
+      {productIds.length > 0 &&
+        !recommendedError &&
+        recommendationsData &&
+        recommendationsData.length > 0 && (
+          <section className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+            {isRecommendedLoading ? (
+              <div className="flex justify-center items-center py-8">
+                <p>Cargando productos recomendados...</p>
+              </div>
+            ) : (
+              <CarouselRecommened
+                title="Usuarios como tú también compraron"
+                subtitle={''}
+                products={recommendationsData}
+              />
+            )}
+          </section>
+        )}
 
       <MainIncentives />
     </div>

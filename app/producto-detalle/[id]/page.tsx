@@ -202,8 +202,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   return (
     <div className="bg-white">
       <div className="pb-16 pt-6 sm:pb-24">
-        {/* Breadcrumb */}
-        <Breadcrumb>
+        {/* Breadcrumb
+        FIXME: ENABLE THIS WHEN BE IS DONE
+        */}
+        {/* <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbs.map((breadcrumb, index) => (
               <Fragment key={breadcrumb.name}>
@@ -218,7 +220,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               {productData.name}
             </BreadcrumbPage>
           </BreadcrumbList>
-        </Breadcrumb>
+        </Breadcrumb> */}
 
         {/* Product details */}
         <div className="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -480,7 +482,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           <section className="py-2">
             {isRecommendedForUserLoading || isRecommendedForUserError ? (
               <div className="flex justify-center items-center min-h-screen">
-                <p>Cargando productos recomendados...</p>
+                <p>Cargando productos similares...</p>
               </div>
             ) : (
               <CarouselRecommened
@@ -499,19 +501,21 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             />
           </section>
           {/* Top sellers products carousel */}
-          <section className="py-2">
-            {isSuggestionsLoading || suggestionsError ? (
-              <div className="flex justify-center items-center min-h-screen">
-                <p>Cargando productos recomendados...</p>
-              </div>
-            ) : (
-              <CarouselRecommened
-                title="Usuarios como tú también compraron"
-                subtitle={''}
-                products={suggestedProducts}
-              />
-            )}
-          </section>
+          {!suggestionsError && suggestedProducts.length > 0 && (
+            <section className="py-2">
+              {isSuggestionsLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <p>Cargando productos recomendados...</p>
+                </div>
+              ) : (
+                <CarouselRecommened
+                  title="Usuarios como tú también compraron"
+                  subtitle={''}
+                  products={suggestedProducts}
+                />
+              )}
+            </section>
+          )}
         </div>
       </div>
     </div>
