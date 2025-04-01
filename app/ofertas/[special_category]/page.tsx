@@ -134,14 +134,15 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     );
   };
 
+  // Enhance the sortProducts function to ensure it works with the data structure
   const sortProducts = (products: Product[], option?: SortOption): Product[] => {
     if (!option) return products;
 
     const sortedProducts = [...products];
 
     const sortFunctions = {
-      'price-asc': (a: Product, b: Product) => a.price - b.price,
-      'price-desc': (a: Product, b: Product) => b.price - a.price,
+      'price-asc': (a: Product, b: Product) => Number(a.bsPrice) - Number(b.bsPrice),
+      'price-desc': (a: Product, b: Product) => Number(b.bsPrice) - Number(a.bsPrice),
       'name-asc': (a: Product, b: Product) => a.name.localeCompare(b.name),
       'name-desc': (a: Product, b: Product) => b.name.localeCompare(a.name),
     };
@@ -149,13 +150,29 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     return sortedProducts.sort(sortFunctions[option as keyof typeof sortFunctions] || (() => 0));
   };
 
-  // Filtrar y ordenar productos
+  // Add a function to filter by price range
+  const filterByPriceRange = (products: Product[], range?: PriceRange): Product[] => {
+    if (!range || (!range.min && !range.max)) return products;
+
+    return products.filter((product) => {
+      const price = Number(product.bsPrice);
+      const min = range.min !== undefined ? range.min : 0;
+      const max = range.max !== undefined ? range.max : Infinity;
+
+      return price >= min && price <= max;
+    });
+  };
+
+  // Update the filteredProducts to include price range filtering
   const filteredProducts = useMemo(() => {
     if (!transformedProducts.length) return [];
 
-    // Aplicar filtros en cadena (pipeline)
-    return sortProducts(filterBySearchTerm(transformedProducts, debouncedSearch), sortOption);
-  }, [transformedProducts, debouncedSearch, sortOption]);
+    // Apply filters in chain (pipeline)
+    return sortProducts(
+      filterByPriceRange(filterBySearchTerm(transformedProducts, debouncedSearch), priceRange),
+      sortOption,
+    );
+  }, [transformedProducts, debouncedSearch, sortOption, priceRange]);
 
   // Estado de carga y errores
   const isLoading = loadingSpecialCategories;
@@ -240,15 +257,37 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
 
           {/* Product grid */}
           <div className="lg:col-span-3">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium text-gray-900">Productos ({products.length})</h2>
-              <button
-                type="button"
-                className="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 lg:hidden"
-                onClick={() => setMobileFiltersOpen(true)}
-              >
-                Filtros
-              </button>
+
+              <div className="flex items-center space-x-4">
+                <div className="hidden sm:block">
+                  <label htmlFor="sort-by" className="sr-only">
+                    Ordenar por
+                  </label>
+                  <select
+                    id="sort-by"
+                    name="sort-by"
+                    className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    value={sortOption || ''}
+                    onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                  >
+                    <option value="">Ordenar por</option>
+                    <option value="price-asc">Precio: Menor a Mayor</option>
+                    <option value="price-desc">Precio: Mayor a Menor</option>
+                    <option value="name-asc">Nombre: A-Z</option>
+                    <option value="name-desc">Nombre: Z-A</option>
+                  </select>
+                </div>
+
+                <button
+                  type="button"
+                  className="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 lg:hidden"
+                  onClick={() => setMobileFiltersOpen(true)}
+                >
+                  Filtros
+                </button>
+              </div>
             </div>
 
             <ProductGrid
