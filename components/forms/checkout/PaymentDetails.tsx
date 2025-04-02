@@ -25,6 +25,7 @@ import {
   PaymentMethodSchema,
   type CashbackSchemaType,
 } from '@/schemas/create-order-schema';
+import useRate from '@/hooks/use-rate';
 
 export function PaymentDetails() {
   const router = useRouter();
@@ -38,7 +39,9 @@ export function PaymentDetails() {
   const { user, isLoading } = useUser();
   const { useGetPaymentMethods, useValidateVippo } = useCheckout();
   const { useCreateOrder } = useOrders();
+  const { useGetRate } = useRate();
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useGetPaymentMethods();
+  const { data: rateData, isLoading: isLoadingRate } = useGetRate();
   const { mutateAsync: createOrder, isPending: isCreatingOrder } = useCreateOrder();
   const { mutateAsync: validateVippo, isPending: isLoadingVippo } = useValidateVippo();
   const { getCartRef, getCartTotal, clearCart } = useCartStore();
@@ -241,11 +244,23 @@ export function PaymentDetails() {
           }
         }
       } else {
-        const item = pagoMix.method1 === 'Pago Movil' ? pagoMix.method1 : pagoMix.method2;
-        const amount = pagoMix.method1 === 'Pago Movil' ? pagoMix.amount1 : pagoMix.amount2;
+        const item = pagoMix.method1 !== 'Pago Movil' ? pagoMix.method1 : pagoMix.method2;
+        const amount = pagoMix.method1 !== 'Pago Movil' ? pagoMix.amount1 : pagoMix.amount2;
+
+        console.log(data);
 
         const newOrder = {
-          methods: [data, mapPayments(item, amount)],
+          methods: [
+            {
+              ...data,
+              details: {
+                ...data.details,
+                amount: data.details.amount.toString(),
+                prefix: data.details.phone.slice(0, 4),
+              },
+            },
+            mapPayments(item, amount),
+          ],
         };
         const response: any = await createOrder(newOrder);
 
@@ -371,6 +386,7 @@ export function PaymentDetails() {
           paymentMethods={paymentMethods}
           handleSubmit={handleSubmitMixed}
           isCreatingOrder={isCreatingOrder}
+          rate={Number(rateData) || 0}
         />
       ) : (
         <>Loading</>
