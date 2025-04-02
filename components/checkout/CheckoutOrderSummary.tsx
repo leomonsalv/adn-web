@@ -1,19 +1,57 @@
-import { formatVefCurrency } from '@/lib/utils';
+import { formatUsdCurrency, formatVefCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart-store';
 import { useCheckoutStore } from '@/stores/checkout-store';
 import { Popover, PopoverButton, PopoverBackdrop, PopoverPanel } from '@headlessui/react';
 import { ChevronUpIcon } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Coupon } from './Coupon';
+import useProducts from '@/hooks/use-products';
 
 export default function CheckoutOrderSummary() {
-  const { cart, getCartSubtotal, getCartTax, getCartTotal, deliveryFee } = useCartStore();
+  const { useGetDelivery } = useProducts();
+  const {
+    cart,
+    getCartSubtotal,
+    getCartTax,
+    getCartTotal,
+    getCartRef,
+    getRefCartTax,
+    deliveryFee,
+    setDeliveryFee,
+  } = useCartStore();
   const { shippingAddress } = useCheckoutStore();
+  const { data: deliveryProduct, isLoading, isError } = useGetDelivery();
 
   const subtotal = getCartSubtotal();
   const taxes = getCartTax();
   const total = getCartTotal();
+  const cartRef = getCartRef();
+  const refTax = getRefCartTax();
+
+  useEffect(() => {
+    if (deliveryProduct) {
+      const fee = cartRef <= 7 ? Number(deliveryProduct.bsPrice || 0) : 0;
+      setDeliveryFee(shippingAddress.type === 'pickup' ? 0 : fee);
+    }
+  }, [deliveryProduct, cartRef, setDeliveryFee, shippingAddress.type]);
+
+  // Calcular el total en referencia (dólares)
+  const deliveryRefPrice =
+    shippingAddress.type === 'pickup' ? 0 : cartRef <= 7 ? (deliveryProduct?.refPrice ?? 0) : 0;
+  const totalRef = cartRef + deliveryRefPrice + refTax;
+
+  if (isLoading) {
+    return <div>Cargando costo de envío...</div>;
+  }
+
+  if (isError) {
+    return <div>Error al cargar el costo de envío.</div>;
+  }
+
+  if (!deliveryProduct) {
+    return <div>Cargando costo de envío...</div>;
+  }
 
   return (
     <section
@@ -44,9 +82,14 @@ export default function CheckoutOrderSummary() {
                 {/* <p className="text-gray-500">{item.color}</p> */}
                 {/* <p className="text-gray-500">{item.size}</p> */}
               </div>
-              <p className="flex-none text-base font-medium">
-                {formatVefCurrency(Number(item.bsPrice))}
-              </p>
+              <div className="flex-row">
+                <p className="flex-auto text-base font-medium">
+                  {formatVefCurrency(Number(item.bsPrice))}
+                </p>
+                <p className="flex-auto text-gray-400 font-medium">
+                  {formatUsdCurrency(Number(item.refPrice))}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
@@ -70,6 +113,11 @@ export default function CheckoutOrderSummary() {
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
             <dt className="text-base">Total</dt>
             <dd className="text-base">{formatVefCurrency(total)}</dd>{' '}
+          </div>
+
+          <div className="flex items-center justify-between border-t border-gray-200 pt-6">
+            <dt className="text-base">Total REF:</dt>
+            <dd className="text-base">{formatUsdCurrency(totalRef)}</dd>
           </div>
         </dl>
 
@@ -112,6 +160,11 @@ export default function CheckoutOrderSummary() {
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt className="text-base">Total</dt>
                 <dd className="text-base">{formatVefCurrency(total)}</dd>{' '}
+              </div>
+
+              <div className="flex items-center justify-between border-t border-gray-200 pt-6">
+                <dt className="text-base">Total REF:</dt>
+                <dd className="text-base">{formatUsdCurrency(totalRef)}</dd>
               </div>
             </dl>
           </PopoverPanel>

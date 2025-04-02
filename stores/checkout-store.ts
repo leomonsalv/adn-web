@@ -73,6 +73,7 @@ const initialState: CheckoutState = {
     lng: 0,
     id: '',
     alias: '',
+    type: 'delivery',
   },
   billingInformation: {
     sameAsShipping: true,
