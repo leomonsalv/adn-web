@@ -6,8 +6,11 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useAuth } from './use-auth';
 import { useCartStore } from '@/stores/cart-store';
 import useCheckoutPreferences from './use-checkout-preferences';
+import useCart from './use-cart';
 
 export default function useOrders() {
+  const { useClearCart } = useCart();
+  const { mutateAsync: mutateClearCart } = useClearCart();
   const useGetOrders = (pageSize = 5) => {
     const { user } = useAuth();
 
@@ -60,10 +63,10 @@ export default function useOrders() {
           },
           odooOrder: {
             product_list: cart.products.map((item) => ({
-              product_id: item.id,
+              product_id: item.productId,
               product_uom_qty: item.quantity,
-              subtotal: item.price,
-              tax: item.price_extra,
+              subtotal: Number(item.bsPrice),
+              tax: item.taxes.reduce((acc, tax) => acc + tax.amount, 0),
             })),
           },
         };
@@ -92,6 +95,18 @@ export default function useOrders() {
             // Don't throw error here, as the order was already created successfully
           }
         }
+
+        // Clear cart after successful order creation
+
+        const handleClearCart = async () => {
+          await mutateClearCart(cart.id);
+          clearCart();
+        };
+        const clearCart = () => {
+          useCartStore.getState().clearCart();
+        };
+
+        handleClearCart();
 
         return response;
       },
