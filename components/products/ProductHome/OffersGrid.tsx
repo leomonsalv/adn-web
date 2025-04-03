@@ -1,11 +1,11 @@
-import React from 'react';
+import type React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   link: string;

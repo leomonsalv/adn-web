@@ -5,7 +5,7 @@ import BannerCarousel from '@/components/carousel/BannerCarousel';
 import OffersGrid from '@/components/products/ProductHome/OffersGrid';
 import { FlameIcon } from 'lucide-react';
 import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
-import { RecentProducts } from '@/lib/dummyData';
+import { RecentProducts, Trending } from '@/lib/dummyData';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
 import type { Product } from '@/types/product';
@@ -34,7 +34,7 @@ export default function HomePage() {
               {heroData && heroData.length > 1 && <HeroVariant heroItem={heroData[1]} />}
               <OffersGrid
                 title="Sigue comprando ofertas"
-                products={RecentProducts}
+                products={Trending}
                 viewAllLink="/ofertas"
                 variant="pink"
                 icon={<FlameIcon className="w-5 h-5 text-[#A4003B]" />}

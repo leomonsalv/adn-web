@@ -1,4 +1,4 @@
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 import { GlobeAmericasIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 
 export const navigation = {
@@ -570,28 +570,55 @@ export const productPayload = [
 
 export const RecentProducts = [
   {
-    id: 1,
-    name: 'Energyplant 450 mg',
-    imageUrl: '/images/potedeproteina.png',
-    link: '/producto-detalle/58805',
+    id: '679ced466c97b3e3333a9e76',
+    name: 'Casa para Gatos tipo Ferrocarril',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/91495',
+    link: '/producto-detalle/679ced466c97b3e3333a9e76',
   },
   {
-    id: 2,
-    name: 'Energyplant 450 mg',
-    imageUrl: '/images/potedeproteina.png',
-    link: '/producto-detalle/58805',
+    id: '67768b474c0e7fd615d6a4a9',
+    name: 'Figura Funk Pop Muzan Kibutsuji',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/78811',
+    link: '/producto-detalle/67768b474c0e7fd615d6a4a9',
   },
   {
-    id: 3,
-    name: 'Energyplant 450 mg',
-    imageUrl: '/images/potedeproteina.png',
-    link: '/producto-detalle/58805',
+    id: '679cf69a6c97b3e3333aa320',
+    name: 'Pala Solid Pro 2024',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/90500',
+    link: '/producto-detalle/679cf69a6c97b3e3333aa320',
   },
   {
-    id: 4,
-    name: 'Energyplant 450 mg',
-    imageUrl: '/images/potedeproteina.png',
-    link: '/producto-detalle/58805',
+    id: '677314af4c0e7fd615d5856e',
+    name: 'Vaso Termico Ecology Big Ice 16',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/30830',
+    link: '/producto-detalle/677314af4c0e7fd615d5856e',
+  },
+];
+
+export const Trending = [
+  {
+    id: '679cebdd6c97b3e3333a9e0b',
+    name: 'Campervan de Playa Peppa Pig',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/91185',
+    link: '/producto-detalle/679cebdd6c97b3e3333a9e0b',
+  },
+  {
+    id: '67656946d23fe4d546003f94',
+    name: 'Flotador Ecology',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/28579',
+    link: '/producto-detalle/67656946d23fe4d546003f94',
+  },
+  {
+    id: '679cf69a6c97b3e3333aa320',
+    name: 'Pala Solid Pro 2024',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/90500',
+    link: '/producto-detalle/679cf69a6c97b3e3333aa320',
+  },
+  {
+    id: '677314af4c0e7fd615d5856e',
+    name: 'Vaso Termico Ecology Big Ice 16',
+    imageUrl: 'https://storage.googleapis.com/adan-farmacia.appspot.com/productos/512/30830',
+    link: '/producto-detalle/677314af4c0e7fd615d5856e',
   },
 ];
 
