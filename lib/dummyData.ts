@@ -456,6 +456,7 @@ export const navbarMenuHover = [
   { name: 'Ajustes', href: '#', id: '5' },
   { name: 'Notificaciones', href: '#', id: '6' },
   { name: 'Centro de ayuda', href: '#', id: '7' },
+  { name: 'Tarjetas de Regalo', href: '/gift-cards', id: '8' },
 ];
 
 export const testimonials = [
