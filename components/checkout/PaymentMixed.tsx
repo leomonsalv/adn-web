@@ -13,18 +13,20 @@ interface PaymentMixedProps {
   paymentMethods: Method[];
   handleSubmit: any;
   isCreatingOrder: boolean;
+  rate: number;
 }
 
 const PaymentMixed: React.FC<PaymentMixedProps> = ({
   paymentMethods,
   handleSubmit,
   isCreatingOrder,
+  rate,
 }) => {
   const { getCartRef, getCartTotal } = useCartStore();
   const { user } = useUser();
   const totalUsd = getCartRef();
   const totalBs = getCartTotal();
-  const usd = parseFloat((totalBs / totalUsd).toFixed(2));
+  const usd = rate;
 
   const excludeMethods = {
     // Add methods to exclude from the mix payment options
@@ -101,7 +103,9 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
     } else if (method1Currency === 'USD' && method2Currency === 'Bs') {
       form.setValue(
         `amount${newItem}`,
-        method2?.value === 'bolivarCash' ? Math.ceil(totalBs - value * usd) : totalBs - value * usd,
+        method2?.value === 'bolivarCash'
+          ? Math.ceil(totalBs - value * usd)
+          : Number((totalBs - value * usd).toFixed(2)),
       );
     } else if (method1Currency === 'Bs' && method2Currency === 'USD') {
       form.setValue(
