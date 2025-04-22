@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { use } from 'react';
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '@/components/ui/button';
@@ -41,6 +41,11 @@ import Reviews from '@/components/reviews/Reviews';
 import ReviewsSection from '@/components/reviews/ReviewSection';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import ProductImageGallery from '@/components/products/ProductDetail/ProductImageGallery';
+import {
+  ProductColorSelector,
+  ProductSizePicker,
+} from '@/components/products/ProductDetail/ProductVariantSelectors';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -106,8 +111,28 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { mutateAsync: updateCart } = useMutateCart();
 
   const { addToCart, getItemCount, updateQuantity, isItemInCart } = useCartStore();
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const [selectedColor, setSelectedColor] = useState<any>(null);
+  const [selectedSize, setSelectedSize] = useState<any>(null);
+
+  useEffect(() => {
+    if (productData?.variantOptions) {
+      if (productData.variantOptions.color?.values?.length > 0) {
+        setSelectedColor({
+          name: 'color',
+          value: productData.variantOptions.color.values[0],
+          type: productData.variantOptions.color.type,
+        });
+      }
+
+      if (productData.variantOptions.size?.values?.length > 0) {
+        setSelectedSize({
+          name: 'size',
+          value: productData.variantOptions.size.values[0],
+          type: productData.variantOptions.size.type,
+        });
+      }
+    }
+  }, [productData]);
 
   if (isProductLoading || isCartLoading) {
     return <ProductDetailSkeleton />;
@@ -230,34 +255,16 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                 <h2 id="gallery-heading" className="sr-only">
                   Galería de Imágenes del Producto
                 </h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                  <div className="lg:col-span-2 lg:row-span-2 flex justify-center items-center rounded-lg">
-                    {/* Image gallery TODO: THIS FUNCTIONALITY NEEDS REWORK WHEN BE IS DONE */}
-                    {productData.variants ? (
-                      <Image
-                        key={productData._id}
-                        alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                        src={productData.images?.[0] || '/delivery.jpeg'}
-                        height={500}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        width={500}
-                        className="rounded-lg object-contain"
-                      />
-                    ) : (
-                      <div className="overflow-hidden rounded-lg flex justify-center items-center h-[500px] w-full">
-                        <Image
-                          key={productData._id}
-                          alt={`Imagen del producto ${productData.name} vendido por ${productData.laboratory}`}
-                          src={productData.images?.[0] || '/delivery.jpeg'}
-                          height={500}
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          width={500}
-                          className="size-full object-cover object-center"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <ProductImageGallery
+                  images={productData.images || []}
+                  productName={productData.name}
+                  laboratory={productData.laboratory}
+                  variant={{
+                    color: selectedColor?.name,
+                    size: selectedSize?.name,
+                  }}
+                  variantOptionsMap={productData.variantOptionsMap}
+                />
               </section>
             </div>
 
@@ -314,16 +321,23 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               </section>
 
               {/* Color & Size pickers */}
-              {/* <ProductColorSelector
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
-                product={product}
-              />
-              <ProductSizePicker
-                selectedSize={selectedSize}
-                setSelectedSize={setSelectedSize}
-                product={product}
-              /> */}
+              {productData.variantOptions && (
+                <>
+                  <ProductColorSelector
+                    selectedColor={selectedColor}
+                    setSelectedColor={setSelectedColor}
+                    variantOptions={productData.variantOptions}
+                    variantOptionsMap={productData.variantOptionsMap}
+                  />
+                  <ProductSizePicker
+                    selectedSize={selectedSize}
+                    setSelectedSize={setSelectedSize}
+                    variantOptions={productData.variantOptions}
+                    variantOptionsMap={productData.variantOptionsMap}
+                    selectedColor={selectedColor}
+                  />
+                </>
+              )}
               <DisponibilityCounter productQuantity={productData.inventary.total} />
 
               {/* Price tags */}
@@ -376,7 +390,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <TruckIcon className="w-5 h-5 mr-2" color="green" />
                   <span className="font-semibold">
                     <span className="text-green-700">Envío gratis</span> en todas las ordenes
-                    mayores a $7
+                    mayores a ${process.env.NEXT_PUBLIC_DELIVERY_PRICE}
                   </span>
                 </div>
                 <div className="flex items-center">
