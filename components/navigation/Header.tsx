@@ -194,7 +194,7 @@ export function NavLinks() {
               {/* Orders - hidden on mobile */}
               <div className="hidden sm:flex items-center ml-4">
                 <Link
-                  href={HISTORIAL}
+                  href={user && !user.isAnonymous ? HISTORIAL : LOGIN}
                   className="text-sm text-white hover:text-gray-200 flex flex-col"
                 >
                   <span className="text-xs text-white hover:text-gray-200">Devoluciones</span>
