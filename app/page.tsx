@@ -22,7 +22,7 @@ export default function HomePage() {
         <main className="relative flex flex-col items-center">
           <section
             aria-labelledby="category-heading"
-            className="relative rounded-t-[32px] container"
+            className="relative rounded-t-[32px] container  max-md:-mt-32"
           >
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
               <OffersGrid
