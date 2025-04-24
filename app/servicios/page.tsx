@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import SearchPageSkeleton from '@/components/skeletons/SearchSkeleton';
 import { Facets } from '@/types/categories';
 import { NextSeo } from 'next-seo';
+import Image from 'next/image';
 
 type SortOption = NonNullable<SearchFormType['sort']>;
 type PriceRange = NonNullable<SearchFormType['priceRange']>;
@@ -69,6 +70,36 @@ export default function ServicesPage() {
           siteName: 'Adan Farmacia',
         }}
       />
+
+      {/* Contenedor de imágenes de servicios */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="relative h-64 rounded-lg overflow-hidden shadow-md">
+            <Image
+              src="/images/servicios/fortis.png"
+              alt="Servicio 1"
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="relative h-64 rounded-lg overflow-hidden shadow-md">
+            <Image
+              src="/images/servicios/gestion_salud.png"
+              alt="Servicio 2"
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="relative h-64 rounded-lg overflow-hidden shadow-md">
+            <Image
+              src="/images/servicios/ones.jpg"
+              alt="Servicio 3"
+              fill
+              className="object-contain hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         {/* Title */}
