@@ -9,8 +9,8 @@ import { AccordionContent, AccordionItem } from '@radix-ui/react-accordion';
 import { cn } from '@/lib/utils';
 import CheckoutSkeleton from '@/components/skeletons/CheckoutSkeleton';
 import { useCheckoutStore } from '@/stores/checkout-store';
-import { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
-import { ContactInformationSchema } from '@/schemas/contact-information-schema';
+import type { ShippingAddressSchema } from '@/schemas/shipping-address-schema';
+import type { ContactInformationSchema } from '@/schemas/contact-information-schema';
 import { DeliveryToggle } from '@/components/checkout/DeliveryToggle';
 
 import useUser from '@/hooks/use-user';
@@ -33,6 +33,8 @@ export default function CSCheckoutPage() {
     if ('email' in formData) {
       setContactInformation({
         name: formData.name,
+        fullname: formData.name,
+        fullName: formData.name,
         email: formData.email,
         dni: formData.dni,
         dniType: formData.dniType,
