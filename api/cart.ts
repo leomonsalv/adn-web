@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db, functions } from '@/lib/firebaseConfig';
-import { Cart } from '@/types/cart';
+import type { Cart } from '@/types/cart';
 import { z } from 'zod';
 import { httpsCallable } from 'firebase/functions';
 import { CART_CALCULATION } from '@/lib/urls';
@@ -19,12 +19,18 @@ export const getCart = async (userId: string) => {
     // get cart from firestore
     const cartSnapshot = await getDocs(collection(db, 'users', userId, 'shopCart'));
 
-    // get the first cart
     const cartData = cartSnapshot.docs
       .filter((doc) => doc.id !== 'wishList')
-      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt || new Date(), ...doc.data() }))
-      .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
-
+      .map((doc) => {
+        const data = doc.data();
+        const updatedAt = data.updatedAt?.toDate?.() || new Date(data.lastUpdate || 0);
+        return {
+          id: doc.id,
+          updatedAt,
+          ...data,
+        };
+      })
+      .sort((a, b) => b.updatedAt - a.updatedAt)?.[0];
     // If no cart found, return empty cart instead of undefined
     if (!cartData) {
       return { ...emptyCart, userId };
@@ -56,7 +62,11 @@ export const getOrCreateCart = async (userId: string) => {
     // get the first cart
     const cartData = cartSnapshot.docs
       .filter((doc) => doc.id !== 'wishList')
-      .map((doc) => ({ id: doc.id, updatedAt: doc.data().updatedAt || new Date(), ...doc.data() }))
+      .map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.data().updatedAt || new Date(),
+        ...doc.data(),
+      }))
       .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
 
     if (!cartData) {
