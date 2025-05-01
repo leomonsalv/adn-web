@@ -1,15 +1,14 @@
 import GenericCarousel from '@/components/carousel/GenericCarousel';
 import ProductCard from '@/components/products/ProductHome/ProductCard';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 interface TopSellingSectionProps {
   title: string;
   products?: Product[];
   isLoading?: boolean;
-  variant?: 'default' | 'gradient';
+  variant?: 'default' | 'gradient' | 'gradientGreen';
   className?: string;
 }
-
 export default function TopSellingSection({
   title,
   products,
@@ -18,10 +17,11 @@ export default function TopSellingSection({
   className,
 }: TopSellingSectionProps) {
   const baseStyles =
-    'container px-8 pt-24 pb-8 sm:pt-12 xl:mx-auto xl:max-w-(--breakpoint-2xl) xl:px-8 mb-12 rounded-lg';
+    'container px-8 pt-24 pb-8 sm:pt-12 xl:mx-auto xl:max-w-screen-2xl xl:px-8 mb-12 rounded-lg'; // ✅ corregido
   const variantStyles = {
     default: 'bg-white',
-    gradient: 'bg-linear-to-b from-[#FFDAD9] via-[#FFDAD980] to-[#FFDAD900]',
+    gradient: 'bg-gradient-to-r from-[#FEE3E6] to-[#FBD1DE]',
+    gradientGreen: 'bg-gradient-to-r from-[#00D0C5] via-[#00B6C5] to-[#006C89]',
   };
 
   const renderProducts = () => {
@@ -62,7 +62,13 @@ export default function TopSellingSection({
   return (
     <section className={`${baseStyles} ${variantStyles[variant]} ${className}`}>
       <h2
-        className={`text-3xl font-bold mb-6 ${variant === 'gradient' ? 'text-[#A4003B]' : 'text-gray-800'}`}
+        className={`text-3xl font-bold mb-6 ${
+          variant === 'gradient'
+            ? 'text-[#A4003B]'
+            : variant === 'gradientGreen'
+              ? 'text-white'
+              : 'text-gray-800'
+        }`}
       >
         {title}
       </h2>
