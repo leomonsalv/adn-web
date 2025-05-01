@@ -414,14 +414,14 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <Image
                     src={'/product-detail/money_back_guarantee.png'}
                     alt="Garantía de reembolso en 24 horas."
                     width={800}
                     height={400}
                   />
-                </div>
+                </div> */}
                 <div className="flex flex-col justify-center items-center py-4 text-sm leading-none">
                   <div className="text-center text-zinc-700">
                     ¿Tienes alguna duda sobre el producto?{' '}
@@ -429,7 +429,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                   <div className="flex overflow-hidden flex-col mt-1.5 max-w-full font-medium text-blue-500 w-[155px]">
                     <SupportLink
                       text="Contactar a soporte"
-                      url="https://api.whatsapp.com/send/?phone=584241458520&text&type=phone_number&app_absent=0"
+                      url="https://api.whatsapp.com/send/?phone=584241613016&text&type=phone_number&app_absent=0"
                     />
                     <div className="flex w-full bg-blue-300 min-h-[1px]" />
                   </div>
@@ -471,7 +471,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                         <li>
                           <strong>Interior del país:</strong> Envío gratis a través de Zoom en
                           compras que no superen los 2 kg y monto superior a $20, con un plazo de
-                          entrega no mayor a 24 horas.
+                          entrega no mayor a 48 horas.
                         </li>
                       </ul>
                     </AccordionContent>
