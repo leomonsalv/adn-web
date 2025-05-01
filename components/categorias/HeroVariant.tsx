@@ -9,15 +9,25 @@ import {
 } from './categoryBox/variants';
 
 type Props = {
-  heroItem: Hero;
+  heroItem: Hero & {
+    src?: string;
+  };
 };
 
 function HeroVariant({ heroItem }: Props) {
+  // Determinar el enlace según:
+  // 1. Si tiene src, usar src
+  // 2. Si tiene slug, usar producto_detalle/{slug}
+  // 3. Si no tiene ninguno, no hacer nada (string vacío)
   const productSlug = heroItem.products?.[0]?.slug;
-  const link =
-    heroItem.type === 'full-cover-with-product-grid'
-      ? ''
-      : productSlug || `/${heroItem.title.toLowerCase().replace(/\s+/g, '-')}`;
+  const src = heroItem.src;
+
+  let link = '';
+  if (src) {
+    link = src;
+  } else if (productSlug) {
+    link = `producto_detalle/${productSlug}`;
+  }
 
   return (
     <>
