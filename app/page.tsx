@@ -23,7 +23,9 @@ export default function HomePage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
         {heroData
           ?.slice(startIndex, startIndex + count)
-          .map((heroItem, index) => <HeroVariant key={startIndex + index} heroItem={heroItem} />)}
+          .map((heroItem, index) => (
+            <HeroVariant key={`${startIndex}+${index}`} heroItem={heroItem} />
+          ))}
       </div>
     </section>
   );
