@@ -25,11 +25,11 @@ export default function HomePage() {
             className="relative rounded-t-[32px] container  max-md:-mt-32"
           >
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
-              <OffersGrid
+              {/* <OffersGrid
                 title="Continúa donde quedaste"
                 products={RecentProducts}
                 viewAllLink="/ofertas"
-              />
+              /> */}
               {heroData && heroData.length > 0 && <HeroVariant heroItem={heroData[0]} />}
               {heroData && heroData.length > 1 && <HeroVariant heroItem={heroData[1]} />}
               <OffersGrid

@@ -22,7 +22,7 @@ const FullcoverVariant = ({
   return (
     <Link href={link} className="block h-full ">
       <Card
-        className="overflow-hidden w-full h-full rounded-md shadow-xs relative group flex flex-col"
+        className="overflow-hidden w-full h-full rounded-md  relative group flex flex-col"
         style={{ backgroundColor: background || '#f5f5f5' }}
       >
         {/* Imagen de fondo cubriendo todo el Card */}
@@ -37,12 +37,12 @@ const FullcoverVariant = ({
               style={{ objectFit: 'cover' }}
               className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+            <div className="absolute inset-0 " />
           </div>
         )}
 
         {/* Degradado solo en la parte superior para mejorar legibilidad */}
-        <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/60 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-1/3 " />
 
         {/* Contenido (título + descripción) en la parte superior */}
         <div className="absolute top-0 left-0 w-full p-4 md:p-6 z-10">

@@ -215,3 +215,37 @@ export const fetchProductsSuggestions = async (
   )({ query, pageSize: 5, suggest: true });
   return response.data;
 };
+
+/**
+ * Fetches a list of products by their IDs using a POST request
+ * @param productIds - Array of product IDs as strings
+ * @returns Promise with the product data
+ */
+export const fetchProductsList = async (productIds: string[]): Promise<{ data: Product[] }> => {
+  try {
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      throw new Error('Product IDs array is required and cannot be empty');
+    }
+
+    const response = await fetch(`${API_URL}/products/list`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ids: productIds }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const products = await response.json();
+    return products;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching products list:', error.message);
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching products list');
+  }
+};

@@ -1,6 +1,7 @@
 import {
   fetchProductById,
   fetchProductsByIds,
+  fetchProductsList,
   fetchRecommendations,
   fetchSuggestions,
   getDeliveryPrice,
@@ -23,6 +24,29 @@ export default function useProducts() {
       queryFn: () => getDeliveryPrice(),
       select: (data) => data,
       staleTime: 1000 * 60 * 5, // Cache de 5 minutos
+    });
+  };
+  const useGetProductsList = (productIds: string[]) => {
+    return useQuery({
+      queryKey: ['productsList', productIds],
+      queryFn: () => {
+        if (!Array.isArray(productIds) || productIds.length === 0) {
+          // No realizar la llamada API si no hay IDs de productos
+          return Promise.reject(new Error('Se requiere un array de IDs de productos no vacío'));
+        }
+        return fetchProductsList(productIds);
+      },
+      select: (data) => data,
+      // No reintentar si el error se debe a un array de IDs vacío
+      retry: (failureCount, error) => {
+        if (
+          error instanceof Error &&
+          error.message === 'Se requiere un array de IDs de productos no vacío'
+        ) {
+          return false;
+        }
+        return failureCount < 3;
+      },
     });
   };
   const useGetRecommendations = (payload: SuggestionsProductsPayload) => {
@@ -71,5 +95,11 @@ export default function useProducts() {
     });
   };
 
-  return { useGetProductById, useGetRecommendations, useGetSuggestions, useGetDelivery };
+  return {
+    useGetProductById,
+    useGetRecommendations,
+    useGetSuggestions,
+    useGetDelivery,
+    useGetProductsList,
+  };
 }

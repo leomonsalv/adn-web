@@ -109,8 +109,8 @@ export default function ServicesPage() {
           </h1>
         </div>
 
-        <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-          <section className="lg:col-span-2 xl:col-span-3">
+        <div className="pt-12 lg:grid lg:grid-cols-4 lg:gap-x-8 xl:grid-cols-4">
+          <section className="lg:col-span-3 xl:col-span-4">
             {services.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500">No se encontraron servicios</p>

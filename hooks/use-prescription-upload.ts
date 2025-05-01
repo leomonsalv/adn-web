@@ -8,7 +8,7 @@ import { Product } from '@/types/product';
 interface PrescriptionUploadState {
   isUploading: boolean;
   error: string | null;
-  prescriptionUrl: string | null;
+  prescriptionImg: string | null;
   isPrescriptionUploaded: boolean;
 }
 
@@ -16,7 +16,7 @@ export function usePrescriptionUpload() {
   const [state, setState] = useState<PrescriptionUploadState>({
     isUploading: false,
     error: null,
-    prescriptionUrl: null,
+    prescriptionImg: null,
     isPrescriptionUploaded: false,
   });
 
@@ -24,11 +24,7 @@ export function usePrescriptionUpload() {
   const { addToCart } = useCartStore();
 
   const uploadPrescription = async (file: File, product: Product) => {
-    if (
-      !file ||
-      !product.product_type ||
-      !['prescripcion', 'tienda'].includes(product.product_type)
-    ) {
+    if (!file || !product.type || !['prescripcion', 'tienda'].includes(product.type)) {
       setState((prev) => ({ ...prev, error: 'Invalid file or product type' }));
       return null;
     }
@@ -45,14 +41,14 @@ export function usePrescriptionUpload() {
       setState((prev) => ({
         ...prev,
         isUploading: false,
-        prescriptionUrl: downloadUrl,
+        prescriptionImg: downloadUrl,
         isPrescriptionUploaded: true,
       }));
 
       // Add product to cart with prescription URL
       addToCart({
         ...product,
-        prescriptionUrl: downloadUrl,
+        prescriptionImg: downloadUrl,
       });
 
       return downloadUrl;
@@ -71,7 +67,7 @@ export function usePrescriptionUpload() {
     setState({
       isUploading: false,
       error: null,
-      prescriptionUrl: null,
+      prescriptionImg: null,
       isPrescriptionUploaded: false,
     });
   };
