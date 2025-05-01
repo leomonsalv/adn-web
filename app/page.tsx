@@ -32,13 +32,13 @@ export default function HomePage() {
               /> */}
               {heroData && heroData.length > 0 && <HeroVariant heroItem={heroData[0]} />}
               {heroData && heroData.length > 1 && <HeroVariant heroItem={heroData[1]} />}
-              <OffersGrid
+              {/* <OffersGrid
                 title="Sigue comprando ofertas"
                 products={Trending}
                 viewAllLink="/ofertas"
                 variant="pink"
                 icon={<FlameIcon className="w-5 h-5 text-[#A4003B]" />}
-              />
+              /> */}
             </section>
 
             <section
