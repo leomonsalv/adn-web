@@ -22,21 +22,25 @@ interface UnwrappedParams {
 
 interface ApiProduct {
   id: string;
-  visible: boolean;
   active_ingredients?: string;
   attack?: string;
-  barcode?: string;
-  bs_price?: number;
-  description?: string;
   product_id: number;
-  images?: string[];
-  inventary?: Record<string, number>;
-  laboratory?: string;
+  barcode: string;
+  bs_price: number;
+  description: string;
+  inventary: Inventary;
   name: string;
-  refPrice?: number;
+  ref_price: number;
+  laboratory?: string;
   synons?: string;
-  templateId?: number;
+  template_id: number;
   type: 'libre' | 'prescripcion' | 'tienda';
+  visible: boolean;
+  images: string[];
+}
+interface Inventary {
+  'FADPV/Stock/E17F4': number;
+  total: number;
 }
 
 type SortOption = NonNullable<SearchFormType['sort']>;
@@ -95,18 +99,18 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     description: apiProduct.description || '',
     id: apiProduct.product_id,
     images: apiProduct.images || [],
-    inventary: apiProduct.inventary || {},
+    inventary: { total: apiProduct.inventary?.total || 0 },
     laboratory: apiProduct.laboratory || '',
     quantity: 1,
     name: apiProduct.name,
     price: apiProduct.bs_price || 0,
     price_extra: 0,
     productId: apiProduct.product_id,
-    refPrice: apiProduct.refPrice || 0,
+    refPrice: apiProduct.ref_price || 0,
     synons: apiProduct.synons || null,
     taxes: [],
     type: apiProduct.type,
-    templateId: Number(apiProduct.templateId),
+    templateId: Number(apiProduct.template_id),
     visible: apiProduct.visible ?? true,
   });
 
