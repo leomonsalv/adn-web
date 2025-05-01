@@ -62,12 +62,16 @@ export const getOrCreateCart = async (userId: string) => {
     // get the first cart
     const cartData = cartSnapshot.docs
       .filter((doc) => doc.id !== 'wishList')
-      .map((doc) => ({
-        id: doc.id,
-        updatedAt: doc.data().updatedAt || new Date(),
-        ...doc.data(),
-      }))
-      .sort((a, b) => b.updatedAt.toDate() - a.updatedAt.toDate())?.[0];
+      .map((doc) => {
+        const data = doc.data();
+        const updatedAt = data.updatedAt?.toDate?.() || new Date(data.lastUpdate || 0);
+        return {
+          id: doc.id,
+          updatedAt,
+          ...data,
+        };
+      })
+      .sort((a, b) => b.updatedAt - a.updatedAt)?.[0];
 
     if (!cartData) {
       const doc = await addDoc(collection(db, 'users', userId, 'shopCart'), {

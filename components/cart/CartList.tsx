@@ -1,10 +1,10 @@
-import { Product } from '@/types/product'
-import CartItem from './CartItem'
-import { CartProduct } from '@/types/cart'
+import { Product } from '@/types/product';
+import CartItem from './CartItem';
+import type { CartProduct } from '@/types/cart';
 
 interface CartListProps {
-  items: CartProduct[]
-  cartId: string
+  items: CartProduct[];
+  cartId: string;
 }
 
 export default function CartList({ items, cartId }: CartListProps) {
@@ -16,9 +16,9 @@ export default function CartList({ items, cartId }: CartListProps) {
 
       <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
         {items.map((cartItem) => (
-          <CartItem key={cartItem.id} item={cartItem} cartId={cartId} />
+          <CartItem key={cartItem._id} item={cartItem} cartId={cartId} />
         ))}
       </ul>
     </section>
-  )
+  );
 }
