@@ -1,10 +1,15 @@
 import React from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/components/ui/carousel';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '@/components/ui/carousel';
 import CarouselCard from './CarouselCard';
-import { RecommendedProductsResponseElement } from '@/types/product';
+import type { RecommendedProductsResponseElement } from '@/types/product';
 import { ChevronRight } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
-import { ReviewsResponse } from '@/types/review';
+import type { ReviewsResponse } from '@/types/review';
 import useReviews from '@/hooks/use-reviews';
 
 export interface ProductWithRating extends RecommendedProductsResponseElement {
@@ -38,7 +43,7 @@ const CarouselRecommened = ({
   const scrollNext = () => {
     api?.scrollNext();
   };
-
+  console.log(products);
   return (
     <div className="w-full">
       <div className="mb-6">
@@ -66,7 +71,7 @@ const CarouselRecommened = ({
               >
                 <CarouselCard
                   title={product.name}
-                  imageUrl={product?.images[0] || '/delivery.jpeg'}
+                  imageUrl={product?.images?.length ? product?.images[0] : '/delivery.jpeg'}
                   rating={product.reviewSummary.averageRating || 0}
                   reviewCount={product.reviewSummary.totalReviews || 0}
                   //DONDE ESTA EL PRECIO ORIGINAL
