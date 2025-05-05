@@ -31,8 +31,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Adan En Línea',
-  description: 'Ahora usamos next 15',
+  title: 'Adan En Línea | Tu vida tu flow',
+  description: 'Traemos bienestar a tu hogar. Productos que mejoran tu día a día.',
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {

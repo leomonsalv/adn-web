@@ -14,7 +14,9 @@ interface ProductImageGalleryProps {
   };
   variantOptionsMap?: Record<string, { images?: string[] }>;
 }
-
+function getHighResUrl(url: string, targetResolution: 1024 | 1920 = 1024) {
+  return url.replace('/512/', `/${targetResolution}/`);
+}
 export default function ProductImageGallery({
   images = [],
   productName,
@@ -90,9 +92,10 @@ export default function ProductImageGallery({
         <Image
           key={`main-${selectedImageIndex}`}
           alt={`Imagen del producto ${productName}${laboratory ? ` vendido por ${laboratory}` : ''}`}
-          src={galleryImages[selectedImageIndex].trim().replace(/`/g, '')}
-          height={500}
-          width={500}
+          src={getHighResUrl(galleryImages[selectedImageIndex])}
+          height={800}
+          width={800}
+          quality={90}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="max-h-full max-w-full object-contain"
         />

@@ -12,7 +12,7 @@ import TopSellingSection from '@/components/products/ProductHome/TopSellingSecti
 import type { Product } from '@/types/product';
 import HeroVariant from '@/components/categorias/HeroVariant';
 
-export const metadata = {
+const metadata = {
   title: 'Adan | Tu vida tu flow',
   description:
     'Descubre lo más vendido en cuidado personal, hogar y bienestar. Productos que mejoran tu día a día.',
