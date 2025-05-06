@@ -20,20 +20,20 @@ export default function CartOrderSummary() {
   } = useCartStore();
   const { data: deliveryProduct, isLoading, isError } = useGetDelivery();
   const cartRef = getCartRef();
+  const deliveryLimit = Number(process.env.NEXT_PUBLIC_DELIVERY_PRICE) || 10;
 
   useEffect(() => {
     if (deliveryProduct) {
-      const deliveryFee = cartRef <= 7 ? Number(deliveryProduct.bsPrice || 0) : 0;
+      const deliveryFee = cartRef <= deliveryLimit ? Number(deliveryProduct.bsPrice || 0) : 0;
       setDeliveryFee(deliveryFee);
     }
-  }, [deliveryProduct, cartRef, setDeliveryFee]);
+  }, [deliveryProduct, cartRef, setDeliveryFee, deliveryLimit]);
 
   const tax = getCartTax();
   const refTax = getRefCartTax();
   const subtotal = getCartSubtotal();
   const total = getCartTotal();
-
-  const deliveryRefPrice = cartRef <= 7 ? (deliveryProduct?.refPrice ?? 0) : 0;
+  const deliveryRefPrice = cartRef <= deliveryLimit ? (deliveryProduct?.refPrice ?? 0) : 0;
   const totalRef = cartRef + deliveryRefPrice + refTax;
 
   if (!deliveryProduct) {

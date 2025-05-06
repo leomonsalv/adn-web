@@ -6,7 +6,7 @@ import { useCartStore } from '@/stores/cart-store';
 import CartOrderSummary from '@/components/cart/CartOrderSummary';
 import useCart from '@/hooks/use-cart';
 import { useEffect, useMemo } from 'react';
-import { SuggestionsProductsPayload } from '@/types/product';
+import type { SuggestionsProductsPayload } from '@/types/product';
 import useProducts from '@/hooks/use-products';
 import { useAuth } from '@/hooks/use-auth';
 import CarouselRecommened from '@/components/carousel/CarouselRecommened';
