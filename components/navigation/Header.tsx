@@ -28,7 +28,6 @@ export function NavLinks() {
   const pathname = usePathname();
 
   const { user, loading } = useAuth();
-  console.log('🚀 ~ NavLinks ~ user:', user);
   const { toast } = useToast();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });

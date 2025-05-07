@@ -181,28 +181,36 @@ export default function CSCheckoutPage() {
                 >
                   <div className="flex w-full items-center justify-between gap-2">
                     <h2 className="text-lg font-bold">{step.title}</h2>
-                    {step.id === 1 && currentStep !== step.id && contactInformation.email && (
-                      <span
-                        className="text-sm font-normal text-blue-400 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentStep(step.id);
-                        }}
-                      >
-                        Cambiar
-                      </span>
-                    )}
-                    {step.id === 2 && currentStep !== step.id && (
-                      <span
-                        className="text-sm font-normal text-blue-400 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentStep(step.id);
-                        }}
-                      >
-                        Cambiar
-                      </span>
-                    )}
+                    {step.id === 1 &&
+                      currentStep !== step.id &&
+                      contactInformation.email &&
+                      contactInformation.name &&
+                      contactInformation.dni && (
+                        <span
+                          className="text-sm font-normal text-blue-400 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentStep(step.id);
+                          }}
+                        >
+                          Cambiar
+                        </span>
+                      )}
+                    {step.id === 2 &&
+                      currentStep !== step.id &&
+                      contactInformation.email &&
+                      contactInformation.name &&
+                      contactInformation.dni && (
+                        <span
+                          className="text-sm font-normal text-blue-400 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentStep(step.id);
+                          }}
+                        >
+                          Cambiar
+                        </span>
+                      )}
                   </div>
                   {step.button && <span className="text-sm">{step.button}</span>}
                   {step.subtitle && <span className="text-sm">{step.subtitle}</span>}

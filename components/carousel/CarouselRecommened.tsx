@@ -43,7 +43,6 @@ const CarouselRecommened = ({
   const scrollNext = () => {
     api?.scrollNext();
   };
-  console.log(products);
   return (
     <div className="w-full">
       <div className="mb-6">
