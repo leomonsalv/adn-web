@@ -33,7 +33,12 @@ const metadata = {
 };
 
 useEffect(() => {
-  Clarity.init(process.env.NEXT_PUBLIC_CLARITY_ID);
+  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
+  if (!clarityId) {
+    console.error('Clarity ID is not defined in the environment variables.');
+  } else {
+    Clarity.init(clarityId);
+  }
 }, [Clarity]);
 
 export default function HomePage() {
