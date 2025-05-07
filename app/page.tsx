@@ -1,12 +1,13 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import MainIncentives from '@/components/incentives/MainIncentives';
 import BannerCarousel from '@/components/carousel/BannerCarousel';
 import OffersGrid from '@/components/products/ProductHome/OffersGrid';
 import { FlameIcon } from 'lucide-react';
 import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
 import { RecentProducts, Trending } from '@/lib/dummyData';
+import Clarity from '@microsoft/clarity';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
 import type { Product } from '@/types/product';
@@ -30,6 +31,10 @@ const metadata = {
     description: 'Explora productos de salud y bienestar más vendidos',
   },
 };
+
+useEffect(() => {
+  Clarity.init(process.env.NEXT_PUBLIC_CLARITY_ID);
+}, [Clarity]);
 
 export default function HomePage() {
   const { topProducts, heroData, isLoading, error } = useTopSelling();
