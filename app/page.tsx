@@ -7,7 +7,6 @@ import OffersGrid from '@/components/products/ProductHome/OffersGrid';
 import { FlameIcon } from 'lucide-react';
 import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
 import { RecentProducts, Trending } from '@/lib/dummyData';
-import Clarity from '@microsoft/clarity';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
 import type { Product } from '@/types/product';
@@ -31,15 +30,6 @@ const metadata = {
     description: 'Explora productos de salud y bienestar más vendidos',
   },
 };
-
-useEffect(() => {
-  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
-  if (!clarityId) {
-    console.error('Clarity ID is not defined in the environment variables.');
-  } else {
-    Clarity.init(clarityId);
-  }
-}, [Clarity]);
 
 export default function HomePage() {
   const { topProducts, heroData, isLoading, error } = useTopSelling();
