@@ -28,6 +28,7 @@ export function NavLinks() {
   const pathname = usePathname();
 
   const { user, loading } = useAuth();
+  console.log('🚀 ~ NavLinks ~ user:', user);
   const { toast } = useToast();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });
@@ -131,34 +132,40 @@ export function NavLinks() {
               </div>
             </div>
 
-            {/* User account and cart - simplified on mobile */}
+            {/* User account and cart */}
             <div className="flex items-center justify-end">
-              {/* User account - hidden on mobile */}
-              <div className="hidden sm:flex items-center">
-                {loading || !user?.displayName ? (
+              {/* User account - visible on all devices */}
+              <div className="flex items-center">
+                {loading || !user?.displayName || user.isAnonymous ? (
                   <Link
                     href={LOGIN}
                     className="text-sm text-white hover:text-gray-200 flex flex-col"
                   >
-                    <span className="text-xs text-white hover:text-gray-200">
+                    <span className="text-xs text-white hover:text-gray-200 hidden sm:inline">
                       Hola, Identifícate
                     </span>
                     <span className="text-sm text-white font-semibold hover:text-gray-200">
-                      Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                      <span className="sm:hidden">Iniciar Sesión</span>
+                      <span className="hidden sm:inline">
+                        Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                      </span>
                     </span>
                   </Link>
                 ) : (
                   <PopoverGroup className="flex hover:opacity-75 shrink-0">
                     <Popover className="relative">
                       <PopoverButton className="text-sm text-white hover:text-gray-200 flex flex-col">
-                        <span className="text-xs text-white hover:text-gray-200">
+                        <span className="text-xs text-white hover:text-gray-200 hidden sm:inline">
                           Hola,{' '}
                           <strong>
                             {user?.displayName !== 'undefined' ? user?.displayName : 'Anónimo'}
                           </strong>
                         </span>
                         <span className="text-sm text-white font-semibold hover:text-gray-200">
-                          Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                          <span className="sm:hidden">Mi Cuenta</span>
+                          <span className="hidden sm:inline">
+                            Cuenta y Listas <ChevronDownIcon className="ml-1 h-3.5 w-3.5 inline" />
+                          </span>
                         </span>
                       </PopoverButton>
                       <PopoverPanel
@@ -191,15 +198,17 @@ export function NavLinks() {
                 )}
               </div>
 
-              {/* Orders - hidden on mobile */}
-              <div className="hidden sm:flex items-center ml-4">
+              {/* Orders - visible on all devices */}
+              <div className="flex items-center ml-2 sm:ml-4">
                 <Link
                   href={user && !user.isAnonymous ? HISTORIAL : LOGIN}
                   className="text-sm text-white hover:text-gray-200 flex flex-col"
                 >
-                  <span className="text-xs text-white hover:text-gray-200">Devoluciones</span>
+                  <span className="text-xs text-white hover:text-gray-200 hidden sm:inline">
+                    Devoluciones
+                  </span>
                   <span className="text-sm text-white font-semibold hover:text-gray-200">
-                    y Pedidos
+                    <span className="hidden sm:inline">y Pedidos</span>
                   </span>
                 </Link>
               </div>
