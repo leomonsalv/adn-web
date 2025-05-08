@@ -247,8 +247,6 @@ export function PaymentDetails() {
         const item = pagoMix.method1 !== 'Pago Movil' ? pagoMix.method1 : pagoMix.method2;
         const amount = pagoMix.method1 !== 'Pago Movil' ? pagoMix.amount1 : pagoMix.amount2;
 
-        console.log(data);
-
         const newOrder = {
           methods: [
             {

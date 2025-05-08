@@ -13,12 +13,15 @@ interface CategorySectionProps {
 const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleExpand = () => {
-    if (isMobile) {
-      setIsExpanded(!isExpanded);
-    }
+  // Función para alternar la expansión de categorías
+  const toggleExpand = (e: React.MouseEvent) => {
+    // Prevenir la navegación si se hace clic en el área de expansión
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
   };
 
+  // En dispositivos móviles, solo se expande al hacer clic
+  // En desktop, se expande al hacer hover o clic
   const handleMouseEvents = isMobile
     ? {}
     : {
@@ -28,23 +31,27 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
 
   return (
     <div className="space-y-2" {...handleMouseEvents}>
-      <div
-        className="flex items-center justify-between group cursor-pointer"
-        onClick={toggleExpand}
-      >
+      <div className="flex items-center justify-between group cursor-pointer">
         <Link
           href={`/${category.slug}`}
           className="font-bold text-base text-gray-900 hover:text-gray-600 flex-grow"
-          onClick={(e) => isMobile && e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         >
           {category.name}
         </Link>
         {category.subcategories && category.subcategories.length > 0 && (
-          <ChevronRightIcon
-            className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
-              isExpanded ? 'rotate-90' : ''
-            }`}
-          />
+          <button
+            onClick={toggleExpand}
+            className="p-1 focus:outline-none"
+            aria-expanded={isExpanded}
+            aria-label={isExpanded ? 'Contraer categoría' : 'Expandir categoría'}
+          >
+            <ChevronRightIcon
+              className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
+                isExpanded ? 'rotate-90' : ''
+              }`}
+            />
+          </button>
         )}
       </div>
 
@@ -57,23 +64,23 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
         `}
         >
           {category.subcategories.map((subcategory) => (
-            <div key={subcategory._id} className="py-1">
+            <div key={subcategory._id} className={`py-2 ${isMobile ? 'my-1' : 'py-1'}`}>
               <Link
                 href={`/${subcategory.slug}`}
-                className="block font-semibold text-sm text-gray-700 hover:text-gray-900"
-                onClick={(e) => isMobile && e.stopPropagation()}
+                className={`block font-semibold text-gray-700 hover:text-gray-900 ${isMobile ? 'text-sm py-1.5' : 'text-sm'}`}
+                onClick={(e) => e.stopPropagation()}
               >
                 {subcategory.name}
               </Link>
 
               {subcategory.niches && subcategory.niches.length > 0 && (
-                <ul className="pl-2 mt-1 space-y-1">
+                <ul className={`pl-2 mt-1 ${isMobile ? 'space-y-2' : 'space-y-1'}`}>
                   {subcategory.niches.map((niche) => (
                     <li key={niche._id}>
                       <Link
                         href={`/${niche.slug}`}
-                        className="text-xs text-gray-600 hover:text-gray-900"
-                        onClick={(e) => isMobile && e.stopPropagation()}
+                        className={`block text-gray-600 hover:text-gray-900 ${isMobile ? 'text-sm py-1.5' : 'text-xs'}`}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {niche.name}
                       </Link>
@@ -99,11 +106,19 @@ const MobileMenu: React.FC<{ categories: Category[] }> = ({ categories }) => (
       <div className="flex flex-col h-full bg-white">
         <div className="p-4 border-b">
           <h2 className="text-lg font-semibold">Categorías</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Toca en una categoría para ver sus subcategorías
+          </p>
         </div>
         <div className="flex-1 overflow-auto">
           <div className="p-4 space-y-6">
             {categories.map((category) => (
-              <CategorySection key={category._id} category={category} isMobile={true} />
+              <div
+                key={category._id}
+                className="border-b border-gray-100 pb-4 last:border-0 last:pb-0"
+              >
+                <CategorySection category={category} isMobile={true} />
+              </div>
             ))}
           </div>
         </div>

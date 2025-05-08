@@ -3,7 +3,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ThemeProvider } from '@/components/theme-provider';
-import { CounterStoreProvider } from '@/providers/counter-store-provider';
 import { NavLinks } from '@/components/navigation/Header';
 import Footer from '@/components/navigation/Footer/index';
 import { Toaster } from '@/components/ui/toaster';
@@ -116,7 +115,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               enableSystem
               disableTransitionOnChange
             >
-              <CounterStoreProvider>{children}</CounterStoreProvider>
+              {children}
               <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>
           </ReactQueryProvider>
