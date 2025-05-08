@@ -1,9 +1,9 @@
 // api/products.ts
-import { SearchFormType } from '@/types/search';
+import type { SearchFormType } from '@/types/search';
 import { API_URL } from '@/lib/urls';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/lib/firebaseConfig';
-import { Product, ProductResponse } from '@/types/product';
+import type { Product, ProductResponse } from '@/types/product';
 
 interface SearchParams {
   page?: number;
@@ -55,7 +55,7 @@ export const fetchProducts = async ({
     }
     if (service) queryParams.append('services', service);
 
-    const response = await fetch(`${API_URL}/products?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/products/client?${queryParams.toString()}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
