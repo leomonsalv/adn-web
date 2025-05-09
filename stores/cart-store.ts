@@ -12,7 +12,10 @@ interface CartState {
   loading: boolean;
   deliveryFee: number;
   couponData: CouponCalculationResponse | null;
-  addToCart: (product: Product) => void;
+  addToCart: (data: {
+    userId: string;
+    products: { id: number; prescriptionImg: string; quantity: number };
+  }) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
   updateQuantity: (productId: number, quantity: number) => void;
@@ -46,19 +49,16 @@ export const useCartStore = create<CartState>()(
       deliveryFee: 0,
       couponData: null,
       // Cart actions
-      addToCart: (product) => {
-        const cartProduct = {
-          ...product,
-          taxes: product.taxes,
-          quantity: 1,
-        };
-        const existingItem = get().cart.products.find((item) => item.id === product.id);
+      addToCart: (data) => {
+        const { userId, products } = data;
+        const existingItem = get().cart.products.find((item) => item.id === products.id);
         if (existingItem) {
           set({
             cart: {
               ...get().cart,
+              userId: userId || get().cart.userId,
               products: get().cart.products.map((item) =>
-                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
+                item.id === products.id ? { ...item, quantity: item.quantity + 1 } : item,
               ),
             },
           });
@@ -66,7 +66,15 @@ export const useCartStore = create<CartState>()(
           set({
             cart: {
               ...get().cart,
-              products: [...get().cart.products, cartProduct],
+              userId: userId || get().cart.userId,
+              products: [
+                ...get().cart.products,
+                {
+                  id: products.id,
+                  prescriptionImg: products.prescriptionImg,
+                  quantity: products.quantity || 1,
+                },
+              ],
             },
           });
         }

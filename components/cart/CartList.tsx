@@ -16,7 +16,7 @@ export default function CartList({ items, cartId }: CartListProps) {
 
       <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
         {items.map((cartItem) => (
-          <CartItem key={cartItem._id} item={cartItem} cartId={cartId} />
+          <CartItem key={cartItem.id} item={cartItem} cartId={cartId} />
         ))}
       </ul>
     </section>

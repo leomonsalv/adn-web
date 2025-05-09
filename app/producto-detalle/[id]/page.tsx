@@ -170,11 +170,11 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
         await updateCart({
           cartId: cart?.id,
-          product: {
-            ...productData,
+          userId: userId,
+          products: {
             id: productData.productId,
-            price: productData.refPrice,
-            price_extra: Number(productData.bsPrice),
+            prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
+            quantity: 1,
           },
         });
 
@@ -182,7 +182,12 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           updateQuantity(productData.productId, itemCount + 1);
         } else {
           addToCart({
-            ...productData,
+            userId: userId,
+            products: {
+              id: productData.productId,
+              prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
+              quantity: 1,
+            },
           });
         }
 

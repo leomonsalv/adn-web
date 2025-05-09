@@ -109,6 +109,26 @@ export const updateCart = async (userId: string, cartId: string, newCartData: Ca
   }
 };
 
+// Nueva función para actualizar el carrito con la estructura simplificada
+export const updateCartSimplified = async (
+  cartId: string,
+  userId: string,
+  products: { id: number; prescriptionImg: string; quantity: number }[],
+) => {
+  try {
+    const cartRef = doc(collection(db, 'users', userId, 'shopCart'), cartId);
+
+    return await updateDoc(cartRef, {
+      products,
+      userId,
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error updating cart with simplified structure:', error);
+    throw error;
+  }
+};
+
 export const checkCoupon = async (couponData: any) => {
   try {
     return await httpsCallable(functions, CART_CALCULATION)(couponData);

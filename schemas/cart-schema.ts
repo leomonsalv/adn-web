@@ -5,7 +5,8 @@ export const CartSchema = z.object({
   id: z.string(),
   products: z
     .object({
-      ...ProductSchema.shape,
+      id: z.number(),
+      prescriptionImg: z.string().optional(),
       quantity: z.number(),
     })
     .array(),

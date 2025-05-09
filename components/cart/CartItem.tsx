@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
+import useProducts from '@/hooks/use-products';
 
 interface CartItemProps {
   item: CartProduct;
@@ -23,8 +24,10 @@ export default function CartItem({ item, cartId }: CartItemProps) {
       updateQuantity(item.id, quantity);
       await mutateCart({
         cartId: cartId,
-        product: {
-          ...item,
+        userId: item.userId || '',
+        products: {
+          id: item.id,
+          prescriptionImg: item.prescriptionImg || '',
           quantity: quantity,
         },
       });
@@ -37,10 +40,28 @@ export default function CartItem({ item, cartId }: CartItemProps) {
   const handleRemoveFromCart = async () => {
     await mutateRemoveCart({
       cartId: cartId,
-      product: item,
+      userId: item.userId || '',
+      products: {
+        id: item.id,
+        prescriptionImg: item.prescriptionImg || '',
+        quantity: item.quantity,
+      },
     });
     removeFromCart(item.id);
   };
+
+  // Necesitamos obtener los datos del producto desde una API o servicio
+  // Ya que ahora solo tenemos id, prescriptionImg y quantity en el carrito
+  const { useGetProductById } = useProducts();
+  const { data: productData, isLoading } = useGetProductById(item.id.toString());
+
+  if (isLoading) {
+    return <div>Cargando producto...</div>;
+  }
+
+  if (!productData) {
+    return <div>No se pudo cargar la información del producto</div>;
+  }
 
   return (
     <li className="flex py-6 sm:py-10">
@@ -48,9 +69,9 @@ export default function CartItem({ item, cartId }: CartItemProps) {
         <Image
           width={100}
           height={100}
-          alt={item.name}
+          alt={productData.name}
           src={
-            item.images?.[0] ||
+            productData.images?.[0] ||
             'https://tailwindui.com/plus/img/ecommerce-images/product-page-01-featured-product-shot.jpg'
           }
           className="size-24 rounded-md object-cover object-center sm:size-48"
@@ -63,31 +84,25 @@ export default function CartItem({ item, cartId }: CartItemProps) {
             <div className="flex justify-between">
               <h3 className="text-sm">
                 <a
-                  href={`/producto-detalle/${item._id}`}
+                  href={`/producto-detalle/${productData._id}`}
                   className="font-medium text-gray-700 hover:text-gray-800"
                 >
-                  {item.name}
+                  {productData.name}
                 </a>
               </h3>
             </div>
-            {/* <div className="mt-1 flex text-sm">
-              <p className="text-gray-500">{product.color}</p>
-              {item.size ? (
-                <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{item.size}</p>
-              ) : null}
-            </div> */}
-            <p className="mt-1 text-sm font-medium text-gray-900">{`Bs. ${item.bsPrice}`}</p>
+            <p className="mt-1 text-sm font-medium text-gray-900">{`Bs. ${productData.bsPrice}`}</p>
           </div>
 
           <div className="mt-4 sm:mt-0 sm:pr-9">
             <label htmlFor={`quantity-${item.id}`} className="sr-only">
-              Quantity, {item.name}
+              Quantity, {productData.name}
             </label>
             <AmountSelector
-              maxQuantity={item.inventary?.total}
+              maxQuantity={productData.inventary?.total}
               quantity={item.quantity}
               productId={item.id}
-              productName={item.name}
+              productName={productData.name}
               onChange={handleQuantityChange}
             />
 
@@ -106,13 +121,13 @@ export default function CartItem({ item, cartId }: CartItemProps) {
         </div>
 
         <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-          {item.inventary?.total > 0 ? (
+          {productData.inventary?.total > 0 ? (
             <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-green-500" />
           ) : (
             <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-gray-300" />
           )}
           {/* Needs to be changed for a real number */}
-          <span>{item.inventary?.total > 0 ? 'Si hay' : `Ships in 45 minutes`}</span>
+          <span>{productData.inventary?.total > 0 ? 'En stock' : 'Agotado'}</span>
         </p>
       </div>
     </li>

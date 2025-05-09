@@ -15,13 +15,15 @@ import Link from 'next/link';
 
 export default function Cart() {
   const { cart, setCart } = useCartStore();
+  console.log('🚀 ~ Cart ~ cart:', cart);
   const { useGetCart } = useCart();
   const { data, isLoading } = useGetCart();
+  console.log('🚀 ~ Cart ~ data:', data);
   const { useGetRecommendations } = useProducts();
   const { user } = useAuth();
 
   const productIds = useMemo(() => {
-    return cart?.products?.map((product) => product.productId) || [];
+    return cart?.products?.map((product) => product.id) || [];
   }, [cart]);
 
   const payload: SuggestionsProductsPayload | null = useMemo(() => {
