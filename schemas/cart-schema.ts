@@ -13,3 +13,15 @@ export const CartSchema = z.object({
   userId: z.string(),
   updatedAt: z.date(),
 });
+
+export const CartStoreSchema = z.object({
+  id: z.string(),
+  products: z
+    .object({
+      ...ProductSchema.shape,
+      quantity: z.number(),
+    })
+    .array(),
+  userId: z.string(),
+  updatedAt: z.date(),
+});

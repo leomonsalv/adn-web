@@ -14,17 +14,28 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function Cart() {
-  const { cart, setCart } = useCartStore();
-  console.log('🚀 ~ Cart ~ cart:', cart);
+  const { cart, setCart, updateCartWithFullProducts } = useCartStore();
   const { useGetCart } = useCart();
   const { data, isLoading } = useGetCart();
-  console.log('🚀 ~ Cart ~ data:', data);
-  const { useGetRecommendations } = useProducts();
+  const { useGetRecommendations, useGetProductsBatch } = useProducts();
   const { user } = useAuth();
 
-  const productIds = useMemo(() => {
-    return cart?.products?.map((product) => product.id) || [];
+  const cartProducts = useMemo(() => {
+    return cart?.products || [];
   }, [cart]);
+
+  // Obtener los productos completos usando el nuevo endpoint con ID y cantidad
+  const { data: fullProductsData, isLoading: isProductsLoading } =
+    useGetProductsBatch(cartProducts);
+
+  console.log('fullProductsData', fullProductsData);
+
+  // Actualizar el carrito con los productos completos cuando se carguen
+  useEffect(() => {
+    if (fullProductsData && !isProductsLoading) {
+      updateCartWithFullProducts(fullProductsData);
+    }
+  }, [fullProductsData, isProductsLoading, updateCartWithFullProducts]);
 
   const payload: SuggestionsProductsPayload | null = useMemo(() => {
     return {
@@ -57,7 +68,7 @@ export default function Cart() {
     }
   }, [data, isLoading]);
 
-  if (isLoading) return <div>Cargando...</div>;
+  if (isLoading || isProductsLoading) return <div>Cargando...</div>;
 
   return (
     <div className="bg-white">
@@ -83,7 +94,7 @@ export default function Cart() {
       </div>
 
       {/* Only show recommended products if there are items in the cart */}
-      {productIds.length > 0 &&
+      {cartProducts.length > 0 &&
         !recommendedError &&
         recommendationsData &&
         recommendationsData.length > 0 && (

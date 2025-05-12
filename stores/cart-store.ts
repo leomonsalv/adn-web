@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Cart, CouponCalculationResponse } from '@/types/cart';
+import { Cart, CouponCalculationResponse, CartStore } from '@/types/cart';
 import { Product } from '@/types/product';
 
 interface CartState {
@@ -33,6 +33,7 @@ interface CartState {
   setCart: (cart: Cart) => void;
   setDeliveryFee: (fee: number) => void;
   setCouponData: (data: CouponCalculationResponse | null) => void;
+  updateCartWithFullProducts: (products: Product[]) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -204,6 +205,50 @@ export const useCartStore = create<CartState>()(
       setCart: (cart) => set({ cart }),
       setDeliveryFee: (fee) => set({ deliveryFee: fee }),
       setCouponData: (data) => set({ couponData: data }),
+      updateCartWithFullProducts: (products) => {
+        const currentProducts = get().cart.products;
+
+        // Crear un mapa de los productos actuales por ID para acceso rápido
+        const productMap = new Map();
+        products.forEach((product) => {
+          // Usar productId si existe, de lo contrario usar id
+          const productId = product.productId || product.id;
+          productMap.set(productId.toString(), product);
+        });
+
+        // Actualizar los productos del carrito con la información completa
+        const updatedProducts = currentProducts.map((item) => {
+          // Buscar el producto completo por id
+          const fullProduct =
+            productMap.get(item.id.toString()) ||
+            // También intentar buscar por productId si existe
+            Array.from(productMap.values()).find(
+              (p) =>
+                (p.productId && p.productId.toString() === item.id.toString()) ||
+                (p.id && p.id.toString() === item.id.toString()),
+            );
+
+          if (fullProduct) {
+            return {
+              ...item,
+              ...fullProduct,
+              // Mantener la cantidad original del carrito
+              quantity: item.quantity,
+              // Asegurar que el id se mantenga consistente
+              id: item.id,
+            };
+          }
+          console.log('No se encontró información completa para el producto:', item.id);
+          return item;
+        });
+
+        set({
+          cart: {
+            ...get().cart,
+            products: updatedProducts,
+          },
+        });
+      },
     }),
     {
       name: 'cart-storage',
