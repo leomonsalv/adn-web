@@ -16,6 +16,17 @@ interface ProductCardProps {
   inventory: number;
   taxes?: number;
 }
+const totalPrice = (price: number, taxes: number) => {
+  return price + taxesPrice(price, taxes);
+};
+
+const taxesPrice = (price: number, taxes: number) => {
+  return (price * taxes) / 100;
+};
+
+const totalRefPrice = (refPrice: number, taxes: number) => {
+  return refPrice + taxesPrice(refPrice, taxes);
+};
 
 const ProductCard: React.FC<ProductCardProps> = ({
   image,
@@ -44,14 +55,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <p className="text-gray-800 font-medium line-clamp-2">{formatText(title)}</p>
           {taxes && taxes > 0 ? (
             <p className="text-sm text-gray-500 mt-1">
-              {formatVefCurrency(price)} + {formatVefCurrency(taxes)} IVA
+              {formatVefCurrency(price)} + {formatVefCurrency(taxesPrice(price, taxes))} IVA
             </p>
           ) : null}
           <div className="flex items-baseline gap-2 mt-1">
-            <p className="text-xl font-bold text-red-600">{formatVefCurrency(price)}</p>
+            <p className="text-xl font-bold text-red-600">
+              {formatVefCurrency(totalPrice(price, taxes))}
+            </p>
           </div>
           <Badge color="green" className="mt-1">
-            {formatUsdCurrency(refPrice)}
+            {formatUsdCurrency(totalRefPrice(refPrice, taxes))}
           </Badge>
 
           {/* Push availability indicator to bottom */}

@@ -224,6 +224,17 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       ? Number(productData.bsPrice) * (Number(productData.taxes[0].amount) / 100)
       : 0;
 
+  const TAX_CALC_REF =
+    productData.taxes && Array.isArray(productData.taxes) && productData.taxes.length > 0
+      ? Number(productData.refPrice) * (Number(productData.taxes[0].amount) / 100)
+      : 0;
+  const totalPrice = (price: number) => {
+    return price + TAX_CALC;
+  };
+
+  const totalRefPrice = (refPrice: number) => {
+    return refPrice + TAX_CALC_REF;
+  };
   return (
     <div className="bg-white">
       <div className="pb-16 pt-6 sm:pb-24">
@@ -349,17 +360,19 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
                     {formatVefCurrency(regularPrice)}
                   </p>
                 </div> */}
-                <div className="flex flex-row gap-1 items-baseline">
+                <div className="flex flex-row gap-1 items-center">
                   <p className="text-3xl font-semibold text-red-700">
-                    {formatVefCurrency(regularPrice)}
+                    {formatVefCurrency(totalPrice(regularPrice))}
                   </p>
                   <Badge color="green" className="mt-1">
-                    {formatUsdCurrency(refPrice)}
+                    {formatUsdCurrency(totalRefPrice(refPrice))}
                   </Badge>
                 </div>
                 {TAX_CALC > 0 && (
                   <div className="flex flex-row gap-1">
-                    <span className="text-sm">IVA:</span>
+                    <span className="text-sm">Precio:</span>
+                    <p className="text-sm text-gray-500">{formatVefCurrency(regularPrice)}</p>
+                    <span className="text-sm">+ IVA:</span>
                     <p className="text-sm text-gray-500">{formatVefCurrency(TAX_CALC)}</p>
                   </div>
                 )}

@@ -1,5 +1,5 @@
-import ProductCard from "./ProductCard";
-import { Product } from "@/schemas/orders";
+import ProductCard from './ProductCard';
+import type { Product } from '@/schemas/orders';
 
 interface ProductListProps {
   products: Product[];
