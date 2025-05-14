@@ -28,8 +28,6 @@ export default function Cart() {
   const { data: fullProductsData, isLoading: isProductsLoading } =
     useGetProductsBatch(cartProducts);
 
-  console.log('fullProductsData', fullProductsData);
-
   // Actualizar el carrito con los productos completos cuando se carguen
   useEffect(() => {
     if (fullProductsData && !isProductsLoading) {

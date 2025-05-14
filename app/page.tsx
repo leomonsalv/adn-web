@@ -2,16 +2,13 @@
 
 import { Fragment, useEffect } from 'react';
 import MainIncentives from '@/components/incentives/MainIncentives';
-import BannerCarousel from '@/components/carousel/BannerCarousel';
-import OffersGrid from '@/components/products/ProductHome/OffersGrid';
-import { FlameIcon } from 'lucide-react';
-import SearchHistorySection from '@/components/carousel/SearchHistoryCarousel';
-import { RecentProducts, Trending } from '@/lib/dummyData';
+import AnimatedText from '@/components/animated/AnimatedText';
 import Clarity from '@microsoft/clarity';
 import useTopSelling from '@/hooks/use-top-selling';
 import TopSellingSection from '@/components/products/ProductHome/TopSellingSection';
 import type { Product } from '@/types/product';
 import HeroVariant from '@/components/categorias/HeroVariant';
+import { middleware } from '@/middleware';
 
 const metadata = {
   title: 'Adan | Tu vida tu flow',
@@ -74,11 +71,26 @@ export default function HomePage() {
     },
   ];
 
+  const BannerText = {
+    baseText: 'Para sentirte mejor ',
+    middleText: 'empieza por ',
+    animatedWords: ['comer bien', 'dormir bien', 'ejercitarte', 'tolerar el estrés'],
+  };
+
   return (
     <div className="min-h-screen bg-[#F0F2F5]">
       <div className="relative">
         <div className="h-[300px] relative">
-          <BannerCarousel />
+          <AnimatedText
+            baseText={BannerText.baseText}
+            middleText={BannerText.middleText}
+            animatedWords={BannerText.animatedWords}
+            interval={2000}
+            className="flex flex-col items-center justify-center h-full text-center px-4"
+            baseTextClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-[#31354D]"
+            middleTextClassName="text-5xl md:text-6xl lg:text-7xl font-bold text-[#31354D]"
+            animatedTextClassName="text-6xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent animate"
+          />
         </div>
 
         <main className="relative flex flex-col items-center">
