@@ -48,6 +48,7 @@ export default function useProducts() {
         }
         return failureCount < 3;
       },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
     });
   };
   const useGetRecommendations = (payload: SuggestionsProductsPayload) => {
@@ -93,6 +94,7 @@ export default function useProducts() {
         }
         return failureCount < 3;
       },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
     });
   };
 
@@ -122,6 +124,7 @@ export default function useProducts() {
         }
         return failureCount < 3;
       },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
     });
   };
   return {

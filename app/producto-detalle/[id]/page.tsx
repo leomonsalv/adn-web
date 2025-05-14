@@ -168,16 +168,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       if (userId) {
         const cart = await getOrCreateCart(userId);
 
-        await updateCart({
-          cartId: cart?.id,
-          userId: userId,
-          products: {
-            id: productData.productId,
-            prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
-            quantity: 1,
-          },
-        });
-
+        // Primero actualizamos el estado local con todos los datos del producto
         if (isInCart) {
           updateQuantity(productData.productId, itemCount + 1);
         } else {
@@ -190,6 +181,17 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             },
           });
         }
+
+        // Luego enviamos solo los datos mínimos a Firebase
+        await updateCart({
+          cartId: cart?.id,
+          userId: userId,
+          products: {
+            id: productData.productId,
+            prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
+            quantity: 1,
+          },
+        });
 
         router.push(CARRITO);
       } else {

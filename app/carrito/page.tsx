@@ -66,7 +66,7 @@ export default function Cart() {
         setCart(data);
       }
     }
-  }, [data, isLoading]);
+  }, [data, isLoading, cart, setCart]);
 
   if (isLoading || isProductsLoading) return <div>Cargando...</div>;
 

@@ -34,6 +34,12 @@ interface CartState {
   setDeliveryFee: (fee: number) => void;
   setCouponData: (data: CouponCalculationResponse | null) => void;
   updateCartWithFullProducts: (products: Product[]) => void;
+  getSimplifiedCart: () => {
+    id: string;
+    products: { id: number; prescriptionImg: string; quantity: number }[];
+    userId: string;
+    updatedAt: Date;
+  };
 }
 
 export const useCartStore = create<CartState>()(
@@ -202,26 +208,50 @@ export const useCartStore = create<CartState>()(
           });
         }
       },
-      setCart: (cart) => set({ cart }),
+      setCart: (cart) => {
+        const currentProducts = get().cart.products;
+
+        const currentProductMap = new Map();
+        currentProducts.forEach((product) => {
+          currentProductMap.set(product.id.toString(), product);
+        });
+
+        const mergedProducts = cart.products.map((item) => {
+          const existingProduct = currentProductMap.get(item.id.toString());
+          if (existingProduct) {
+            return {
+              ...existingProduct,
+              id: item.id,
+              prescriptionImg: item.prescriptionImg || existingProduct.prescriptionImg || '',
+              quantity: item.quantity,
+            };
+          }
+          return item;
+        });
+
+        set({
+          cart: {
+            ...cart,
+            products: mergedProducts,
+          },
+        });
+      },
       setDeliveryFee: (fee) => set({ deliveryFee: fee }),
       setCouponData: (data) => set({ couponData: data }),
       updateCartWithFullProducts: (products) => {
         const currentProducts = get().cart.products;
 
-        // Crear un mapa de los productos actuales por ID para acceso rápido
         const productMap = new Map();
         products.forEach((product) => {
-          // Usar productId si existe, de lo contrario usar id
           const productId = product.productId || product.id;
           productMap.set(productId.toString(), product);
         });
 
         // Actualizar los productos del carrito con la información completa
+        // pero solo en el estado local, no en Firebase
         const updatedProducts = currentProducts.map((item) => {
-          // Buscar el producto completo por id
           const fullProduct =
             productMap.get(item.id.toString()) ||
-            // También intentar buscar por productId si existe
             Array.from(productMap.values()).find(
               (p) =>
                 (p.productId && p.productId.toString() === item.id.toString()) ||
@@ -229,12 +259,12 @@ export const useCartStore = create<CartState>()(
             );
 
           if (fullProduct) {
+            // Mantener la estructura mínima para Firebase (id, prescriptionImg, quantity)
+            // pero agregar todos los detalles completos para el estado local
             return {
               ...item,
               ...fullProduct,
-              // Mantener la cantidad original del carrito
               quantity: item.quantity,
-              // Asegurar que el id se mantenga consistente
               id: item.id,
             };
           }
@@ -248,6 +278,19 @@ export const useCartStore = create<CartState>()(
             products: updatedProducts,
           },
         });
+      },
+      getSimplifiedCart: () => {
+        const { id, userId, products } = get().cart;
+        return {
+          id,
+          userId,
+          updatedAt: new Date(),
+          products: products.map((item) => ({
+            id: item.id,
+            prescriptionImg: item.prescriptionImg || '',
+            quantity: item.quantity,
+          })),
+        };
       },
     }),
     {

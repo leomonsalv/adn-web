@@ -35,45 +35,13 @@ export default function useCart() {
 
   const useMutateCart = () => {
     const { user } = useAuth();
-    const { cart } = useCartStore();
+    const { cart, getSimplifiedCart } = useCartStore();
 
     const mutation = useMutation<void, Error, CartMutationProps>({
       mutationFn: async ({ cartId, userId, products }) => {
-        let newCart = cart;
-        const existingItem = cart.products.find((item) => item.id === products.id);
+        const simplifiedCart = getSimplifiedCart();
 
-        if (existingItem) {
-          newCart = {
-            id: cartId,
-            userId: userId || user?.uid || '',
-            products: cart.products.map((item) =>
-              item.id === products.id
-                ? {
-                    ...item,
-                    id: products.id,
-                    prescriptionImg: products.prescriptionImg,
-                    quantity: products.quantity,
-                  }
-                : item,
-            ),
-            updatedAt: new Date(),
-          };
-        } else {
-          newCart = {
-            id: cartId,
-            userId: userId || user?.uid || '',
-            products: [
-              ...cart.products,
-              {
-                id: products.id,
-                prescriptionImg: products.prescriptionImg,
-                quantity: products.quantity || 1,
-              },
-            ],
-            updatedAt: new Date(),
-          };
-        }
-        await updateCart(userId || user?.uid || '', cartId, newCart);
+        await updateCart(userId || user?.uid || '', cartId, simplifiedCart);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['cart', user?.uid] });
@@ -85,13 +53,15 @@ export default function useCart() {
 
   const useRemoveProductFromCart = () => {
     const { user } = useAuth();
-    const { cart } = useCartStore();
+    const { cart, getSimplifiedCart } = useCartStore();
     return useMutation<void, Error, CartMutationProps>({
       mutationFn: async ({ cartId, userId, products }) => {
-        await updateCart(userId || user?.uid || '', cartId, {
-          ...cart,
-          products: cart.products.filter((item) => item.id !== products.id),
-        });
+        const simplifiedCart = {
+          ...getSimplifiedCart(),
+          products: getSimplifiedCart().products.filter((item) => item.id !== products.id),
+        };
+
+        await updateCart(userId || user?.uid || '', cartId, simplifiedCart);
       },
     });
   };
