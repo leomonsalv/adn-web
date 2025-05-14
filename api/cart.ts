@@ -102,9 +102,37 @@ export const updateCart = async (userId: string, cartId: string, newCartData: Ca
     // get the cart store
     const cartRef = doc(collection(db, 'users', userId, 'shopCart'), cartId);
 
-    return await updateDoc(cartRef, newCartData);
+    const simplifiedProducts = newCartData.products.map((product) => ({
+      id: product.id,
+      prescriptionImg: product.prescriptionImg || '',
+      quantity: product.quantity,
+    }));
+
+    return await updateDoc(cartRef, {
+      ...newCartData,
+      products: simplifiedProducts,
+    });
   } catch (error) {
     console.error('Error updating cart:', error);
+    throw error;
+  }
+};
+
+export const updateCartSimplified = async (
+  cartId: string,
+  userId: string,
+  products: { id: number; prescriptionImg: string; quantity: number }[],
+) => {
+  try {
+    const cartRef = doc(collection(db, 'users', userId, 'shopCart'), cartId);
+
+    return await updateDoc(cartRef, {
+      products,
+      userId,
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error updating cart with simplified structure:', error);
     throw error;
   }
 };

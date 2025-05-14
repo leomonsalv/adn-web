@@ -7,7 +7,12 @@ import { useAuth } from './use-auth';
 
 interface CartMutationProps {
   cartId: string;
-  product: Product;
+  userId: string;
+  products: {
+    id: number;
+    prescriptionImg: string;
+    quantity: number;
+  };
 }
 
 export default function useCart() {
@@ -30,31 +35,13 @@ export default function useCart() {
 
   const useMutateCart = () => {
     const { user } = useAuth();
-    const { cart } = useCartStore();
+    const { cart, getSimplifiedCart } = useCartStore();
 
     const mutation = useMutation<void, Error, CartMutationProps>({
-      mutationFn: async ({ cartId, product }) => {
-        let newCart = cart;
-        const existingItem = cart.products.find((item) => item.id === product.id);
+      mutationFn: async ({ cartId, userId, products }) => {
+        const simplifiedCart = getSimplifiedCart();
 
-        if (existingItem) {
-          newCart = {
-            id: cartId,
-            userId: user?.uid || '',
-            products: cart.products.map((item) =>
-              item.id === product.id ? { ...item, quantity: product.quantity } : item,
-            ),
-            updatedAt: new Date(),
-          };
-        } else {
-          newCart = {
-            id: cartId,
-            userId: user?.uid || '',
-            products: [...cart.products, { ...product, quantity: product.quantity || 1 }],
-            updatedAt: new Date(),
-          };
-        }
-        await updateCart(user?.uid || '', cartId, newCart);
+        await updateCart(userId || user?.uid || '', cartId, simplifiedCart);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['cart', user?.uid] });
@@ -66,13 +53,15 @@ export default function useCart() {
 
   const useRemoveProductFromCart = () => {
     const { user } = useAuth();
-    const { cart } = useCartStore();
+    const { cart, getSimplifiedCart } = useCartStore();
     return useMutation<void, Error, CartMutationProps>({
-      mutationFn: async ({ cartId, product }) => {
-        await updateCart(user?.uid || '', cartId, {
-          ...cart,
-          products: cart.products.filter((item) => item.id !== product.id),
-        });
+      mutationFn: async ({ cartId, userId, products }) => {
+        const simplifiedCart = {
+          ...getSimplifiedCart(),
+          products: getSimplifiedCart().products.filter((item) => item.id !== products.id),
+        };
+
+        await updateCart(userId || user?.uid || '', cartId, simplifiedCart);
       },
     });
   };

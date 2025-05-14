@@ -1,5 +1,6 @@
 import {
   fetchProductById,
+  fetchProductsBatch,
   fetchProductsByIds,
   fetchProductsList,
   fetchRecommendations,
@@ -47,6 +48,7 @@ export default function useProducts() {
         }
         return failureCount < 3;
       },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
     });
   };
   const useGetRecommendations = (payload: SuggestionsProductsPayload) => {
@@ -92,14 +94,45 @@ export default function useProducts() {
         }
         return failureCount < 3;
       },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
     });
   };
 
+  const useGetProductsBatch = (cartProducts: { id: number; quantity: number }[]) => {
+    return useQuery({
+      queryKey: ['productsBatch', cartProducts],
+      queryFn: () => {
+        if (!Array.isArray(cartProducts) || cartProducts.length === 0) {
+          // No realizar la llamada API si no hay productos en el carrito
+          return Promise.reject(new Error('Se requiere un array de productos no vacío'));
+        }
+        // Transformar los productos del carrito al formato requerido por la API
+        const cartItems = cartProducts.map((product) => ({
+          id: product.id.toString(),
+          quantity: product.quantity,
+        }));
+        return fetchProductsBatch(cartItems);
+      },
+      select: (data) => data,
+      // No reintentar si el error se debe a un array vacío
+      retry: (failureCount, error) => {
+        if (
+          error instanceof Error &&
+          error.message === 'Se requiere un array de productos no vacío'
+        ) {
+          return false;
+        }
+        return failureCount < 3;
+      },
+      placeholderData: (previousData: any) => previousData, // Mantener los datos anteriores mientras se recargan
+    });
+  };
   return {
     useGetProductById,
     useGetRecommendations,
     useGetSuggestions,
     useGetDelivery,
     useGetProductsList,
+    useGetProductsBatch,
   };
 }

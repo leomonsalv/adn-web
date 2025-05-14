@@ -249,3 +249,39 @@ export const fetchProductsList = async (productIds: string[]): Promise<{ data: P
     throw new Error('An unknown error occurred while fetching products list');
   }
 };
+
+/**
+ * Fetches multiple products by their IDs and quantities in a single batch request
+ * @param cartItems - Array of objects with product ID and quantity
+ * @returns Promise with the product data
+ */
+export const fetchProductsBatch = async (
+  cartItems: { id: string; quantity: number }[],
+): Promise<{ data: Product[] }> => {
+  try {
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      throw new Error('Se requiere un array de productos con ID y cantidad no vacío');
+    }
+
+    const response = await fetch(`${API_URL}/products/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cartItems),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const products = await response.json();
+    return products;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching products batch:', error.message);
+      throw error;
+    }
+    throw new Error('Ocurrió un error desconocido al obtener los productos en lote');
+  }
+};

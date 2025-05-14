@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
+import useProducts from '@/hooks/use-products';
 
 interface CartItemProps {
   item: CartProduct;
@@ -23,8 +24,10 @@ export default function CartItem({ item, cartId }: CartItemProps) {
       updateQuantity(item.id, quantity);
       await mutateCart({
         cartId: cartId,
-        product: {
-          ...item,
+        userId: item.userId || '',
+        products: {
+          id: item.id,
+          prescriptionImg: item.prescriptionImg || '',
           quantity: quantity,
         },
       });
@@ -37,7 +40,12 @@ export default function CartItem({ item, cartId }: CartItemProps) {
   const handleRemoveFromCart = async () => {
     await mutateRemoveCart({
       cartId: cartId,
-      product: item,
+      userId: item.userId || '',
+      products: {
+        id: item.id,
+        prescriptionImg: item.prescriptionImg || '',
+        quantity: item.quantity,
+      },
     });
     removeFromCart(item.id);
   };
@@ -70,12 +78,6 @@ export default function CartItem({ item, cartId }: CartItemProps) {
                 </a>
               </h3>
             </div>
-            {/* <div className="mt-1 flex text-sm">
-              <p className="text-gray-500">{product.color}</p>
-              {item.size ? (
-                <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">{item.size}</p>
-              ) : null}
-            </div> */}
             <p className="mt-1 text-sm font-medium text-gray-900">{`Bs. ${item.bsPrice}`}</p>
           </div>
 
@@ -112,7 +114,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
             <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-gray-300" />
           )}
           {/* Needs to be changed for a real number */}
-          <span>{item.inventary?.total > 0 ? 'Si hay' : `Ships in 45 minutes`}</span>
+          <span>{item.inventary?.total > 0 ? 'En stock' : 'Agotado'}</span>
         </p>
       </div>
     </li>
