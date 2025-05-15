@@ -161,7 +161,7 @@ export function Filters({
         currentSort={currentSort}
         currentPriceRange={currentPriceRange}
       />
-      <div className="space-y-4 divide-y divide-gray-200">
+      <div className="space-y-4 divide-y divide-gray-200 max-lg:hidden">
         {filters.map((section, sectionIdx) => (
           <FilterSectionComponent
             key={section.name}
