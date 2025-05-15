@@ -75,6 +75,7 @@ export default function HomePage() {
     baseText: 'Para sentirte mejor ',
     middleText: 'empieza por ',
     animatedWords: ['comer bien', 'dormir bien', 'ejercitarte', 'tolerar el estrés'],
+    colors: ['text-gray-500', 'text-green-500', 'text-green-700', 'text-blue-600'],
   };
 
   return (
@@ -85,18 +86,19 @@ export default function HomePage() {
             baseText={BannerText.baseText}
             middleText={BannerText.middleText}
             animatedWords={BannerText.animatedWords}
+            colors={BannerText.colors}
             interval={2000}
             className="flex flex-col items-center justify-center h-full text-center px-4"
             baseTextClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-[#31354D]"
             middleTextClassName="text-5xl md:text-6xl lg:text-7xl font-bold text-[#31354D]"
-            animatedTextClassName="text-6xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent animate"
+            animatedTextClassName="text-6xl md:text-6xl lg:text-7xl font-bold"
           />
         </div>
 
         <main className="relative flex flex-col items-center">
           <section
             aria-labelledby="category-heading"
-            className="relative rounded-t-[32px] container max-md:-mt-32"
+            className="relative rounded-t-[32px] container max-md:-mt-10"
           >
             {/* PRIMERA LÍNEA */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
