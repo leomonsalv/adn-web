@@ -141,10 +141,12 @@ export default function CategoryProductGrid({
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         {/* Título */}
         <div className="border-b border-gray-200 pb-10">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">Productos</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 capitalize">
+            {CATEGORIES || 'Productos'}
+          </h1>
         </div>
 
-        <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+        <div className="pt-6 xl:pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
           <aside>
             <h2 className="sr-only">Filtros</h2>
             <button
@@ -154,7 +156,7 @@ export default function CategoryProductGrid({
               className="inline-flex items-center lg:hidden"
             />
 
-            <div className="hidden lg:block">
+            <div className=" lg:block">
               <div className="mt-6">
                 <Filters
                   facets={{

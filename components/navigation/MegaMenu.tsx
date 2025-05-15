@@ -8,9 +8,14 @@ import { Category } from '@/types/categories';
 interface CategorySectionProps {
   category: Category;
   isMobile?: boolean;
+  onLinkClick?: () => void; // Nueva prop para manejar el cierre del menú
 }
 
-const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = false }) => {
+const CategorySection: React.FC<CategorySectionProps> = ({
+  category,
+  isMobile = false,
+  onLinkClick,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Función para alternar la expansión de categorías
@@ -35,7 +40,12 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
         <Link
           href={`/${category.slug}`}
           className="font-bold text-base text-gray-900 hover:text-gray-600 flex-grow"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isMobile && onLinkClick) {
+              onLinkClick();
+            }
+          }}
         >
           {category.name}
         </Link>
@@ -68,7 +78,12 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
               <Link
                 href={`/${subcategory.slug}`}
                 className={`block font-semibold text-gray-700 hover:text-gray-900 ${isMobile ? 'text-sm py-1.5' : 'text-sm'}`}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isMobile && onLinkClick) {
+                    onLinkClick();
+                  }
+                }}
               >
                 {subcategory.name}
               </Link>
@@ -80,7 +95,12 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
                       <Link
                         href={`/${niche.slug}`}
                         className={`block text-gray-600 hover:text-gray-900 ${isMobile ? 'text-sm py-1.5' : 'text-xs'}`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (isMobile && onLinkClick) {
+                            onLinkClick();
+                          }
+                        }}
                       >
                         {niche.name}
                       </Link>
@@ -96,36 +116,45 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, isMobile = 
   );
 };
 
-const MobileMenu: React.FC<{ categories: Category[] }> = ({ categories }) => (
-  <Sheet>
-    <SheetTrigger className="flex items-center gap-x-1 text-sm font-medium text-white hover:opacity-75 lg:hidden">
-      <Bars3Icon className="h-5 w-5" />
-      <span className="text-sm font-bold">Todo</span>
-    </SheetTrigger>
-    <SheetContent side="left" className="w-[85vw] max-w-md p-0">
-      <div className="flex flex-col h-full bg-white">
-        <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold">Categorías</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Toca en una categoría para ver sus subcategorías
-          </p>
-        </div>
-        <div className="flex-1 overflow-auto">
-          <div className="p-4 space-y-6">
-            {categories.map((category) => (
-              <div
-                key={category._id}
-                className="border-b border-gray-100 pb-4 last:border-0 last:pb-0"
-              >
-                <CategorySection category={category} isMobile={true} />
-              </div>
-            ))}
+const MobileMenu: React.FC<{ categories: Category[] }> = ({ categories }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeMenu = () => setIsOpen(false);
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger
+        className="flex items-center gap-x-1 text-sm font-medium text-white hover:opacity-75 lg:hidden"
+        onClick={() => setIsOpen(true)} // Asegurarse de que el trigger abra el menú
+      >
+        <Bars3Icon className="h-5 w-5" />
+        <span className="text-sm font-bold">Todo</span>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[85vw] max-w-md p-0">
+        <div className="flex flex-col h-full bg-white">
+          <div className="p-4 border-b">
+            <h2 className="text-lg font-semibold">Categorías</h2>
+            <p className="text-xs text-gray-500 mt-1">
+              Toca en una categoría para ver sus subcategorías
+            </p>
+          </div>
+          <div className="flex-1 overflow-auto">
+            <div className="p-4 space-y-6">
+              {categories.map((category) => (
+                <div
+                  key={category._id}
+                  className="border-b border-gray-100 pb-4 last:border-0 last:pb-0"
+                >
+                  <CategorySection category={category} isMobile={true} onLinkClick={closeMenu} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </SheetContent>
-  </Sheet>
-);
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 const DesktopMenu: React.FC<{ categories: Category[] }> = ({ categories }) => (
   <Popover>
