@@ -1,68 +1,53 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
-interface AnimatedTextProps {
-  baseText: string;
-  middleText?: string;
-  animatedWords: string[];
-  colors?: string[];
-  interval?: number;
-  className?: string;
-  baseTextClassName?: string;
-  middleTextClassName?: string;
-  animatedTextClassName?: string;
-}
-
-export default function AnimatedText({
-  baseText,
-  middleText,
-  animatedWords,
-  colors = ['text-gray-500', 'text-green-500', 'text-green-700', 'text-blue-600'],
-  interval = 3000,
-  className = 'flex flex-col items-center justify-center h-full text-center px-4',
-  baseTextClassName = 'text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800',
-  middleTextClassName = 'text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800',
-  animatedTextClassName = 'text-3xl md:text-4xl lg:text-5xl font-bold',
-}: AnimatedTextProps) {
+export default function AnimatedText() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const phrases = [
+    { text: 'empieza por comer bien', highlight: 'comer bien', color: 'text-gray-500' },
+    { text: 'empieza por dormir bien', highlight: 'dormir bien', color: 'text-green-500' },
+    { text: 'empieza por ejercitarte', highlight: 'ejercitarte', color: 'text-green-700' },
+    {
+      text: 'empieza por tolerar el estrés',
+      highlight: 'tolerar el estrés',
+      color: 'text-blue-600',
+    },
+  ];
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % animatedWords.length);
-    }, interval);
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      // Cambiar la frase después de que termine la animación de salida
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        setIsAnimating(false);
+      }, 500); // Duración de la animación de salida
+    }, 3000); // Cambiar cada 3 segundos
 
-    return () => clearInterval(timer);
-  }, [animatedWords.length, interval]);
+    return () => clearInterval(interval);
+  }, []);
 
-  const longestWord = useMemo(() => {
-    if (!animatedWords || animatedWords.length === 0) return '';
-    return animatedWords.reduce((longest, currentWord) => {
-      return currentWord.length > longest.length ? currentWord : longest;
-    }, '');
-  }, [animatedWords]);
+  const currentPhrase = phrases[currentIndex];
+  const staticPrefix = 'empieza por ';
 
   return (
-    <div className={className}>
-      <div className="flex flex-col xl:items-start justify-center gap-1 md:gap-2">
-        <h2 className={baseTextClassName}>{baseText}</h2>
-        <h1 className={middleTextClassName}>
-          {middleText}
-          <span className="relative inline-block">
-            <span
-              className={`opacity-0 pointer-events-none whitespace-nowrap  ${animatedTextClassName}`}
-              aria-hidden="true"
-            >
-              {longestWord}
-            </span>
-
-            <span
-              className={`absolute left-0 top-0 w-full ${animatedTextClassName} ${colors[currentIndex]} transition-colors duration-300 ease-in-out`}
-            >
-              {animatedWords[currentIndex]}
-            </span>
+    <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col xl:items-start justify-center h-full text-center px-4 w-5xl">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#31354D]">
+          Para sentirte mejor
+        </h2>
+        <div className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#31354D]">
+          {staticPrefix}
+          <br className="xl:hidden" />
+          <span
+            className={`${currentPhrase.color} transition-opacity duration-500 ${isAnimating ? 'opacity-0' : 'opacity-100'}`}
+          >
+            {currentPhrase.highlight}
           </span>
-        </h1>
+        </div>
       </div>
     </div>
   );

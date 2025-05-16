@@ -71,28 +71,11 @@ export default function HomePage() {
     },
   ];
 
-  const BannerText = {
-    baseText: 'Para sentirte mejor ',
-    middleText: 'empieza por ',
-    animatedWords: ['comer bien', 'dormir bien', 'ejercitarte', 'tolerar el estrés'],
-    colors: ['text-gray-500', 'text-green-500', 'text-green-700', 'text-blue-600'],
-  };
-
   return (
     <div className="min-h-screen bg-[#F0F2F5]">
       <div className="relative">
         <div className="h-[300px] relative">
-          <AnimatedText
-            baseText={BannerText.baseText}
-            middleText={BannerText.middleText}
-            animatedWords={BannerText.animatedWords}
-            colors={BannerText.colors}
-            interval={2000}
-            className="flex flex-col items-center justify-center h-full text-center px-4"
-            baseTextClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-[#31354D]"
-            middleTextClassName="text-5xl md:text-6xl lg:text-7xl font-bold text-[#31354D]"
-            animatedTextClassName="text-6xl md:text-6xl lg:text-7xl font-bold"
-          />
+          <AnimatedText />
         </div>
 
         <main className="relative flex flex-col items-center">
