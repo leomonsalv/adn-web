@@ -35,7 +35,7 @@ export default function AnimatedText() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <div className="flex flex-col xl:items-start justify-center h-full text-center px-4 w-5xl">
+      <div className="flex flex-col xl:items-start justify-center h-full text-center px-4 w-auto xl:w-5xl">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#31354D]">
           Para sentirte mejor
         </h2>
