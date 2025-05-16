@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { CARRITO, HISTORIAL, LOGIN, HOME } from '@/lib/routes';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
@@ -22,6 +22,7 @@ import { useCartStore } from '@/stores/cart-store';
 import { categories } from '@/lib/categories';
 import MegaMenu from '@/components/navigation/MegaMenu';
 import { formatVefCurrency } from '@/lib/utils';
+import useProducts from '@/hooks/use-products';
 
 export function NavLinks() {
   const router = useRouter();
@@ -31,11 +32,33 @@ export function NavLinks() {
   const { toast } = useToast();
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [search, setSearch] = useState({ value: '', category: '1' });
-  const { cart, couponData, setCart, getCartTotal, getCartCount, clearCart, setCouponData } =
-    useCartStore();
+  const {
+    cart,
+    couponData,
+    updateCartWithFullProducts,
+    setCart,
+    getCartTotal,
+    getCartCount,
+    clearCart,
+    setCouponData,
+  } = useCartStore();
+  const { useGetProductsBatch } = useProducts();
   const { useGetCart } = useCart();
   const { data: cartData, isSuccess } = useGetCart();
   const queryClient = useQueryClient();
+
+  const cartProducts = useMemo(() => {
+    return cart?.products || [];
+  }, [cart]);
+
+  const { data: fullProductsData, isLoading: isProductsLoading } =
+    useGetProductsBatch(cartProducts);
+
+  useEffect(() => {
+    if (fullProductsData && !isProductsLoading) {
+      updateCartWithFullProducts(fullProductsData);
+    }
+  }, [fullProductsData, isProductsLoading, updateCartWithFullProducts]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
