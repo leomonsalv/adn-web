@@ -30,6 +30,7 @@ interface ApiProduct {
   description: string;
   inventary: Inventary;
   name: string;
+  slug: string;
   ref_price: number;
   laboratory?: string;
   synons?: string;
@@ -70,11 +71,11 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
 
   const categoryName = specialCategoryDetail?.name || specialCategoryDetail?.slug;
 
-  const seoTitle = categoryName ? `${categoryName} | Adan Farmacia` : `Ofertas | Adan Farmacia`;
+  const seoTitle = categoryName ? `${categoryName} | Adan Life` : 'Ofertas | Adan Tu vida Tu Flow';
 
   const seoDescription = specialCategoryDetail?.is_active
     ? specialCategoryDetail.description || `Explora nuestras ofertas especiales en ${categoryName}`
-    : `Descubre todas nuestras ofertas especiales en Adan Farmacia`;
+    : 'Descubre todas nuestras ofertas especiales en Adan Life';
 
   useEffect(() => {
     setSearchQuery('');
@@ -105,6 +106,7 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     name: apiProduct.name,
     price: apiProduct.bs_price || 0,
     price_extra: 0,
+    slug: apiProduct.slug,
     productId: apiProduct.product_id,
     refPrice: apiProduct.ref_price || 0,
     synons: apiProduct.synons || null,
@@ -161,7 +163,7 @@ export default function SpecialCategoryPage({ params }: SpecialCategoryPageProps
     return products.filter((product) => {
       const price = Number(product.bsPrice);
       const min = range.min !== undefined ? range.min : 0;
-      const max = range.max !== undefined ? range.max : Infinity;
+      const max = range.max !== undefined ? range.max : Number.POSITIVE_INFINITY;
 
       return price >= min && price <= max;
     });

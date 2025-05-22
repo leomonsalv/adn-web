@@ -154,6 +154,8 @@ export const ProductSchema = z.object({
   refPrice: z.number(),
   synons: z.string().nullable(),
   taxes: z.array(TaxSchema),
+  slug: z.string(),
+  details: z.array(z.string()).optional(),
   templateId: z.number(),
   type: z.enum(['libre', 'prescripcion', 'tienda']),
   updatedAt: z.coerce.date().optional(),

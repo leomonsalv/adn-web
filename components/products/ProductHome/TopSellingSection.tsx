@@ -1,5 +1,6 @@
 import GenericCarousel from '@/components/carousel/GenericCarousel';
 import ProductCard from '@/components/products/ProductHome/ProductCard';
+import { getProductDetailUrl } from '@/lib/utils';
 import type { Product } from '@/types/product';
 
 interface TopSellingSectionProps {
@@ -42,7 +43,7 @@ export default function TopSellingSection({
             price={Number(product.bsPrice) || 0}
             refPrice={Number(product.refPrice) || 0}
             originalPrice={Number(product.bsPrice) || 0}
-            productUrl={`/producto-detalle/${product._id}`}
+            productUrl={getProductDetailUrl(product)}
             title={product.name || product.description || 'Producto sin nombre'}
             inventory={product.inventary.total || 0}
             discount={

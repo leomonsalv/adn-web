@@ -18,7 +18,7 @@ import useProducts from '@/hooks/use-products';
 import useCart from '@/hooks/use-cart';
 import Image from 'next/image';
 import { TruckIcon, HandCoins, RotateCcwIcon } from 'lucide-react';
-import { dummyReviews, product } from '@/lib/dummyData';
+import { useSearchParams } from 'next/navigation';
 import {
   Accordion,
   AccordionContent,
@@ -55,6 +55,9 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
   const { useGetProductReviews } = useReviews();
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type');
+  const isTypeId = searchParams.get('type') === 'id';
 
   //SUGGESTIONS PRODUCTS
   const suggestionPayload: SuggestionsProductsPayload = {
@@ -65,14 +68,13 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
 
   const router = useRouter();
   const { useMutateCart, useGetCart } = useCart();
-  const { useGetProductById, useGetRecommendations, useGetSuggestions } = useProducts();
-
+  const { useGetProductById, useGetRecommendations, useGetSuggestions, useGetProductBySlug } =
+    useProducts();
   const {
     data: productData,
     isLoading: isProductLoading,
     error: productError,
-  } = useGetProductById(productId);
-
+  } = isTypeId ? useGetProductById(productId) : useGetProductBySlug(productId);
   // RECOMMENDED FOR USERS
   const recommendedForUserPayload: RecommendedForUserPayload = {
     active: true,

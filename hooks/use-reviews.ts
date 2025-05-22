@@ -15,6 +15,7 @@ export function useReviews() {
   const queryClient = useQueryClient();
 
   const useGetProductReviews = (params: ReviewsParams) => {
+    console.log(params);
     return useQuery({
       queryKey: ['reviews', params.productId, params.page, params.pageSize, params.sort],
       queryFn: () => fetchProductReviews(params),

@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { PRODUCT_DETAIL } from '@/lib/routes';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,8 +33,8 @@ export const formatVefCurrency = (value: number): string => {
 };
 
 export const formatText = (text: string): string => {
-  text = text.toLowerCase();
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  const textLower = text.toLowerCase();
+  return textLower.charAt(0).toUpperCase() + textLower.slice(1);
 };
 
 /**
@@ -76,4 +77,22 @@ export function generateSlug(text: string): string {
     .toLowerCase() // Convertir a minúsculas
     .replace(/\s+/g, '-') // Reemplazar espacios con guiones
     .replace(/[^\w\-]+/g, ''); // Eliminar caracteres no alfanuméricos
+}
+/**
+ * Generates a URL-friendly slug from a product object.
+ *
+ * @param product - The product object containing the name and ID.
+ * @returns The generated slug as a string.
+ */
+interface ProductUrlInput {
+  slug?: string;
+  productId: string | number;
+}
+
+export function getProductDetailUrl(product: ProductUrlInput): string {
+  if (product.slug && typeof product.slug === 'string' && product.slug.trim() !== '') {
+    return `${PRODUCT_DETAIL}/${product.slug}`;
+  }
+
+  return `${PRODUCT_DETAIL}/${product.productId}?type=id`;
 }

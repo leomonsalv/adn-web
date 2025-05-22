@@ -2,12 +2,13 @@ import {
   fetchProductById,
   fetchProductsBatch,
   fetchProductsByIds,
+  fetchProductBySlug,
   fetchProductsList,
   fetchRecommendations,
   fetchSuggestions,
   getDeliveryPrice,
 } from '@/api/products';
-import { SuggestionsProductsPayload, RecommendedForUserPayload } from '@/types/product';
+import type { SuggestionsProductsPayload, RecommendedForUserPayload } from '@/types/product';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -16,6 +17,13 @@ export default function useProducts() {
     return useQuery({
       queryKey: ['product', id],
       queryFn: () => fetchProductById(id),
+      select: (data) => data,
+    });
+  };
+  const useGetProductBySlug = (slug: string) => {
+    return useQuery({
+      queryKey: ['product', slug],
+      queryFn: () => fetchProductBySlug(slug),
       select: (data) => data,
     });
   };
@@ -134,5 +142,6 @@ export default function useProducts() {
     useGetDelivery,
     useGetProductsList,
     useGetProductsBatch,
+    useGetProductBySlug,
   };
 }

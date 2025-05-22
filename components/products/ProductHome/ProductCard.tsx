@@ -40,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   refPrice,
 }) => {
   return (
-    <div className="max-w-60 bg-white rounded-lg shadow-lg p-4 flex flex-col items-start my-1 h-[400px]">
+    <div className="w-[240px] bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between min-h-[400px]">
       <Link href={productUrl} className="w-full h-full flex flex-col">
         <div className="w-full h-48 relative mb-4">
           {discount > 0 && (

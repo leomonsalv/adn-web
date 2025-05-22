@@ -6,8 +6,7 @@ import { Button } from '../ui/button';
 import type { CartProduct } from '@/types/cart';
 import Image from 'next/image';
 import useCart from '@/hooks/use-cart';
-import useProducts from '@/hooks/use-products';
-
+import { getProductDetailUrl } from '@/lib/utils';
 interface CartItemProps {
   item: CartProduct;
   cartId: string;
@@ -71,7 +70,7 @@ export default function CartItem({ item, cartId }: CartItemProps) {
             <div className="flex justify-between">
               <h3 className="text-sm">
                 <a
-                  href={`/producto-detalle/${item._id}`}
+                  href={getProductDetailUrl(item)}
                   className="font-medium text-gray-700 hover:text-gray-800"
                 >
                   {item.name}

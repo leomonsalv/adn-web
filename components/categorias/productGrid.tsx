@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import ProductCard from '@/components/products/ProductHome/ProductCard';
 import { useInView } from 'react-intersection-observer';
 import type { Product } from '@/types/product';
+import { getProductDetailUrl } from '@/lib/utils';
 
 // Utility function to safely parse numeric values
 const safeParseFloat = (value: string | number | undefined): number => {
@@ -75,7 +76,7 @@ function ProductGrid({
             price={Number(product.bsPrice) || 0}
             refPrice={Number(product.refPrice) || 0}
             originalPrice={Number(product.bsPrice) || 0}
-            productUrl={`/producto-detalle/${product._id}`}
+            productUrl={getProductDetailUrl(product)}
             title={product.name || product.description || 'Producto sin nombre'}
             inventory={product.inventary.total || 0}
             discount={
@@ -93,7 +94,7 @@ function ProductGrid({
       <div ref={ref} className="h-10 w-full">
         {isFetchingNextPage && (
           <div className="flex justify-center py-4">
-            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900" />
           </div>
         )}
       </div>
