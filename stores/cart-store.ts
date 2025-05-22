@@ -3,8 +3,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Cart, CouponCalculationResponse, CartStore } from '@/types/cart';
-import { Product } from '@/types/product';
+import { type Cart, type CouponCalculationResponse, CartStore } from '@/types/cart';
+import type { Product } from '@/types/product';
 
 interface CartState {
   cart: Cart;
@@ -212,9 +212,9 @@ export const useCartStore = create<CartState>()(
         const currentProducts = get().cart.products;
 
         const currentProductMap = new Map();
-        currentProducts.forEach((product) => {
-          currentProductMap.set(product.id.toString(), product);
-        });
+        for (const product of currentProducts) {
+          currentProductMap.set(product?.id?.toString(), product);
+        }
 
         const mergedProducts = cart.products.map((item) => {
           const existingProduct = currentProductMap.get(item.id.toString());
@@ -242,10 +242,10 @@ export const useCartStore = create<CartState>()(
         const currentProducts = get().cart.products;
 
         const productMap = new Map();
-        products.forEach((product) => {
+        for (const product of products) {
           const productId = product.productId || product.id;
-          productMap.set(productId.toString(), product);
-        });
+          productMap.set(productId?.toString(), product);
+        }
 
         // Actualizar los productos del carrito con la información completa
         // pero solo en el estado local, no en Firebase

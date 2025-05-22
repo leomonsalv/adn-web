@@ -13,7 +13,7 @@ export default function AnimatedText() {
     {
       text: 'empieza por tolerar el estrés',
       highlight: 'tolerar el estrés',
-      color: 'text-blue-600',
+      color: 'text-blue-300',
     },
   ];
 
