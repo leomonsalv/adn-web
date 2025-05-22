@@ -58,6 +58,14 @@ export const useCartStore = create<CartState>()(
       // Cart actions
       addToCart: (data) => {
         const { userId, products } = data;
+        if (
+          process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID &&
+          products.id.toString() === process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID
+        ) {
+          console.log('Producto de entrega no agregado al carrito:', products.id);
+          return;
+        }
+
         const existingItem = get().cart.products.find((item) => item.id === products.id);
         if (existingItem) {
           set({
@@ -216,7 +224,14 @@ export const useCartStore = create<CartState>()(
           currentProductMap.set(product.id.toString(), product);
         });
 
-        const mergedProducts = cart.products.map((item) => {
+        // Filtrar el producto de entrega del carrito que viene del servidor
+        const filteredCartProducts = process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID
+          ? cart.products.filter(
+              (item) => item.id.toString() !== process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID,
+            )
+          : cart.products;
+
+        const mergedProducts = filteredCartProducts.map((item) => {
           const existingProduct = currentProductMap.get(item.id.toString());
           if (existingProduct) {
             return {
