@@ -34,9 +34,7 @@ export default function HomePage() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
-    if (!clarityId) {
-      console.error('Clarity ID is not defined in the environment variables.');
-    } else {
+    if (clarityId) {
       Clarity.init(clarityId);
     }
   }, [Clarity]);

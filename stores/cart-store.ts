@@ -225,6 +225,7 @@ export const useCartStore = create<CartState>()(
         }
 
         // Filtrar el producto de entrega del carrito que viene del servidor
+        // y no agregarlo al carrito local
         const filteredCartProducts = process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID
           ? cart.products.filter(
               (item) => item.id.toString() !== process.env.NEXT_PUBLIC_DELIVERY_PRODUCT_ID,
@@ -232,7 +233,7 @@ export const useCartStore = create<CartState>()(
           : cart.products;
 
         const mergedProducts = filteredCartProducts.map((item) => {
-          const existingProduct = currentProductMap.get(item.id.toString());
+          const existingProduct = currentProductMap.get(item?.id?.toString());
           if (existingProduct) {
             return {
               ...existingProduct,
