@@ -71,7 +71,7 @@ Sitemap: https://www.adan.life/product-sitemap.xml`;
 
   return new NextResponse(xml, {
     headers: {
-      'Content-Type': 'application/xml',
+      'Content-Type': 'text/plain',
     },
   });
 }
