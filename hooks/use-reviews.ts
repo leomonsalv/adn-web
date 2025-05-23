@@ -14,11 +14,11 @@ import {
 export function useReviews() {
   const queryClient = useQueryClient();
 
-  const useGetProductReviews = (params: ReviewsParams) => {
-    console.log(params);
+  const useGetProductReviews = (params: ReviewsParams, options?: { enabled?: boolean }) => {
     return useQuery({
       queryKey: ['reviews', params.productId, params.page, params.pageSize, params.sort],
       queryFn: () => fetchProductReviews(params),
+      enabled: options?.enabled ?? true,
     });
   };
 

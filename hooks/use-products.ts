@@ -77,7 +77,10 @@ export default function useProducts() {
     });
   };
 
-  const useGetSuggestions = (payload: RecommendedForUserPayload) => {
+  const useGetSuggestions = (
+    payload: RecommendedForUserPayload,
+    options?: { enabled?: boolean },
+  ) => {
     return useQuery({
       queryKey: ['recommendedForUser', payload],
       queryFn: () => {
@@ -91,6 +94,7 @@ export default function useProducts() {
           productId,
         });
       },
+      enabled: options?.enabled ?? true,
       select: (data) => data,
       // Don't retry if the error is due to missing productId
       retry: (failureCount, error) => {

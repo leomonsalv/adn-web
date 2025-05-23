@@ -54,6 +54,7 @@ interface ProductPageProps {
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
+  const [productDetailId, setProductDetailId] = useState('');
   const { useGetProductReviews } = useReviews();
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
@@ -79,9 +80,8 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   const recommendedForUserPayload: RecommendedForUserPayload = {
     active: true,
     priceRange: [0, 3000],
-    productId: productData?.productId?.toString(),
+    productId: productDetailId,
   };
-
   const { isPrescriptionUploaded } = usePrescriptionUpload();
   const [prescriptionUploaded, setPrescriptionUploaded] = useState(false);
 
@@ -97,16 +97,23 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
     data: recommendedForUserData,
     isLoading: isRecommendedForUserLoading,
     error: isRecommendedForUserError,
-  } = useGetSuggestions(recommendedForUserPayload);
+  } = useGetSuggestions(recommendedForUserPayload, {
+    enabled: !!productDetailId,
+  });
 
   const recommendedForUserProducts = recommendedForUserData ? [recommendedForUserData].flat() : [];
-
-  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews({
-    productId: productData?.productId.toString() ?? '',
-    page: 1,
-    pageSize: 10,
-    sort: 'newest',
-  });
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetProductReviews(
+    {
+      productId: productDetailId,
+      page: 1,
+      pageSize: 10,
+      sort: 'newest',
+    },
+    {
+      enabled: !!productDetailId,
+    },
+  );
+  console.log(reviewsData);
 
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
@@ -134,6 +141,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
         });
       }
     }
+    setProductDetailId(productData?.productId.toString() ?? '');
   }, [productData]);
 
   if (isProductLoading || isCartLoading) {
@@ -218,7 +226,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
   }));
 
   const noStock = productData.inventary.total <= 0;
-  const requiresRecipe = productData.type === 'prescripcion';
+  const requiresRecipe = productData.type === 'prescripcion' || productData.type === 'tienda';
   // const requiresRecipe =
   //   productData.required_recipe === true || productData.product_type === 'prescripcion';
 
