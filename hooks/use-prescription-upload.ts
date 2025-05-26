@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/lib/firebaseConfig';
 import { useAuth } from './use-auth';
-import { useCartStore } from '@/stores/cart-store';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 interface PrescriptionUploadState {
   isUploading: boolean;
@@ -21,7 +20,6 @@ export function usePrescriptionUpload() {
   });
 
   const { user } = useAuth();
-  const { addToCart } = useCartStore();
 
   const uploadPrescription = async (file: File, product: Product) => {
     if (!file || !product.type || !['prescripcion', 'tienda'].includes(product.type)) {
@@ -44,12 +42,6 @@ export function usePrescriptionUpload() {
         prescriptionImg: downloadUrl,
         isPrescriptionUploaded: true,
       }));
-
-      // Add product to cart with prescription URL
-      addToCart({
-        ...product,
-        prescriptionImg: downloadUrl,
-      });
 
       return downloadUrl;
     } catch (error) {

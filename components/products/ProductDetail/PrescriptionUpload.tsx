@@ -1,12 +1,12 @@
-import { ChangeEvent, useRef } from 'react';
+import { type ChangeEvent, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { usePrescriptionUpload } from '@/hooks/use-prescription-upload';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 
 interface PrescriptionUploadProps {
   product: Product;
-  onUploadSuccess: () => void;
+  onUploadSuccess: (url: string) => void;
 }
 
 export function PrescriptionUpload({ product, onUploadSuccess }: PrescriptionUploadProps) {
@@ -29,12 +29,13 @@ export function PrescriptionUpload({ product, onUploadSuccess }: PrescriptionUpl
 
     const url = await uploadPrescription(file, product);
     if (url) {
-      onUploadSuccess();
+      onUploadSuccess(url);
       toast({
         title: '¡Éxito!',
         description: 'Prescripción subida correctamente. Producto agregado al carrito.',
       });
     } else if (error) {
+      console.error('Error uploading prescription:', error);
       toast({
         title: 'Error',
         description: error,

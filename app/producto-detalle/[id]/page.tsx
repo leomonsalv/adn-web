@@ -54,7 +54,8 @@ interface ProductPageProps {
 export default function ProductDetailsPage({ params }: ProductPageProps) {
   const { user } = useAuth();
   const productId = use(params).id;
-  const [productDetailId, setProductDetailId] = useState('');
+  const [productDetailId, setProductDetailId] = useState(null);
+  const [prescriptionUrl, setPrescriptionUrl] = useState(null);
   const { useGetProductReviews } = useReviews();
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
@@ -113,7 +114,6 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
       enabled: !!productDetailId,
     },
   );
-  console.log(reviewsData);
 
   const { data: cartData, isLoading: isCartLoading, error: cartError } = useGetCart();
 
@@ -186,7 +186,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
             userId: userId,
             products: {
               id: productData.productId,
-              prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
+              prescriptionImg: prescriptionUploaded ? prescriptionUrl : '',
               quantity: 1,
             },
           });
@@ -198,7 +198,7 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
           userId: userId,
           products: {
             id: productData.productId,
-            prescriptionImg: prescriptionUploaded ? productData.prescriptionImg : '',
+            prescriptionImg: prescriptionUploaded ? prescriptionUrl : '',
             quantity: 1,
           },
         });
@@ -410,7 +410,10 @@ export default function ProductDetailsPage({ params }: ProductPageProps) {
               {requiresRecipe && (
                 <PrescriptionUpload
                   product={productData}
-                  onUploadSuccess={() => setPrescriptionUploaded(true)}
+                  onUploadSuccess={(url) => {
+                    setPrescriptionUploaded(true);
+                    setPrescriptionUrl(url);
+                  }}
                 />
               )}
 

@@ -133,11 +133,7 @@ export const fetchProductById = async (id: string): Promise<Product> => {
 
 export const fetchProductBySlug = async (slug: string): Promise<Product> => {
   try {
-    const queryParams = new URLSearchParams({
-      id: slug,
-      type: 'slug',
-    });
-    const response = await fetch(`${API_URL}/product?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/product?id=${slug}&type=slug`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
