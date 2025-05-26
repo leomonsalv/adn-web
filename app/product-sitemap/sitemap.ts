@@ -3489,7 +3489,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/acondicionador-head-&-shoulders-proteccion-caida-x-300-ml',
+      url: 'https://www.adan.life/producto-detalle/acondicionador-head-&amp;-shoulders-proteccion-caida-x-300-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -3585,7 +3585,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/acondicionador-novex-superfood--pitaya-&-gojiberry-x-300-ml',
+      url: 'https://www.adan.life/producto-detalle/acondicionador-novex-superfood--pitaya-&amp;-gojiberry-x-300-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -8889,7 +8889,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/antitranspirante-men-invisible-b&w-roll-on-x-50-ml',
+      url: 'https://www.adan.life/producto-detalle/antitranspirante-men-invisible-b&amp;w-roll-on-x-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -8961,7 +8961,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/antitranspirante-women-invisible-b&w-barra-x-50-g',
+      url: 'https://www.adan.life/producto-detalle/antitranspirante-women-invisible-b&amp;w-barra-x-50-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -8973,7 +8973,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/antitranspirante-women-invisible-b&w-roll-on-x-50-ml',
+      url: 'https://www.adan.life/producto-detalle/antitranspirante-women-invisible-b&amp;w-roll-on-x-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -9243,7 +9243,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/arm-&-hammer-detergente-liquido-jardin-floreciente-con-suavizante---147l',
+      url: 'https://www.adan.life/producto-detalle/arm-&amp;-hammer-detergente-liquido-jardin-floreciente-con-suavizante---147l',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -12543,7 +12543,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-ivory-130',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-ivory-130',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -12561,7 +12561,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-creme-brulee-150',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-creme-brulee-150',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -12573,31 +12573,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-porcelain-110',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-porcelain-110',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-medium-beige-270',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-medium-beige-270',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-light-honey-330',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-light-honey-330',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-natural-beige-240',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-natural-beige-240',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&f-sand-beige-220',
+      url: 'https://www.adan.life/producto-detalle/base-revlon-prdy-cand-natu-f&amp;f-sand-beige-220',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -12813,7 +12813,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/bath-&-beauty-agua-micellar',
+      url: 'https://www.adan.life/producto-detalle/bath-&amp;-beauty-agua-micellar',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -13887,7 +13887,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/biotina-complex-con-calcio-&-zinc-2100mcg-x30-capsulas-naturistik',
+      url: 'https://www.adan.life/producto-detalle/biotina-complex-con-calcio-&amp;-zinc-2100mcg-x30-capsulas-naturistik',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -25173,13 +25173,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/chocolate-m&m-milk-chocolate-x-49-g',
+      url: 'https://www.adan.life/producto-detalle/chocolate-m&amp;m-milk-chocolate-x-49-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/chocolate-m&m-peanut-x-49-g',
+      url: 'https://www.adan.life/producto-detalle/chocolate-m&amp;m-peanut-x-49-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34335,19 +34335,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&-hammer-ultramax-solid-uncented--sin-aroma---73g',
+      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&amp;-hammer-ultramax-solid-uncented--sin-aroma---73g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&-hammer-ultramax-gel-cool-blast---113g',
+      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&amp;-hammer-ultramax-gel-cool-blast---113g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&-hammer-ultramax-solid-fresh--fresco---73g',
+      url: 'https://www.adan.life/producto-detalle/desodorante-arm-&amp;-hammer-ultramax-solid-fresh--fresco---73g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34419,7 +34419,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-barra-rexona-stay-fresh-bamboo-&-aloe-vera-x-50-g',
+      url: 'https://www.adan.life/producto-detalle/desodorante-barra-rexona-stay-fresh-bamboo-&amp;-aloe-vera-x-50-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34623,13 +34623,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-en-spray-antitranspirante-pearl-&-beauty-nivea-x-150-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-en-spray-antitranspirante-pearl-&amp;-beauty-nivea-x-150-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-en-spray-b&w-invisible-fresh-for-men-nivea-x-150-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-en-spray-b&amp;w-invisible-fresh-for-men-nivea-x-150-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34791,7 +34791,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-b&w-invisible-ultimate-for-men-nivea-x-50-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-b&amp;w-invisible-ultimate-for-men-nivea-x-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34827,13 +34827,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-invisible-black&white-nivea-men-x-50-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-invisible-black&amp;white-nivea-men-x-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-invisible-black&white-nivea-x-50-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-roll-on-invisible-black&amp;white-nivea-x-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34923,7 +34923,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-spray-rexona-women-bamboo-&-aloe-vera-150-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-spray-rexona-women-bamboo-&amp;-aloe-vera-150-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -34977,7 +34977,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/desodorante-spray-rexona-women-bamboo-&-aloe-vera-x-150-ml',
+      url: 'https://www.adan.life/producto-detalle/desodorante-spray-rexona-women-bamboo-&amp;-aloe-vera-x-150-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -35463,7 +35463,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/detergente-liquido-estallido-de-limpieza-arm-&-hammer-147-l',
+      url: 'https://www.adan.life/producto-detalle/detergente-liquido-estallido-de-limpieza-arm-&amp;-hammer-147-l',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -40569,7 +40569,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/eva-pre-tratamiento-vainilla-&-caramel-200cc',
+      url: 'https://www.adan.life/producto-detalle/eva-pre-tratamiento-vainilla-&amp;-caramel-200cc',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -40581,7 +40581,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/eva-locion-vainilla-&-caramel-200cc',
+      url: 'https://www.adan.life/producto-detalle/eva-locion-vainilla-&amp;-caramel-200cc',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -40599,19 +40599,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/eva-splash-vainilla-&-caramel-200-cc',
+      url: 'https://www.adan.life/producto-detalle/eva-splash-vainilla-&amp;-caramel-200-cc',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/eva-tratamiento-vainilla-&-caramel-200cc',
+      url: 'https://www.adan.life/producto-detalle/eva-tratamiento-vainilla-&amp;-caramel-200cc',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/eva-shower-gel-vainilla-&-caramel-200-cc',
+      url: 'https://www.adan.life/producto-detalle/eva-shower-gel-vainilla-&amp;-caramel-200-cc',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -42843,7 +42843,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/fresh-n-soft-premium-milk-&-honey-x-60-und',
+      url: 'https://www.adan.life/producto-detalle/fresh-n-soft-premium-milk-&amp;-honey-x-60-und',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -44229,7 +44229,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/galleta-crackers-biscuit-renata-water-&-salt-x-200-g',
+      url: 'https://www.adan.life/producto-detalle/galleta-crackers-biscuit-renata-water-&amp;-salt-x-200-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -49257,7 +49257,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/helado-cookies-&-creams-cali-x-1-l',
+      url: 'https://www.adan.life/producto-detalle/helado-cookies-&amp;-creams-cali-x-1-l',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -53169,7 +53169,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-camomile-&-calendula-x-500-ml',
+      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-camomile-&amp;-calendula-x-500-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -53181,13 +53181,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-rosemary-&-ylang-ylang-x-500-ml',
+      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-rosemary-&amp;-ylang-ylang-x-500-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-sunflower-&-acacia-x-500-ml',
+      url: 'https://www.adan.life/producto-detalle/jabon-liquido-korili-limp-antibacterial-sunflower-&amp;-acacia-x-500-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -54891,7 +54891,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/kelp-lecithin-b6-&-cider-x-30-tab',
+      url: 'https://www.adan.life/producto-detalle/kelp-lecithin-b6-&amp;-cider-x-30-tab',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -55725,7 +55725,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/kotex-toalla-fem-uf-dia-&-noche',
+      url: 'https://www.adan.life/producto-detalle/kotex-toalla-fem-uf-dia-&amp;-noche',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -56133,7 +56133,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/la-colors-labial-liquido-matte-kiss-&-tell',
+      url: 'https://www.adan.life/producto-detalle/la-colors-labial-liquido-matte-kiss-&amp;-tell',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -63963,19 +63963,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&-conditioning--black',
+      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&amp;-conditioning--black',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&-conditioning-black-brown',
+      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&amp;-conditioning-black-brown',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&-conditioning-blackest-black',
+      url: 'https://www.adan.life/producto-detalle/mascara-almay-volume-&amp;-conditioning-blackest-black',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -67119,7 +67119,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&-manos-almendras-dulce-agrado-50-ml',
+      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&amp;-manos-almendras-dulce-agrado-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -67131,13 +67131,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&-manos-aloe-vera-agrado-50-ml',
+      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&amp;-manos-aloe-vera-agrado-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&-manos-almendras-dulces-agrado-50-ml',
+      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&amp;-manos-almendras-dulces-agrado-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -67155,7 +67155,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&-manos-rosa-mosqueta-agrado-50-ml',
+      url: 'https://www.adan.life/producto-detalle/mini-crema-go!-hidratante-cara,-cuerpo-&amp;-manos-rosa-mosqueta-agrado-50-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -67545,7 +67545,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/mochila-azul-game-set-&-match',
+      url: 'https://www.adan.life/producto-detalle/mochila-azul-game-set-&amp;-match',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -68529,7 +68529,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/muneca-rainbow-high-color-&-create-594123',
+      url: 'https://www.adan.life/producto-detalle/muneca-rainbow-high-color-&amp;-create-594123',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -68571,7 +68571,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/muneca-rainbow-high-color-&-create-594147',
+      url: 'https://www.adan.life/producto-detalle/muneca-rainbow-high-color-&amp;-create-594147',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -70323,7 +70323,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/nutrifarm-hair-&-nails-complemento-alimenticio-de-vitaminas-y-minerales-x-30-cap',
+      url: 'https://www.adan.life/producto-detalle/nutrifarm-hair-&amp;-nails-complemento-alimenticio-de-vitaminas-y-minerales-x-30-cap',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -71961,7 +71961,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/paletero-azul-game-set-&-match',
+      url: 'https://www.adan.life/producto-detalle/paletero-azul-game-set-&amp;-match',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -83487,7 +83487,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/salon-de-belleza-&-spa-lol-sorpresa-584520',
+      url: 'https://www.adan.life/producto-detalle/salon-de-belleza-&amp;-spa-lol-sorpresa-584520',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85545,7 +85545,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-chamomile-&-honey-x-350-ml-bio-organical',
+      url: 'https://www.adan.life/producto-detalle/shampoo-chamomile-&amp;-honey-x-350-ml-bio-organical',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85557,7 +85557,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-coconut-&-vanilla-x-350-ml-bio-organical',
+      url: 'https://www.adan.life/producto-detalle/shampoo-coconut-&amp;-vanilla-x-350-ml-bio-organical',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85605,7 +85605,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-aceite-de-coco-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-aceite-de-coco-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85617,7 +85617,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-anti-comezon-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-anti-comezon-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85629,25 +85629,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-limpieza-renovadora-x-180-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-limpieza-renovadora-x-180-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-limpieza-renovadora-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-limpieza-renovadora-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-proteccion-caida-x-180-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-proteccion-caida-x-180-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-head-&-shoulders-proteccion-caida-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-head-&amp;-shoulders-proteccion-caida-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85983,7 +85983,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&-shoulders-2-en-1-limpieza-renovadora-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&amp;-shoulders-2-en-1-limpieza-renovadora-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -85995,13 +85995,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&-shoulders-2-en-1-suave-y-manejable-x-375-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&amp;-shoulders-2-en-1-suave-y-manejable-x-375-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&-shoulders-2-en-1-suave-y-manejable-x-180-ml',
+      url: 'https://www.adan.life/producto-detalle/shampoo-y-acondicionador-head-&amp;-shoulders-2-en-1-suave-y-manejable-x-180-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -86859,7 +86859,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/snacks-cookies-&-cream-bianchi-48-g',
+      url: 'https://www.adan.life/producto-detalle/snacks-cookies-&amp;-cream-bianchi-48-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -87849,7 +87849,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/suero-de-nad-&-glutation-servicio',
+      url: 'https://www.adan.life/producto-detalle/suero-de-nad-&amp;-glutation-servicio',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -90477,7 +90477,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/vitay-novex-pitaya-&-gojiberry-shampoo-x-300-ml',
+      url: 'https://www.adan.life/producto-detalle/vitay-novex-pitaya-&amp;-gojiberry-shampoo-x-300-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -91299,7 +91299,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/vick-vaporub-lata-12gr-unguento-uso-topico-x12-unidades-lab-farma-fabricante-the-procter-&-gamble-manufacturing-company',
+      url: 'https://www.adan.life/producto-detalle/vick-vaporub-lata-12gr-unguento-uso-topico-x12-unidades-lab-farma-fabricante-the-procter-&amp;-gamble-manufacturing-company',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -93567,7 +93567,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/tubo-de-chocolate-m&m-x-30-g',
+      url: 'https://www.adan.life/producto-detalle/tubo-de-chocolate-m&amp;m-x-30-g',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -95871,7 +95871,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/toalla-sanitarias-kotex-ultraflex-dia-&-noche-x-8-und',
+      url: 'https://www.adan.life/producto-detalle/toalla-sanitarias-kotex-ultraflex-dia-&amp;-noche-x-8-und',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
@@ -98451,7 +98451,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://www.adan.life/producto-detalle/te-de-limon-arizona-half-&-half-x-340-ml',
+      url: 'https://www.adan.life/producto-detalle/te-de-limon-arizona-half-&amp;-half-x-340-ml',
       lastModified: '2025-05-23',
       changeFrequency: 'daily',
       priority: 1.0,
