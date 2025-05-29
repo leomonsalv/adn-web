@@ -56,25 +56,24 @@ export default function ThankYouPage() {
     <main className="flex w-full min-h-screen flex-1 items-center bg-white">
       <div className="flex flex-col gap-8 mx-auto text-black lg:max-w-[912px] items-center">
         <div className="flex items-center gap-4">
-          <h1 className="text-center text-gray-900 font-bold text-5xl">
-            Orden Realizada con Éxito
-          </h1>
+          <h1 className="text-center text-gray-900 font-bold text-5xl">¡Ya generaste tu orden!</h1>
           <CheckCircleIcon className="w-16 h-16" color="green" />
+        </div>
+        <div className="flex items-center border-2 border-black-300 pb-2">
+          <h2 className="text-3xl font-bold text-gray-900 text-center">
+            Pin de la orden: <span className="font-bold">{parsedData.pin}</span>
+          </h2>
         </div>
         <p className="text-center text-gray-500 w-3/4">
           Agradecemos tu pedido, actualmente lo estamos procesando. ¡Así que espera y te enviaremos
           la confirmación muy pronto!
         </p>
+
         <div className="flex items-center gap-4">
           <h3 className="font-bold text-2xl ">Order {parsedData.order}</h3>
-          <Link href="#" className="flex items-center font-medium text-sm text-indigo-600">
+          {/* <Link href="#" className="flex items-center font-medium text-sm text-indigo-600">
             Seguir Orden <ArrowRight className="w-3 h-3 ml-[2px] mt-[1px]" />
-          </Link>
-        </div>
-        <div className="flex items-center">
-          <p>
-            Pin de la orden: <span className="font-bold">{parsedData.pin}</span>
-          </p>
+          </Link> */}
         </div>
 
         {/* <div className="border-t-[1px] border-gray-300">

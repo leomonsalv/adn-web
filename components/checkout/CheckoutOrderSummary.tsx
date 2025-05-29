@@ -32,7 +32,9 @@ export default function CheckoutOrderSummary() {
   useEffect(() => {
     if (deliveryProduct) {
       const fee = cartRef <= 7 ? Number(deliveryProduct.bsPrice || 0) : 0;
-      setDeliveryFee(shippingAddress.type === 'pickup' ? 0 : fee);
+      setDeliveryFee(
+        shippingAddress.type === 'pickup' || shippingAddress.type === 'zoom' ? 0 : fee,
+      );
     }
   }, [deliveryProduct, cartRef, setDeliveryFee, shippingAddress.type]);
 

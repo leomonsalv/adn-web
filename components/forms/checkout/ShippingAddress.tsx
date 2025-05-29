@@ -6,7 +6,10 @@ import { LabeledInput } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ShippingAddressSchema, shippingAddressSchema } from '@/schemas/shipping-address-schema';
+import {
+  type ShippingAddress as ShippingAddressType,
+  shippingAddressSchema,
+} from '@/schemas/shipping-address-schema';
 import { useStates } from '@/hooks/use-states';
 import { Loader2, MapPin } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
@@ -18,6 +21,7 @@ import { Radio, RadioGroup } from '@/components/ui/radio';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import useAddress from '@/hooks/use-address';
+import { title } from 'process';
 interface SavedAddress {
   id: string;
   phone: string;
@@ -29,7 +33,7 @@ interface SavedAddress {
   type?: 'delivery' | 'pickup' | 'zoom';
 }
 
-interface ShippingAddressProps extends Partial<ShippingAddressSchema> {
+interface ShippingAddressProps extends Partial<ShippingAddressType> {
   title?: string;
   type?: 'delivery' | 'pickup';
   savedAddresses?: SavedAddress[];
@@ -48,6 +52,7 @@ const PICKUP_LOCATIONS = [
     zone: 'Boleita Norte',
     phone: '04241613016',
     type: 'pickup',
+    title: 'Punto de Retiro en Caracas',
   },
   {
     id: 'zoom',
@@ -59,6 +64,7 @@ const PICKUP_LOCATIONS = [
     phone: '04241613016',
     description: 'ATENCIÓN AL CLIENTE POR WHATSAPP, PARA CONFIRMAR ENVÍO',
     type: 'zoom',
+    title: 'Envío Nacional con Zoom',
   },
 ];
 
@@ -69,7 +75,15 @@ export function ShippingAddress({
   onSaveAddress,
   onSelectAddress,
   shippingAddressId,
-  ...data
+  phone,
+  street,
+  city,
+  state,
+  lat,
+  lng,
+  alias,
+  isDefault = false,
+  savedAddresses: initialSavedAddresses = [],
 }: ShippingAddressProps) {
   const { useCreateAddress } = useAddress();
   const { mutateAsync: createAddress, isPending: isCreatingAddress } = useCreateAddress();
@@ -84,22 +98,24 @@ export function ShippingAddress({
     if (shippingAddressId) {
       const newAddress = savedAddresses.find((address) => address.id === shippingAddressId);
       return newAddress ? shippingAddressId : savedAddresses[0]?.id;
-    } else {
+    } else if (savedAddresses[0]?.id) {
       return savedAddresses[0]?.id;
+    } else {
+      return PICKUP_LOCATIONS[0].id; // Default to first pickup location
     }
   });
 
-  const { control, handleSubmit, setValue, watch, reset } = useForm<ShippingAddressSchema>({
+  const { control, handleSubmit, setValue, watch, reset } = useForm<ShippingAddressType>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: {
-      phone: data.phone || '',
-      street: data.street || '',
-      city: data.city || '',
-      state: data.state || '',
-      isDefault: data.isDefault || false,
-      lat: data.lat,
-      lng: data.lng,
-      alias: data.alias || '',
+      phone: phone || '',
+      street: street || '',
+      city: city || '',
+      state: state || '',
+      isDefault: isDefault || false,
+      lat: lat,
+      lng: lng,
+      alias: alias || '',
     },
   });
 
@@ -115,14 +131,14 @@ export function ShippingAddress({
       // Only load saved address if it matches the current delivery type
       if (savedAddresses.length === 0 || !showNewAddress) {
         reset({
-          phone: data.phone || savedPreferences.shippingAddress.phone,
-          street: data.street || savedPreferences.shippingAddress.street,
-          city: data.city || savedPreferences.shippingAddress.city,
-          state: data.state || savedPreferences.shippingAddress.state,
-          isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
-          lat: data.lat || savedPreferences.shippingAddress.lat,
-          lng: data.lng || savedPreferences.shippingAddress.lng,
-          alias: data.alias || savedPreferences.shippingAddress.alias,
+          phone: phone || savedPreferences.shippingAddress.phone,
+          street: street || savedPreferences.shippingAddress.street,
+          city: city || savedPreferences.shippingAddress.city,
+          state: state || savedPreferences.shippingAddress.state,
+          isDefault: isDefault || savedPreferences.shippingAddress.isDefault,
+          lat: lat || savedPreferences.shippingAddress.lat,
+          lng: lng || savedPreferences.shippingAddress.lng,
+          alias: alias || savedPreferences.shippingAddress.alias,
         });
       }
     }
@@ -130,8 +146,15 @@ export function ShippingAddress({
     isLoadingPreferences,
     savedPreferences,
     reset,
-    data,
     user,
+    phone,
+    street,
+    city,
+    state,
+    lat,
+    lng,
+    alias,
+    isDefault,
     type,
     savedAddresses.length,
     showNewAddress,
@@ -149,41 +172,7 @@ export function ShippingAddress({
     );
   };
 
-  // Load saved preferences when available
-  useEffect(() => {
-    if (
-      !isLoadingPreferences &&
-      savedPreferences?.shippingAddress &&
-      user &&
-      !user.isAnonymous &&
-      type === savedPreferences.shippingAddress.type
-    ) {
-      // Only load saved address if it matches the current delivery type
-      if (savedAddresses.length === 0 || !showNewAddress) {
-        reset({
-          phone: data.phone || savedPreferences.shippingAddress.phone,
-          street: data.street || savedPreferences.shippingAddress.street,
-          city: data.city || savedPreferences.shippingAddress.city,
-          state: data.state || savedPreferences.shippingAddress.state,
-          isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
-          lat: data.lat || savedPreferences.shippingAddress.lat,
-          lng: data.lng || savedPreferences.shippingAddress.lng,
-          alias: data.alias || savedPreferences.shippingAddress.alias,
-        });
-      }
-    }
-  }, [
-    isLoadingPreferences,
-    savedPreferences,
-    reset,
-    data,
-    user,
-    type,
-    savedAddresses.length,
-    showNewAddress,
-  ]);
-
-  const onSubmit = async (formData: ShippingAddressSchema) => {
+  const onSubmit = async (formData: ShippingAddressType) => {
     const { lat, lng, ...rest } = formData;
     const addressData = {
       ...rest,
@@ -211,42 +200,44 @@ export function ShippingAddress({
 
   return (
     <div className="flex flex-col gap-6">
-      <h3 className="text-lg font-semibold">{title}</h3>
-
       {type === 'pickup' ? (
         <div className="space-y-4">
-          <RadioGroup value={selectedAddressId} onChange={setSelectedAddressId}>
-            <div className="grid gap-4">
-              {PICKUP_LOCATIONS.map((location) => (
-                <div
-                  key={location.id}
-                  className={`${
-                    selectedAddressId === location.id ? 'border-primary' : ''
-                  } p-4 border rounded-lg cursor-pointer hover:border-primary`}
-                  onClick={() => setSelectedAddressId(location.id)}
-                >
-                  <div className="flex items-center gap-4 justify-between">
-                    <div className="flex items-start gap-4">
-                      <Radio
-                        value={location.id}
-                        className="cursor-pointer rounded-lg border-gray-300 p-1 focus:outline-hidden"
-                      />
-                      <div className="mt-1">
-                        <p className="font-bold">{location.name}</p>
-                        <p>{location.address}</p>
-                        <p>
-                          {location.city}, {location.state}, {location.zone}
-                        </p>
-                        <p className="text-sm text-gray-500">{location.phone}</p>
+          {PICKUP_LOCATIONS.map((location) => (
+            <div key={location.id} className="space-y-2">
+              <h3 className="text-lg font-semibold">{location.title}</h3>
+              <RadioGroup value={selectedAddressId} onChange={setSelectedAddressId}>
+                <div className="grid gap-4">
+                  <div
+                    className={`${
+                      selectedAddressId === location.id ? 'border-primary' : ''
+                    } p-4 border rounded-lg cursor-pointer hover:border-primary`}
+                    onClick={() => setSelectedAddressId(location.id)}
+                  >
+                    <div className="flex items-center gap-4 justify-between">
+                      <div className="flex items-start gap-4">
+                        <Radio
+                          value={location.id}
+                          className="cursor-pointer rounded-lg border-gray-300 p-1 focus:outline-hidden"
+                        />
+                        <div className="mt-1">
+                          <p className="font-bold">{location.name}</p>
+                          <p>{location.address}</p>
+                          <p>
+                            {location.city}, {location.state}, {location.zone}
+                          </p>
+                          <p className="text-sm text-gray-500">{location.phone}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </RadioGroup>
             </div>
-          </RadioGroup>
+          ))}
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               const location = PICKUP_LOCATIONS.find((loc) => loc.id === selectedAddressId);
               if (location) {
                 onSaveAddress &&
@@ -260,40 +251,7 @@ export function ShippingAddress({
                     isDefault: false,
                     type: location.type as 'pickup' | 'zoom',
                   });
-
                 // Load saved preferences when available
-                useEffect(() => {
-                  if (
-                    !isLoadingPreferences &&
-                    savedPreferences?.shippingAddress &&
-                    user &&
-                    !user.isAnonymous &&
-                    type === savedPreferences.shippingAddress.type
-                  ) {
-                    // Only load saved address if it matches the current delivery type
-                    if (savedAddresses.length === 0 || !showNewAddress) {
-                      reset({
-                        phone: data.phone || savedPreferences.shippingAddress.phone,
-                        street: data.street || savedPreferences.shippingAddress.street,
-                        city: data.city || savedPreferences.shippingAddress.city,
-                        state: data.state || savedPreferences.shippingAddress.state,
-                        isDefault: data.isDefault || savedPreferences.shippingAddress.isDefault,
-                        lat: data.lat || savedPreferences.shippingAddress.lat,
-                        lng: data.lng || savedPreferences.shippingAddress.lng,
-                        alias: data.alias || savedPreferences.shippingAddress.alias,
-                      });
-                    }
-                  }
-                }, [
-                  isLoadingPreferences,
-                  savedPreferences,
-                  reset,
-                  data,
-                  user,
-                  type,
-                  savedAddresses.length,
-                  showNewAddress,
-                ]);
               }
             }}
             className="cursor-pointer"
@@ -349,7 +307,7 @@ export function ShippingAddress({
               </Button>
             </>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form id="address-user" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid gap-3 sm:grid-cols-2">
                 {/* Always show these fields */}
                 <div className="sm:col-span-2">
@@ -359,7 +317,11 @@ export function ShippingAddress({
                     render={({ field, fieldState: { error } }) => (
                       <LabeledInput
                         label="Alias"
-                        inputProps={{ ...field, type: 'text', placeholder: 'Ej: Mi casa' }}
+                        inputProps={{
+                          ...field,
+                          type: 'text',
+                          placeholder: 'Ej: Mi casa',
+                        }}
                         labelProps={{ htmlFor: 'alias' }}
                         error={error?.message}
                       />
@@ -374,7 +336,11 @@ export function ShippingAddress({
                     render={({ field, fieldState: { error } }) => (
                       <LabeledInput
                         label="Teléfono"
-                        inputProps={{ ...field, type: 'tel', placeholder: 'Ej: 0412 555 5555' }}
+                        inputProps={{
+                          ...field,
+                          type: 'tel',
+                          placeholder: 'Ej: 0412 555 5555',
+                        }}
                         labelProps={{ htmlFor: 'phone' }}
                         error={error?.message}
                         helperText="Lo necesitamos para contactarte al hacer la entrega"
@@ -392,7 +358,10 @@ export function ShippingAddress({
                         name="street"
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700">
+                            <label
+                              className="block text-sm font-medium text-gray-700"
+                              htmlFor="street"
+                            >
                               Dirección
                             </label>
                             <AddressAutocomplete

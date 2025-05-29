@@ -16,4 +16,4 @@ export const shippingAddressSchema = z.object({
   type: z.enum(['delivery', 'pickup', 'zoom']).default('delivery'),
 });
 
-export type ShippingAddressSchema = z.infer<typeof shippingAddressSchema>;
+export type ShippingAddress = z.infer<typeof shippingAddressSchema>;

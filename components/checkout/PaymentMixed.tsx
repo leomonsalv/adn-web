@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Select } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LabeledInput } from '../ui/input';
-import { Method, ValuesPaymentMixedSchema } from '@/schemas/payment-method-schema';
+import { type Method, ValuesPaymentMixedSchema } from '@/schemas/payment-method-schema';
 import { useCartStore } from '@/stores/cart-store';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
@@ -93,7 +94,7 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
         `amount${newItem}`,
         method2?.value === 'cash'
           ? Math.ceil(totalUsd - value)
-          : parseFloat((totalUsd - value).toFixed(2)),
+          : Number.parseFloat((totalUsd - value).toFixed(2)),
       );
     } else if (method1Currency === 'Bs' && method2Currency === 'Bs') {
       form.setValue(
@@ -118,7 +119,7 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
   return (
     <form onSubmit={form.handleSubmit((data) => handleSubmit(data))}>
       {[1, 2].map((item) => (
-        <div className="flex flex-col gap-4">
+        <div key={`method${item}`} className="flex flex-col gap-4">
           <span className="text-sm font-bold">Metodo de Pago N: {item}</span>
           <div className="flex gap-4">
             <Controller
@@ -163,7 +164,7 @@ const PaymentMixed: React.FC<PaymentMixedProps> = ({
                   }}
                   inputProps={{
                     onChange: (e) => {
-                      const value = parseFloat(e.target.value);
+                      const value = Number.parseFloat(e.target.value);
                       onChange(value);
                       handleMixedPayment(item, value);
                     },
