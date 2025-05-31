@@ -3,16 +3,11 @@ import type { NextConfig } from 'next';
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
+    // Enable type checking during build for better error catching
+    ignoreBuildErrors: false,
   },
-  pageExtensions: ['tsx', 'ts'],
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
+    // Ignore ESLint during builds to prevent build failures
     ignoreDuringBuilds: true,
   },
   images: {
@@ -91,6 +86,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Optimize for development
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  // Enable React strict mode for better debugging
+  reactStrictMode: true,
+  // Optimize for production builds
+  swcMinify: true,
 };
 
 export default nextConfig;
