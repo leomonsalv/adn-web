@@ -9,8 +9,6 @@ const nextConfig: NextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  // Disable font optimization to prevent native module loading issues
-  optimizeFonts: false,
   images: {
     remotePatterns: [
       {
