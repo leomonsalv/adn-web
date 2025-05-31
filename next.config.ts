@@ -86,14 +86,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optimize for development with Turbopack
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
+  // Handle SVGs properly
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    return config;
   },
   // Enable React strict mode for better debugging
   reactStrictMode: true,
