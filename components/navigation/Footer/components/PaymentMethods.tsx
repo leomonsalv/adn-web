@@ -1,53 +1,45 @@
 import Image from 'next/image';
 
-// Import SVGs as static assets
-import BinanceIcon from '@/components/icons/binance.svg';
-import ZelleIcon from '@/components/icons/zelle.svg';
-import PagoMovilIcon from '@/components/icons/pago_movil.svg';
-import VisaIcon from '@/components/icons/visa.svg';
-import MasterCardIcon from '@/components/icons/master.svg';
-import CashIcon from '@/components/icons/cash_usd.svg';
-
 export function PaymentMethods() {
   return (
-    <section className="flex gap-2 items-center">
+    <section className="flex gap-2 items-center flex-wrap">
       <Image
-        src={CashIcon}
+        src="/components/icons/cash_usd.svg"
         alt="Cash payment method for Adan"
         width={40}
         height={24}
         className="h-6 w-auto"
       />
       <Image
-        src={PagoMovilIcon}
+        src="/components/icons/pago_movil.svg"
         alt="Pago Movil payment method for Adan"
         width={40}
         height={24}
         className="h-6 w-auto"
       />
       <Image
-        src={BinanceIcon}
+        src="/components/icons/binance.svg"
         alt="Binance payment method for Adan"
         width={40}
         height={24}
         className="h-6 w-auto"
       />
       <Image
-        src={MasterCardIcon}
+        src="/components/icons/master.svg"
         alt="Master card payment method for Adan"
         width={40}
         height={24}
         className="h-6 w-auto"
       />
       <Image
-        src={VisaIcon}
+        src="/components/icons/visa.svg"
         alt="Visa payment method for Adan"
         width={40}
         height={24}
         className="h-6 w-auto"
       />
       <Image
-        src={ZelleIcon}
+        src="/components/icons/zelle.svg"
         alt="Zelle payment method for Adan"
         width={40}
         height={24}
