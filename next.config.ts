@@ -1,7 +1,5 @@
 import type { NextConfig } from 'next';
 
-// @ts-check
-
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   typescript: {
@@ -11,6 +9,8 @@ const nextConfig: NextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  // Disable font optimization to prevent native module loading issues
+  optimizeFonts: false,
   images: {
     remotePatterns: [
       {
