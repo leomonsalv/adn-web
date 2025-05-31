@@ -86,21 +86,17 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optimize for development
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  // Optimize for development with Turbopack
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
   // Enable React strict mode for better debugging
   reactStrictMode: true,
-  // Optimize for production builds
-  swcMinify: true,
 };
 
 export default nextConfig;
