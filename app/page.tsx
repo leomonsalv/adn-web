@@ -77,39 +77,6 @@ export default function HomePage() {
         </div>
 
         <main className="relative flex flex-col items-center">
-          <section
-            aria-labelledby="category-heading"
-            className="relative rounded-t-[32px] container max-md:-mt-10"
-          >
-            {/* PRIMERA LÍNEA */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
-              {/* <OffersGrid
-                title="Continúa donde quedaste"
-                products={RecentProducts}
-                viewAllLink="/ofertas"
-              /> */}
-              {heroData?.[0] && <HeroVariant heroItem={heroData[0]} />}
-              {heroData?.[1] && <HeroVariant heroItem={heroData[1]} />}
-              {heroData?.[2] && <HeroVariant heroItem={heroData[2]} />}
-              {heroData?.[3] && <HeroVariant heroItem={heroData[3]} />}
-              {/* <OffersGrid
-                title="Sigue comprando ofertas"
-                products={Trending}
-                viewAllLink="/ofertas"
-                variant="pink"
-                icon={<FlameIcon className="w-5 h-5 text-[#A4003B]" />}
-              /> */}
-            </div>
-
-            {/* SEGUNDA LÍNEA */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-12">
-              {heroData?.[4] && <HeroVariant heroItem={heroData[4]} />}
-              {heroData?.[5] && <HeroVariant heroItem={heroData[5]} />}
-              {heroData?.[6] && <HeroVariant heroItem={heroData[6]} />}
-              {heroData?.[7] && <HeroVariant heroItem={heroData[7]} />}
-            </div>
-          </section>
-
           {/* Alternancia normal de productos + hero */}
           {topSellingCategories.map((category, index) => (
             <Fragment key={`category.key-${index}`}>
