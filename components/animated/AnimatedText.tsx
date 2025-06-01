@@ -128,11 +128,7 @@ export default function AnimatedText() {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-8">
-          <p className="text-sm md:text-base text-gray-500">
-            Encuentra productos especializados para cada uno de tus objetivos
-          </p>
-        </div>
+        <div className="text-center mt-8" />
       </div>
 
       <style jsx>{`
