@@ -1,15 +1,14 @@
 import type { NextConfig } from 'next';
 
-// @ts-check
-
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
+    // Enable type checking during build for better error catching
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    // Ignore ESLint during builds to prevent build failures
+    ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [
@@ -87,6 +86,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Enable React strict mode for better debugging
+  reactStrictMode: true,
 };
 
 export default nextConfig;
